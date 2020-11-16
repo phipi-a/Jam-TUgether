@@ -1,0 +1,62 @@
+package de.pcps.jamtugether.storage;
+
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import de.pcps.jamtugether.content.main_instrument.instrument.Instrument;
+
+/**
+ * key values pairs that are saved in a local file
+ */
+
+@Singleton
+public class Preferences {
+
+    public static final String FILE_NAME = "prefs_file_jam_tugether";
+
+    private static final String USER_NEVER_CHOSE_INSTRUMENT_KEY = "pref_key_user_never_chose_instrument";
+    private static final String MAIN_INSTRUMENT_KEY = "pref_key_main_instrument";
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Inject
+    public Preferences() {}
+
+    private boolean getBoolean(@NonNull String key, boolean defaultValue) {
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    private void setBoolean(@NonNull String key, boolean value) {
+        sharedPreferences.edit().putBoolean(key, value).apply();
+    }
+
+    @NonNull
+    private String getString(@NonNull String key, @NonNull String defaultValue) {
+        return sharedPreferences.getString(key, defaultValue);
+    }
+
+    private void setString(@NonNull String key, @NonNull String value) {
+        sharedPreferences.edit().putString(key, value).apply();
+    }
+
+    public boolean userNeverChoseInstrument() {
+        return getBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, true);
+    }
+
+    public void setUserNeverChoseInstrument(boolean value) {
+        setBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, value);
+    }
+
+    public Instrument getMainInstrument() {
+        return Instrument.from(getString(MAIN_INSTRUMENT_KEY, Instrument.FLUTE.getPreferenceValue()));
+    }
+
+    public void setMainInstrument(@NonNull Instrument mainInstrument) {
+        setString(MAIN_INSTRUMENT_KEY, mainInstrument.getPreferenceValue());
+    }
+}

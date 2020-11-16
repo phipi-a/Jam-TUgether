@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="instrument"
+            type="de.pcps.jamtugether.content.main_instrument.instrument.Instrument" />
+
+        <variable
+            name="clickListener"
+            type="de.pcps.jamtugether.content.main_instrument.instrument.Instrument.ClickListener" />
+    </data>
+
+    <TextView
+        android:id="@+id/instrument_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_black_border"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:onClick="@{() -> clickListener.onInstrumentClicked(instrument)}"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black" />
+</layout>

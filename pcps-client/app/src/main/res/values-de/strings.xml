@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Jam TUgether</string>
+
+    <string name="choose_main_instrument">Wähle dein Hauptinstrument</string>
+    <string name="main_instrument_info">Dieses Instrument wird für dich bei Betreten eines Raumes automatisch ausgewählt. Du kannst das in den Einstellungen jederzeit ändern.</string>
+
+    <string name="instrument_flute">Flöte</string>
+    <string name="instrument_drums">Schlagzeug</string>
+    <string name="instrument_shaker">Shaker</string>
 </resources>
