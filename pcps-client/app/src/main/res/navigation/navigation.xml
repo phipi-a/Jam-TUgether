@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
-    app:startDestination="@id/testFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation">
     <fragment
-        android:id="@+id/testFragment"
-        android:name="de.pcps.jamtugether.StartFragment"
-        android:label="TestFragment" />
+        android:id="@+id/mainInstrumentFragment"
+        android:name="de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment"
+        tools:layout="@layout/fragment_main_instrument"
+        android:label="@string/choose_main_instrument">
+        <action
+            android:id="@+id/action_mainInstrumentFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="de.pcps.jamtugether.content.menu.MenuFragment"
+        android:label="MenuFragment" />
 </navigation>
