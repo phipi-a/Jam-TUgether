@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation">
+    android:id="@+id/navigation"
+    app:startDestination="@id/createRoomFragment">
     <fragment
         android:id="@+id/mainInstrumentFragment"
         android:name="de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment"
@@ -19,5 +20,30 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="de.pcps.jamtugether.content.menu.MenuFragment"
-        android:label="MenuFragment" />
+        android:label="MenuFragment" >
+        <action
+            android:id="@+id/action_menuFragment_to_joinRoomFragment"
+            app:destination="@id/joinRoomFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_menuFragment_to_createRoomFragment"
+            app:destination="@id/createRoomFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/createRoomFragment"
+        android:name="de.pcps.jamtugether.content.CreateRoomFragment"
+        android:label="CreateRoomFragment" />
+    <fragment
+        android:id="@+id/joinRoomFragment"
+        android:name="de.pcps.jamtugether.content.JoinRoomFragment"
+        android:label="JoinRoomFragment" />
 </navigation>

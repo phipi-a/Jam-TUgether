@@ -6,6 +6,7 @@ import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment;
 import de.pcps.jamtugether.content.main_instrument.MainInstrumentViewModel;
+import de.pcps.jamtugether.content.menu.MenuFragment;
 
 public class AppInjector {
 
@@ -25,5 +26,9 @@ public class AppInjector {
 
     public static void inject(@NonNull MainInstrumentViewModel mainInstrumentViewModel) {
         appComponent.inject(mainInstrumentViewModel);
+    }
+
+    public static void inject(@NonNull MenuFragment menuFragment) {
+        appComponent.inject(menuFragment);
     }
 }

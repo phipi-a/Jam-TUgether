@@ -12,5 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="buttonStyle">@style/JamTUgetherButtonStyle</item>
+    </style>
+
+    <style name="JamTUgetherButtonStyle" parent="Widget.AppCompat.Button">
+
+        <item name="android:background">@drawable/bg_black_border</item>
     </style>
 </resources>

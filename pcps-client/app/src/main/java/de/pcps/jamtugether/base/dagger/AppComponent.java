@@ -6,6 +6,7 @@ import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment;
 import de.pcps.jamtugether.content.main_instrument.MainInstrumentViewModel;
+import de.pcps.jamtugether.content.menu.MenuFragment;
 
 @Singleton
 @Component(modules = AppModule.class)
@@ -16,4 +17,6 @@ public interface AppComponent {
     void inject(MainInstrumentFragment mainInstrumentFragment);
 
     void inject(MainInstrumentViewModel mainInstrumentViewModel);
+
+    void inject(MenuFragment menuFragment);
 }
