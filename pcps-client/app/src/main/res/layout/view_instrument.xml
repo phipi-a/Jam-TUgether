@@ -12,13 +12,12 @@
             type="de.pcps.jamtugether.content.main_instrument.instrument.Instrument.ClickListener" />
     </data>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/instrument_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/bg_black_border"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:onClick="@{() -> clickListener.onInstrumentClicked(instrument)}"

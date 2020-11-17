@@ -7,4 +7,7 @@
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Shaker</string>
+
+    <string name="create_room">Raum erstellen</string>
+    <string name="join_room">Raum betreten</string>
 </resources>
