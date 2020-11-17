@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppInjector.inject(this);
 
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavInflater navInflater = navController.getNavInflater();
