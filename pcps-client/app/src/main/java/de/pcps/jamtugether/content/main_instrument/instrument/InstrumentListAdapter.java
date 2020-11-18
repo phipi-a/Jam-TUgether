@@ -46,8 +46,6 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
             binding.setInstrument(instrument);
             binding.setClickListener(clickListener);
             binding.executePendingBindings();
-
-            binding.instrumentTextView.setText(instrument.getName());
         }
 
         @NonNull
