@@ -50,6 +50,7 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
             binding.instrumentTextView.setText(instrument.getName());
         }
 
+        @NonNull
         static ViewHolder from(@NonNull ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             return new ViewHolder(DataBindingUtil.inflate(inflater, R.layout.view_instrument, parent, false));

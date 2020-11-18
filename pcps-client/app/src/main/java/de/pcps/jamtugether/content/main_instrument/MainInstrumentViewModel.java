@@ -18,7 +18,6 @@ public class MainInstrumentViewModel extends AndroidViewModel implements Instrum
     @Inject
     Preferences preferences;
 
-    @NonNull
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
 
     @NonNull

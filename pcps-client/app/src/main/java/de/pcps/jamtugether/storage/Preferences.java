@@ -52,6 +52,7 @@ public class Preferences {
         setBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, value);
     }
 
+    @NonNull
     public Instrument getMainInstrument() {
         return Instrument.from(getString(MAIN_INSTRUMENT_KEY, Instrument.FLUTE.getPreferenceValue()));
     }
