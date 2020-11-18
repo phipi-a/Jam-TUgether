@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.content.main_instrument.instrument.Instrument;
+import de.pcps.jamtugether.content.welcome.instrument.Instrument;
 
 /**
  * key values pairs that are saved in a local file
@@ -54,7 +54,8 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        return Instrument.from(getString(MAIN_INSTRUMENT_KEY, Instrument.FLUTE.getPreferenceValue()));
+        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instrument.FLUTE.getPreferenceValue());
+        return Instrument.from(preferenceValue);
     }
 
     public void setMainInstrument(@NonNull Instrument mainInstrument) {

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.main_instrument;
+package de.pcps.jamtugether.content.welcome;
 
 import android.app.Application;
 
@@ -10,10 +10,10 @@ import androidx.lifecycle.MutableLiveData;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.base.dagger.AppInjector;
-import de.pcps.jamtugether.content.main_instrument.instrument.Instrument;
+import de.pcps.jamtugether.content.welcome.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class MainInstrumentViewModel extends AndroidViewModel implements Instrument.ClickListener {
+public class WelcomeViewModel extends AndroidViewModel implements Instrument.ClickListener {
 
     @Inject
     Preferences preferences;
@@ -25,7 +25,7 @@ public class MainInstrumentViewModel extends AndroidViewModel implements Instrum
         return navigateToMenu;
     }
 
-    public MainInstrumentViewModel(@NonNull Application application) {
+    public WelcomeViewModel(@NonNull Application application) {
         super(application);
         AppInjector.inject(this);
     }

@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
-import de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment;
-import de.pcps.jamtugether.content.main_instrument.MainInstrumentViewModel;
+import de.pcps.jamtugether.content.welcome.WelcomeFragment;
+import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 import de.pcps.jamtugether.content.menu.MenuFragment;
 
 public class AppInjector {
@@ -20,12 +20,12 @@ public class AppInjector {
         appComponent.inject(mainActivity);
     }
 
-    public static void inject(@NonNull MainInstrumentFragment mainInstrumentFragment) {
-        appComponent.inject(mainInstrumentFragment);
+    public static void inject(@NonNull WelcomeFragment welcomeFragment) {
+        appComponent.inject(welcomeFragment);
     }
 
-    public static void inject(@NonNull MainInstrumentViewModel mainInstrumentViewModel) {
-        appComponent.inject(mainInstrumentViewModel);
+    public static void inject(@NonNull WelcomeViewModel welcomeViewModel) {
+        appComponent.inject(welcomeViewModel);
     }
 
     public static void inject(@NonNull MenuFragment menuFragment) {

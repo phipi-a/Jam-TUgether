@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.main_instrument;
+package de.pcps.jamtugether.content.welcome;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,28 +19,28 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.base.dagger.AppInjector;
 import de.pcps.jamtugether.base.navigation.NavigationManager;
-import de.pcps.jamtugether.content.main_instrument.instrument.Instrument;
-import de.pcps.jamtugether.content.main_instrument.instrument.InstrumentListAdapter;
-import de.pcps.jamtugether.databinding.FragmentMainInstrumentBinding;
+import de.pcps.jamtugether.content.welcome.instrument.Instrument;
+import de.pcps.jamtugether.content.welcome.instrument.InstrumentListAdapter;
+import de.pcps.jamtugether.databinding.FragmentWelcomeBinding;
 
-public class MainInstrumentFragment extends Fragment {
+public class WelcomeFragment extends Fragment {
 
     @Inject
     NavigationManager navigationManager;
 
-    private MainInstrumentViewModel viewModel;
+    private WelcomeViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppInjector.inject(this);
-        viewModel = new ViewModelProvider(this).get(MainInstrumentViewModel.class);
+        viewModel = new ViewModelProvider(this).get(WelcomeViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentMainInstrumentBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_instrument, container, false);
+        FragmentWelcomeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_welcome, container, false);
 
         InstrumentListAdapter adapter = new InstrumentListAdapter(viewModel);
         binding.instrumentsRecyclerView.setAdapter(adapter);
