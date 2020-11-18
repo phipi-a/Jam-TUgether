@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.main_instrument.instrument;
+package de.pcps.jamtugether.content.welcome.instrument;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

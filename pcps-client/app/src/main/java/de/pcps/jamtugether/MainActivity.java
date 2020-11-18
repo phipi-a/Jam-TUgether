@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
         NavGraph graph = navInflater.inflate(R.navigation.navigation);
 
         if(preferences.userNeverChoseInstrument()) {
-            graph.setStartDestination(R.id.mainInstrumentFragment);
+            graph.setStartDestination(R.id.welcome_fragment);
         } else {
-            graph.setStartDestination(R.id.menuFragment);
+            graph.setStartDestination(R.id.menu_fragment);
         }
 
         navController.setGraph(graph);

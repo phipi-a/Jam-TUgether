@@ -4,8 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
-import de.pcps.jamtugether.content.main_instrument.MainInstrumentFragment;
-import de.pcps.jamtugether.content.main_instrument.MainInstrumentViewModel;
+import de.pcps.jamtugether.content.welcome.WelcomeFragment;
+import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 import de.pcps.jamtugether.content.menu.MenuFragment;
 
 @Singleton
@@ -14,9 +14,9 @@ public interface AppComponent {
 
     void inject(MainActivity mainActivity);
 
-    void inject(MainInstrumentFragment mainInstrumentFragment);
+    void inject(WelcomeFragment welcomeFragment);
 
-    void inject(MainInstrumentViewModel mainInstrumentViewModel);
+    void inject(WelcomeViewModel welcomeViewModel);
 
     void inject(MenuFragment menuFragment);
 }

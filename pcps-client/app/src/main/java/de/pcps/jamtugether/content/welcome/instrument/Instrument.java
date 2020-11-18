@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.main_instrument.instrument;
+package de.pcps.jamtugether.content.welcome.instrument;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -52,7 +52,7 @@ public enum Instrument {
 
         @Override
         public boolean areContentsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
-            return oldItem == newItem;
+            return oldItem.equals(newItem);
         }
     };
 
