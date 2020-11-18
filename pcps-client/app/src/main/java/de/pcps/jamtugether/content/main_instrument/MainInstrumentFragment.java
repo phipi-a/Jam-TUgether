@@ -34,7 +34,6 @@ public class MainInstrumentFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppInjector.inject(this);
-
         viewModel = new ViewModelProvider(this).get(MainInstrumentViewModel.class);
     }
 

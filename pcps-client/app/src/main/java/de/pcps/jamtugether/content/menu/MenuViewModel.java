@@ -12,10 +12,12 @@ public class MenuViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> navigateToCreateRoom = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> navigateToJoinRoom = new MutableLiveData<>(false);
 
+    @NonNull
     public LiveData<Boolean> getNavigateToCreateRoom() {
         return navigateToCreateRoom;
     }
 
+    @NonNull
     public LiveData<Boolean> getNavigateToJoinRoom() {
         return navigateToJoinRoom;
     }
