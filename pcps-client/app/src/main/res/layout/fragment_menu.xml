@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage">
 
     <data>
 
@@ -8,8 +11,7 @@
             type="de.pcps.jamtugether.content.menu.MenuViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,45 +29,39 @@
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpUsage" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/create_room_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="50dp"
-            android:onClick="@{() -> viewModel.onCreateRoomButtonClicked()}"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
+            android:onClick="@{() -> viewModel.onCreateRoomButtonClicked()}"
             android:text="@string/create_room"
             android:textColor="@color/black"
-            android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_name_text_view"
-            tools:ignore="SpUsage" />
+            app:layout_constraintTop_toBottomOf="@id/app_name_text_view" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/join_room_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="50dp"
-            android:onClick="@{() -> viewModel.onJoinRoomButtonClicked()}"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
+            android:onClick="@{() -> viewModel.onJoinRoomButtonClicked()}"
             android:text="@string/join_room"
             android:textColor="@color/black"
-            android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_room_button"
-            tools:ignore="SpUsage" />
-
+            app:layout_constraintTop_toBottomOf="@id/create_room_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,14 +12,6 @@ public class MenuViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> navigateToCreateRoom = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> navigateToJoinRoom = new MutableLiveData<>(false);
 
-    public LiveData<Boolean> getNavigateToCreateRoom() {
-        return navigateToCreateRoom;
-    }
-
-    public LiveData<Boolean> getNavigateToJoinRoom() {
-        return navigateToJoinRoom;
-    }
-
     public MenuViewModel(@NonNull Application application) {
         super(application);
     }
@@ -38,5 +30,15 @@ public class MenuViewModel extends AndroidViewModel {
 
     public void onNavigatedToJoinRoom() {
         navigateToJoinRoom.setValue(false);
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToCreateRoom() {
+        return navigateToCreateRoom;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToJoinRoom() {
+        return navigateToJoinRoom;
     }
 }
