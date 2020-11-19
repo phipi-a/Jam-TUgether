@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- dark theme -->
+    <color name="colorPrimary">#FFBB86FC</color>
+    <color name="colorPrimaryVariant">#FF3700B3</color>
+    <color name="colorOnPrimary">@color/black</color>
+    <color name="colorSecondary">@color/teal_200</color>
+    <color name="colorSecondaryVariant">@color/teal_200</color>
+    <color name="colorOnSecondary">@color/black</color>
+
+    <color name="buttonBorder">@color/white</color>
+    <color name="primaryTextColor">@color/white</color>
+</resources>
