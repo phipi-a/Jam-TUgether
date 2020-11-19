@@ -20,11 +20,6 @@ public class WelcomeViewModel extends AndroidViewModel implements Instrument.Cli
 
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
 
-    @NonNull
-    public LiveData<Boolean> getNavigateToMenu() {
-        return navigateToMenu;
-    }
-
     public WelcomeViewModel(@NonNull Application application) {
         super(application);
         AppInjector.inject(this);
@@ -39,5 +34,10 @@ public class WelcomeViewModel extends AndroidViewModel implements Instrument.Cli
 
     public void onNavigatedToMenu() {
         navigateToMenu.setValue(false);
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToMenu() {
+        return navigateToMenu;
     }
 }

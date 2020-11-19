@@ -11,4 +11,6 @@
     <string name="create_room">Create room</string>
     <string name="join_room">Join room</string>
 
+    <string name="enter_password" >Enter password</string>
+
 </resources>

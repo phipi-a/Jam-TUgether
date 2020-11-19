@@ -41,10 +41,24 @@
     </fragment>
     <fragment
         android:id="@+id/create_room_fragment"
-        android:name="de.pcps.jamtugether.content.CreateRoomFragment"
-        android:label="CreateRoomFragment" />
+        android:name="de.pcps.jamtugether.content.room.create.CreateRoomFragment"
+        tools:layout="@layout/fragment_create_room">
+        <action
+            android:id="@+id/action_create_room_fragment_to_jam_room_fragment"
+            app:destination="@id/jam_room_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"
+            app:popUpTo="@id/menu_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/join_room_fragment"
-        android:name="de.pcps.jamtugether.content.JoinRoomFragment"
+        android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment"
         android:label="JoinRoomFragment" />
+    <fragment
+        android:id="@+id/jam_room_fragment"
+        android:name="de.pcps.jamtugether.content.room.jam.JamRoomFragment"
+        android:label="JamRoomFragment"
+        />
 </navigation>

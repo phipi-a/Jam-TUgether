@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
+import de.pcps.jamtugether.content.room.create.CreateRoomFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 import de.pcps.jamtugether.content.menu.MenuFragment;
@@ -19,4 +20,6 @@ public interface AppComponent {
     void inject(WelcomeViewModel welcomeViewModel);
 
     void inject(MenuFragment menuFragment);
+
+    void inject(CreateRoomFragment createRoomFragment);
 }

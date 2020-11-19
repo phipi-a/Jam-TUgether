@@ -8,42 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="createRoomFragment">
+                  <entry key="create_room_fragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="82" />
-                            <option name="y" value="117" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="joinRoomFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="81" />
-                            <option name="y" value="-297" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="mainInstrumentFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-446" />
-                            <option name="y" value="-70" />
+                            <option name="x" value="366" />
+                            <option name="y" value="-42" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_mainInstrumentFragment_to_menuFragment">
+                            <entry key="action_create_room_fragment_to_jam_room_fragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -53,23 +29,68 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="menuFragment">
+                  <entry key="jam_room_fragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-174" />
-                            <option name="y" value="-78" />
+                            <option name="x" value="688" />
+                            <option name="y" value="-48" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="join_room_fragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="342" />
+                            <option name="y" value="567" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="menu_fragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="24" />
+                            <option name="y" value="275" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_menuFragment_to_createRoomFragment">
+                            <entry key="action_menu_fragment_to_create_room_fragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_menuFragment_to_joinRoomFragment">
+                            <entry key="action_menu_fragment_to_join_room_fragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="welcome_fragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-279" />
+                            <option name="y" value="275" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_welcome_fragment_to_menu_fragment">
                               <value>
                                 <LayoutPositions />
                               </value>
