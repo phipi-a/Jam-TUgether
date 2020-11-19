@@ -6,6 +6,8 @@ import androidx.navigation.NavController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.content.create_room.CreateRoomFragment;
+import de.pcps.jamtugether.content.create_room.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.content.main_instrument.MainInstrumentFragmentDirections;
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 
@@ -29,5 +31,9 @@ public class NavigationManager {
 
     public void navigateToJoinRoom(@NonNull NavController nc) {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
+    }
+
+    public void navigateToJamRoom(@NonNull NavController nc) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToJamRoomFragment());
     }
 }

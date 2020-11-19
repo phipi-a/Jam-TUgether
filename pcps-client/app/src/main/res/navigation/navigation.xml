@@ -20,7 +20,9 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="de.pcps.jamtugether.content.menu.MenuFragment"
-        android:label="MenuFragment" >
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu">
+
         <action
             android:id="@+id/action_menuFragment_to_joinRoomFragment"
             app:destination="@id/joinRoomFragment"
@@ -40,10 +42,21 @@
     </fragment>
     <fragment
         android:id="@+id/createRoomFragment"
-        android:name="de.pcps.jamtugether.content.CreateRoomFragment"
-        android:label="CreateRoomFragment" />
+        android:name="de.pcps.jamtugether.content.create_room.CreateRoomFragment"
+        android:label="CreateRoomFragment"
+        tools:layout="@layout/fragment_create_room">
+        <action
+            android:id="@+id/action_createRoomFragment_to_jamRoomFragment"
+            app:destination="@id/jamRoomFragment" />
+    </fragment>
     <fragment
         android:id="@+id/joinRoomFragment"
         android:name="de.pcps.jamtugether.content.JoinRoomFragment"
-        android:label="JoinRoomFragment" />
+        android:label="JoinRoomFragment"
+        />
+    <fragment
+        android:id="@+id/jamRoomFragment"
+        android:name="de.pcps.jamtugether.content.JamRoom.JamRoomFragment"
+        android:label="JamRoomFragment"
+        />
 </navigation>

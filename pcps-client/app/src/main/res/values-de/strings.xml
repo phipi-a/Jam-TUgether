@@ -10,4 +10,7 @@
 
     <string name="create_room">Raum erstellen</string>
     <string name="join_room">Raum betreten</string>
+
+    <string name="enter_password">Passwort eingeben</string>
+
 </resources>
