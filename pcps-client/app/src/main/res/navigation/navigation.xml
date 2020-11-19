@@ -55,10 +55,10 @@
     <fragment
         android:id="@+id/join_room_fragment"
         android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment"
-        android:label="JoinRoomFragment" />
+        android:label="JoinRoomFragment"
+        tools:layout="@layout/fragment_join_room" />
     <fragment
         android:id="@+id/jam_room_fragment"
         android:name="de.pcps.jamtugether.content.room.jam.JamRoomFragment"
-        android:label="JamRoomFragment"
-        />
+        android:label="JamRoomFragment" />
 </navigation>
