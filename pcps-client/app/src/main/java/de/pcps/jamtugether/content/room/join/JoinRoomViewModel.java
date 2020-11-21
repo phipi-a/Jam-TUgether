@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class JoinRoomViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<Boolean> navigateToNormalRoom = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
 
     public JoinRoomViewModel(@NonNull Application application) {
         super(application);
@@ -34,7 +34,7 @@ public class JoinRoomViewModel extends AndroidViewModel {
         }
 
         if(passwordCorrect(roomId, password)) {
-            navigateToNormalRoom.setValue(true);
+            navigateToRegularRoom.setValue(true);
         }
     }
 
@@ -48,11 +48,11 @@ public class JoinRoomViewModel extends AndroidViewModel {
         return true;
     }
 
-    public void onNavigatedToNormalRoom() {
-        navigateToNormalRoom.setValue(false);
+    public void onNavigatedToRegularRoom() {
+        navigateToRegularRoom.setValue(false);
     }
 
-    public LiveData<Boolean> getNavigateToNormalRoom() {
-        return navigateToNormalRoom;
+    public LiveData<Boolean> getNavigateToRegularRoom() {
+        return navigateToRegularRoom;
     }
 }

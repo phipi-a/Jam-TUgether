@@ -39,10 +39,10 @@ public class JoinRoomFragment extends Fragment {
         FragmentJoinRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_join_room, container, false);
         binding.setViewModel(viewModel);
 
-        viewModel.getNavigateToNormalRoom().observe(getViewLifecycleOwner(), navigateToNormalRoom -> {
-            if(navigateToNormalRoom) {
+        viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
+            if(navigateToRegularRoom) {
                 navigationManager.navigateToNormalRoomFragment(Navigation.findNavController(binding.getRoot()));
-                viewModel.onNavigatedToNormalRoom();
+                viewModel.onNavigatedToRegularRoom();
             }
         });
 
