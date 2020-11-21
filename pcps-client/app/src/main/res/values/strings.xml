@@ -16,4 +16,6 @@
 
     <string name="enter_password" >Enter password</string>
 
+    <string name="room_over_view">Overview</string>
+    <string name="musician_view">Musician View</string>
 </resources>

@@ -35,7 +35,7 @@
 
         <!--Passwort Eingabe-->
         <EditText
-            android:id="@+id/password_edit_text"
+            android:id="@+id/room_password_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -48,7 +48,8 @@
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_name_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/app_name_text_view"
+            android:importantForAutofill="no" />
 
         <!-- Create Room Button-->
         <!-- Text Size kann raus-->
@@ -61,13 +62,13 @@
             android:layout_marginEnd="50dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.onCreateRoomButtonClicked()}"
+            android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"
             android:text="@string/create_room"
             android:textColor="@color/primaryTextColor"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_edit_text" />
+            app:layout_constraintTop_toBottomOf="@id/room_password_edit_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

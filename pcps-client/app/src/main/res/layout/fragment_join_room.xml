@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage">
 
@@ -7,10 +8,10 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.menu.MenuViewModel" />
+            type="de.pcps.jamtugether.content.room.join.JoinRoomViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,7 +25,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="@string/app_name"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="@string/join_room"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,28 +57,45 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/join_room_info"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_text_view" />
 
         <EditText
-            android:id="@+id/id_text_field"
+            android:id="@+id/room_id_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="50dp"
             android:fontFamily="sans-serif"
-            android:gravity="center"
             android:hint="@string/room_id"
+            android:inputType="number"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_text_view"
+            android:importantForAutofill="no" />
+
+        <EditText
+            android:id="@+id/room_password_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="sans-serif"
+            android:hint="@string/enter_password"
             android:inputType="textVisiblePassword"
             android:textColor="@color/primaryTextColor"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/room_id_edit_text"
+            android:importantForAutofill="no" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/join_room_button"
@@ -86,15 +104,15 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="50dp"
-            android:onClick="@{() -> viewModel.onJoinRoomButtonClicked()}"
+            android:onClick="@{() -> viewModel.onJoinRoomButtonClicked(roomIdEditText.getText().toString(), roomPasswordEditText.getText().toString())}"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="@string/join_room"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/id_text_field"
+            app:layout_constraintTop_toBottomOf="@id/room_password_edit_text"
             tools:ignore="SpUsage" />
 
 
