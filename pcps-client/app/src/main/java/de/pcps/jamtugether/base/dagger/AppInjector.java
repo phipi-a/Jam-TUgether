@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragment;
+import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 import de.pcps.jamtugether.content.menu.MenuFragment;
@@ -36,4 +37,10 @@ public class AppInjector {
     public static void inject(@NonNull CreateRoomFragment createRoomFragment) {
         appComponent.inject(createRoomFragment);
     }
+
+    public static void inject(@NonNull JoinRoomFragment joinRoomFragment) {
+        appComponent.inject(joinRoomFragment);
+    }
 }
+
+

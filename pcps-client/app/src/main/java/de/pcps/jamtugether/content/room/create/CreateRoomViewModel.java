@@ -9,22 +9,43 @@ import androidx.lifecycle.MutableLiveData;
 
 public class CreateRoomViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<Boolean> navigateToJamRoom = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
 
     public CreateRoomViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public void onCreateRoomButtonClicked() {
-        navigateToJamRoom.setValue(true);
+    public void onCreateRoomButtonClicked(@NonNull String password) {
+        if(password.isEmpty()) {
+            // todo error dialog: empty password
+            return;
+        }
+
+        if(!passwordFormatCorrect(password)) {
+            // todo error dialog: wrong password format
+            return;
+        }
+
+        createRoom(password);
+        navigateToAdminRoom.setValue(true);
     }
 
-    public void onNavigatedToJamRoom() {
-        navigateToJamRoom.setValue(false);
+
+    private boolean passwordFormatCorrect(@NonNull String password) {
+        // todo
+        return true;
     }
 
-    public LiveData<Boolean> getNavigateToJamRoom() {
-        return navigateToJamRoom;
+    private void createRoom(@NonNull String password) {
+        // todo
+    }
+
+    public void onNavigatedToAdminRoom() {
+        navigateToAdminRoom.setValue(false);
+    }
+
+    public LiveData<Boolean> getNavigateToAdminRoom() {
+        return navigateToAdminRoom;
     }
 }
 

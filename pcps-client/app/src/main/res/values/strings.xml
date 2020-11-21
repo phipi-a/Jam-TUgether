@@ -3,6 +3,9 @@
 
     <string name="choose_main_instrument">Choose your main instrument</string>
     <string name="main_instrument_info">This instrument will be automatically chosen for you every time you enter a room. You can always change it in the settings.</string>
+    <string name="join_room_info">Join your favorite room by entering the room ID</string>
+    <string name="room_id">Room ID</string>
+
 
     <string name="instrument_flute">Flute</string>
     <string name="instrument_drums">Drums</string>
@@ -15,8 +18,4 @@
 
     <string name="room_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
-
-    <string name="normal_view_1">Normal View 1</string>
-    <string name="normal_view_2">Normal View 2</string>
-
 </resources>

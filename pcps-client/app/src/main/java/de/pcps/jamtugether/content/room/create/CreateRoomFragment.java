@@ -20,6 +20,7 @@ import de.pcps.jamtugether.base.navigation.NavigationManager;
 import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
 
 public class CreateRoomFragment extends Fragment {
+
     @Inject
     NavigationManager navigationManager;
 
@@ -38,10 +39,10 @@ public class CreateRoomFragment extends Fragment {
         FragmentCreateRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_room, container, false);
         binding.setViewModel(viewModel);
 
-        viewModel.getNavigateToJamRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
+        viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
                 navigationManager.navigateToAdminRoomFragment(Navigation.findNavController(binding.getRoot()));
-                viewModel.onNavigatedToJamRoom();
+                viewModel.onNavigatedToAdminRoom();
             }
         });
 

@@ -38,7 +38,7 @@ public class NormalRoomFragment extends TabLayoutFragment {
             @StringRes
             @Override
             public int getTabTitle(int position) {
-                return position == 0 ? R.string.normal_view_1 : R.string.normal_view_2;
+                return position == 0 ? R.string.room_over_view : R.string.musician_view;
             }
         };
     }

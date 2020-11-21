@@ -52,6 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/join_room_fragment"
+        tools:layout="@layout/fragment_join_room"
         android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment">
         <action
             android:id="@+id/action_join_room_fragment_to_normal_room_fragment"

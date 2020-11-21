@@ -3,6 +3,8 @@
 
     <string name="choose_main_instrument">Wähle dein Hauptinstrument</string>
     <string name="main_instrument_info">Dieses Instrument wird für dich bei Betreten eines Raumes automatisch ausgewählt. Du kannst das in den Einstellungen jederzeit ändern.</string>
+    <string name="join_room_info">Raum betreten</string>
+    <string name="room_id">Raum ID</string>
 
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
@@ -15,7 +17,4 @@
 
     <string name="room_over_view">Übersicht</string>
     <string name="musician_view">Musikeransicht</string>
-
-    <string name="normal_view_1">Normale Ansicht 1</string>
-    <string name="normal_view_2">Normale Ansicht 2</string>
 </resources>
