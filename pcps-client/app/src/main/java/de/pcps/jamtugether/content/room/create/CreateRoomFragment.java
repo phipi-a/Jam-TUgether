@@ -40,7 +40,7 @@ public class CreateRoomFragment extends Fragment {
 
         viewModel.getNavigateToJamRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
-                navigationManager.navigateToJamRoom(Navigation.findNavController(binding.getRoot()));
+                navigationManager.navigateToAdminRoomFragment(Navigation.findNavController(binding.getRoot()));
                 viewModel.onNavigatedToJamRoom();
             }
         });

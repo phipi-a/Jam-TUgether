@@ -6,11 +6,16 @@
 
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
-    <string name="instrument_shaker">Shaker</string>
+    <string name="instrument_shaker">Rassel</string>
 
     <string name="create_room">Raum erstellen</string>
     <string name="join_room">Raum betreten</string>
 
     <string name="enter_password">Passwort eingeben</string>
 
+    <string name="room_over_view">Übersicht</string>
+    <string name="musician_view">Musikeransicht</string>
+
+    <string name="normal_view_1">Normale Ansicht 1</string>
+    <string name="normal_view_2">Normale Ansicht 2</string>
 </resources>
