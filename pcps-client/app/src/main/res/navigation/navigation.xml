@@ -55,8 +55,8 @@
         tools:layout="@layout/fragment_join_room"
         android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment">
         <action
-            android:id="@+id/action_join_room_fragment_to_normal_room_fragment"
-            app:destination="@id/normal_room_fragment"
+            android:id="@+id/action_join_room_fragment_to_regular_room_fragment"
+            app:destination="@id/regular_room_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -68,7 +68,7 @@
         android:name="de.pcps.jamtugether.content.room.users.admin.AdminRoomFragment"
         tools:layout="@layout/fragment_tab_layout" />
     <fragment
-        android:id="@+id/normal_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.users.normal.NormalRoomFragment"
+        android:id="@+id/regular_room_fragment"
+        android:name="de.pcps.jamtugether.content.room.users.regular.RegularRoomFragment"
         tools:layout="@layout/fragment_tab_layout" />
 </navigation>

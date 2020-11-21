@@ -39,6 +39,6 @@ public class NavigationManager {
     }
 
     public void navigateToNormalRoomFragment(@NonNull NavController nc) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToNormalRoomFragment());
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment());
     }
 }

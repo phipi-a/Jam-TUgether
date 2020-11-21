@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.normal;
+package de.pcps.jamtugether.content.room.users.regular;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -11,7 +11,7 @@ import de.pcps.jamtugether.base.tablayout.TabLayoutFragment;
 import de.pcps.jamtugether.content.room.users.MusicianViewFragment;
 
 // parent fragment with a tab bar and two child fragments (one for each tab)
-public class NormalRoomFragment extends TabLayoutFragment {
+public class RegularRoomFragment extends TabLayoutFragment {
 
     @NonNull
     @Override
@@ -21,7 +21,7 @@ public class NormalRoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? NormalRoomOverviewFragment.newInstance() : MusicianViewFragment.newInstance();
+                return position == 0 ? RegularRoomOverviewFragment.newInstance() : MusicianViewFragment.newInstance();
             }
 
             @Override
