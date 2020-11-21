@@ -8,6 +8,8 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
+import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
+import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
 
 @Singleton
@@ -32,7 +34,11 @@ public class NavigationManager {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public void navigateToJamRoom(@NonNull NavController nc) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToJamRoomFragment());
+    public void navigateToAdminRoomFragment(@NonNull NavController nc) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment());
+    }
+
+    public void navigateToNormalRoomFragment(@NonNull NavController nc) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToNormalRoomFragment());
     }
 }

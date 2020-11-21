@@ -13,4 +13,10 @@
 
     <string name="enter_password" >Enter password</string>
 
+    <string name="room_over_view">Overview</string>
+    <string name="musician_view">Musician View</string>
+
+    <string name="normal_view_1">Normal View 1</string>
+    <string name="normal_view_2">Normal View 2</string>
+
 </resources>
