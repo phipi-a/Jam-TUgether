@@ -39,6 +39,13 @@ public class MenuFragment extends Fragment {
         FragmentMenuBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false);
         binding.setViewModel(viewModel);
 
+        viewModel.getNavigateToSettings().observe(getViewLifecycleOwner(), navigateToSettings -> {
+            if(navigateToSettings) {
+                navigationManager.navigateToSettings(Navigation.findNavController(binding.getRoot()));
+                viewModel.onNavigatedToSettings();
+            }
+        });
+
         viewModel.getNavigateToCreateRoom().observe(getViewLifecycleOwner(), navigateToCreateRoom -> {
             if(navigateToCreateRoom) {
                 navigationManager.navigateToCreateRoom(Navigation.findNavController(binding.getRoot()));

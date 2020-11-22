@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/Yoni/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/201.6858069/plugins/android/lib/android.jar!/images/material/icons/materialicons/music_note/baseline_music_note_24.xml" />
+                                      <entry key="url" value="file:$PROJECT_DIR$/../../../../../../Coding/Android/Sdk/icons/material/materialicons/settings/baseline_settings_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_music_note" />
+                            <entry key="outputName" value="ic_settings" />
                           </map>
                         </option>
                       </PersistentState>

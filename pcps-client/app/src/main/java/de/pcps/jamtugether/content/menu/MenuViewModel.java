@@ -9,11 +9,16 @@ import androidx.lifecycle.MutableLiveData;
 
 public class MenuViewModel extends AndroidViewModel {
 
+    private final MutableLiveData<Boolean> navigateToSettings = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> navigateToCreateRoom = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> navigateToJoinRoom = new MutableLiveData<>(false);
 
     public MenuViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public void onSettingsButtonClicked() {
+        navigateToSettings.setValue(true);
     }
 
     public void onCreateRoomButtonClicked() {
@@ -24,12 +29,21 @@ public class MenuViewModel extends AndroidViewModel {
         navigateToJoinRoom.setValue(true);
     }
 
+    public void onNavigatedToSettings() {
+        navigateToSettings.setValue(false);
+    }
+
     public void onNavigatedToCreateRoom() {
         navigateToCreateRoom.setValue(false);
     }
 
     public void onNavigatedToJoinRoom() {
         navigateToJoinRoom.setValue(false);
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToSettings() {
+        return navigateToSettings;
     }
 
     @NonNull
