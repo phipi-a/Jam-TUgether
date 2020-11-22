@@ -19,12 +19,17 @@ public class JamTextInputLayout extends TextInputLayout {
     public JamTextInputLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        this.setErrorTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red)));
+        this.setErrorTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.inputTextErrorColor)));
         this.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryTextColor)));
-        this.setBoxStrokeColor(ContextCompat.getColor(context, R.color.primaryTextColor));
     }
 
     public void observeError(@NonNull LiveData<String> error, @NonNull LifecycleOwner lifecycleOwner) {
         error.observe(lifecycleOwner, this::setError);
+    }
+
+    @Override
+    public void setError(@Nullable CharSequence errorText) {
+        super.setError(errorText);
+        setErrorEnabled(errorText != null);
     }
 }
