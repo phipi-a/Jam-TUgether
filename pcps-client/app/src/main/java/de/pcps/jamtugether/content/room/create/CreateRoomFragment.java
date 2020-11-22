@@ -39,6 +39,8 @@ public class CreateRoomFragment extends Fragment {
         FragmentCreateRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_room, container, false);
         binding.setViewModel(viewModel);
 
+        binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
+
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
                 navigationManager.navigateToAdminRoomFragment(Navigation.findNavController(binding.getRoot()));

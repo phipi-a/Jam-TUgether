@@ -18,4 +18,11 @@
 
     <string name="room_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
+
+    <string name="room_input_empty">You have to enter a room</string>
+    <string name="room_doesnt_exit">This room does not exist</string>
+    <string name="password_input_empty">You have to enter a password</string>
+    <string name="password_format_incorrect">The format of this password is incorrect</string>
+    <string name="password_incorrect">This password is incorrect</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.tablayout;
+package de.pcps.jamtugether.base.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -33,11 +33,11 @@ public class JamTabView extends ConstraintLayout {
     }
 
     public void activate() {
-        this.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_border_active_tab));
+        tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryTextColor));
     }
 
     public void deactivate() {
-        this.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_border_inactive_tab));
+        tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
     }
 
     @NonNull

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.tablayout;
+package de.pcps.jamtugether.base.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import de.pcps.jamtugether.content.room.users.TabLayoutAdapter;
 
 public class JamTabLayout extends TabLayout {
 

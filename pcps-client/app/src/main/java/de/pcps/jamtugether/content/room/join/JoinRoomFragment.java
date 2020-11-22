@@ -39,6 +39,9 @@ public class JoinRoomFragment extends Fragment {
         FragmentJoinRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_join_room, container, false);
         binding.setViewModel(viewModel);
 
+        binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());
+        binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
+
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if(navigateToRegularRoom) {
                 navigationManager.navigateToNormalRoomFragment(Navigation.findNavController(binding.getRoot()));

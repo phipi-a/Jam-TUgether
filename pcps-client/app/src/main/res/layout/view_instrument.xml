@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -24,5 +25,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="@{instrument.name}"
-        android:textColor="@color/primaryTextColor" />
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20dp"
+        tools:ignore="SpUsage" />
 </layout>
