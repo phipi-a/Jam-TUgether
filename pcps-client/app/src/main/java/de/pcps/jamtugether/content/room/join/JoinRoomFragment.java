@@ -18,6 +18,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.base.dagger.AppInjector;
 import de.pcps.jamtugether.base.navigation.NavigationManager;
 import de.pcps.jamtugether.databinding.FragmentJoinRoomBinding;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class JoinRoomFragment extends Fragment {
 
@@ -45,6 +46,7 @@ public class JoinRoomFragment extends Fragment {
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if(navigateToRegularRoom) {
                 navigationManager.navigateToNormalRoomFragment(Navigation.findNavController(binding.getRoot()));
+                UiUtils.hideKeyboard(requireActivity(), binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }
         });
