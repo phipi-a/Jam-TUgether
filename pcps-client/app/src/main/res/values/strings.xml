@@ -6,7 +6,6 @@
     <string name="join_room_info">Join your favorite room by entering the room ID</string>
     <string name="room_id">Room ID</string>
 
-
     <string name="instrument_flute">Flute</string>
     <string name="instrument_drums">Drums</string>
     <string name="instrument_shaker">Shaker</string>
@@ -14,15 +13,15 @@
     <string name="create_room">Create room</string>
     <string name="join_room">Join room</string>
 
-    <string name="enter_password" >Enter password</string>
+    <string name="password" >password</string>
 
     <string name="room_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
 
-    <string name="room_input_empty">You have to enter a room</string>
-    <string name="room_doesnt_exit">This room does not exist</string>
-    <string name="password_input_empty">You have to enter a password</string>
-    <string name="password_format_incorrect">The format of this password is incorrect</string>
-    <string name="password_incorrect">This password is incorrect</string>
+    <string name="room_input_empty">You have to enter a room.</string>
+    <string name="room_doesnt_exit">This room does not exist.</string>
+    <string name="password_input_empty">You have to enter a password.</string>
+    <string name="password_format_incorrect">The format of this password is incorrect.</string>
+    <string name="password_incorrect">This password is incorrect.</string>
 
 </resources>
