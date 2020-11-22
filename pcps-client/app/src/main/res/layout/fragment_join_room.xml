@@ -100,7 +100,8 @@
                 android:layout_marginEnd="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/room_id_text_input_layout">
+                app:layout_constraintTop_toBottomOf="@id/room_id_text_input_layout"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/room_password_edit_text"
@@ -109,7 +110,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:hint="@string/enter_password"
                     android:importantForAutofill="no"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:textColor="@color/primaryTextColor"
                     android:textCursorDrawable="@drawable/edit_text_cursor_drawable" />
             </de.pcps.jamtugether.base.views.JamTextInputLayout>

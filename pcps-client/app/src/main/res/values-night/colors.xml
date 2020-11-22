@@ -3,12 +3,12 @@
 
     <!-- dark mode -->
     <color name="colorPrimary">@color/black</color>
-    <color name="colorPrimaryVariant">@color/black_light</color>
+    <color name="colorPrimaryVariant">@color/black</color>
     <color name="colorOnPrimary">@color/black</color>
     <color name="colorSecondary">@color/black</color>
-    <color name="colorSecondaryVariant">@color/black_light</color>
+    <color name="colorSecondaryVariant">@color/black</color>
     <color name="colorOnSecondary">@color/black</color>
 
-    <color name="buttonBorder">@color/white</color>
+    <color name="buttonBorderColor">@color/white</color>
     <color name="primaryTextColor">@color/white</color>
 </resources>
