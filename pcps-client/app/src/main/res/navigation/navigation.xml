@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
+    app:startDestination="@id/settingsFragment"
     tools:ignore="InvalidNavigation">
     <fragment
         android:id="@+id/welcome_fragment"
@@ -36,6 +37,13 @@
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_menu_fragment_to_settings_fragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_from_bottom"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/create_room_fragment"
@@ -52,8 +60,8 @@
     </fragment>
     <fragment
         android:id="@+id/join_room_fragment"
-        tools:layout="@layout/fragment_join_room"
-        android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment">
+        android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment"
+        tools:layout="@layout/fragment_join_room">
         <action
             android:id="@+id/action_join_room_fragment_to_regular_room_fragment"
             app:destination="@id/regular_room_fragment"
@@ -71,4 +79,8 @@
         android:id="@+id/regular_room_fragment"
         android:name="de.pcps.jamtugether.content.room.users.regular.RegularRoomFragment"
         tools:layout="@layout/fragment_tab_layout" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="de.pcps.jamtugether.content.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

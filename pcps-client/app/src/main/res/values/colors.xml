@@ -14,7 +14,8 @@
     <color name="colorSecondaryVariant">@color/black</color>
     <color name="colorOnSecondary">@color/black</color>
 
+    <color name="inputTextErrorColor">@color/red</color>
     <color name="buttonBorderColor">@color/black</color>
     <color name="primaryTextColor">@color/black</color>
-    <color name="inputTextErrorColor">@color/red</color>
+    <color name="settingsIconColor">@color/black</color>
 </resources>

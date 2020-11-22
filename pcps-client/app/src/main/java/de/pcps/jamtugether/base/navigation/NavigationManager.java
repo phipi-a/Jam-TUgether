@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
-import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
 
@@ -26,6 +25,10 @@ public class NavigationManager {
         nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());
     }
 
+    public void navigateToSettings(@NonNull NavController nc) {
+        nc.navigate(MenuFragmentDirections.actionMenuFragmentToSettingsFragment());
+    }
+
     public void navigateToCreateRoom(@NonNull NavController nc) {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToCreateRoomFragment());
     }
@@ -34,11 +37,11 @@ public class NavigationManager {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public void navigateToAdminRoomFragment(@NonNull NavController nc) {
+    public void navigateToAdminRoom(@NonNull NavController nc) {
         nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment());
     }
 
-    public void navigateToNormalRoomFragment(@NonNull NavController nc) {
+    public void navigateToRegularRoom(@NonNull NavController nc) {
         nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment());
     }
 }
