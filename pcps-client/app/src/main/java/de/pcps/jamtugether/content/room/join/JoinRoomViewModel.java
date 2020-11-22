@@ -23,24 +23,35 @@ public class JoinRoomViewModel extends AndroidViewModel {
 
     public void onJoinRoomButtonClicked(@NonNull String roomIdString, @NonNull String password) {
         Context context = getApplication().getApplicationContext();
+
+        boolean roomError = false;
+        int roomId = 0;
+
         if(roomIdString.isEmpty()) {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
-            return;
+            roomError = true;
+        } else {
+            roomId = Integer.parseInt(roomIdString);
+
+            if(!roomExists(roomId)) {
+                roomInputError.setValue(context.getString(R.string.room_doesnt_exit));
+                roomError = true;
+            }
         }
 
-        int roomId = Integer.parseInt(roomIdString);
-
-        if(!roomExists(roomId)) {
-            roomInputError.setValue(context.getString(R.string.room_doesnt_exit));
-            return;
+        if(!roomError) {
+            roomInputError.setValue(null);
         }
-        roomInputError.setValue(null);
 
         if(password.isEmpty()) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             return;
         }
         passwordInputError.setValue(null);
+
+        if(roomError) {
+            return;
+        }
 
         if(passwordCorrect(roomId, password)) {
             navigateToRegularRoom.setValue(true);
