@@ -1,9 +1,11 @@
-package de.pcps.jamtugether.base.tablayout;
+package de.pcps.jamtugether.content.room.users;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import de.pcps.jamtugether.base.views.JamTabView;
 
 public abstract class TabLayoutAdapter extends FragmentStateAdapter {
 

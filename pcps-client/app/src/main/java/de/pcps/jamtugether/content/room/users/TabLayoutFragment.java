@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.tablayout;
+package de.pcps.jamtugether.content.room.users;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.base.views.JamTabLayout;
 import de.pcps.jamtugether.databinding.FragmentTabLayoutBinding;
 
 public abstract class TabLayoutFragment extends Fragment {
