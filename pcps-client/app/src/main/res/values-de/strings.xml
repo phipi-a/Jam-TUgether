@@ -13,14 +13,14 @@
     <string name="create_room">Raum erstellen</string>
     <string name="join_room">Raum betreten</string>
 
-    <string name="enter_password">Passwort eingeben</string>
+    <string name="password">Passwort</string>
 
     <string name="room_over_view">Übersicht</string>
     <string name="musician_view">Musikeransicht</string>
 
-    <string name="room_input_empty">Du musst einen Raum eingeben</string>
-    <string name="room_doesnt_exit">Dieser Raum existiert nicht</string>
-    <string name="password_input_empty">Du musst ein Passwort eingeben</string>
-    <string name="password_format_incorrect">Das Format dieses Passwortes ist falsch</string>
-    <string name="password_incorrect">Dieses Passwort ist falsch</string>
+    <string name="room_input_empty">Du musst einen Raum eingeben.</string>
+    <string name="room_doesnt_exit">Dieser Raum existiert nicht.</string>
+    <string name="password_input_empty">Du musst ein Passwort eingeben.</string>
+    <string name="password_format_incorrect">Das Format dieses Passwortes ist falsch.</string>
+    <string name="password_incorrect">Dieses Passwort ist falsch.</string>
 </resources>
