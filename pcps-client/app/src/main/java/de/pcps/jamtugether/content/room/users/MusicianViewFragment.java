@@ -9,7 +9,7 @@ import de.pcps.jamtugether.content.room.users.admin.AdminRoomOverViewFragment;
 public class MusicianViewFragment extends Fragment {
 
     @NonNull
-    public static AdminRoomOverViewFragment newInstance() {
-        return new AdminRoomOverViewFragment();
+    public static MusicianViewFragment newInstance() {
+        return new MusicianViewFragment();
     }
 }
