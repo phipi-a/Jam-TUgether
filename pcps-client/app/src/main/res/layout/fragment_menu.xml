@@ -28,7 +28,7 @@
                 android:src="@drawable/ic_settings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/settingsIconColor"
+                app:tint="@color/iconColor"
                 tools:ignore="ContentDescription" />
 
             <TextView

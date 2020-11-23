@@ -11,6 +11,6 @@
 
     <color name="buttonBorderColor">@color/white</color>
     <color name="primaryTextColor">@color/white</color>
-    <color name="settingsIconColor">@color/white</color>
+    <color name="iconColor">@color/white</color>
 
 </resources>

@@ -17,5 +17,5 @@
     <color name="inputTextErrorColor">@color/red</color>
     <color name="buttonBorderColor">@color/black</color>
     <color name="primaryTextColor">@color/black</color>
-    <color name="settingsIconColor">@color/black</color>
+    <color name="iconColor">@color/black</color>
 </resources>
