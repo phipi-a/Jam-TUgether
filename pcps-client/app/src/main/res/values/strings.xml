@@ -13,7 +13,7 @@
     <string name="create_room">Create room</string>
     <string name="join_room">Join room</string>
 
-    <string name="password" >password</string>
+    <string name="password">Password</string>
 
     <string name="room_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
