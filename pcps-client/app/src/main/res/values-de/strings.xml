@@ -10,6 +10,9 @@
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
 
+    <string name="settings">Einstellungen</string>
+    <string name="main_instrument">Hauptinstrument</string>
+
     <string name="create_room">Raum erstellen</string>
     <string name="join_room">Raum betreten</string>
 
