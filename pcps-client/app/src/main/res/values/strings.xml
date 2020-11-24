@@ -11,7 +11,7 @@
     <string name="instrument_shaker">Shaker</string>
 
     <string name="settings">Settings</string>
-    <string name="your_main_instrument">Your main instrument</string>
+    <string name="main_instrument">Main instrument</string>
 
     <string name="create_room">Create room</string>
     <string name="join_room">Join room</string>
