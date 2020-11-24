@@ -8,7 +8,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.base.views.JamTabView;
 import de.pcps.jamtugether.content.room.users.TabLayoutAdapter;
 import de.pcps.jamtugether.content.room.users.TabLayoutFragment;
-import de.pcps.jamtugether.content.room.users.regular.MusicianViewFragment;
+import de.pcps.jamtugether.content.room.users.MusicianViewFragment;
 
 public class AdminRoomFragment extends TabLayoutFragment {
 

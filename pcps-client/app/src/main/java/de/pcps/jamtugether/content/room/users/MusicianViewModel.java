@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.regular;
+package de.pcps.jamtugether.content.room.users;
 
 import android.app.Application;
 

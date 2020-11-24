@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.users.regular.MusicianViewModel" />
+            type="de.pcps.jamtugether.content.room.users.MusicianViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
