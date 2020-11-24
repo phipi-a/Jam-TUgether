@@ -6,8 +6,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const bcrypt = require('bcrypt')
+const fnRoom = require('./room.js')
 
 const app = express()
+
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const rooms = []
@@ -18,6 +20,7 @@ app.get('/signup', function (req, res) {
 })
 
 app.post('/signup', async function (req, res) {
+  /* encrypts passwords */
   try {
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
@@ -26,9 +29,9 @@ app.post('/signup', async function (req, res) {
       return res.send('Room already exists!')
     }
     rooms.push(newRoom)
-    // just for debugging
+    /* just for debugging */
     console.log(newRoom)
-    res.status(201).send()
+    res.redirect('/room')
   } catch {
     res.status(500).send()
   }
@@ -38,19 +41,24 @@ app.get('/login', function (req, res) {
   const htmlPath = __dirname + '' + '/login.html'
   res.sendFile(htmlPath)
 })
+app.get('/room', function (req, res) {
+  res.sendFile(fnRoom.startRoom())
+})
 
 app.post('/login', async function (req, res) {
   const newRoom = rooms.find(newRoom => newRoom.room === req.body.room)
   console.log(rooms)
   console.log(newRoom)
+  /* Checks if newRoom is valid and if valid compares it with dummy database (timing attacks resistant) */
   if (newRoom == null) {
-    return res.status(400).send('Cannot find room')
+    return res.redirect('/login')
   }
   try {
     if (await bcrypt.compare(req.body.password, newRoom.password)) {
-      res.send('Success login!')
+      res.redirect('/room')
     } else {
-      res.send('Wrong password!')
+      /* TODO error message like 'wrong password' */
+      res.redirect('/login')
     }
   } catch {
     res.status(500).send()
