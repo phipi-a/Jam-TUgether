@@ -14,26 +14,19 @@ import androidx.navigation.Navigation;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
-
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.dagger.AppInjector;
-import de.pcps.jamtugether.base.navigation.NavigationManager;
+import de.pcps.jamtugether.base.utils.NavigationUtils;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.content.instrument.InstrumentListAdapter;
 import de.pcps.jamtugether.databinding.FragmentWelcomeBinding;
 
 public class WelcomeFragment extends Fragment {
 
-    @Inject
-    NavigationManager navigationManager;
-
     private WelcomeViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppInjector.inject(this);
         viewModel = new ViewModelProvider(this).get(WelcomeViewModel.class);
     }
 
@@ -48,7 +41,7 @@ public class WelcomeFragment extends Fragment {
 
         viewModel.getNavigateToMenu().observe(getViewLifecycleOwner(), navigateToMenu -> {
             if(navigateToMenu) {
-                navigationManager.navigateToMenu(Navigation.findNavController(binding.getRoot()));
+                NavigationUtils.navigateToMenu(Navigation.findNavController(binding.getRoot()));
                 viewModel.onNavigatedToMenu();
             }
         });

@@ -4,13 +4,9 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
-import de.pcps.jamtugether.content.room.create.CreateRoomFragment;
-import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
 import de.pcps.jamtugether.content.room.users.MusicianViewViewModel;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
-import de.pcps.jamtugether.content.welcome.WelcomeFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
-import de.pcps.jamtugether.content.menu.MenuFragment;
 
 public class AppInjector {
 
@@ -24,28 +20,12 @@ public class AppInjector {
         appComponent.inject(mainActivity);
     }
 
-    public static void inject(@NonNull WelcomeFragment welcomeFragment) {
-        appComponent.inject(welcomeFragment);
-    }
-
     public static void inject(@NonNull WelcomeViewModel welcomeViewModel) {
         appComponent.inject(welcomeViewModel);
     }
 
-    public static void inject(@NonNull MenuFragment menuFragment) {
-        appComponent.inject(menuFragment);
-    }
-
     public static void inject(@NonNull SettingsViewModel settingsViewModel) {
         appComponent.inject(settingsViewModel);
-    }
-
-    public static void inject(@NonNull CreateRoomFragment createRoomFragment) {
-        appComponent.inject(createRoomFragment);
-    }
-
-    public static void inject(@NonNull JoinRoomFragment joinRoomFragment) {
-        appComponent.inject(joinRoomFragment);
     }
 
     public static void inject(@NonNull MusicianViewViewModel musicianViewViewModel) {

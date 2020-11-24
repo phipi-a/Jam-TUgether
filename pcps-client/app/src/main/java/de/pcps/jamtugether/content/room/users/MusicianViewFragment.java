@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
-import de.pcps.jamtugether.utils.UiUtils;
+import de.pcps.jamtugether.base.utils.UiUtils;
 
 public class MusicianViewFragment extends Fragment {
 

@@ -13,6 +13,7 @@ public enum Instrument {
     DRUMS(R.string.instrument_drums,"drums", R.string.play_drums_help),
     SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
 
+    @NonNull
     private final static HashMap<String, Instrument> preferenceMap = new HashMap<>();
 
     static {
@@ -59,6 +60,7 @@ public enum Instrument {
         return FLUTE;
     }
 
+    @NonNull
     public static final DiffUtil.ItemCallback<Instrument> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Instrument>() {
 
         @Override

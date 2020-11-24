@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.utils;
+package de.pcps.jamtugether.base.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
