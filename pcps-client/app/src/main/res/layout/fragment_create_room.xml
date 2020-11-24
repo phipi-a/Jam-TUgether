@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="@dimen/app_name_margin_top"
+                android:layout_marginTop="@dimen/title_margin_top"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
@@ -59,7 +59,7 @@
                     android:importantForAutofill="no"
                     android:inputType="textPassword"
                     android:textColor="@color/primaryTextColor"
-                    android:textCursorDrawable="@drawable/edit_text_cursor_drawable" />
+                    android:textCursorDrawable="@drawable/edit_text_cursor" />
             </de.pcps.jamtugether.base.views.JamTextInputLayout>
 
             <!-- Create Room Button-->
@@ -70,7 +70,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
-                android:layout_marginBottom="@dimen/margin_bottom"
+                android:layout_marginBottom="@dimen/layout_margin_bottom"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"

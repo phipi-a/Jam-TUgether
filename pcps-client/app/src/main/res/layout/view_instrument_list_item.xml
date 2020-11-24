@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="instrument"
-            type="de.pcps.jamtugether.content.welcome.instrument.Instrument" />
+            type="de.pcps.jamtugether.content.instrument.Instrument" />
 
         <variable
             name="clickListener"
-            type="de.pcps.jamtugether.content.welcome.instrument.Instrument.ClickListener" />
+            type="de.pcps.jamtugether.content.instrument.Instrument.ClickListener" />
     </data>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/instrument_text_view"
+        android:id="@+id/instrument_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
