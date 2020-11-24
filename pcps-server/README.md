@@ -2,7 +2,7 @@
 * install node
 * install npm
 * change to the directory *pcps-server*
-* run ```bash npm i bcrypt express standard path nodemon```
+* type: ```npm i bcrypt express standard path nodemon``` in your terminal
 
 # Executing
-* start the server with ```bash npm run runSv```
+* To start the server type: ```npm run runSv```
