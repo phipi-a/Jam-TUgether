@@ -44,25 +44,37 @@ public class MusicianViewViewModel extends AndroidViewModel implements Instrumen
 
         Instrument mainInstrument = preferences.getMainInstrument();
         selectedInstrument = new MutableLiveData<>(mainInstrument);
-        updateDialogData(mainInstrument);
+        updateHelpDialogData(mainInstrument);
     }
 
-    private void updateDialogData(@NonNull Instrument instrument) {
+    @Override
+    public void onInstrumentClicked(@NonNull Instrument instrument) {
+        selectedInstrument.setValue(instrument);
+        updateHelpDialogData(instrument);
+    }
+
+    private void updateHelpDialogData(@NonNull Instrument instrument) {
         Context context = getApplication().getApplicationContext();
         String instrumentName = context.getString(instrument.getName());
         helpDialogTitle = context.getString(R.string.play_instrument, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());
     }
 
-    @Override
-    public void onInstrumentClicked(@NonNull Instrument instrument) {
-        selectedInstrument.setValue(instrument);
-        updateDialogData(instrument);
-    }
-
     @NonNull
     public Instrument getMainInstrument() {
         return preferences.getMainInstrument();
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public String getHelpDialogTitle() {
+        return helpDialogTitle;
+    }
+
+    public String getHelpDialogMessage() {
+        return helpDialogMessage;
     }
 
     @NonNull
@@ -76,18 +88,6 @@ public class MusicianViewViewModel extends AndroidViewModel implements Instrumen
 
     public void onHelpDialogShown() {
         showHelpDialog.setValue(false);
-    }
-
-    public int getRoomID() {
-        return roomID;
-    }
-
-    public String getHelpDialogTitle() {
-        return helpDialogTitle;
-    }
-
-    public String getHelpDialogMessage() {
-        return helpDialogMessage;
     }
 
     @NonNull

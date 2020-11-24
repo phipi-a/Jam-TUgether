@@ -18,6 +18,7 @@ public class WelcomeViewModel extends AndroidViewModel implements Instrument.Cli
     @Inject
     Preferences preferences;
 
+    @NonNull
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
 
     public WelcomeViewModel(@NonNull Application application) {

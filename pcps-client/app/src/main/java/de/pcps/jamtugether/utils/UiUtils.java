@@ -3,15 +3,11 @@ package de.pcps.jamtugether.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
-import de.pcps.jamtugether.R;
 
 public class UiUtils {
 
@@ -20,11 +16,12 @@ public class UiUtils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @NonNull
     public static AlertDialog createInfoDialog(@Nullable Context context, @NonNull String title, @NonNull String message) {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog1, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 })
                 .create();
     }

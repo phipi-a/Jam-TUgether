@@ -13,7 +13,6 @@ import de.pcps.jamtugether.content.room.users.TabLayoutAdapter;
 import de.pcps.jamtugether.content.room.users.TabLayoutFragment;
 import de.pcps.jamtugether.content.room.users.MusicianViewFragment;
 
-// parent fragment with a tab bar and two child fragments (one for each tab)
 public class AdminRoomFragment extends TabLayoutFragment {
 
     private int roomID;

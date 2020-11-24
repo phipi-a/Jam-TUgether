@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
+import java.util.HashMap;
+
 import de.pcps.jamtugether.R;
 
 public enum Instrument {
@@ -11,6 +13,13 @@ public enum Instrument {
     DRUMS(R.string.instrument_drums,"drums", R.string.play_drums_help),
     SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
 
+    private final static HashMap<String, Instrument> preferenceMap = new HashMap<>();
+
+    static {
+        for(Instrument instrument : Instrument.values()) {
+            preferenceMap.put(instrument.preferenceValue, instrument);
+        }
+    }
 
     @StringRes
     private final int name;
@@ -44,12 +53,9 @@ public enum Instrument {
 
     @NonNull
     public static Instrument from(@NonNull String preferenceValue) {
-        for(Instrument instrument : values()) {
-            if(instrument.preferenceValue.equals(preferenceValue)) {
-                return instrument;
-            }
+        if(preferenceMap.containsKey(preferenceValue)) {
+            return preferenceMap.get(preferenceValue);
         }
-
         return FLUTE;
     }
 

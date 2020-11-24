@@ -12,12 +12,16 @@ import de.pcps.jamtugether.R;
 
 public class JoinRoomViewModel extends AndroidViewModel {
 
+    private int roomID;
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
 
+    @NonNull
     private final MutableLiveData<String> roomInputError = new MutableLiveData<>(null);
-    private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
 
-    private int roomID;
+    @NonNull
+    private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
 
     public JoinRoomViewModel(@NonNull Application application) {
         super(application);
@@ -69,24 +73,26 @@ public class JoinRoomViewModel extends AndroidViewModel {
         return true;
     }
 
-    public int getRoomID() {
-        return roomID;
-    }
-
     public void onNavigatedToRegularRoom() {
         navigateToRegularRoom.setValue(false);
     }
 
+    public int getRoomID() {
+        return roomID;
+    }
+
+    @NonNull
     public LiveData<Boolean> getNavigateToRegularRoom() {
         return navigateToRegularRoom;
     }
 
+    @NonNull
     public LiveData<String> getRoomInputError() {
         return roomInputError;
     }
 
+    @NonNull
     public LiveData<String> getPasswordInputError() {
         return passwordInputError;
     }
-
 }

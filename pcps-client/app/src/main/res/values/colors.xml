@@ -5,6 +5,7 @@
     <color name="red">#FFCC0000</color>
     <color name="gray">#FFAAAAAA</color>
     <color name="black">#FF000000</color>
+    <color name="inputTextErrorColor">@color/red</color>
 
     <!-- light mode -->
     <color name="colorPrimary">@color/white</color>
@@ -14,7 +15,6 @@
     <color name="colorSecondaryVariant">@color/black</color>
     <color name="colorOnSecondary">@color/black</color>
 
-    <color name="inputTextErrorColor">@color/red</color>
     <color name="buttonBorderColor">@color/black</color>
     <color name="primaryTextColor">@color/black</color>
     <color name="iconColor">@color/black</color>

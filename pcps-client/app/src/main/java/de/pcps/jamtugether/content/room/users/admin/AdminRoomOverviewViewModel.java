@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.content.room.users.admin;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 
 import androidx.annotation.NonNull;

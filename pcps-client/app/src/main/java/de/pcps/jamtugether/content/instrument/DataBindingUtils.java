@@ -8,9 +8,6 @@ import androidx.databinding.BindingAdapter;
 
 import java.util.List;
 
-import de.pcps.jamtugether.content.instrument.Instrument;
-import de.pcps.jamtugether.content.instrument.InstrumentSpinnerAdapter;
-
 public class DataBindingUtils {
 
     @BindingAdapter(value = {"currentInstrument", "instrumentList", "clickListener"})

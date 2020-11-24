@@ -12,11 +12,13 @@ import de.pcps.jamtugether.R;
 
 public class CreateRoomViewModel extends AndroidViewModel {
 
+    private int roomID;
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
 
+    @NonNull
     private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
-
-    private int roomID;
 
     public CreateRoomViewModel(@NonNull Application application) {
         super(application);
@@ -24,6 +26,7 @@ public class CreateRoomViewModel extends AndroidViewModel {
 
     public void onCreateRoomButtonClicked(@NonNull String password) {
         Context context = getApplication().getApplicationContext();
+
         if(password.isEmpty()) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             return;
@@ -49,18 +52,20 @@ public class CreateRoomViewModel extends AndroidViewModel {
         return 1;
     }
 
-    public int getRoomID() {
-        return roomID;
-    }
-
     public void onNavigatedToAdminRoom() {
         navigateToAdminRoom.setValue(false);
     }
 
+    public int getRoomID() {
+        return roomID;
+    }
+
+    @NonNull
     public LiveData<Boolean> getNavigateToAdminRoom() {
         return navigateToAdminRoom;
     }
 
+    @NonNull
     public LiveData<String> getPasswordInputError() {
         return passwordInputError;
     }

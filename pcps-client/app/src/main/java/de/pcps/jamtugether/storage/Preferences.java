@@ -9,10 +9,6 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.content.instrument.Instrument;
 
-/**
- * key value pairs that are saved in a local file
- */
-
 @Singleton
 public class Preferences {
 

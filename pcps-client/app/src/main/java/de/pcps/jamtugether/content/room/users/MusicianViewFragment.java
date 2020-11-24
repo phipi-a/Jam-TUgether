@@ -56,6 +56,7 @@ public class MusicianViewFragment extends Fragment {
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
                     viewModel.onHelpDialogShown();
                 });
+
                 dialog.show();
             }
         });

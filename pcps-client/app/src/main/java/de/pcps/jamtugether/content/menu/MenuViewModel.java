@@ -9,8 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 
 public class MenuViewModel extends AndroidViewModel {
 
+    @NonNull
     private final MutableLiveData<Boolean> navigateToSettings = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToCreateRoom = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToJoinRoom = new MutableLiveData<>(false);
 
     public MenuViewModel(@NonNull Application application) {
@@ -45,7 +50,6 @@ public class MenuViewModel extends AndroidViewModel {
     public LiveData<Boolean> getNavigateToSettings() {
         return navigateToSettings;
     }
-
 
     @NonNull
     public LiveData<Boolean> getNavigateToCreateRoom() {
