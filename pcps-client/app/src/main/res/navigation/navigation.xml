@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/admin_room_fragment"
         android:name="de.pcps.jamtugether.content.room.users.admin.AdminRoomFragment"
-        tools:layout="@layout/fragment_tab_layout" >
+        tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
             app:argType="integer" />
@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/regular_room_fragment"
         android:name="de.pcps.jamtugether.content.room.users.regular.RegularRoomFragment"
-        tools:layout="@layout/fragment_tab_layout" >
+        tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
             app:argType="integer" />
@@ -90,5 +90,6 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="de.pcps.jamtugether.content.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
