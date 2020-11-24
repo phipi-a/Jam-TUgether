@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import de.pcps.jamtugether.R;
+import timber.log.Timber;
 
 public class JoinRoomViewModel extends AndroidViewModel {
 
@@ -36,9 +37,15 @@ public class JoinRoomViewModel extends AndroidViewModel {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
             roomError = true;
         } else {
-            roomID = Integer.parseInt(roomIdString);
+            try {
+                roomID = Integer.parseInt(roomIdString);
+            } catch (Exception e) {
+                // number is higher than 'int' can store
+                roomError = true;
+                roomInputError.setValue(context.getString(R.string.room_doesnt_exit)); // todo check if this message is ok
+            }
 
-            if(!roomExists(roomID)) {
+            if(!roomError && !roomExists(roomID)) {
                 roomInputError.setValue(context.getString(R.string.room_doesnt_exit));
                 roomError = true;
             }
