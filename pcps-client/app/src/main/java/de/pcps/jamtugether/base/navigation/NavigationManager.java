@@ -6,12 +6,10 @@ import androidx.navigation.NavController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.content.MusicianView.MusicianViewFragmentDirections;
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
-import timber.log.Timber;
 
 @Singleton
 public class NavigationManager {
@@ -39,11 +37,11 @@ public class NavigationManager {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public void navigateToAdminRoom(@NonNull NavController nc) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment());
+    public void navigateToAdminRoom(@NonNull NavController nc, int roomID) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID));
     }
 
-    public void navigateToRegularRoom(@NonNull NavController nc) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment());
+    public void navigateToRegularRoom(@NonNull NavController nc, int roomID) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment(roomID));
     }
 }

@@ -6,6 +6,7 @@ import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragment;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
+import de.pcps.jamtugether.content.room.users.MusicianViewViewModel;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
 import de.pcps.jamtugether.content.welcome.WelcomeFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
@@ -45,6 +46,10 @@ public class AppInjector {
 
     public static void inject(@NonNull JoinRoomFragment joinRoomFragment) {
         appComponent.inject(joinRoomFragment);
+    }
+
+    public static void inject(@NonNull MusicianViewViewModel musicianViewViewModel) {
+        appComponent.inject(musicianViewViewModel);
     }
 }
 

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import de.pcps.jamtugether.R;
 
 public enum Instrument {
-    FLUTE(R.string.instrument_flute, "flute"),
-    DRUMS(R.string.instrument_drums,"drums"),
-    SHAKER(R.string.instrument_shaker,"shaker");
+    FLUTE(R.string.instrument_flute, "flute", R.string.play_flute_help),
+    DRUMS(R.string.instrument_drums,"drums", R.string.play_drums_help),
+    SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
 
 
     @StringRes
@@ -18,9 +18,13 @@ public enum Instrument {
     @NonNull
     private final String preferenceValue;
 
-    Instrument(@StringRes int name, @NonNull String preferenceValue) {
+    @StringRes
+    private final int helpMessage;
+
+    Instrument(@StringRes int name, @NonNull String preferenceValue, @StringRes int helpMessage) {
         this.name = name;
         this.preferenceValue = preferenceValue;
+        this.helpMessage = helpMessage;
     }
 
     @StringRes
@@ -31,6 +35,11 @@ public enum Instrument {
     @NonNull
     public String getPreferenceValue() {
         return preferenceValue;
+    }
+
+    @StringRes
+    public int getHelpMessage() {
+        return helpMessage;
     }
 
     @NonNull

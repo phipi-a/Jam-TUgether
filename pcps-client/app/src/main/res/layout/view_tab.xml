@@ -16,9 +16,11 @@
         android:fontFamily="sans-serif-medium"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage" />
 
 </de.pcps.jamtugether.base.views.JamTabView>

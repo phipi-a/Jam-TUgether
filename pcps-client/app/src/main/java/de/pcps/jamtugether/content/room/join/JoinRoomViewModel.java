@@ -17,6 +17,8 @@ public class JoinRoomViewModel extends AndroidViewModel {
     private final MutableLiveData<String> roomInputError = new MutableLiveData<>(null);
     private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
 
+    private int roomID;
+
     public JoinRoomViewModel(@NonNull Application application) {
         super(application);
     }
@@ -25,15 +27,14 @@ public class JoinRoomViewModel extends AndroidViewModel {
         Context context = getApplication().getApplicationContext();
 
         boolean roomError = false;
-        int roomId = 0;
 
         if(roomIdString.isEmpty()) {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
             roomError = true;
         } else {
-            roomId = Integer.parseInt(roomIdString);
+            roomID = Integer.parseInt(roomIdString);
 
-            if(!roomExists(roomId)) {
+            if(!roomExists(roomID)) {
                 roomInputError.setValue(context.getString(R.string.room_doesnt_exit));
                 roomError = true;
             }
@@ -53,7 +54,7 @@ public class JoinRoomViewModel extends AndroidViewModel {
             return;
         }
 
-        if(passwordCorrect(roomId, password)) {
+        if(passwordCorrect(roomID, password)) {
             navigateToRegularRoom.setValue(true);
         }
     }
@@ -66,6 +67,10 @@ public class JoinRoomViewModel extends AndroidViewModel {
     private boolean passwordCorrect(int roomId, @NonNull String password) {
         // todo
         return true;
+    }
+
+    public int getRoomID() {
+        return roomID;
     }
 
     public void onNavigatedToRegularRoom() {

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.regular;
+package de.pcps.jamtugether.content.room.users.admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,18 +12,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.databinding.FragmentRegularRoomOverviewBinding;
+import de.pcps.jamtugether.databinding.FragmentAdminRoomOverviewBinding;
 
 // todo
-public class RegularRoomOverviewFragment extends Fragment {
+public class AdminRoomOverviewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
 
-    private RegularRoomOverviewViewModel viewModel;
+    private AdminRoomOverviewViewModel viewModel;
 
     @NonNull
-    public static RegularRoomOverviewFragment newInstance(int roomID) {
-        RegularRoomOverviewFragment fragment = new RegularRoomOverviewFragment();
+    public static AdminRoomOverviewFragment newInstance(int roomID) {
+        AdminRoomOverviewFragment fragment = new AdminRoomOverviewFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
         fragment.setArguments(args);
@@ -35,15 +35,15 @@ public class RegularRoomOverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            RegularRoomOverviewViewModel.Factory viewModelFactory = new RegularRoomOverviewViewModel.Factory(requireActivity().getApplication(), roomID);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(RegularRoomOverviewViewModel.class);
+            AdminRoomOverviewViewModel.Factory viewModelFactory = new AdminRoomOverviewViewModel.Factory(requireActivity().getApplication(), roomID);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(AdminRoomOverviewViewModel.class);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentRegularRoomOverviewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_regular_room_overview, container, false);
+        FragmentAdminRoomOverviewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_admin_room_overview, container, false);
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }
