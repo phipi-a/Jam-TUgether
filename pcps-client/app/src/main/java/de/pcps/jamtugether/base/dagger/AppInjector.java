@@ -6,7 +6,6 @@ import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragment;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragment;
-import de.pcps.jamtugether.content.settings.SettingsFragment;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
 import de.pcps.jamtugether.content.welcome.WelcomeFragment;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
