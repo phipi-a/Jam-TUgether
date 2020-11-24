@@ -25,13 +25,13 @@ app.post('/signup', async function (req, res) {
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
     const newRoom = { room: req.body.room, password: hashedPassword }
-    if (rooms.includes(newRoom)) {
+    if (rooms.map(x => x.room).includes(newRoom.room)) {
       return res.send('Room already exists!')
     }
     rooms.push(newRoom)
     /* just for debugging */
     console.log(newRoom)
-    res.redirect('/room')
+    res.redirect('/room' + '#' + newRoom.room)
   } catch {
     res.status(500).send()
   }
