@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.content.welcome.instrument.Instrument;
+import de.pcps.jamtugether.content.instrument.Instrument;
 
 /**
- * key values pairs that are saved in a local file
+ * key value pairs that are saved in a local file
  */
 
 @Singleton

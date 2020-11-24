@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.welcome.instrument;
+package de.pcps.jamtugether.content.instrument;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.databinding.ViewInstrumentBinding;
+import de.pcps.jamtugether.databinding.ViewInstrumentListItemBinding;
 
 public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentListAdapter.ViewHolder> {
 
@@ -35,9 +35,9 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull
-        private final ViewInstrumentBinding binding;
+        private final ViewInstrumentListItemBinding binding;
 
-        ViewHolder(@NonNull ViewInstrumentBinding binding) {
+        ViewHolder(@NonNull ViewInstrumentListItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -51,7 +51,7 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
         @NonNull
         static ViewHolder from(@NonNull ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            return new ViewHolder(DataBindingUtil.inflate(inflater, R.layout.view_instrument, parent, false));
+            return new ViewHolder(DataBindingUtil.inflate(inflater, R.layout.view_instrument_list_item, parent, false));
         }
     }
 }

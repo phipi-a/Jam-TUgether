@@ -19,8 +19,8 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.base.dagger.AppInjector;
 import de.pcps.jamtugether.base.navigation.NavigationManager;
-import de.pcps.jamtugether.content.welcome.instrument.Instrument;
-import de.pcps.jamtugether.content.welcome.instrument.InstrumentListAdapter;
+import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.content.instrument.InstrumentListAdapter;
 import de.pcps.jamtugether.databinding.FragmentWelcomeBinding;
 
 public class WelcomeFragment extends Fragment {

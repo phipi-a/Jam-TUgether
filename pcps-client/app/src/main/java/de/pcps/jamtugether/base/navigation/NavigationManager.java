@@ -10,6 +10,7 @@ import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
+import timber.log.Timber;
 
 @Singleton
 public class NavigationManager {

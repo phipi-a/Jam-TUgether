@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.base.dagger.AppInjector;
-import de.pcps.jamtugether.content.welcome.instrument.Instrument;
+import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class WelcomeViewModel extends AndroidViewModel implements Instrument.ClickListener {
