@@ -2,54 +2,62 @@
  * Module dependencies.
  */
 
-const express = require("express");
-const session = require('express-session');
-const bodyParser = require("body-parser");
+const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
+const bcrypt = require('bcrypt')
 
-const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+const app = express()
+app.use(bodyParser.urlencoded({ extended: true }))
 
-var rooms = []
+const rooms = []
 
-app.get("/signup", function(req, res){
-    res.sendFile(__dirname + "/signup.html");
-});
+app.get('/signup', function (req, res) {
+  const htmlPath = __dirname + '' + '/signup.html'
+  res.sendFile(path.join(htmlPath))
+})
 
-app.post("/signup", function(req, res){
-    
-    var newRoom = { room: req.body.room, password: req.body.password};
-    console.log(newRoom);
-
-    if(rooms.includes(newRoom)){
-        res.send("Room already exists!");
-    } else{
-        rooms.push(newRoom);
-        res.send("Signed up!")
+app.post('/signup', async function (req, res) {
+  try {
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+    const newRoom = { room: req.body.room, password: hashedPassword }
+    if (rooms.includes(newRoom)) {
+      return res.send('Room already exists!')
     }
-});
+    rooms.push(newRoom)
+    // just for debugging
+    console.log(newRoom)
+    res.status(201).send()
+  } catch {
+    res.status(500).send()
+  }
+})
 
-app.get("/login", function(req, res){
-    res.sendFile(__dirname + "/login.html");
-});
+app.get('/login', function (req, res) {
+  const htmlPath = __dirname + '' + '/login.html'
+  res.sendFile(htmlPath)
+})
 
-app.post("/login", function(req, res){
-    var newRoom = { room: req.body.room, password: req.body.password};
-    console.log(rooms);
-    console.log(newRoom);
-    var compare = rooms.filter(function(room){
-                    if(room.room == newRoom.room && room.password == newRoom.password){
-                        return true;
-                    }
-                });
-
-    if(compare.length > 0){
-        res.send("Logged In!")
-    } else{
-        res.send("Failed to log in!")
+app.post('/login', async function (req, res) {
+  const newRoom = rooms.find(newRoom => newRoom.room === req.body.room)
+  console.log(rooms)
+  console.log(newRoom)
+  if (newRoom == null) {
+    return res.status(400).send('Cannot find room')
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, newRoom.password)) {
+      res.send('Success login!')
+    } else {
+      res.send('Wrong password!')
     }
-});
+  } catch {
+    res.status(500).send()
+  }
+})
 
-app.listen(3000, function(){
-    console.log("Server started on port 3000");
+app.listen(3000, function () {
+  console.log('Server started on port 3000')
 })
 // config
