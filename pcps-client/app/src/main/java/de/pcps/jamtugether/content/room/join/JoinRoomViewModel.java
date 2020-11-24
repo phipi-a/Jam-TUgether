@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import de.pcps.jamtugether.R;
-import timber.log.Timber;
 
 public class JoinRoomViewModel extends AndroidViewModel {
 

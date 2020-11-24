@@ -12,25 +12,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import javax.inject.Inject;
-
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.dagger.AppInjector;
-import de.pcps.jamtugether.base.navigation.NavigationManager;
+import de.pcps.jamtugether.base.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
-import de.pcps.jamtugether.utils.UiUtils;
+import de.pcps.jamtugether.base.utils.UiUtils;
 
 public class CreateRoomFragment extends Fragment {
-
-    @Inject
-    NavigationManager navigationManager;
 
     private CreateRoomViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppInjector.inject(this);
         viewModel = new ViewModelProvider(this).get(CreateRoomViewModel.class);
     }
 
@@ -44,7 +37,7 @@ public class CreateRoomFragment extends Fragment {
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
-                navigationManager.navigateToAdminRoom(Navigation.findNavController(binding.getRoot()), viewModel.getRoomID());
+                NavigationUtils.navigateToAdminRoom(Navigation.findNavController(binding.getRoot()), viewModel.getRoomID());
                 UiUtils.hideKeyboard(requireActivity(), binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();
             }

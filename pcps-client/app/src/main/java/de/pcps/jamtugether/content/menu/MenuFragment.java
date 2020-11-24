@@ -12,24 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import javax.inject.Inject;
-
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.dagger.AppInjector;
-import de.pcps.jamtugether.base.navigation.NavigationManager;
+import de.pcps.jamtugether.base.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentMenuBinding;
 
 public class MenuFragment extends Fragment {
-
-    @Inject
-    NavigationManager navigationManager;
 
     private MenuViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppInjector.inject(this);
         viewModel = new ViewModelProvider(this).get(MenuViewModel.class);
     }
 
@@ -41,21 +34,21 @@ public class MenuFragment extends Fragment {
 
         viewModel.getNavigateToSettings().observe(getViewLifecycleOwner(), navigateToSettings -> {
             if(navigateToSettings) {
-                navigationManager.navigateToSettings(Navigation.findNavController(binding.getRoot()));
+                NavigationUtils.navigateToSettings(Navigation.findNavController(binding.getRoot()));
                 viewModel.onNavigatedToSettings();
             }
         });
 
         viewModel.getNavigateToCreateRoom().observe(getViewLifecycleOwner(), navigateToCreateRoom -> {
             if(navigateToCreateRoom) {
-                navigationManager.navigateToCreateRoom(Navigation.findNavController(binding.getRoot()));
+                NavigationUtils.navigateToCreateRoom(Navigation.findNavController(binding.getRoot()));
                 viewModel.onNavigatedToCreateRoom();
             }
         });
 
         viewModel.getNavigateToJoinRoom().observe(getViewLifecycleOwner(), navigateToJoinRoom -> {
             if(navigateToJoinRoom) {
-                navigationManager.navigateToJoinRoom(Navigation.findNavController(binding.getRoot()));
+                NavigationUtils.navigateToJoinRoom(Navigation.findNavController(binding.getRoot()));
                 viewModel.onNavigatedToJoinRoom();
             }
         });

@@ -20,6 +20,7 @@ public class JamTabLayout extends TabLayout {
         super(context, attrs);
     }
 
+    @NonNull
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
