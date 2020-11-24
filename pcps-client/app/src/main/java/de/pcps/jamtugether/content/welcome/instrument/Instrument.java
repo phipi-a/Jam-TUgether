@@ -11,6 +11,7 @@ public enum Instrument {
     DRUMS(R.string.instrument_drums,"drums"),
     SHAKER(R.string.instrument_shaker,"shaker");
 
+
     @StringRes
     private final int name;
 

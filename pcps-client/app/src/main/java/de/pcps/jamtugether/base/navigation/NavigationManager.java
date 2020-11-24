@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.content.MusicianView.MusicianViewFragmentDirections;
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;

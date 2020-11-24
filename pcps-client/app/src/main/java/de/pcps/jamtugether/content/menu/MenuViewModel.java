@@ -46,6 +46,7 @@ public class MenuViewModel extends AndroidViewModel {
         return navigateToSettings;
     }
 
+
     @NonNull
     public LiveData<Boolean> getNavigateToCreateRoom() {
         return navigateToCreateRoom;
