@@ -23,16 +23,16 @@ public class InstrumentSpinnerAdapter extends ArrayAdapter<Instrument> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getInstrumentView(position, convertView, parent);
+        return getInstrumentView(position, convertView, parent, View.TEXT_ALIGNMENT_TEXT_END);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getInstrumentView(position, convertView, parent);
+        return getInstrumentView(position, convertView, parent, View.TEXT_ALIGNMENT_TEXT_START);
     }
 
     @NonNull
-    private View getInstrumentView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    private View getInstrumentView(int position, @Nullable View convertView, @NonNull ViewGroup parent, int textAlignment) {
         if(convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.view_instrument_spinner_item, parent, false);
@@ -40,6 +40,7 @@ public class InstrumentSpinnerAdapter extends ArrayAdapter<Instrument> {
 
         Instrument instrument = getItem(position);
         TextView instrumentTextView = convertView.findViewById(R.id.instrument_text_view);
+        instrumentTextView.setTextAlignment(textAlignment);
         instrumentTextView.setText(instrument.getName());
 
         return convertView;

@@ -16,6 +16,8 @@ public class CreateRoomViewModel extends AndroidViewModel {
 
     private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
 
+    private int roomID;
+
     public CreateRoomViewModel(@NonNull Application application) {
         super(application);
     }
@@ -33,7 +35,7 @@ public class CreateRoomViewModel extends AndroidViewModel {
         }
         passwordInputError.setValue(null);
 
-        createRoom(password);
+        roomID = createRoom(password);
         navigateToAdminRoom.setValue(true);
     }
 
@@ -42,8 +44,13 @@ public class CreateRoomViewModel extends AndroidViewModel {
         return true;
     }
 
-    private void createRoom(@NonNull String password) {
+    private int createRoom(@NonNull String password) {
         // todo
+        return 1;
+    }
+
+    public int getRoomID() {
+        return roomID;
     }
 
     public void onNavigatedToAdminRoom() {

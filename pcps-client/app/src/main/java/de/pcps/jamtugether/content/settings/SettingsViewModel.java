@@ -15,7 +15,7 @@ import de.pcps.jamtugether.base.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class SettingsViewModel extends AndroidViewModel {
+public class SettingsViewModel extends AndroidViewModel implements Instrument.ClickListener {
 
     @Inject
     Preferences preferences;
@@ -25,8 +25,9 @@ public class SettingsViewModel extends AndroidViewModel {
         AppInjector.inject(this);
     }
 
-    public void onMainInstrumentSelected(@NonNull Instrument mainInstrument) {
-        preferences.setMainInstrument(mainInstrument);
+    @Override
+    public void onInstrumentClicked(@NonNull Instrument instrument) {
+        preferences.setMainInstrument(instrument);
     }
 
     @NonNull

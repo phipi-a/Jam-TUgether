@@ -10,6 +10,6 @@
     android:paddingEnd="10dp"
     android:paddingBottom="8dp"
     android:textColor="@color/primaryTextColor"
-    android:textSize="17dp"
+    android:textSize="16dp"
     tools:ignore="SpUsage" />
 
