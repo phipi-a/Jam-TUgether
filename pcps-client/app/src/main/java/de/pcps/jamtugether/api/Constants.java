@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.communication;
+package de.pcps.jamtugether.api;
 
 public class Constants {
     

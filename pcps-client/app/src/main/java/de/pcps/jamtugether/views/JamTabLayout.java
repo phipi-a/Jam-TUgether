@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.views;
+package de.pcps.jamtugether.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,17 +16,17 @@ public class JamTabLayout extends TabLayout {
 
     private ViewPager2 viewPager;
 
-    public JamTabLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
     @NonNull
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             JamTabLayout tabLayout = JamTabLayout.this;
             for (int currentPosition = 0; currentPosition < tabLayout.getTabCount(); currentPosition++) {
-                JamTabView tabView = (JamTabView) tabLayout.getTabAt(currentPosition).getCustomView();
+                Tab tab = tabLayout.getTabAt(currentPosition);
+                if(tab == null || tab.getCustomView() == null) {
+                    continue;
+                }
+                JamTabView tabView = (JamTabView) tab.getCustomView();
                 boolean tabViewIsSelected = position == currentPosition;
                 if (tabViewIsSelected) {
                     tabView.activate();
@@ -36,6 +36,10 @@ public class JamTabLayout extends TabLayout {
             }
         }
     };
+
+    public JamTabLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     public void setup(@NonNull ViewPager2 viewPager, @NonNull TabLayoutAdapter adapter) {
         this.viewPager = viewPager;
@@ -55,7 +59,7 @@ public class JamTabLayout extends TabLayout {
     }
 
     public void unregisterOnPageChangeCallback() {
-        if (viewPager != null && onPageChangeCallback != null) {
+        if (viewPager != null) {
             viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
         }
     }

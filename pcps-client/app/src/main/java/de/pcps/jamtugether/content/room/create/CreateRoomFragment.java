@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.utils.NavigationUtils;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
-import de.pcps.jamtugether.base.utils.UiUtils;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class CreateRoomFragment extends Fragment {
 
@@ -30,14 +29,14 @@ public class CreateRoomFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentCreateRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_room, container, false);
+        FragmentCreateRoomBinding binding = FragmentCreateRoomBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
-                NavigationUtils.navigateToAdminRoom(Navigation.findNavController(binding.getRoot()), viewModel.getRoomID());
+                NavigationUtils.navigateToAdminRoom(NavHostFragment.findNavController(this), viewModel.getRoomID());
                 UiUtils.hideKeyboard(requireActivity(), binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();
             }

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.dagger;
+package de.pcps.jamtugether.dagger;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
-import de.pcps.jamtugether.base.communication.Constants;
-import de.pcps.jamtugether.base.communication.api.MusicDataService;
-import de.pcps.jamtugether.base.communication.api.RoomService;
+import de.pcps.jamtugether.api.Constants;
+import de.pcps.jamtugether.api.services.MusicDataService;
+import de.pcps.jamtugether.api.services.RoomService;
 import de.pcps.jamtugether.storage.Preferences;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;

@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.utils.NavigationUtils;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentJoinRoomBinding;
-import de.pcps.jamtugether.base.utils.UiUtils;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class JoinRoomFragment extends Fragment {
 
@@ -30,7 +29,7 @@ public class JoinRoomFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentJoinRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_join_room, container, false);
+        FragmentJoinRoomBinding binding = FragmentJoinRoomBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
         binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());
@@ -38,7 +37,7 @@ public class JoinRoomFragment extends Fragment {
 
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if(navigateToRegularRoom) {
-                NavigationUtils.navigateToRegularRoom(Navigation.findNavController(binding.getRoot()), viewModel.getRoomID());
+                NavigationUtils.navigateToRegularRoom(NavHostFragment.findNavController(this), viewModel.getRoomID());
                 UiUtils.hideKeyboard(requireActivity(), binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }

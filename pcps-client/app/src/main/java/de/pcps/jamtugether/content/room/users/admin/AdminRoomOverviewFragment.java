@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentAdminRoomOverviewBinding;
 
 // todo
@@ -35,7 +33,7 @@ public class AdminRoomOverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            AdminRoomOverviewViewModel.Factory viewModelFactory = new AdminRoomOverviewViewModel.Factory(requireActivity().getApplication(), roomID);
+            AdminRoomOverviewViewModel.Factory viewModelFactory = new AdminRoomOverviewViewModel.Factory(roomID);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(AdminRoomOverviewViewModel.class);
         }
     }
@@ -43,7 +41,7 @@ public class AdminRoomOverviewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentAdminRoomOverviewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_admin_room_overview, container, false);
+        FragmentAdminRoomOverviewBinding binding = FragmentAdminRoomOverviewBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }

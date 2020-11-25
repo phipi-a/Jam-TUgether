@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!--Passwort Eingabe-->
-            <de.pcps.jamtugether.base.views.JamTextInputLayout
+            <de.pcps.jamtugether.views.JamTextInputLayout
                 android:id="@+id/room_password_text_input_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                     android:inputType="textPassword"
                     android:textColor="@color/primaryTextColor"
                     android:textCursorDrawable="@drawable/edit_text_cursor" />
-            </de.pcps.jamtugether.base.views.JamTextInputLayout>
+            </de.pcps.jamtugether.views.JamTextInputLayout>
 
             <!-- Create Room Button-->
             <androidx.appcompat.widget.AppCompatButton

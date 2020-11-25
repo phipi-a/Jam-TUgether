@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.views;
+package de.pcps.jamtugether.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
