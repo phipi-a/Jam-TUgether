@@ -1,5 +1,7 @@
 package de.pcps.jamtugether.content.room.join;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +9,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.utils.NavigationUtils;
+import de.pcps.jamtugether.MainActivity;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentJoinRoomBinding;
-import de.pcps.jamtugether.base.utils.UiUtils;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class JoinRoomFragment extends Fragment {
+
+    private Activity activity;
 
     private JoinRoomViewModel viewModel;
 
@@ -30,7 +33,7 @@ public class JoinRoomFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentJoinRoomBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_join_room, container, false);
+        FragmentJoinRoomBinding binding = FragmentJoinRoomBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
         binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());
@@ -38,12 +41,18 @@ public class JoinRoomFragment extends Fragment {
 
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if(navigateToRegularRoom) {
-                NavigationUtils.navigateToRegularRoom(Navigation.findNavController(binding.getRoot()), viewModel.getRoomID());
-                UiUtils.hideKeyboard(requireActivity(), binding.getRoot());
+                NavigationUtils.navigateToRegularRoom(NavHostFragment.findNavController(this), viewModel.getRoomID());
+                UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (MainActivity) context;
     }
 }

@@ -50,7 +50,7 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instrument.FLUTE.getPreferenceValue());
+        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instrument.FALLBACK.getPreferenceValue());
         return Instrument.from(preferenceValue);
     }
 

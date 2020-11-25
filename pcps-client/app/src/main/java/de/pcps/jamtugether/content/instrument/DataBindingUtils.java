@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class DataBindingUtils {
 
     @BindingAdapter(value = {"currentInstrument", "instrumentList", "clickListener"})
-    public static void setInstruments(Spinner spinner, Instrument currentInstrument, List<Instrument> instrumentList, Instrument.ClickListener clickListener) {
+    public static void setInstruments(@NonNull Spinner spinner, @NonNull Instrument currentInstrument, @NonNull List<Instrument> instrumentList, @NonNull Instrument.ClickListener clickListener) {
         InstrumentSpinnerAdapter adapter = new InstrumentSpinnerAdapter(spinner.getContext(), instrumentList);
         spinner.setAdapter(adapter);
         spinner.setSelection(currentInstrument.ordinal());

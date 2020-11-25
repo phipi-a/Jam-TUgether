@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -27,7 +25,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
+        FragmentSettingsBinding binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }

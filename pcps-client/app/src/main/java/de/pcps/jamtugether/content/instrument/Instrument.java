@@ -14,7 +14,10 @@ public enum Instrument {
     SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
 
     @NonNull
-    private final static HashMap<String, Instrument> preferenceMap = new HashMap<>();
+    public static final Instrument FALLBACK = Instrument.FLUTE;
+
+    @NonNull
+    private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();
 
     static {
         for(Instrument instrument : Instrument.values()) {
@@ -54,10 +57,8 @@ public enum Instrument {
 
     @NonNull
     public static Instrument from(@NonNull String preferenceValue) {
-        if(preferenceMap.containsKey(preferenceValue)) {
-            return preferenceMap.get(preferenceValue);
-        }
-        return FLUTE;
+        Instrument instrument = preferenceMap.get(preferenceValue);
+        return instrument != null ? instrument : FALLBACK;
     }
 
     @NonNull

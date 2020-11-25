@@ -10,13 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
-import de.pcps.jamtugether.base.utils.UiUtils;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class MusicianViewFragment extends Fragment {
 
@@ -38,7 +37,7 @@ public class MusicianViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(requireActivity().getApplication(), roomID);
+            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }
     }
@@ -46,7 +45,7 @@ public class MusicianViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentMusicianViewBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_musician_view, container, false);
+        FragmentMusicianViewBinding binding = FragmentMusicianViewBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {

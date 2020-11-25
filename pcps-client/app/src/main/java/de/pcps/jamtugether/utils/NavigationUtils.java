@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.utils;
+package de.pcps.jamtugether.utils;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;

@@ -1,27 +1,24 @@
 package de.pcps.jamtugether.content.settings;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
 
-import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
 
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.base.dagger.AppInjector;
+import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class SettingsViewModel extends AndroidViewModel implements Instrument.ClickListener {
+public class SettingsViewModel extends ViewModel implements Instrument.ClickListener {
 
     @Inject
     Preferences preferences;
 
-    public SettingsViewModel(@NonNull Application application) {
-        super(application);
+    public SettingsViewModel() {
         AppInjector.inject(this);
     }
 

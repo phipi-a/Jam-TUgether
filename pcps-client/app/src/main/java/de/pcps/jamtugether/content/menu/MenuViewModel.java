@@ -1,13 +1,11 @@
 package de.pcps.jamtugether.content.menu;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-public class MenuViewModel extends AndroidViewModel {
+public class MenuViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToSettings = new MutableLiveData<>(false);
@@ -17,10 +15,6 @@ public class MenuViewModel extends AndroidViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToJoinRoom = new MutableLiveData<>(false);
-
-    public MenuViewModel(@NonNull Application application) {
-        super(application);
-    }
 
     public void onSettingsButtonClicked() {
         navigateToSettings.setValue(true);

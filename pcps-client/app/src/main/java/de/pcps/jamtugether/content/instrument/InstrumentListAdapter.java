@@ -4,11 +4,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.ViewInstrumentListItemBinding;
 
 public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentListAdapter.ViewHolder> {
@@ -51,7 +49,7 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
         @NonNull
         static ViewHolder from(@NonNull ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            return new ViewHolder(DataBindingUtil.inflate(inflater, R.layout.view_instrument_list_item, parent, false));
+            return new ViewHolder(ViewInstrumentListItemBinding.inflate(inflater, parent, false));
         }
     }
 }

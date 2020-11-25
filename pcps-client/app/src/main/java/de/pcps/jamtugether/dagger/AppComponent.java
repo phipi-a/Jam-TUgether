@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.base.dagger;
+package de.pcps.jamtugether.dagger;
 
 import javax.inject.Singleton;
 

@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.views.JamTabLayout;
+import de.pcps.jamtugether.views.JamTabLayout;
 import de.pcps.jamtugether.databinding.FragmentTabLayoutBinding;
 
 public abstract class TabLayoutFragment extends Fragment {
@@ -21,7 +19,7 @@ public abstract class TabLayoutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentTabLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tab_layout, container, false);
+        FragmentTabLayoutBinding binding = FragmentTabLayoutBinding.inflate(inflater, container, false);
         tabLayout = binding.tabLayout;
         tabLayout.setup(binding.viewPager, getTabLayoutAdapter());
 

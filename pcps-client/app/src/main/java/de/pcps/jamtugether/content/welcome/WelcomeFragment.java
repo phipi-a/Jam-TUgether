@@ -7,16 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import java.util.Arrays;
-
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.base.utils.NavigationUtils;
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.content.instrument.InstrumentListAdapter;
 import de.pcps.jamtugether.databinding.FragmentWelcomeBinding;
 
@@ -33,15 +28,15 @@ public class WelcomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentWelcomeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_welcome, container, false);
+        FragmentWelcomeBinding binding = FragmentWelcomeBinding.inflate(inflater, container, false);
 
         InstrumentListAdapter adapter = new InstrumentListAdapter(viewModel);
         binding.instrumentsRecyclerView.setAdapter(adapter);
-        adapter.submitList(Arrays.asList(Instrument.values()));
+        adapter.submitList(viewModel.getInstruments());
 
         viewModel.getNavigateToMenu().observe(getViewLifecycleOwner(), navigateToMenu -> {
             if(navigateToMenu) {
-                NavigationUtils.navigateToMenu(Navigation.findNavController(binding.getRoot()));
+                NavigationUtils.navigateToMenu(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToMenu();
             }
         });
