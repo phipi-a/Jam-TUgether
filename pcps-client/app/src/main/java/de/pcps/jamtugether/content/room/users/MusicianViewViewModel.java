@@ -39,9 +39,8 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
     public MusicianViewViewModel(int roomID) {
-        this.roomID = roomID;
-
         AppInjector.inject(this);
+        this.roomID = roomID;
 
         Instrument mainInstrument = preferences.getMainInstrument();
         selectedInstrument = new MutableLiveData<>(mainInstrument);
@@ -56,6 +55,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
 
     private void updateHelpDialogData(@NonNull Instrument instrument) {
         Context context = application.getApplicationContext();
+
         String instrumentName = context.getString(instrument.getName());
         helpDialogTitle = context.getString(R.string.play_instrument, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());

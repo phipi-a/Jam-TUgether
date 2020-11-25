@@ -26,6 +26,7 @@ public class InstrumentSpinnerAdapter extends ArrayAdapter<Instrument> {
         return getInstrumentView(position, convertView, parent, View.TEXT_ALIGNMENT_TEXT_END);
     }
 
+    @NonNull
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return getInstrumentView(position, convertView, parent, View.TEXT_ALIGNMENT_TEXT_START);

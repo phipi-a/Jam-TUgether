@@ -13,6 +13,7 @@ public enum Instrument {
     DRUMS(R.string.instrument_drums,"drums", R.string.play_drums_help),
     SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
 
+    @NonNull
     public static final Instrument FALLBACK = Instrument.FLUTE;
 
     @NonNull
