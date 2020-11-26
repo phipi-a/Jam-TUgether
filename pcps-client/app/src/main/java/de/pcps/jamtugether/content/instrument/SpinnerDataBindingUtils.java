@@ -9,7 +9,7 @@ import androidx.databinding.BindingAdapter;
 
 import java.util.List;
 
-public class DataBindingUtils {
+public class SpinnerDataBindingUtils {
 
     @BindingAdapter(value = {"currentInstrument", "instrumentList", "clickListener"})
     public static void setInstruments(@NonNull Spinner spinner, @NonNull Instrument currentInstrument, @NonNull List<Instrument> instrumentList, @NonNull Instrument.ClickListener clickListener) {

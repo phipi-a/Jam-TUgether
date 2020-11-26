@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -52,6 +51,6 @@ public class CreateRoomFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        activity = (MainActivity) context;
+        activity = (Activity) context;
     }
 }

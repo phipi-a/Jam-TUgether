@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Jam TUgether</string>
 
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
     <string name="choose_main_instrument">Wähle dein Hauptinstrument</string>
     <string name="main_instrument_info">Dieses Instrument wird für dich bei Betreten eines Raumes automatisch ausgewählt. Du kannst das in den Einstellungen jederzeit ändern.</string>
     <string name="join_room_info">Raum betreten</string>
@@ -33,4 +36,7 @@
     <string name="play_shaker_help">Schüttel dein Handy.</string>
 
     <string name="room_format">Raum %d</string>
+
+    <string name="leave_room">Raum verlassen</string>
+    <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
 </resources>
