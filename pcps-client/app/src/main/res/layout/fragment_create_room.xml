@@ -19,24 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--Überschrift-->
             <TextView
                 android:id="@+id/app_name_text_view"
+                style="@style/JamTugetherTitleStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="@dimen/title_margin_top"
                 android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
                 android:text="@string/app_name"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--Passwort Eingabe-->
             <de.pcps.jamtugether.views.JamTextInputLayout
                 android:id="@+id/room_password_text_input_layout"
                 android:layout_width="0dp"
@@ -55,14 +50,12 @@
                     android:id="@+id/room_password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
                     android:importantForAutofill="no"
                     android:inputType="textPassword"
-                    android:textColor="@color/primaryTextColor"
-                    android:textCursorDrawable="@drawable/edit_text_cursor" />
+                    android:textCursorDrawable="@drawable/edit_text_cursor"
+                    android:textSize="15dp" />
             </de.pcps.jamtugether.views.JamTextInputLayout>
 
-            <!-- Create Room Button-->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/join_room_button"
                 android:layout_width="0dp"
@@ -71,12 +64,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="@dimen/layout_margin_bottom"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
                 android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"
                 android:text="@string/create_room"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
