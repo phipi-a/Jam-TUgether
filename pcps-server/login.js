@@ -1,12 +1,15 @@
 /**
  * Module dependencies.
  */
+/* Load token config from dotenv */
+require('dotenv').config()
 
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const bcrypt = require('bcrypt')
-const fnRoom = require('./room.js')
+const { createToken, verify } = require('./auth.js')
+const { receiveTrack, sendTracks } = require('./room.js')
 
 const app = express()
 
@@ -29,9 +32,9 @@ app.post('/signup', async function (req, res) {
       return res.send('Room already exists!')
     }
     rooms.push(newRoom)
-    /* just for debugging */
-    console.log(newRoom)
-    res.redirect('/room' + '#' + newRoom.room)
+    const token = createToken(newRoom)
+    res.json(token)
+    res.redirect('/room')
   } catch {
     res.status(500).send()
   }
@@ -41,14 +44,9 @@ app.get('/login', function (req, res) {
   const htmlPath = __dirname + '' + '/login.html'
   res.sendFile(htmlPath)
 })
-app.get('/room', function (req, res) {
-  res.sendFile(fnRoom.startRoom())
-})
 
 app.post('/login', async function (req, res) {
   const newRoom = rooms.find(newRoom => newRoom.room === req.body.room)
-  console.log(rooms)
-  console.log(newRoom)
   /* Checks if newRoom is valid and if valid compares it with dummy database (timing attacks resistant) */
   if (newRoom == null) {
     return res.redirect('/login')
@@ -63,6 +61,13 @@ app.post('/login', async function (req, res) {
   } catch {
     res.status(500).send()
   }
+})
+
+app.get('/room', verify, function (req, res) {
+  sendTracks(res)
+})
+app.post('/room', verify, function (req, res) {
+  receiveTrack(req, res)
 })
 
 app.listen(3000, function () {

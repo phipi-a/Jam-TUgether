@@ -1,0 +1,15 @@
+### 
+POST http://localhost:3000/room  
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb29tIjoiMSIsInBhc3N3b3JkIjoiJDJiJDEwJEUxa0UuWm55aVBrT3VFQWNBUlE0Lk9BNHFIU2V0Q21la0lpMmt4WGVNaEY5SjluQ3lXQzZLIiwiaWF0IjoxNjA2Mzk0OTQ2LCJleHAiOjE2MDYzOTY3NDZ9.SHX0uJZpMXhZNZO3etQeC0h5dK2hkx7La-CwVmwm75s
+
+{ 
+  "instrument": "1", 
+  "pitch": "1", 
+  "startTime": "143s"
+}
+
+###
+
+GET http://localhost:3000/room
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb29tIjoiMSIsInBhc3N3b3JkIjoiJDJiJDEwJEUxa0UuWm55aVBrT3VFQWNBUlE0Lk9BNHFIU2V0Q21la0lpMmt4WGVNaEY5SjluQ3lXQzZLIiwiaWF0IjoxNjA2Mzk0OTQ2LCJleHAiOjE2MDYzOTY3NDZ9.SHX0uJZpMXhZNZO3etQeC0h5dK2hkx7La-CwVmwm75s

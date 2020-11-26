@@ -1,7 +1,12 @@
-const path = require('path')
+const tracks = []
 
-function startRoom () {
-  const htmlPath = __dirname + '' + '/room.html'
-  return path.join(htmlPath)
+exports.receiveTrack = function (req, res) {
+  const track = { instrument: req.instrument, pitch: req.pitch, startTime: req.startTime }
+  tracks.push(track)
+  console.log(req.body.instrument)
+  res.send('success!')
 }
-module.exports = { startRoom }
+
+exports.sendTracks = function (res) {
+  res.json(tracks)
+}
