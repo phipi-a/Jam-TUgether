@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.pcps.jamtugether.R;
+
 public class UiUtils {
 
     public static void hideKeyboard(@NonNull Activity activity, @NonNull View view) {
@@ -21,7 +23,7 @@ public class UiUtils {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
                 })
                 .create();
     }

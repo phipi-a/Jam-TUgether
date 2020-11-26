@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Jam TUgether</string>
+    <string name="app_name" translatable="false">Jam TUgether</string>
+
+    <string name="ok" translatable="false">OK</string>
 
     <string name="choose_main_instrument">Choose your main instrument</string>
     <string name="main_instrument_info">This instrument will be automatically chosen for you every time you enter a room. You can always change it in the settings.</string>
@@ -27,7 +29,7 @@
     <string name="password_format_incorrect">The format of this password is incorrect.</string>
     <string name="password_incorrect">This password is incorrect.</string>
 
-    <string name="play_instrument">Playing %s</string>
+    <string name="play_instrument_format">Playing %s</string>
     <string name="play_flute_help">Blow into you microphone and control the pitch level with the regulator.</string>
     <string name="play_shaker_help">Shake your phone.</string>
     <string name="play_drums_help">Click on the elements to create their respective sounds.</string>

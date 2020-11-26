@@ -57,7 +57,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         Context context = application.getApplicationContext();
 
         String instrumentName = context.getString(instrument.getName());
-        helpDialogTitle = context.getString(R.string.play_instrument, instrumentName);
+        helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());
     }
 

@@ -27,7 +27,7 @@
     <string name="password_format_incorrect">Das Format dieses Passwortes ist falsch.</string>
     <string name="password_incorrect">Dieses Passwort ist falsch.</string>
 
-    <string name="play_instrument">%s spielen</string>
+    <string name="play_instrument_format">%s spielen</string>
     <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
     <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
     <string name="play_shaker_help">Schüttel dein Handy.</string>
