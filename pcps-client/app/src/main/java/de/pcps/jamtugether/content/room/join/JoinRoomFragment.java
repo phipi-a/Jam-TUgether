@@ -53,6 +53,6 @@ public class JoinRoomFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        activity = (MainActivity) context;
+        activity = (Activity) context;
     }
 }

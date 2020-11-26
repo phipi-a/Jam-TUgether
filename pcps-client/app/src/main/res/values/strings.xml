@@ -2,6 +2,8 @@
     <string name="app_name" translatable="false">Jam TUgether</string>
 
     <string name="ok" translatable="false">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="choose_main_instrument">Choose your main instrument</string>
     <string name="main_instrument_info">This instrument will be automatically chosen for you every time you enter a room. You can always change it in the settings.</string>
@@ -35,4 +37,7 @@
     <string name="play_drums_help">Click on the elements to create their respective sounds.</string>
 
     <string name="room_format">Room %d</string>
+
+    <string name="leave_room">Leave room</string>
+    <string name="leave_room_confirmation">Are you sure that you want to leave this room?</string>
 </resources>

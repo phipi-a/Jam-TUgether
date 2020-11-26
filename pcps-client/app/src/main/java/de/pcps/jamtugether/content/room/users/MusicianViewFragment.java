@@ -1,6 +1,6 @@
 package de.pcps.jamtugether.content.room.users;
 
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +21,8 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class MusicianViewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+
+    private Context context;
 
     private MusicianViewViewModel viewModel;
 
@@ -50,16 +53,21 @@ public class MusicianViewFragment extends Fragment {
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {
-                AlertDialog dialog = UiUtils.createInfoDialog(getContext(), viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
+                AlertDialog dialog = UiUtils.createInfoDialog(context, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
                 dialog.setOnShowListener(arg -> {
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
                     viewModel.onHelpDialogShown();
                 });
-
                 dialog.show();
             }
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 }
