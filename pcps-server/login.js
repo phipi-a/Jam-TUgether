@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const rooms = []
 
+//Just temporarily needed
 app.get('/signup', function (req, res) {
   const htmlPath = __dirname + '' + '/signup.html'
   res.sendFile(path.join(htmlPath))
@@ -40,6 +41,7 @@ app.post('/signup', async function (req, res) {
   }
 })
 
+//Just temporarily needed
 app.get('/login', function (req, res) {
   const htmlPath = __dirname + '' + '/login.html'
   res.sendFile(htmlPath)
@@ -55,8 +57,7 @@ app.post('/login', async function (req, res) {
     if (await bcrypt.compare(req.body.password, newRoom.password)) {
       res.redirect('/room')
     } else {
-      /* TODO error message like 'wrong password' */
-      res.redirect('/login')
+      res.status(401).send("Wrong room/password");
     }
   } catch {
     res.status(500).send()
