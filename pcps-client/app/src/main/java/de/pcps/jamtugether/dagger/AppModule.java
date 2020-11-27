@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
-import de.pcps.jamtugether.api.Constants;
-import de.pcps.jamtugether.api.services.MusicDataService;
+import de.pcps.jamtugether.api.ApiConstants;
+import de.pcps.jamtugether.api.services.SoundtrackService;
 import de.pcps.jamtugether.api.services.RoomService;
 import de.pcps.jamtugether.storage.Preferences;
 import retrofit2.Retrofit;
@@ -49,14 +49,14 @@ public class AppModule {
     public Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(ApiConstants.BASE_URL)
                 .build();
     }
 
     @Provides
     @NonNull
-    public MusicDataService provideMusicDataService(@NonNull Retrofit retrofit) {
-        return retrofit.create(MusicDataService.class);
+    public SoundtrackService provideMusicDataService(@NonNull Retrofit retrofit) {
+        return retrofit.create(SoundtrackService.class);
     }
 
     @Provides
