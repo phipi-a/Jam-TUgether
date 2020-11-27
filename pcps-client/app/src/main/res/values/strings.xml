@@ -26,10 +26,8 @@
     <string name="musician_view">Musician View</string>
 
     <string name="room_input_empty">You have to enter a room.</string>
-    <string name="room_doesnt_exit">This room does not exist.</string>
+    <string name="room_doesnt_exist">This room doesn\'t exist.</string>
     <string name="password_input_empty">You have to enter a password.</string>
-    <string name="password_format_incorrect">The format of this password is incorrect.</string>
-    <string name="password_incorrect">This password is incorrect.</string>
 
     <string name="play_instrument_format">Playing %s</string>
     <string name="play_flute_help">Blow into you microphone and control the pitch level with the regulator.</string>
@@ -42,4 +40,10 @@
     <string name="leave_room_confirmation">Are you sure that you want to leave this room?</string>
 
     <string name="error">Error</string>
+    <string name="unauthorized_access_error_message">Room or password is invalid.</string>
+    <string name="internal_server_error_title">Server Error</string>
+    <string name="internal_server_error_message">Something went wrong.</string>
+    <string name="generic_error_title">Error</string>
+    <string name="generic_error_message">Something went wrong.</string>
+
 </resources>

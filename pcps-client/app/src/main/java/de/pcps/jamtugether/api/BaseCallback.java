@@ -2,6 +2,7 @@ package de.pcps.jamtugether.api;
 
 import androidx.annotation.NonNull;
 
+import de.pcps.jamtugether.api.errors.Error;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -1,11 +1,9 @@
-package de.pcps.jamtugether.api;
+package de.pcps.jamtugether.api.errors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-import de.pcps.jamtugether.R;
-
-public class Error {
+public abstract class Error {
 
     @StringRes
     private final int title;
@@ -29,14 +27,21 @@ public class Error {
     }
 
     @NonNull
-    public static Error from(int responseCode) {
-        // todo create error from response code
-        return new Error(R.string.error, R.string.error);
+    public static Error from(int statusCode) {
+        // todo add more status codes
+        switch (statusCode) {
+            case 401:
+                return new UnauthorizedAccessError();
+            case 500:
+                return new InternalServerError();
+            default:
+                return new GenericError();
+        }
     }
 
     @NonNull
     public static Error from(Throwable throwable) {
         // todo create error from throwable
-        return new Error(R.string.error, R.string.error);
+        return new GenericError();
     }
 }

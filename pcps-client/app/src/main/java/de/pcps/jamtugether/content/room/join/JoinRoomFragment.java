@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentJoinRoomBinding;
@@ -38,6 +37,7 @@ public class JoinRoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentJoinRoomBinding binding = FragmentJoinRoomBinding.inflate(inflater, container, false);
+        binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
         binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());

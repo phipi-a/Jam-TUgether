@@ -2,6 +2,7 @@ package de.pcps.jamtugether.content.room.create;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -12,13 +13,12 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.BaseCallback;
-import de.pcps.jamtugether.api.Error;
+import de.pcps.jamtugether.api.errors.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.responses.CreateRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
 
 public class CreateRoomViewModel extends ViewModel {
-
-    private static final String PASSWORD_PATTERN = ".*"; // todo
 
     @Inject
     Application application;
@@ -37,6 +37,9 @@ public class CreateRoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
+    @NonNull
+    private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
+
     public CreateRoomViewModel() {
         AppInjector.inject(this);
     }
@@ -48,33 +51,33 @@ public class CreateRoomViewModel extends ViewModel {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             return;
         }
-
-        if(!password.matches(PASSWORD_PATTERN)) {
-            passwordInputError.setValue(context.getString(R.string.password_format_incorrect));
-            return;
-        }
         passwordInputError.setValue(null);
 
         createRoom(password);
     }
 
     private void createRoom(@NonNull String password) {
-        roomRepository.createRoom(password, new BaseCallback<Integer>() {
+        progressBarVisibility.setValue(View.VISIBLE);
+
+        roomRepository.createRoom(password, new BaseCallback<CreateRoomResponse>() {
             @Override
-            public void onResponse(Integer response) {
-                roomID = response;
+            public void onResponse(CreateRoomResponse response) {
+                progressBarVisibility.setValue(View.INVISIBLE);
+                roomID = response.getRoomID();
                 navigateToAdminRoom.setValue(true);
             }
 
             @Override
             public void onError(@NonNull Error error) {
+                progressBarVisibility.setValue(View.INVISIBLE);
                 networkError.setValue(error);
             }
         });
 
-        // todo remove these 2 lines when room service is done
+        // todo remove these 3 lines when room service is done
         roomID = 1;
         navigateToAdminRoom.setValue(true);
+        progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
@@ -102,6 +105,11 @@ public class CreateRoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
+    }
+
+    @NonNull
+    public MutableLiveData<Integer> getProgressBarVisibility() {
+        return progressBarVisibility;
     }
 }
 

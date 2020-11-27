@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.BaseCallback;
+import de.pcps.jamtugether.api.responses.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.JoinRoomResponse;
 
 // todo uncomment when room service is done
@@ -18,8 +19,8 @@ public class RoomRepository {
     @Inject
     public RoomRepository() {}
 
-    public void createRoom(@NonNull String password, @NonNull BaseCallback<Integer> callback) {
-        //Call<Integer> call = roomService.createRoom(password);
+    public void createRoom(@NonNull String password, @NonNull BaseCallback<CreateRoomResponse> callback) {
+        //Call<CreateRoomResponse> call = roomService.createRoom(password);
         //call.enqueue(callback);
     }
 

@@ -2,6 +2,7 @@ package de.pcps.jamtugether.content.room.join;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -12,7 +13,8 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.BaseCallback;
-import de.pcps.jamtugether.api.Error;
+import de.pcps.jamtugether.api.errors.Error;
+import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.responses.JoinRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
@@ -38,6 +40,9 @@ public class JoinRoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+
+    @NonNull
+    private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     public JoinRoomViewModel() {
         AppInjector.inject(this);
@@ -72,8 +77,7 @@ public class JoinRoomViewModel extends ViewModel {
         try {
             roomID = Integer.parseInt(roomIDString);
         } catch (Exception e) {
-            // number is higher than 'int'
-            roomInputError.setValue(context.getString(R.string.room_doesnt_exit)); // todo check if this message is ok
+            roomInputError.setValue(context.getString(R.string.room_doesnt_exist)); // todo check if this message is ok
             return;
         }
 
@@ -81,34 +85,36 @@ public class JoinRoomViewModel extends ViewModel {
     }
 
     private void joinRoom(int roomID, @NonNull String password) {
-        Context context = application.getApplicationContext();
+        progressBarVisibility.setValue(View.VISIBLE);
 
         roomRepository.joinRoom(roomID, password, new BaseCallback<JoinRoomResponse>() {
             @Override
             public void onResponse(JoinRoomResponse response) {
-                if(!response.roomExists()) {
-                    roomInputError.setValue(context.getString(R.string.room_doesnt_exit));
-                    return;
-                }
-                roomInputError.setValue(null);
-
-                if(!response.passwordCorrect()) {
-                    passwordInputError.setValue(context.getString(R.string.password_incorrect));
-                    return;
-                }
-
-                passwordInputError.setValue(null);
+                progressBarVisibility.setValue(View.INVISIBLE);
                 navigateToRegularRoom.setValue(true);
             }
 
             @Override
             public void onError(@NonNull Error error) {
+                progressBarVisibility.setValue(View.INVISIBLE);
+
+                Context context = application.getApplicationContext();
+
+                if(error instanceof UnauthorizedAccessError) {
+                    roomInputError.setValue(context.getString(error.getMessage()));
+                    passwordInputError.setValue(context.getString(error.getMessage()));
+                    return;
+                }
                 networkError.setValue(error);
+
+                roomInputError.setValue(null);
+                passwordInputError.setValue(null);
             }
         });
 
-        // todo remove this line when room service is done
+        // todo remove these 2 lines when room service is done
         navigateToRegularRoom.setValue(true);
+        progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
@@ -141,5 +147,10 @@ public class JoinRoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
+    }
+
+    @NonNull
+    public LiveData<Integer> getProgressBarVisibility() {
+        return progressBarVisibility;
     }
 }

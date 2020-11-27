@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.BaseCallback;
+import de.pcps.jamtugether.api.responses.PushSoundtrackResponse;
+import de.pcps.jamtugether.api.responses.SoundtrackListResponse;
 import de.pcps.jamtugether.content.soundtrack.Soundtrack;
 
 // todo uncomment when sound track service is done
@@ -20,13 +22,13 @@ public class SoundtrackRepository {
     @Inject
     public SoundtrackRepository() {}
 
-    public void getAllSoundtracks(int roomID, @NonNull BaseCallback<List<Soundtrack>> callback) {
-        //Call<List<Soundtrack>> call = soundtrackService.getAllSoundtracks(roomID);
+    public void getAllSoundtracks(int roomID, @NonNull BaseCallback<SoundtrackListResponse> callback) {
+        //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);
         //call.enqueue(callback);
     }
 
-    public void pushSoundtrack(@NonNull Soundtrack soundtrack, int roomID, @NonNull BaseCallback<Boolean> callback) {
-        //Call<Boolean> call = soundtrackService.publishSoundtrack(soundtrack, roomID);
+    public void pushSoundtrack(@NonNull Soundtrack soundtrack, int roomID, @NonNull BaseCallback<PushSoundtrackResponse> callback) {
+        //Call<PushSoundtrackResponse> call = soundtrackService.publishSoundtrack(soundtrack, roomID);
         //call.enqueue(callback);
     }
 }

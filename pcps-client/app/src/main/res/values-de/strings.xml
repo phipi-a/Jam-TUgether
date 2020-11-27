@@ -25,10 +25,8 @@
     <string name="musician_view">Musikeransicht</string>
 
     <string name="room_input_empty">Du musst einen Raum eingeben.</string>
-    <string name="room_doesnt_exit">Dieser Raum existiert nicht.</string>
+    <string name="room_doesnt_exist">Dieser Raum existiert nicht.</string>
     <string name="password_input_empty">Du musst ein Passwort eingeben.</string>
-    <string name="password_format_incorrect">Das Format dieses Passwortes ist falsch.</string>
-    <string name="password_incorrect">Dieses Passwort ist falsch.</string>
 
     <string name="play_instrument_format">%s spielen</string>
     <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
@@ -41,4 +39,10 @@
     <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
 
     <string name="error">Fehler</string>
+    <string name="unauthorized_access_error_message">Raum oder Passwort ist ungültig.</string>
+    <string name="internal_server_error_title">Serverfehler</string>
+    <string name="internal_server_error_message">Etwas ist schief gelaufen.</string>
+    <string name="generic_error_title">Fehler</string>
+    <string name="generic_error_message">Etwas ist schief gelaufen.</string>
+
 </resources>

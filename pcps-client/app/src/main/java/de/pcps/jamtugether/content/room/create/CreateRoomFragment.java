@@ -37,6 +37,7 @@ public class CreateRoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentCreateRoomBinding binding = FragmentCreateRoomBinding.inflate(inflater, container, false);
+        binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
