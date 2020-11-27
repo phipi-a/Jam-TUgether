@@ -83,7 +83,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_menu_fragment_to_settingsFragment3">
+                            <entry key="action_menu_fragment_to_settings_fragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -105,13 +105,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="settingsFragment">
+                  <entry key="settings_fragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="13" />
-                            <option name="y" value="-250" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

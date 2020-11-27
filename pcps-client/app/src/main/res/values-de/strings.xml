@@ -39,4 +39,6 @@
 
     <string name="leave_room">Raum verlassen</string>
     <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
+
+    <string name="error">Fehler</string>
 </resources>

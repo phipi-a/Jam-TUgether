@@ -40,4 +40,6 @@
 
     <string name="leave_room">Leave room</string>
     <string name="leave_room_confirmation">Are you sure that you want to leave this room?</string>
+
+    <string name="error">Error</string>
 </resources>
