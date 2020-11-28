@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage, ContentDescription">
 
     <data>
 
@@ -19,9 +19,8 @@
             android:id="@+id/room_id_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="@dimen/room_margin_start"
+            android:layout_marginTop="@dimen/room_margin_top"
             android:text="@{@string/room_format(viewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,19 @@
             app:layout_constraintBottom_toBottomOf="@id/room_id_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/room_id_text_view"
-            app:tint="@color/iconColor"
-            tools:ignore="ContentDescription" />
+            app:tint="@color/iconColor" />
+
+        <!-- just for testing, todo remove this later -->
+        <include
+            layout="@layout/view_soundtrack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="@dimen/soundtrack_first_item_margin_top"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            android:layout_marginBottom="@dimen/layout_margin_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
