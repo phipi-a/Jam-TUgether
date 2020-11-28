@@ -11,79 +11,82 @@
             type="de.pcps.jamtugether.content.room.create.CreateRoomViewModel" />
     </data>
 
-    <ScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <!--Überschrift-->
-            <TextView
-                android:id="@+id/app_name_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="@dimen/title_margin_top"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!--Passwort Eingabe-->
-            <de.pcps.jamtugether.views.JamTextInputLayout
-                android:id="@+id/room_password_text_input_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="50dp"
-                android:hint="@string/password"
-                app:errorIconDrawable="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/app_name_text_view"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/room_password_edit_text"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/app_name_text_view"
+                    style="@style/JamTugetherTitleStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:importantForAutofill="no"
-                    android:inputType="textPassword"
-                    android:textColor="@color/primaryTextColor"
-                    android:textCursorDrawable="@drawable/edit_text_cursor" />
-            </de.pcps.jamtugether.views.JamTextInputLayout>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/title_margin_top"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/app_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Create Room Button-->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/join_room_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginBottom="@dimen/layout_margin_bottom"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"
-                android:text="@string/create_room"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/room_password_text_input_layout" />
+                <de.pcps.jamtugether.views.JamTextInputLayout
+                    android:id="@+id/room_password_text_input_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="50dp"
+                    android:hint="@string/password"
+                    app:errorIconDrawable="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/app_name_text_view"
+                    app:passwordToggleEnabled="true">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/room_password_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textPassword"
+                        android:textCursorDrawable="@drawable/edit_text_cursor"
+                        android:textSize="15dp" />
+                </de.pcps.jamtugether.views.JamTextInputLayout>
 
-    </ScrollView>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/create_room_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="@dimen/layout_margin_bottom"
+                    android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"
+                    android:text="@string/create_room"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/room_password_text_input_layout" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.progressBarVisibility}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

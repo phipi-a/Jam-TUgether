@@ -15,7 +15,6 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:textAllCaps="true"
-        android:textColor="@color/primaryTextColor"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
