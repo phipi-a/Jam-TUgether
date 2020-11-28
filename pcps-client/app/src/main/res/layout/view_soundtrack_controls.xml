@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <!-- todo add sound track object -->
+    <!-- todo add click listener -->
+    <!-- todo add lifecycle owner in adapter -->
+
+    <data>
+
+        <import type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="playPauseButtonImage"
+            type="androidx.lifecycle.LiveData&lt;Drawable&gt;" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/volume_mute_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_volume_mute"
+            app:layout_constraintBottom_toBottomOf="@id/volume_slider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/volume_slider"
+            app:tint="@color/iconColor" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/volume_slider"
+            android:layout_width="@dimen/sound_slider_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/volume_up_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_volume_up"
+            app:layout_constraintStart_toEndOf="@id/volume_slider"
+            app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
+            app:tint="@color/iconColor" />
+
+        <ImageView
+            android:id="@+id/fast_rewind_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_fast_rewind"
+            app:layout_constraintStart_toEndOf="@id/volume_up_icon"
+            app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
+            app:tint="@color/iconColor" />
+
+        <ImageView
+            android:id="@+id/play_pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@{playPauseButtonImage}"
+            app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
+            app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
+            app:tint="@color/iconColor" />
+
+        <ImageView
+            android:id="@+id/fast_forward_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_fast_forward"
+            app:layout_constraintStart_toEndOf="@id/play_pause_button"
+            app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
+            app:tint="@color/iconColor" />
+
+        <ImageView
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_stop"
+            app:layout_constraintStart_toEndOf="@id/fast_forward_button"
+            app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
+            app:tint="@color/iconColor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
