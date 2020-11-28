@@ -12,5 +12,6 @@
     <color name="buttonBorderColor">@color/white</color>
     <color name="primaryTextColor">@color/white</color>
     <color name="iconColor">@color/white</color>
-
+    <color name="clearButtonColor">@color/black</color>
+    <color name="clearButtonBackgroundColor">@color/white</color>
 </resources>

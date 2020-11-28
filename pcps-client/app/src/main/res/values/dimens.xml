@@ -4,6 +4,13 @@
     <dimen name="layout_margin_bottom">20dp</dimen>
     <dimen name="tab_layout_height">50dp</dimen>
 
-    <dimen name="sound_track_view_height">70dp</dimen>
-    <dimen name="sound_slider_width">100dp</dimen> <!-- todo calculate this value depending on screen size -->
+    <dimen name="soundtrack_view_height">60dp</dimen>
+    <dimen name="volume_slider_width">80dp</dimen> <!-- todo calculate this value depending on screen size -->
+
+    <dimen name="room_margin_top">25dp</dimen>
+    <dimen name="room_margin_start">20dp</dimen>
+    <dimen name="soundtrack_first_item_margin_top">25dp</dimen>
+    <dimen name="soundtrack_item_margin_top">10dp</dimen>
+    <dimen name="soundtrack_item_margin_start">20dp</dimen> <!-- start is 20dp to account for the 10dp space of the clear button -->
+    <dimen name="soundtrack_item_margin_end">10dp</dimen>
 </resources>
