@@ -77,7 +77,7 @@ public class JoinRoomViewModel extends ViewModel {
         try {
             roomID = Integer.parseInt(roomIDString);
         } catch (Exception e) {
-            roomInputError.setValue(context.getString(R.string.room_doesnt_exist)); // todo check if this message is ok
+            roomInputError.setValue(context.getString(R.string.room_invalid));
             return;
         }
 
@@ -89,7 +89,7 @@ public class JoinRoomViewModel extends ViewModel {
 
         roomRepository.joinRoom(roomID, password, new BaseCallback<JoinRoomResponse>() {
             @Override
-            public void onResponse(JoinRoomResponse response) {
+            public void onResponse(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 navigateToRegularRoom.setValue(true);
             }

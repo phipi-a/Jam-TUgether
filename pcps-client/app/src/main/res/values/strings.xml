@@ -26,7 +26,7 @@
     <string name="musician_view">Musician View</string>
 
     <string name="room_input_empty">You have to enter a room.</string>
-    <string name="room_doesnt_exist">This room doesn\'t exist.</string>
+    <string name="room_invalid">This room is invalid.</string>
     <string name="password_input_empty">You have to enter a password.</string>
 
     <string name="play_instrument_format">Playing %s</string>
@@ -39,10 +39,13 @@
     <string name="leave_room">Leave room</string>
     <string name="leave_room_confirmation">Are you sure that you want to leave this room?</string>
 
-    <string name="error">Error</string>
+    <!-- todo modify error messages -->
+    <string name="unauthorized_access_error_title">Error</string>
     <string name="unauthorized_access_error_message">Room or password is invalid.</string>
-    <string name="internal_server_error_title">Server Error</string>
+    <string name="internal_server_error_title">Error</string>
     <string name="internal_server_error_message">Something went wrong.</string>
+    <string name="forbidden_access_error_title">Error</string>
+    <string name="forbidden_access_error_message">Something went wrong.</string>
     <string name="generic_error_title">Error</string>
     <string name="generic_error_message">Something went wrong.</string>
 

@@ -28,10 +28,12 @@ public abstract class Error {
 
     @NonNull
     public static Error from(int statusCode) {
-        // todo add more status codes
+        // todo maybe add more status codes
         switch (statusCode) {
             case 401:
                 return new UnauthorizedAccessError();
+            case 403:
+                return new ForbiddenAccessError();
             case 500:
                 return new InternalServerError();
             default:
