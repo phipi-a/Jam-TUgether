@@ -18,6 +18,8 @@
     <color name="buttonBorderColor">@color/black</color>
     <color name="primaryTextColor">@color/black</color>
     <color name="iconColor">@color/black</color>
+    <color name="volumeSliderTickActiveColor">@color/black</color>
+    <color name="volumeSliderTickInactiveColor">@color/gray</color>
     <color name="clearButtonColor">@color/white</color>
     <color name="clearButtonBackgroundColor">@color/black</color>
 </resources>

@@ -37,10 +37,16 @@
             android:layout_width="@dimen/volume_slider_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="100"
             app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:thumbColor="@color/iconColor"
-            app:trackColor="@color/iconColor" />
+            app:tickColorActive="@color/volumeSliderTickActiveColor"
+            app:tickColorInactive="@color/volumeSliderTickInactiveColor"
+            app:trackColorActive="@color/volumeSliderTickActiveColor"
+            app:trackColorInactive="@color/volumeSliderTickInactiveColor" />
 
         <ImageView
             android:id="@+id/volume_up_icon"
@@ -67,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_play"
+            android:src="@{playPauseButtonImage}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
