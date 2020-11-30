@@ -62,7 +62,28 @@ public class MusicianViewFragment extends Fragment {
             }
         });
 
+        viewModel.getSelectedInstrument().observe(getViewLifecycleOwner(), instrument -> {
+            switch (instrument.getPreferenceValue()){
+                case "flute":
+                    //replaceInstrumentFragment(new FluteFragment());
+                    break;
+                case "drums":
+                    //replaceInstrumentFragment(new DrumsFragment());
+                    break;
+                case "shaker":
+                    //replaceInstrumentFragment(new ShakerFragment());
+                    break;
+            }
+
+        });
+
         return binding.getRoot();
+    }
+
+    public void replaceInstrumentFragment(Fragment someFragment) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.instrument_container_fragment, someFragment);
+                transaction.commit();
     }
 
     @Override
