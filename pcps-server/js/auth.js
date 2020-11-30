@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 exports.createToken = function (room) {
-  /* expires after half and hour (1800 seconds = 30 minutes) */
+  /* expires after half an hour (1800 seconds = 30 minutes) */
   return jwt.sign(room, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' })
 }
 
