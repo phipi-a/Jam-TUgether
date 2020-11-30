@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.content.room.users;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -66,26 +68,30 @@ public class MusicianViewFragment extends Fragment {
             }
         });
 
-        viewModel.getSelectedInstrument().observe(getViewLifecycleOwner(), instrument -> {
-            switch (instrument.getPreferenceValue()){
-                case "flute":
-                    replaceInstrumentFragment(new FluteFragment());
-                    break;
-                case "drums":
-                    replaceInstrumentFragment(new DrumsFragment());
-                    break;
-                case "shaker":
-                    replaceInstrumentFragment(new ShakerFragment());
-                    break;
+        viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
+            if(showFluteFragment) {
+                replaceInstrumentFragment(new FluteFragment());
+                viewModel.onFluteFragmentShown();
             }
-
+        });
+        viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
+            if(showDrumsFragment) {
+                replaceInstrumentFragment(new DrumsFragment());
+                viewModel.onDrumsFragmentShown();
+            }
+        });
+        viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
+            if(showShakerFragment) {
+                replaceInstrumentFragment(new ShakerFragment());
+                viewModel.onShakerFragmentShown();
+            }
         });
 
         return binding.getRoot();
     }
 
     public void replaceInstrumentFragment(Fragment someFragment) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.instrument_container_fragment, someFragment);
                 transaction.commit();
     }

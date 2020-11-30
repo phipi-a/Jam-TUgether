@@ -15,6 +15,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.content.room.users.instruments.drums.DrumsFragment;
+import de.pcps.jamtugether.content.room.users.instruments.flute.FluteFragment;
+import de.pcps.jamtugether.content.room.users.instruments.shaker.ShakerFragment;
 import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
@@ -38,6 +41,15 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Boolean> showFluteFragment = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> showDrumsFragment = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
+
     public MusicianViewViewModel(int roomID) {
         AppInjector.inject(this);
         this.roomID = roomID;
@@ -47,9 +59,35 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         updateHelpDialogData(mainInstrument);
     }
 
+    @NonNull
+    public MutableLiveData<Boolean> getShowFluteFragment() {
+        return showFluteFragment;
+    }
+
+    @NonNull
+    public MutableLiveData<Boolean> getShowDrumsFragment() {
+        return showDrumsFragment;
+    }
+
+    @NonNull
+    public MutableLiveData<Boolean> getShowShakerFragment() {
+        return showShakerFragment;
+    }
+
     @Override
     public void onInstrumentClicked(@NonNull Instrument instrument) {
         selectedInstrument.setValue(instrument);
+        switch (instrument.getPreferenceValue()){
+            case "flute":
+                showFluteFragment.setValue(true);
+                break;
+            case "drums":
+                showDrumsFragment.setValue(true);
+                break;
+            case "shaker":
+                showShakerFragment.setValue(true);
+                break;
+        }
         updateHelpDialogData(instrument);
     }
 
@@ -101,6 +139,15 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         return showHelpDialog;
     }
 
+    public void onDrumsFragmentShown() {
+        showDrumsFragment.setValue(false);
+    }
+    public void onFluteFragmentShown() {
+        showFluteFragment.setValue(false);
+    }
+    public void onShakerFragmentShown() {
+        showShakerFragment.setValue(false);
+    }
     static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;
@@ -119,4 +166,5 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
+
 }
