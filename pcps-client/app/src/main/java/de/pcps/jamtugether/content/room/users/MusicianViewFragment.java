@@ -12,9 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.content.room.users.instruments.drums.DrumsFragment;
+import de.pcps.jamtugether.content.room.users.instruments.flute.FluteFragment;
+import de.pcps.jamtugether.content.room.users.instruments.shaker.ShakerFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -65,13 +69,13 @@ public class MusicianViewFragment extends Fragment {
         viewModel.getSelectedInstrument().observe(getViewLifecycleOwner(), instrument -> {
             switch (instrument.getPreferenceValue()){
                 case "flute":
-                    //replaceInstrumentFragment(new FluteFragment());
+                    replaceInstrumentFragment(new FluteFragment());
                     break;
                 case "drums":
-                    //replaceInstrumentFragment(new DrumsFragment());
+                    replaceInstrumentFragment(new DrumsFragment());
                     break;
                 case "shaker":
-                    //replaceInstrumentFragment(new ShakerFragment());
+                    replaceInstrumentFragment(new ShakerFragment());
                     break;
             }
 
