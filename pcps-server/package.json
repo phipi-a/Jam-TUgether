@@ -1,5 +1,5 @@
 {
-  "name": "PCPS",
+  "name": "pcps-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -17,7 +17,6 @@
   },
   "devDependencies": {},
   "scripts": {
-    "runSv": "nodemon login.js",
     "start": "nodemon server.js"
   },
   "repository": {
