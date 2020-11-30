@@ -7,6 +7,8 @@ import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.room.create.CreateRoomViewModel;
 import de.pcps.jamtugether.content.room.join.JoinRoomViewModel;
 import de.pcps.jamtugether.content.room.users.MusicianViewViewModel;
+import de.pcps.jamtugether.content.room.users.admin.AdminRoomOverviewViewModel;
+import de.pcps.jamtugether.content.room.users.regular.RegularRoomOverviewViewModel;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 
@@ -36,6 +38,14 @@ public class AppInjector {
 
     public static void inject(@NonNull JoinRoomViewModel joinRoomViewModel) {
         appComponent.inject(joinRoomViewModel);
+    }
+
+    public static void inject(@NonNull AdminRoomOverviewViewModel adminRoomOverviewViewModel) {
+        appComponent.inject(adminRoomOverviewViewModel);
+    }
+
+    public static void inject(@NonNull RegularRoomOverviewViewModel regularRoomOverviewViewModel) {
+        appComponent.inject(regularRoomOverviewViewModel);
     }
 
     public static void inject(@NonNull MusicianViewViewModel musicianViewViewModel) {

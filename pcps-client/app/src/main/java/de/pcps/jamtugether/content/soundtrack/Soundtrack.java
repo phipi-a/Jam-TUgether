@@ -1,18 +1,78 @@
 package de.pcps.jamtugether.content.soundtrack;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import de.pcps.jamtugether.content.instrument.Instrument;
 
 public class Soundtrack extends ArrayList<Sound> {
 
-    public interface ClickListener {
+    // todo check with server group
+    private final int id;
 
-        void onVolumeChanged(@NonNull Soundtrack soundtrack, int volumePercentage);
+    /*
+     * this attribute is necessary in order to set the volume slider accordingly
+     * Otherwise, the slider resets on configuration changes
+     */
+    private float volume;
 
-        void onPlayButtonClicked(@NonNull Soundtrack soundtrack);
+    public Soundtrack(int id) {
+        this.id = id;
+        this.volume = 0;
+    }
 
-        void onPauseButtonClicked(@NonNull Soundtrack soundtrack);
+    public int getID() {
+        return id;
+    }
+
+    public float getVolume() {
+        return volume;
+    }
+
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Soundtrack soundtrack = (Soundtrack) o;
+        return id == soundtrack.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
+
+    public static Soundtrack compositeFrom(@NonNull List<Soundtrack> soundtracks) {
+        // todo
+        return new Soundtrack(0);
+    }
+
+    public static DiffUtil.ItemCallback<Soundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Soundtrack>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Soundtrack oldItem, @NonNull Soundtrack newItem) {
+            return oldItem.getID() == newItem.getID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Soundtrack oldItem, @NonNull Soundtrack newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    public interface OnChangeListener {
+
+        void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume);
+
+        void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack);
 
         void onStopButtonClicked(@NonNull Soundtrack soundtrack);
 
@@ -20,6 +80,6 @@ public class Soundtrack extends ArrayList<Sound> {
 
         void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack);
 
-        void onClearButtonClicked(@NonNull Soundtrack soundtrack);
+        void onDeleteButtonClicked(@NonNull Soundtrack soundtrack);
     }
 }

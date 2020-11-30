@@ -4,18 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
-    <!-- todo add sound track object -->
-    <!-- todo add click listener -->
-    <!-- todo add data binding util to add click listener to slide listener -->
-    <!-- todo add lifecycle owner in adapter -->
-
     <data>
 
         <import type="android.graphics.drawable.Drawable" />
 
         <variable
-            name="playPauseButtonImage"
+            name="soundtrack"
+            type="de.pcps.jamtugether.content.soundtrack.Soundtrack" />
+
+        <variable
+            name="onChangeListener"
+            type="de.pcps.jamtugether.content.soundtrack.Soundtrack.OnChangeListener" />
+
+        <variable
+            name="playPauseButtonDrawable"
             type="androidx.lifecycle.LiveData&lt;Drawable&gt;" />
+
+        <variable
+            name="stopButtonVisibility"
+            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,13 +48,16 @@
             android:stepSize="1"
             android:valueFrom="0"
             android:valueTo="100"
+            android:value="@{soundtrack.volume}"
             app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
             app:layout_constraintTop_toTopOf="parent"
+            app:soundtrack="@{soundtrack}"
             app:thumbColor="@color/iconColor"
             app:tickColorActive="@color/volumeSliderTickActiveColor"
             app:tickColorInactive="@color/volumeSliderTickInactiveColor"
             app:trackColorActive="@color/volumeSliderTickActiveColor"
-            app:trackColorInactive="@color/volumeSliderTickInactiveColor" />
+            app:trackColorInactive="@color/volumeSliderTickInactiveColor"
+            app:volumeListener="@{onChangeListener}" />
 
         <ImageView
             android:id="@+id/volume_up_icon"
@@ -63,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:onClick="@{() -> onChangeListener.onFastRewindButtonClicked(soundtrack)}"
             android:src="@drawable/ic_fast_rewind"
             app:layout_constraintStart_toEndOf="@id/volume_up_icon"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -73,7 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:src="@{playPauseButtonImage}"
+            android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
+            android:src="@{playPauseButtonDrawable}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
@@ -83,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:onClick="@{() -> onChangeListener.onFastForwardButtonClicked(soundtrack)}"
             android:src="@drawable/ic_fast_forward"
             app:layout_constraintStart_toEndOf="@id/play_pause_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -93,7 +107,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
+            android:visibility="@{stopButtonVisibility}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
