@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
-    <!-- todo add soundtrack object and click listener for cancel button-->
+    <data>
+
+        <variable
+            name="soundtrack"
+            type="de.pcps.jamtugether.content.soundtrack.Soundtrack" />
+
+        <variable
+            name="onChangeListener"
+            type="de.pcps.jamtugether.content.soundtrack.Soundtrack.OnChangeListener" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,12 +28,17 @@
             android:id="@+id/soundtrack_controls_layout"
             layout="@layout/view_soundtrack_controls" />
 
+        <!-- "margin top" = "sound track margin top * (-1)" in order to
+             align the actual sound track view to the bottom of the controls
+             Otherwise, the clear button would be aligned to the control layout
+             leaving too much space between the controls and the actual view -->
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="-10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- todo replace with custom view -->
-            <TextView
+            <de.pcps.jamtugether.content.soundtrack.SoundtrackView
                 android:id="@+id/soundtrack_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/soundtrack_view_height"
@@ -32,18 +46,18 @@
                 android:layout_marginEnd="10dp"
                 android:background="@color/gray"
                 android:gravity="center"
-                android:text="Soundtrack Container"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/delete_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@drawable/bg_button_clear"
-                android:src="@drawable/ic_clear"
+                android:onClick="@{() -> onChangeListener.onDeleteButtonClicked(soundtrack)}"
+                android:src="@drawable/ic_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/clearButtonColor" />

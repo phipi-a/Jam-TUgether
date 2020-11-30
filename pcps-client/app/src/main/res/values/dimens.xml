@@ -5,7 +5,7 @@
     <dimen name="tab_layout_height">50dp</dimen>
 
     <dimen name="soundtrack_view_height">60dp</dimen>
-    <dimen name="volume_slider_width">80dp</dimen> <!-- todo calculate this value depending on screen size -->
+    <dimen name="volume_slider_width">80dp</dimen> <!-- todo calculate this value depending on screen size minus delete button-->
 
     <dimen name="room_margin_top">25dp</dimen>
     <dimen name="room_margin_start">20dp</dimen>
