@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.content.room.users;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
@@ -22,6 +21,7 @@ import de.pcps.jamtugether.content.room.users.instruments.drums.DrumsFragment;
 import de.pcps.jamtugether.content.room.users.instruments.flute.FluteFragment;
 import de.pcps.jamtugether.content.room.users.instruments.shaker.ShakerFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class MusicianViewFragment extends Fragment {
@@ -70,19 +70,19 @@ public class MusicianViewFragment extends Fragment {
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
             if(showFluteFragment) {
-                replaceInstrumentFragment(new FluteFragment());
+                replaceInstrumentFragment(FluteFragment.newInstance());
                 viewModel.onFluteFragmentShown();
             }
         });
         viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
             if(showDrumsFragment) {
-                replaceInstrumentFragment(new DrumsFragment());
+                replaceInstrumentFragment(DrumsFragment.newInstance());
                 viewModel.onDrumsFragmentShown();
             }
         });
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
             if(showShakerFragment) {
-                replaceInstrumentFragment(new ShakerFragment());
+                replaceInstrumentFragment(ShakerFragment.newInstance());
                 viewModel.onShakerFragmentShown();
             }
         });
@@ -90,10 +90,9 @@ public class MusicianViewFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void replaceInstrumentFragment(Fragment someFragment) {
-                FragmentTransaction transaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.instrument_container_fragment, someFragment);
-                transaction.commit();
+    private void replaceInstrumentFragment(@NonNull Fragment fragment) {
+        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+        NavigationUtils.replaceFragment(fragmentManager, fragment, R.id.instrument_container_fragment);
     }
 
     @Override

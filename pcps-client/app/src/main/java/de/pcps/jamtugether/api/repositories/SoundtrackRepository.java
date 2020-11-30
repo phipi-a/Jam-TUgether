@@ -31,4 +31,9 @@ public class SoundtrackRepository {
         //Call<PushSoundtrackResponse> call = soundtrackService.publishSoundtrack(soundtrack, roomID);
         //call.enqueue(callback);
     }
+
+    public void deleteSoundtrack(@NonNull Soundtrack soundtrack, int roomID, @NonNull BaseCallback<PushSoundtrackResponse> callback) {
+        //Call<DeleteSoundtrackResponse> call = soundtrackService.deleteSoundtrack(soundtrack, roomID);
+        //call.enqueue(callback);
+    }
 }

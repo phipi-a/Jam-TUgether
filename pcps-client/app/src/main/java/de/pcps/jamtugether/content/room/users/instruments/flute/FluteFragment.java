@@ -20,6 +20,11 @@ public class FluteFragment extends Fragment {
 
     private FluteViewModel viewModel;
 
+    @NonNull
+    public static FluteFragment newInstance() {
+        return new FluteFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

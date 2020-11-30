@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="de.pcps.jamtugether.content.room.users.regular.RegularRoomOverviewViewModel" />
+            name="roomID"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,23 +21,36 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/room_margin_start"
             android:layout_marginTop="@dimen/room_margin_top"
-            android:text="@{@string/room_format(viewModel.roomID)}"
+            android:text="@{@string/room_format(roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- just for testing, todo remove this later -->
         <include
+            android:id="@+id/composite_soundtrack_layout"
             layout="@layout/view_soundtrack"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_item_margin_start"
             android:layout_marginTop="@dimen/soundtrack_first_item_margin_top"
             android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
-            android:layout_marginBottom="@dimen/layout_margin_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
+
+        <!-- todo set item margins through item decoration
+              set first item margin to default margin + sound_track_item_margin_top -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_soundtracks_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/soundtrack_item_margin_top"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/composite_soundtrack_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

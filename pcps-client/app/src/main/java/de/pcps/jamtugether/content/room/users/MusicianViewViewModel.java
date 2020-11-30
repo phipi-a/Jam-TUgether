@@ -15,14 +15,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.content.room.users.instruments.drums.DrumsFragment;
-import de.pcps.jamtugether.content.room.users.instruments.flute.FluteFragment;
-import de.pcps.jamtugether.content.room.users.instruments.shaker.ShakerFragment;
 import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class MusicianViewViewModel extends ViewModel implements Instrument.ClickListener {
+import static de.pcps.jamtugether.content.instrument.Instrument.*;
+
+public class MusicianViewViewModel extends ViewModel implements ClickListener {
 
     @Inject
     Application application;
@@ -34,9 +33,6 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
 
     private String helpDialogTitle;
     private String helpDialogMessage;
-
-    @NonNull
-    private final MutableLiveData<Instrument> selectedInstrument;
 
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
@@ -55,39 +51,23 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         this.roomID = roomID;
 
         Instrument mainInstrument = preferences.getMainInstrument();
-        selectedInstrument = new MutableLiveData<>(mainInstrument);
         updateHelpDialogData(mainInstrument);
-    }
-
-    @NonNull
-    public MutableLiveData<Boolean> getShowFluteFragment() {
-        return showFluteFragment;
-    }
-
-    @NonNull
-    public MutableLiveData<Boolean> getShowDrumsFragment() {
-        return showDrumsFragment;
-    }
-
-    @NonNull
-    public MutableLiveData<Boolean> getShowShakerFragment() {
-        return showShakerFragment;
     }
 
     @Override
     public void onInstrumentClicked(@NonNull Instrument instrument) {
-        selectedInstrument.setValue(instrument);
-        switch (instrument.getPreferenceValue()){
-            case "flute":
+        switch (instrument) {
+            case FLUTE:
                 showFluteFragment.setValue(true);
                 break;
-            case "drums":
+            case DRUMS:
                 showDrumsFragment.setValue(true);
                 break;
-            case "shaker":
+            case SHAKER:
                 showShakerFragment.setValue(true);
                 break;
         }
+
         updateHelpDialogData(instrument);
     }
 
@@ -118,7 +98,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instrument.values());
+        return Arrays.asList(values());
     }
 
     public void onHelpButtonClicked() {
@@ -129,9 +109,16 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         showHelpDialog.setValue(false);
     }
 
-    @NonNull
-    public LiveData<Instrument> getSelectedInstrument() {
-        return selectedInstrument;
+    public void onFluteFragmentShown() {
+        showFluteFragment.setValue(false);
+    }
+
+    public void onDrumsFragmentShown() {
+        showDrumsFragment.setValue(false);
+    }
+
+    public void onShakerFragmentShown() {
+        showShakerFragment.setValue(false);
     }
 
     @NonNull
@@ -139,15 +126,21 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         return showHelpDialog;
     }
 
-    public void onDrumsFragmentShown() {
-        showDrumsFragment.setValue(false);
+    @NonNull
+    public MutableLiveData<Boolean> getShowFluteFragment() {
+        return showFluteFragment;
     }
-    public void onFluteFragmentShown() {
-        showFluteFragment.setValue(false);
+
+    @NonNull
+    public MutableLiveData<Boolean> getShowDrumsFragment() {
+        return showDrumsFragment;
     }
-    public void onShakerFragmentShown() {
-        showShakerFragment.setValue(false);
+
+    @NonNull
+    public MutableLiveData<Boolean> getShowShakerFragment() {
+        return showShakerFragment;
     }
+
     static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;

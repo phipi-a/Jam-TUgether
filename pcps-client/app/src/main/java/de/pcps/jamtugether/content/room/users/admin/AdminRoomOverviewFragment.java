@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.content.room.users.admin;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.databinding.FragmentAdminRoomOverviewBinding;
+import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.content.soundtrack.adapters.AdminSoundtrackListAdapter;
+import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
+import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
+import timber.log.Timber;
 
-// todo
 public class AdminRoomOverviewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
@@ -41,8 +48,25 @@ public class AdminRoomOverviewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentAdminRoomOverviewBinding binding = FragmentAdminRoomOverviewBinding.inflate(inflater, container, false);
-        binding.setViewModel(viewModel);
+        FragmentRoomOverviewBinding binding = FragmentRoomOverviewBinding.inflate(inflater, container, false);
+        binding.setRoomID(viewModel.getRoomID());
+
+        Soundtrack.OnChangeListener onChangeListener = viewModel;
+        LifecycleOwner lifecycleOwner = getViewLifecycleOwner();
+        LiveData<Drawable> playPauseButtonDrawable = viewModel.getPlayPauseButtonDrawable();
+        LiveData<Integer> stopButtonVisibility = viewModel.getStopButtonVisibility();
+
+        ViewSoundtrackControlsBinding compositeSoundtrackControls = binding.compositeSoundtrackLayout.soundtrackControlsLayout;
+        viewModel.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrackControls::setSoundtrack);
+        compositeSoundtrackControls.setOnChangeListener(onChangeListener);
+        compositeSoundtrackControls.setLifecycleOwner(lifecycleOwner);
+        compositeSoundtrackControls.setPlayPauseButtonDrawable(playPauseButtonDrawable);
+        compositeSoundtrackControls.setStopButtonVisibility(stopButtonVisibility);
+        binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), lifecycleOwner);
+        AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeListener, playPauseButtonDrawable, stopButtonVisibility, lifecycleOwner);
+        binding.allSoundtracksRecyclerView.setAdapter(adapter);
+        viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), adapter::submitList);
+
         return binding.getRoot();
     }
 }

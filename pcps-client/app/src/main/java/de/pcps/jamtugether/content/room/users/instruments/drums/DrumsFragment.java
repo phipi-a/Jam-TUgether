@@ -21,6 +21,11 @@ public class DrumsFragment extends Fragment {
 
     private DrumsViewModel viewModel;
 
+    @NonNull
+    public static DrumsFragment newInstance() {
+        return new DrumsFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

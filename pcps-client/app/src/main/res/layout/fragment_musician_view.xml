@@ -54,18 +54,6 @@
                 app:layout_constraintTop_toTopOf="@id/room_id_text_view"
                 app:tint="@color/iconColor" />
 
-            <!-- just for testing, todo remove this later -->
-            <include
-                layout="@layout/view_soundtrack"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-                android:layout_marginTop="@dimen/soundtrack_first_item_margin_top"
-                android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
-                android:layout_marginBottom="@dimen/layout_margin_bottom"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.fragment.app.FragmentContainerView

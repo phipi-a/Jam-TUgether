@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
 
 public class ShakerFragment extends Fragment {
@@ -20,6 +19,11 @@ public class ShakerFragment extends Fragment {
     private Activity activity;
 
     private ShakerViewModel viewModel;
+
+    @NonNull
+    public static ShakerFragment newInstance() {
+        return new ShakerFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
