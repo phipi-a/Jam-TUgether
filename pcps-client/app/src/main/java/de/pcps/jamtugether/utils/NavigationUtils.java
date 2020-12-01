@@ -45,7 +45,7 @@ public class NavigationUtils {
         nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment(roomID));
     }
 
-    public static void replaceFragment(@NonNull FragmentManager manager, @NonNull Fragment fragment, @IdRes int layout) {
-        manager.beginTransaction().replace(layout, fragment).commit();
+    public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
+        fragmentManager.beginTransaction().replace(layout, fragment).commit();
     }
 }

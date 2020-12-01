@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.users.instruments.flute.FluteViewModel" />
+            type="de.pcps.jamtugether.content.room.users.music.instruments.flute.FluteViewModel" />
     </data>
     <TextView
         android:layout_width="match_parent"

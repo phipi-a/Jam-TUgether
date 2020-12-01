@@ -1,7 +1,6 @@
-package de.pcps.jamtugether.content.room.users;
+package de.pcps.jamtugether.content.room.users.music;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,24 +8,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.content.room.users.instruments.drums.DrumsFragment;
-import de.pcps.jamtugether.content.room.users.instruments.flute.FluteFragment;
-import de.pcps.jamtugether.content.room.users.instruments.shaker.ShakerFragment;
+import de.pcps.jamtugether.content.room.users.music.instruments.drums.DrumsFragment;
+import de.pcps.jamtugether.content.room.users.music.instruments.flute.FluteFragment;
+import de.pcps.jamtugether.content.room.users.music.instruments.shaker.ShakerFragment;
+import de.pcps.jamtugether.content.room.users.music.soundtrack.SoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
-import de.pcps.jamtugether.utils.UiUtils;
 
+// this fragment contains soundtrack fragment AND the instrument fragment
 public class MusicianViewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+
+    private int roomID;
 
     private Context context;
 
@@ -45,7 +44,7 @@ public class MusicianViewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
-            int roomID = getArguments().getInt(ROOM_ID_KEY);
+            roomID = getArguments().getInt(ROOM_ID_KEY);
             MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }
@@ -55,18 +54,8 @@ public class MusicianViewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMusicianViewBinding binding = FragmentMusicianViewBinding.inflate(inflater, container, false);
-        binding.setViewModel(viewModel);
 
-        viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
-            if(showHelpDialog) {
-                AlertDialog dialog = UiUtils.createInfoDialog(context, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
-                dialog.setOnShowListener(arg -> {
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onHelpDialogShown();
-                });
-                dialog.show();
-            }
-        });
+        addSoundtrackFragment();
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
             if(showFluteFragment) {
@@ -74,12 +63,14 @@ public class MusicianViewFragment extends Fragment {
                 viewModel.onFluteFragmentShown();
             }
         });
+
         viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
             if(showDrumsFragment) {
                 replaceInstrumentFragment(DrumsFragment.newInstance());
                 viewModel.onDrumsFragmentShown();
             }
         });
+
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
             if(showShakerFragment) {
                 replaceInstrumentFragment(ShakerFragment.newInstance());
@@ -90,9 +81,14 @@ public class MusicianViewFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void addSoundtrackFragment() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        NavigationUtils.replaceFragment(fragmentManager, SoundtrackFragment.newInstance(roomID, viewModel), R.id.soundtrack_fragment_container);
+    }
+
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {
-        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        NavigationUtils.replaceFragment(fragmentManager, fragment, R.id.instrument_container_fragment);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        NavigationUtils.replaceFragment(fragmentManager, fragment, R.id.instrument_fragment_container);
     }
 
     @Override

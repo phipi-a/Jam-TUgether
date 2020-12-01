@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.views.JamTabView;
-import de.pcps.jamtugether.content.room.users.MusicianViewFragment;
+import de.pcps.jamtugether.content.room.users.music.MusicianViewFragment;
 import de.pcps.jamtugether.content.room.users.TabLayoutAdapter;
 import de.pcps.jamtugether.content.room.users.TabLayoutFragment;
 

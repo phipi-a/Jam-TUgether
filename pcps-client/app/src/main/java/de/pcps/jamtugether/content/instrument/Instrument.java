@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import de.pcps.jamtugether.R;
@@ -77,5 +78,9 @@ public enum Instrument {
 
     public interface ClickListener {
         void onInstrumentClicked(@NonNull Instrument instrument);
+    }
+
+    public interface OnChangeCallback extends Serializable {
+        void onInstrumentChanged(@NonNull Instrument instrument);
     }
 }

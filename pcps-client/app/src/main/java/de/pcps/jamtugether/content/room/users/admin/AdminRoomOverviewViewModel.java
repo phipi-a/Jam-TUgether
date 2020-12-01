@@ -1,11 +1,8 @@
 package de.pcps.jamtugether.content.room.users.admin;
 
 import android.app.Application;
-import android.graphics.drawable.Drawable;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -17,7 +14,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.soundtrack.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
 
@@ -29,18 +25,11 @@ public class AdminRoomOverviewViewModel extends ViewModel implements Soundtrack.
     private final int roomID;
 
     @NonNull
-    private final MutableLiveData<Drawable> playPauseButtonDrawable;
-
-    @NonNull
-    private final MutableLiveData<Integer> stopButtonVisibility = new MutableLiveData<>(View.INVISIBLE);
-
-    @NonNull
     private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
 
     public AdminRoomOverviewViewModel(int roomID) {
         AppInjector.inject(this);
         this.roomID = roomID;
-        playPauseButtonDrawable = new MutableLiveData<>(ContextCompat.getDrawable(application.getApplicationContext(), R.drawable.ic_play));
     }
 
     @NonNull
@@ -59,8 +48,8 @@ public class AdminRoomOverviewViewModel extends ViewModel implements Soundtrack.
 
     @Override
     public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
-        // todo update stop button visibility
-        // todo update play button drawable
+        // todo update stop button visibility of soundtrack
+        // todo update play button drawable of soundtrack
     }
 
     @Override
@@ -88,16 +77,6 @@ public class AdminRoomOverviewViewModel extends ViewModel implements Soundtrack.
 
     public int getRoomID() {
         return roomID;
-    }
-
-    @NonNull
-    public LiveData<Drawable> getPlayPauseButtonDrawable() {
-        return playPauseButtonDrawable;
-    }
-
-    @NonNull
-    public LiveData<Integer> getStopButtonVisibility() {
-        return stopButtonVisibility;
     }
 
     @NonNull

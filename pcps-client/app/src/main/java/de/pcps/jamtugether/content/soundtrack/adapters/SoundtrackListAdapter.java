@@ -16,19 +16,11 @@ public abstract class SoundtrackListAdapter<T extends RecyclerView.ViewHolder> e
     protected final Soundtrack.OnChangeListener onChangeListener;
 
     @NonNull
-    protected final LiveData<Drawable> playPauseButtonDrawable;
-
-    @NonNull
-    protected final LiveData<Integer> stopButtonVisibility;
-
-    @NonNull
     protected final LifecycleOwner lifecycleOwner;
 
-    public SoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LiveData<Drawable> playPauseButtonDrawable, @NonNull LiveData<Integer> stopButtonVisibility, @NonNull LifecycleOwner lifecycleOwner) {
+    public SoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
         super(Soundtrack.DIFF_UTIL_CALLBACK);
         this.onChangeListener = onChangeListener;
-        this.playPauseButtonDrawable = playPauseButtonDrawable;
-        this.stopButtonVisibility = stopButtonVisibility;
         this.lifecycleOwner = lifecycleOwner;
     }
 }

@@ -1,41 +1,15 @@
-package de.pcps.jamtugether.content.room.users;
-
-import android.app.Application;
-import android.content.Context;
+package de.pcps.jamtugether.content.room.users.music;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
-import de.pcps.jamtugether.storage.Preferences;
 
-import static de.pcps.jamtugether.content.instrument.Instrument.*;
-
-public class MusicianViewViewModel extends ViewModel implements ClickListener {
-
-    @Inject
-    Application application;
-
-    @Inject
-    Preferences preferences;
+public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback {
 
     private final int roomID;
-
-    private String helpDialogTitle;
-    private String helpDialogMessage;
-
-    @NonNull
-    private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<Boolean> showFluteFragment = new MutableLiveData<>(false);
@@ -47,15 +21,11 @@ public class MusicianViewViewModel extends ViewModel implements ClickListener {
     private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
 
     public MusicianViewViewModel(int roomID) {
-        AppInjector.inject(this);
         this.roomID = roomID;
-
-        Instrument mainInstrument = preferences.getMainInstrument();
-        updateHelpDialogData(mainInstrument);
     }
 
     @Override
-    public void onInstrumentClicked(@NonNull Instrument instrument) {
+    public void onInstrumentChanged(@NonNull Instrument instrument) {
         switch (instrument) {
             case FLUTE:
                 showFluteFragment.setValue(true);
@@ -67,46 +37,6 @@ public class MusicianViewViewModel extends ViewModel implements ClickListener {
                 showShakerFragment.setValue(true);
                 break;
         }
-
-        updateHelpDialogData(instrument);
-    }
-
-    private void updateHelpDialogData(@NonNull Instrument instrument) {
-        Context context = application.getApplicationContext();
-
-        String instrumentName = context.getString(instrument.getName());
-        helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
-        helpDialogMessage = context.getString(instrument.getHelpMessage());
-    }
-
-    @NonNull
-    public Instrument getMainInstrument() {
-        return preferences.getMainInstrument();
-    }
-
-    public int getRoomID() {
-        return roomID;
-    }
-
-    public String getHelpDialogTitle() {
-        return helpDialogTitle;
-    }
-
-    public String getHelpDialogMessage() {
-        return helpDialogMessage;
-    }
-
-    @NonNull
-    public List<Instrument> getInstruments() {
-        return Arrays.asList(values());
-    }
-
-    public void onHelpButtonClicked() {
-        showHelpDialog.setValue(true);
-    }
-
-    public void onHelpDialogShown() {
-        showHelpDialog.setValue(false);
     }
 
     public void onFluteFragmentShown() {
@@ -121,9 +51,8 @@ public class MusicianViewViewModel extends ViewModel implements ClickListener {
         showShakerFragment.setValue(false);
     }
 
-    @NonNull
-    public LiveData<Boolean> getShowHelpDialog() {
-        return showHelpDialog;
+    public int getRoomID() {
+        return roomID;
     }
 
     @NonNull
@@ -159,5 +88,4 @@ public class MusicianViewViewModel extends ViewModel implements ClickListener {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
-
 }

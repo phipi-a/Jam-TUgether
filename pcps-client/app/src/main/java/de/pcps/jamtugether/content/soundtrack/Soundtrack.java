@@ -1,40 +1,69 @@
 package de.pcps.jamtugether.content.soundtrack;
 
+import android.view.View;
+
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.R;
 
 public class Soundtrack extends ArrayList<Sound> {
 
     // todo check with server group
     private final int id;
 
-    /*
-     * this attribute is necessary in order to set the volume slider accordingly
-     * Otherwise, the slider resets on configuration changes
-     */
-    private float volume;
+    @NonNull
+    private final MutableLiveData<Float> volume;
+
+    @NonNull
+    private final MutableLiveData<Integer> playPauseButtonImageResource;
+
+    @NonNull
+    private final MutableLiveData<Integer> stopButtonVisibility;
 
     public Soundtrack(int id) {
         this.id = id;
-        this.volume = 0;
+        this.volume = new MutableLiveData<>(0f);
+        this.playPauseButtonImageResource = new MutableLiveData<>(R.drawable.ic_play);
+        this.stopButtonVisibility = new MutableLiveData<>(View.INVISIBLE);
     }
 
     public int getID() {
         return id;
     }
 
-    public float getVolume() {
+    public void setVolume(float volume) {
+        this.volume.setValue(volume);
+    }
+
+    @NonNull
+    public LiveData<Float> getVolume() {
         return volume;
     }
 
-    public void setVolume(float volume) {
-        this.volume = volume;
+    public void setPlayPauseButtonImageResource(@DrawableRes int playPauseButtonImageResource) {
+        this.playPauseButtonImageResource.setValue(playPauseButtonImageResource);
+    }
+
+    @NonNull
+    public MutableLiveData<Integer> getPlayPauseButtonImageResource() {
+        return playPauseButtonImageResource;
+    }
+
+    public void setStopButtonVisibility(int stopButtonVisibility) {
+        this.stopButtonVisibility.setValue(stopButtonVisibility);
+    }
+
+    @NonNull
+    public MutableLiveData<Integer> getStopButtonVisibility() {
+        return stopButtonVisibility;
     }
 
     @Override

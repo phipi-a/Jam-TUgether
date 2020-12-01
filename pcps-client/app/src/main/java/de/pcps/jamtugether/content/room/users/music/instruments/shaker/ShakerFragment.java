@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.instruments.shaker;
+package de.pcps.jamtugether.content.room.users.music.instruments.shaker;
 
 import android.app.Activity;
 import android.content.Context;

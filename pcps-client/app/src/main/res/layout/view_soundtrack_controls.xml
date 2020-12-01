@@ -16,14 +16,6 @@
             name="onChangeListener"
             type="de.pcps.jamtugether.content.soundtrack.Soundtrack.OnChangeListener" />
 
-        <variable
-            name="playPauseButtonDrawable"
-            type="androidx.lifecycle.LiveData&lt;Drawable&gt;" />
-
-        <variable
-            name="stopButtonVisibility"
-            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
-            android:src="@{playPauseButtonDrawable}"
+            app:imageResource="@{soundtrack.playPauseButtonImageResource}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
@@ -109,7 +101,7 @@
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
-            android:visibility="@{stopButtonVisibility}"
+            android:visibility="@{soundtrack.stopButtonVisibility}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
