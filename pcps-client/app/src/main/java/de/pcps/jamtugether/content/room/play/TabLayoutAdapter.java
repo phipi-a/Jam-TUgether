@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users;
+package de.pcps.jamtugether.content.room.play;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;

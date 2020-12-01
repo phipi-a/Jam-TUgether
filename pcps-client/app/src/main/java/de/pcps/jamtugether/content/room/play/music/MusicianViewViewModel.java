@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music;
+package de.pcps.jamtugether.content.room.play.music;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.instruments.flute;
+package de.pcps.jamtugether.content.room.play.music.instruments.flute;
 
 import androidx.lifecycle.ViewModel;
 

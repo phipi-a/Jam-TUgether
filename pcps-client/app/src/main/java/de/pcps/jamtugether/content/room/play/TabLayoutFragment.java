@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users;
+package de.pcps.jamtugether.content.room.play;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ public abstract class TabLayoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentTabLayoutBinding binding = FragmentTabLayoutBinding.inflate(inflater, container, false);
         tabLayout = binding.tabLayout;
-        tabLayout.setup(binding.viewPager, getTabLayoutAdapter());
+        tabLayout.setup(binding.viewPager, createTabLayoutAdapter());
 
         return binding.getRoot();
     }
@@ -35,5 +35,5 @@ public abstract class TabLayoutFragment extends Fragment {
     }
 
     @NonNull
-    protected abstract TabLayoutAdapter getTabLayoutAdapter();
+    protected abstract TabLayoutAdapter createTabLayoutAdapter();
 }

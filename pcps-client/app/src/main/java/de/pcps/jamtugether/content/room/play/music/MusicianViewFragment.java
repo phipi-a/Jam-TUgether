@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music;
+package de.pcps.jamtugether.content.room.play.music;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,10 +13,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.content.room.users.music.instruments.drums.DrumsFragment;
-import de.pcps.jamtugether.content.room.users.music.instruments.flute.FluteFragment;
-import de.pcps.jamtugether.content.room.users.music.instruments.shaker.ShakerFragment;
-import de.pcps.jamtugether.content.room.users.music.soundtrack.SoundtrackFragment;
+import de.pcps.jamtugether.content.room.play.music.instruments.drums.DrumsFragment;
+import de.pcps.jamtugether.content.room.play.music.instruments.flute.FluteFragment;
+import de.pcps.jamtugether.content.room.play.music.instruments.shaker.ShakerFragment;
+import de.pcps.jamtugether.content.room.play.music.soundtrack.SoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
 

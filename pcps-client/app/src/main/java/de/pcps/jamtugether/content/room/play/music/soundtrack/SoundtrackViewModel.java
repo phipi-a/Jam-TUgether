@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.soundtrack;
+package de.pcps.jamtugether.content.room.play.music.soundtrack;
 
 import android.app.Application;
 import android.content.Context;
@@ -16,12 +16,13 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.content.soundtrack.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
 
 import static de.pcps.jamtugether.content.instrument.Instrument.values;
 
-public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
+public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener, Soundtrack.OnChangeListener {
 
     @Inject
     Application application;
@@ -69,6 +70,26 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());
     }
+
+    @Override
+    public void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume) {
+        soundtrack.setVolume(volume);
+    }
+
+    @Override
+    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
+
+    @Override
+    public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
+
+    @Override
+    public void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack) { }
+
+    @Override
+    public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
+
+    @Override
+    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) { /* wil never be called */ }
 
     @NonNull
     public Instrument getMainInstrument() {

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.soundtrack;
+package de.pcps.jamtugether.content.room.play.music.soundtrack;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,6 +54,8 @@ public class SoundtrackFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
+
+        // todo add two sound track views and bind them to layout (like RoomOverviewFragment)
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.instruments.drums;
+package de.pcps.jamtugether.content.room.play.music.instruments.drums;
 
 import androidx.lifecycle.ViewModel;
 

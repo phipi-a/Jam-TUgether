@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.instruments.shaker;
+package de.pcps.jamtugether.content.room.play.music.instruments.drums;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,29 +12,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.databinding.FragmentShakerBinding;
+import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
 
-public class ShakerFragment extends Fragment {
+public class DrumsFragment extends Fragment {
 
     private Activity activity;
 
-    private ShakerViewModel viewModel;
+    private DrumsViewModel viewModel;
 
     @NonNull
-    public static ShakerFragment newInstance() {
-        return new ShakerFragment();
+    public static DrumsFragment newInstance() {
+        return new DrumsFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(ShakerViewModel.class);
+        viewModel = new ViewModelProvider(this).get(DrumsViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentShakerBinding binding = FragmentShakerBinding.inflate(inflater, container, false);
+        FragmentDrumsBinding binding = FragmentDrumsBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
         return binding.getRoot();
