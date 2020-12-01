@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.regular;
+package de.pcps.jamtugether.content.room.play.overview;
 
 import android.app.Application;
 
@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.content.soundtrack.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
 
-public class RegularRoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
+public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
 
     @Inject
     Application application;
@@ -27,8 +27,7 @@ public class RegularRoomOverviewViewModel extends ViewModel implements Soundtrac
     @NonNull
     private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
 
-
-    public RegularRoomOverviewViewModel(int roomID) {
+    public RoomOverviewViewModel(int roomID) {
         AppInjector.inject(this);
         this.roomID = roomID;
     }
@@ -63,7 +62,14 @@ public class RegularRoomOverviewViewModel extends ViewModel implements Soundtrac
     public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
 
     @Override
-    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) { /* will never happen */ }
+    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) {
+        // todo update sound track list if sound track is in the list
+        deleteSoundtrack();
+    }
+
+    private void deleteSoundtrack() {
+        // todo delete soundtrack on server
+    }
 
     private void fetchAllSoundtracks() {
         // todo get all soundtracks from server and update current list after
@@ -95,8 +101,8 @@ public class RegularRoomOverviewViewModel extends ViewModel implements Soundtrac
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(RegularRoomOverviewViewModel.class)) {
-                return (T) new RegularRoomOverviewViewModel(roomID);
+            if (modelClass.isAssignableFrom(RoomOverviewViewModel.class)) {
+                return (T) new RoomOverviewViewModel(roomID);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

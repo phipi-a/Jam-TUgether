@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/admin_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.users.admin.AdminRoomFragment"
+        android:name="de.pcps.jamtugether.content.room.play.AdminRoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/regular_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.users.regular.RegularRoomFragment"
+        android:name="de.pcps.jamtugether.content.room.play.RegularRoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"

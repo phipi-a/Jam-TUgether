@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.music.soundtrack;
+package de.pcps.jamtugether.content.room.play.music.soundtrack;
 
 import android.app.Application;
 import android.content.Context;

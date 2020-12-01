@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.admin;
+package de.pcps.jamtugether.content.room.play.overview;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,32 +10,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.content.soundtrack.adapters.AdminSoundtrackListAdapter;
+import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
 
-public class AdminRoomOverviewFragment extends Fragment {
+public abstract class RoomOverviewFragment extends Fragment {
 
-    private static final String ROOM_ID_KEY = "room_id_key";
+    protected static final String ROOM_ID_KEY = "room_id_key";
 
-    private AdminRoomOverviewViewModel viewModel;
-
-    @NonNull
-    public static AdminRoomOverviewFragment newInstance(int roomID) {
-        AdminRoomOverviewFragment fragment = new AdminRoomOverviewFragment();
-        Bundle args = new Bundle();
-        args.putInt(ROOM_ID_KEY, roomID);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    protected RoomOverviewViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            AdminRoomOverviewViewModel.Factory viewModelFactory = new AdminRoomOverviewViewModel.Factory(roomID);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(AdminRoomOverviewViewModel.class);
+            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
         }
     }
 
@@ -45,17 +36,20 @@ public class AdminRoomOverviewFragment extends Fragment {
         FragmentRoomOverviewBinding binding = FragmentRoomOverviewBinding.inflate(inflater, container, false);
         binding.setRoomID(viewModel.getRoomID());
 
+        // bind composite track of view model to soundtrack controls layout
         ViewSoundtrackControlsBinding compositeSoundtrackControls = binding.compositeSoundtrackLayout.soundtrackControlsLayout;
         viewModel.getCompositeSoundtrack().observe(getViewLifecycleOwner(), compositeSoundtrackControls::setSoundtrack);
         compositeSoundtrackControls.setOnChangeListener(viewModel);
         compositeSoundtrackControls.setLifecycleOwner(getViewLifecycleOwner());
-
         binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
-        AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
+        SoundtrackListAdapter adapter = createSoundtrackListAdapter();
         binding.allSoundtracksRecyclerView.setAdapter(adapter);
         viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), adapter::submitList);
 
         return binding.getRoot();
     }
+
+    @SuppressWarnings("rawtypes")
+    protected abstract SoundtrackListAdapter createSoundtrackListAdapter();
 }

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users.regular;
+package de.pcps.jamtugether.content.room.play;
 
 import android.os.Bundle;
 
@@ -9,13 +9,10 @@ import androidx.fragment.app.Fragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.views.JamTabView;
-import de.pcps.jamtugether.content.room.users.music.MusicianViewFragment;
-import de.pcps.jamtugether.content.room.users.TabLayoutAdapter;
-import de.pcps.jamtugether.content.room.users.TabLayoutFragment;
 
-public class RegularRoomFragment extends TabLayoutFragment {
+public abstract class RoomFragment extends TabLayoutFragment {
 
-    private int roomID;
+    protected int roomID;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,13 +25,13 @@ public class RegularRoomFragment extends TabLayoutFragment {
 
     @NonNull
     @Override
-    protected TabLayoutAdapter getTabLayoutAdapter() {
+    protected TabLayoutAdapter createTabLayoutAdapter() {
         return new TabLayoutAdapter(this) {
 
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? RegularRoomOverviewFragment.newInstance(roomID) : MusicianViewFragment.newInstance(roomID);
+                return RoomFragment.this.createFragment(position);
             }
 
             @Override
@@ -55,4 +52,7 @@ public class RegularRoomFragment extends TabLayoutFragment {
             }
         };
     }
+
+    @NonNull
+    protected abstract Fragment createFragment(int position);
 }
