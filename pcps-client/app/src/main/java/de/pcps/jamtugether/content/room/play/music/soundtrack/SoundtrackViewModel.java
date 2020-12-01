@@ -99,7 +99,10 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     }
 
     @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
+    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
+        // todo update stop button visibility of soundtrack
+        // todo update play button drawable of soundtrack
+    }
 
     @Override
     public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
@@ -112,6 +115,10 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @Override
     public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) { /* wil never be called */ }
+
+    private void fetchAllSoundtracks() {
+        // todo get all soundtracks from server and update current list after
+    }
 
     @NonNull
     public Instrument getCurrentInstrument() {
