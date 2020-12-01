@@ -55,6 +55,8 @@ public class SoundtrackFragment extends Fragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
+        // todo add two sound track views and bind them to layout (like RoomOverviewFragment)
+
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {
                 AlertDialog dialog = UiUtils.createInfoDialog(context, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
