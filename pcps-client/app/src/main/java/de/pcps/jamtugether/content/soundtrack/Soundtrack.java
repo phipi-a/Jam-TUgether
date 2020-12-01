@@ -85,6 +85,11 @@ public class Soundtrack extends ArrayList<Sound> {
         return new Soundtrack(0);
     }
 
+    public static Soundtrack ownFrom(@NonNull List<Soundtrack> soundtracks) {
+        // todo
+        return new Soundtrack(0);
+    }
+
     public static DiffUtil.ItemCallback<Soundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Soundtrack>() {
         @Override
         public boolean areItemsTheSame(@NonNull Soundtrack oldItem, @NonNull Soundtrack newItem) {

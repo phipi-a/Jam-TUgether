@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
+import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class SoundtrackFragment extends Fragment {
@@ -47,6 +48,7 @@ public class SoundtrackFragment extends Fragment {
             SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, onChangeCallback);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackViewModel.class);
         }
+
     }
 
     @Nullable
@@ -56,6 +58,18 @@ public class SoundtrackFragment extends Fragment {
         binding.setViewModel(viewModel);
 
         // todo add two sound track views and bind them to layout (like RoomOverviewFragment)
+        ViewSoundtrackControlsBinding compositeSoundtrackControls = binding.compositeSoundtrackLayout.soundtrackControlsLayout;
+        viewModel.getCompositeSoundtrack().observe(getViewLifecycleOwner(), compositeSoundtrackControls::setSoundtrack);
+        compositeSoundtrackControls.setOnChangeListener(viewModel);
+        compositeSoundtrackControls.setLifecycleOwner(getViewLifecycleOwner());
+        binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+
+        ViewSoundtrackControlsBinding ownSoundtrackControls = binding.ownSoundtrackLayout.soundtrackControlsLayout;
+        viewModel.getOwnSoundtrack().observe(getViewLifecycleOwner(), ownSoundtrackControls::setSoundtrack);
+        ownSoundtrackControls.setOnChangeListener(viewModel);
+        ownSoundtrackControls.setLifecycleOwner(getViewLifecycleOwner());
+        binding.ownSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
+
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {
