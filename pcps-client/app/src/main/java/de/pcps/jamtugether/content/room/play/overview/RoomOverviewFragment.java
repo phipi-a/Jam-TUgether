@@ -10,9 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
-import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
+import timber.log.Timber;
 
 public abstract class RoomOverviewFragment extends Fragment {
 
@@ -36,11 +37,8 @@ public abstract class RoomOverviewFragment extends Fragment {
         FragmentRoomOverviewBinding binding = FragmentRoomOverviewBinding.inflate(inflater, container, false);
         binding.setRoomID(viewModel.getRoomID());
 
-        // bind composite track of view model to soundtrack controls layout
-        ViewSoundtrackControlsBinding compositeSoundtrackControls = binding.compositeSoundtrackLayout.soundtrackControlsLayout;
-        viewModel.getCompositeSoundtrack().observe(getViewLifecycleOwner(), compositeSoundtrackControls::setSoundtrack);
-        compositeSoundtrackControls.setOnChangeListener(viewModel);
-        compositeSoundtrackControls.setLifecycleOwner(getViewLifecycleOwner());
+        Timber.d("bind composite sound overview");
+        SoundtrackDataBindingUtils.bind(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
         binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         SoundtrackListAdapter adapter = createSoundtrackListAdapter();
