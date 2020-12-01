@@ -19,7 +19,6 @@ import de.pcps.jamtugether.content.instrument.Instrument;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class SoundtrackFragment extends Fragment {
 
@@ -57,11 +56,9 @@ public class SoundtrackFragment extends Fragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        Timber.d("bind composite sound");
         SoundtrackDataBindingUtils.bind(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
         binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
-        Timber.d("bind own sound");
         SoundtrackDataBindingUtils.bind(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), viewModel, getViewLifecycleOwner());
         binding.ownSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 

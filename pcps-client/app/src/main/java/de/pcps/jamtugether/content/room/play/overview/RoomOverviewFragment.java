@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
-import timber.log.Timber;
 
 public abstract class RoomOverviewFragment extends Fragment {
 
@@ -37,7 +36,6 @@ public abstract class RoomOverviewFragment extends Fragment {
         FragmentRoomOverviewBinding binding = FragmentRoomOverviewBinding.inflate(inflater, container, false);
         binding.setRoomID(viewModel.getRoomID());
 
-        Timber.d("bind composite sound overview");
         SoundtrackDataBindingUtils.bind(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
         binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
