@@ -7,6 +7,9 @@ const dbConfig = require('./db/database')
 // Set port
 const PORT = process.env.PORT || 3000
 
+/* Load token config from dotenv */
+require('dotenv').config()
+
 // Connecting MongoDB
 mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(error => console.log('Couldn\' connect database ' + error))

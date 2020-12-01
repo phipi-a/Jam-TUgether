@@ -1,7 +1,7 @@
 ### 
-POST http://localhost:3000/room  
+POST http://localhost:3000/api/test  
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb29tIjoiMSIsInBhc3N3b3JkIjoiJDJiJDEwJEUxa0UuWm55aVBrT3VFQWNBUlE0Lk9BNHFIU2V0Q21la0lpMmt4WGVNaEY5SjluQ3lXQzZLIiwiaWF0IjoxNjA2Mzk0OTQ2LCJleHAiOjE2MDYzOTY3NDZ9.SHX0uJZpMXhZNZO3etQeC0h5dK2hkx7La-CwVmwm75s
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Ng.YUMkJAcv0ip3kESurKzKNdjOdCDTAoWazKGvhAMwFnY
 
 { 
   "instrument": "1", 
@@ -11,5 +11,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb29tIjoiMSIsInBhc
 
 ###
 
-GET http://localhost:3000/room
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb29tIjoiMSIsInBhc3N3b3JkIjoiJDJiJDEwJEUxa0UuWm55aVBrT3VFQWNBUlE0Lk9BNHFIU2V0Q21la0lpMmt4WGVNaEY5SjluQ3lXQzZLIiwiaWF0IjoxNjA2Mzk0OTQ2LCJleHAiOjE2MDYzOTY3NDZ9.SHX0uJZpMXhZNZO3etQeC0h5dK2hkx7La-CwVmwm75s
+POST http://localhost:3000/api/create-room
+Content-Type: application/json
+
+{
+  "roomID": "6",
+  "password" : "1"
+
+}
+
+###
+
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+  "roomID": "24",
+  "password" : "1"
+
+}

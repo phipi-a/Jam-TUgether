@@ -11,6 +11,7 @@ const roomRoute = express.Router()
 // DB schema
 const RoomSchema = require('../model/room.model')
 
+
 /**
  * @openapi
  * /api/create-room:
@@ -49,16 +50,18 @@ roomRoute.post('/create-room', async (req, res, next) => {
       if (error) {
         return next(error)
       } else {
+        const token = createToken(req.body.roomID + '')
+        // TODO send token to client and save token to user
+        console.log(token)
         res.json(data)
       }
     })
-    // const token = createToken()
   } catch {
     res.status(500).send('Couldn\'t create room.')
   }
 })
 
-roomRoute.post('/test', async (req, res) => {
+roomRoute.post('/test', verify, async (req, res) => {
   res.status(500).send('test')
 })
 
@@ -93,7 +96,10 @@ roomRoute.post('/login', async (req, res) => {
       return res.status(401).send('No room with matching roomId found')
     }
     if (await bcrypt.compare(req.body.password, room.password)) {
-      // TODO: token?
+      const token = createToken(req.body.roomID + '')
+      // TODO send token to client and save token to user
+      console.log(token)
+
       res.send('Logged in successfuly')
     } else {
       res.status(401).send('Wrong Password.')
