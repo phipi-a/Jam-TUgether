@@ -6,8 +6,6 @@
 
     <data>
 
-        <import type="android.graphics.drawable.Drawable" />
-
         <variable
             name="soundtrack"
             type="de.pcps.jamtugether.content.soundtrack.Soundtrack" />
@@ -15,14 +13,6 @@
         <variable
             name="onChangeListener"
             type="de.pcps.jamtugether.content.soundtrack.Soundtrack.OnChangeListener" />
-
-        <variable
-            name="playPauseButtonDrawable"
-            type="androidx.lifecycle.LiveData&lt;Drawable&gt;" />
-
-        <variable
-            name="stopButtonVisibility"
-            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
 
     </data>
 
@@ -46,18 +36,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:stepSize="1"
+            android:value="@{soundtrack.volume}"
             android:valueFrom="0"
             android:valueTo="100"
-            android:value="@{soundtrack.volume}"
             app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:soundtrack="@{soundtrack}"
+            app:onVolumeChanged="@{(slider, value, fromUser) -> onChangeListener.onVolumeChanged(soundtrack, value)}"
             app:thumbColor="@color/iconColor"
             app:tickColorActive="@color/volumeSliderTickActiveColor"
             app:tickColorInactive="@color/volumeSliderTickInactiveColor"
             app:trackColorActive="@color/volumeSliderTickActiveColor"
-            app:trackColorInactive="@color/volumeSliderTickInactiveColor"
-            app:volumeListener="@{onChangeListener}" />
+            app:trackColorInactive="@color/volumeSliderTickInactiveColor" />
 
         <ImageView
             android:id="@+id/volume_up_icon"
@@ -86,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
-            android:src="@{playPauseButtonDrawable}"
+            app:imageResource="@{soundtrack.playPauseButtonImageResource}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
@@ -109,7 +98,7 @@
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
-            android:visibility="@{stopButtonVisibility}"
+            android:visibility="@{soundtrack.stopButtonVisibility}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />

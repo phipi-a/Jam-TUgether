@@ -6,8 +6,9 @@ import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.content.room.create.CreateRoomViewModel;
 import de.pcps.jamtugether.content.room.join.JoinRoomViewModel;
-import de.pcps.jamtugether.content.room.users.MusicianViewViewModel;
+import de.pcps.jamtugether.content.room.users.music.MusicianViewViewModel;
 import de.pcps.jamtugether.content.room.users.admin.AdminRoomOverviewViewModel;
+import de.pcps.jamtugether.content.room.users.music.soundtrack.SoundtrackViewModel;
 import de.pcps.jamtugether.content.room.users.regular.RegularRoomOverviewViewModel;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
@@ -30,5 +31,5 @@ public interface AppComponent {
 
     void inject(RegularRoomOverviewViewModel regularRoomOverviewViewModel);
 
-    void inject(MusicianViewViewModel musicianViewViewModel);
+    void inject(SoundtrackViewModel soundtrackViewModel);
 }

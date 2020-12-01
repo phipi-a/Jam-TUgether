@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +47,10 @@ public class UiUtils {
     @NonNull
     public static AlertDialog createConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, OnDialogPositiveButtonClickedCallback callback) {
         return createConfirmationDialog(context, context.getString(title), context.getString(message), callback);
+    }
+
+    public static int getDimenPixels(@NonNull Context context, @DimenRes int dimen) {
+        return context.getResources().getDimensionPixelSize(dimen);
     }
 
     public interface OnDialogPositiveButtonClickedCallback {

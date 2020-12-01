@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.room.users;
+package de.pcps.jamtugether.content.room.users.music.soundtrack;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,11 +15,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class MusicianViewViewModel extends ViewModel implements Instrument.ClickListener {
+import static de.pcps.jamtugether.content.instrument.Instrument.values;
+
+public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
     @Inject
     Application application;
@@ -29,28 +31,35 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
 
     private final int roomID;
 
+    @NonNull
+    private final Instrument.OnChangeCallback onChangeCallback;
+
     private String helpDialogTitle;
     private String helpDialogMessage;
 
-    @NonNull
-    private final MutableLiveData<Instrument> selectedInstrument;
+    private Instrument currentInstrument;
 
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
-    public MusicianViewViewModel(int roomID) {
+    public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
+        this.onChangeCallback = onChangeCallback;
 
         Instrument mainInstrument = preferences.getMainInstrument();
-        selectedInstrument = new MutableLiveData<>(mainInstrument);
+        onChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
+        currentInstrument = mainInstrument;
     }
 
     @Override
     public void onInstrumentClicked(@NonNull Instrument instrument) {
-        selectedInstrument.setValue(instrument);
-        updateHelpDialogData(instrument);
+        if(instrument != currentInstrument) {
+            onChangeCallback.onInstrumentChanged(instrument);
+            updateHelpDialogData(instrument);
+            currentInstrument = instrument;
+        }
     }
 
     private void updateHelpDialogData(@NonNull Instrument instrument) {
@@ -66,6 +75,19 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
         return preferences.getMainInstrument();
     }
 
+    @NonNull
+    public List<Instrument> getInstruments() {
+        return Arrays.asList(values());
+    }
+
+    public void onHelpButtonClicked() {
+        showHelpDialog.setValue(true);
+    }
+
+    public void onHelpDialogShown() {
+        showHelpDialog.setValue(false);
+    }
+
     public int getRoomID() {
         return roomID;
     }
@@ -79,24 +101,6 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
     }
 
     @NonNull
-    public List<Instrument> getInstruments() {
-        return Arrays.asList(Instrument.values());
-    }
-
-    public void onHelpButtonClicked() {
-        showHelpDialog.setValue(true);
-    }
-
-    public void onHelpDialogShown() {
-        showHelpDialog.setValue(false);
-    }
-
-    @NonNull
-    public LiveData<Instrument> getSelectedInstrument() {
-        return selectedInstrument;
-    }
-
-    @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
     }
@@ -105,16 +109,20 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.Click
 
         private final int roomID;
 
-        public Factory(int roomID) {
+        @NonNull
+        private final Instrument.OnChangeCallback onChangeCallback;
+
+        public Factory(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
             this.roomID = roomID;
+            this.onChangeCallback = onChangeCallback;
         }
 
         @SuppressWarnings("unchecked")
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(MusicianViewViewModel.class)) {
-                return (T) new MusicianViewViewModel(roomID);
+            if (modelClass.isAssignableFrom(SoundtrackViewModel.class)) {
+                return (T) new SoundtrackViewModel(roomID, onChangeCallback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
