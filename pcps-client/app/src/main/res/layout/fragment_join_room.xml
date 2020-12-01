@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.join.JoinRoomViewModel" />
+            type="de.pcps.jamtugether.content.menu.join.JoinRoomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

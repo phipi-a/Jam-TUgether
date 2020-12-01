@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.play.music.soundtrack.SoundtrackViewModel" />
+            type="de.pcps.jamtugether.content.room.music.soundtrack.SoundtrackViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

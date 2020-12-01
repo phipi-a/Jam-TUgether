@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/create_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.create.CreateRoomFragment"
+        android:name="de.pcps.jamtugether.content.menu.create.CreateRoomFragment"
         tools:layout="@layout/fragment_create_room">
         <action
             android:id="@+id/action_create_room_fragment_to_admin_room_fragment"
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/join_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.join.JoinRoomFragment"
+        android:name="de.pcps.jamtugether.content.menu.join.JoinRoomFragment"
         tools:layout="@layout/fragment_join_room">
         <action
             android:id="@+id/action_join_room_fragment_to_regular_room_fragment"
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/admin_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.play.AdminRoomFragment"
+        android:name="de.pcps.jamtugether.content.room.AdminRoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/regular_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.play.RegularRoomFragment"
+        android:name="de.pcps.jamtugether.content.room.RegularRoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"

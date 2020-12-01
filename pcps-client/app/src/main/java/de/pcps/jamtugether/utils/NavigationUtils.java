@@ -11,15 +11,11 @@ import androidx.navigation.NavController;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
-import de.pcps.jamtugether.content.room.create.CreateRoomFragmentDirections;
-import de.pcps.jamtugether.content.room.join.JoinRoomFragmentDirections;
+import de.pcps.jamtugether.content.menu.create.CreateRoomFragmentDirections;
+import de.pcps.jamtugether.content.menu.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
 
 public class NavigationUtils {
-
-    public static void navigateBack(@NonNull NavController nc) {
-        nc.popBackStack();
-    }
 
     public static void navigateToMenu(@NonNull NavController nc) {
         nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());

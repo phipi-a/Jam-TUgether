@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.create.CreateRoomViewModel" />
+            type="de.pcps.jamtugether.content.menu.create.CreateRoomViewModel" />
     </data>
 
 

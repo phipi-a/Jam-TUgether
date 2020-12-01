@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
-import de.pcps.jamtugether.content.room.create.CreateRoomViewModel;
-import de.pcps.jamtugether.content.room.join.JoinRoomViewModel;
-import de.pcps.jamtugether.content.room.play.music.soundtrack.SoundtrackViewModel;
-import de.pcps.jamtugether.content.room.play.overview.RoomOverviewViewModel;
+import de.pcps.jamtugether.content.menu.create.CreateRoomViewModel;
+import de.pcps.jamtugether.content.menu.join.JoinRoomViewModel;
+import de.pcps.jamtugether.content.room.music.soundtrack.SoundtrackViewModel;
+import de.pcps.jamtugether.content.room.overview.RoomOverviewViewModel;
 import de.pcps.jamtugether.content.settings.SettingsViewModel;
 import de.pcps.jamtugether.content.welcome.WelcomeViewModel;
 
