@@ -1,15 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const dbConfig = require('./db/database')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-const dbConfig = require('./db/database')
+require('dotenv').config()
 
 // Set port
 const PORT = process.env.PORT || 3000
 
 // Connecting MongoDB
 mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .catch(error => console.log('Couldn\' connect database ' + error))
+  .catch(error => console.log('Couldn\'t connect database ' + error))
 
 const db = mongoose.connection
 // Catch error after initial connection
@@ -32,10 +33,8 @@ const swaggerOptions = {
   },
   // In which files the documentation comments are
   apis: ['server.js', 'routes/room.route.js'],
-  // Define endpoint
-  servers: {
-    url: '/api'
-  }
+  // Define endpoint in documentation
+  servers: [{ url: '/api', description: 'The API server'}]
 }
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions)

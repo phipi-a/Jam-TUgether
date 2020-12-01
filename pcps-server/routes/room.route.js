@@ -59,7 +59,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 })
 
 roomRoute.post('/test', async (req, res) => {
-  res.status(500).send('test')
+  res.status(200).send('test')
 })
 
 /**
@@ -81,6 +81,10 @@ roomRoute.post('/test', async (req, res) => {
  *     responses:
  *       200:
  *         description: Success
+ *       401:
+ *         description: Wrong password or rommID
+ *       500:
+ *         description: Failure
  */
 roomRoute.post('/login', async (req, res) => {
   // Compare passwords
@@ -94,7 +98,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     if (await bcrypt.compare(req.body.password, room.password)) {
       // TODO: token?
-      res.send('Logged in successfuly')
+      res.status(200).send('Logged in successfuly')
     } else {
       res.status(401).send('Wrong Password.')
     }
