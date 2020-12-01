@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.content.room.play.music;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +25,6 @@ public class MusicianViewFragment extends Fragment {
     private static final String ROOM_ID_KEY = "room_id_key";
 
     private int roomID;
-
-    private Context context;
 
     private MusicianViewViewModel viewModel;
 
@@ -55,7 +52,9 @@ public class MusicianViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMusicianViewBinding binding = FragmentMusicianViewBinding.inflate(inflater, container, false);
 
-        addSoundtrackFragment();
+        if(savedInstanceState == null) {
+            addSoundtrackFragment();
+        }
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
             if(showFluteFragment) {
@@ -89,11 +88,5 @@ public class MusicianViewFragment extends Fragment {
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {
         FragmentManager fragmentManager = getChildFragmentManager();
         NavigationUtils.replaceFragment(fragmentManager, fragment, R.id.instrument_fragment_container);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.context = context;
     }
 }
