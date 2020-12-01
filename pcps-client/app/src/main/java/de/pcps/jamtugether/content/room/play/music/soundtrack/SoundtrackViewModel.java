@@ -92,8 +92,8 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) { /* wil never be called */ }
 
     @NonNull
-    public Instrument getMainInstrument() {
-        return preferences.getMainInstrument();
+    public Instrument getCurrentInstrument() {
+        return currentInstrument;
     }
 
     @NonNull
