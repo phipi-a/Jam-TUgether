@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -55,7 +56,11 @@ public class SoundtrackFragment extends Fragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        // todo add two sound track views and bind them to layout (like RoomOverviewFragment)
+        SoundtrackDataBindingUtils.bind(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
+        binding.compositeSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+
+        SoundtrackDataBindingUtils.bind(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), viewModel, getViewLifecycleOwner());
+        binding.ownSoundtrackLayout.soundtrackView.observeSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {

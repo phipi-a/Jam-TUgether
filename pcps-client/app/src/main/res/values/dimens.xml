@@ -13,4 +13,5 @@
     <dimen name="soundtrack_item_margin_top">10dp</dimen>
     <dimen name="soundtrack_item_margin_start">20dp</dimen> <!-- start is 20dp to account for the 10dp space of the clear button -->
     <dimen name="soundtrack_item_margin_end">10dp</dimen>
+    <dimen name="own_soundtrack_margin_top">20dp</dimen> <!-- soundtrack_item_margin_top * 2 -->
 </resources>

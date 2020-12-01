@@ -49,5 +49,29 @@
             app:layout_constraintTop_toTopOf="@id/room_id_text_view"
             app:tint="@color/iconColor" />
 
+        <include
+            android:id="@+id/composite_soundtrack_layout"
+            layout="@layout/view_soundtrack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="@dimen/soundtrack_first_item_margin_top"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
+
+        <include
+            android:id="@+id/own_soundtrack_layout"
+            layout="@layout/view_soundtrack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="@dimen/own_soundtrack_margin_top"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/composite_soundtrack_layout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

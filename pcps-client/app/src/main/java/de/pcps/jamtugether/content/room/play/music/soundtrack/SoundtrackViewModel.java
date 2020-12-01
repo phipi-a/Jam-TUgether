@@ -6,9 +6,11 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +45,12 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
+
+    @NonNull
+    private final MutableLiveData<Soundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
+
     public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
@@ -52,6 +60,20 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         onChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
+    }
+
+    @NonNull
+    private List<Soundtrack> generateTestSoundtracks() {
+        List<Soundtrack> list = new ArrayList<>();
+        for(int i = 0; i < 10; i++) {
+            list.add(new Soundtrack(i));
+        }
+        return list;
+    }
+
+    @NonNull
+    private Soundtrack generateTestOwnSoundtrack() {
+        return new Soundtrack(0);
     }
 
     @Override
@@ -124,6 +146,21 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
+    }
+
+    @NonNull
+    private LiveData<List<Soundtrack>> getAllSoundtracks() {
+        return allSoundtracks;
+    }
+
+    @NonNull
+    public LiveData<Soundtrack> getCompositeSoundtrack() {
+        return Transformations.map(getAllSoundtracks(), Soundtrack::compositeFrom);
+    }
+
+    @NonNull
+    public LiveData<Soundtrack> getOwnSoundtrack() {
+        return ownSoundtrack;
     }
 
     static class Factory implements ViewModelProvider.Factory {
