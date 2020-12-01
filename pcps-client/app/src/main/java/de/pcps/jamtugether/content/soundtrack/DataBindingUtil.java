@@ -7,8 +7,8 @@ import com.google.android.material.slider.Slider;
 
 public class DataBindingUtil {
 
-    @BindingAdapter({"volumeListener", "soundtrack"})
-    public static void setVolumeListener(@NonNull Slider slider, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull Soundtrack soundtrack) {
-        slider.addOnChangeListener((slider1, value, fromUser) -> onChangeListener.onVolumeChanged(soundtrack, value));
+    @BindingAdapter("onVolumeChanged")
+    public static void setOnChangeListener(@NonNull Slider slider, @NonNull Slider.OnChangeListener sliderOnChangeListener) {
+        slider.addOnChangeListener(sliderOnChangeListener);
     }
 }

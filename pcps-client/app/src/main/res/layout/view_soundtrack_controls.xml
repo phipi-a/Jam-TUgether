@@ -6,8 +6,6 @@
 
     <data>
 
-        <import type="android.graphics.drawable.Drawable" />
-
         <variable
             name="soundtrack"
             type="de.pcps.jamtugether.content.soundtrack.Soundtrack" />
@@ -38,18 +36,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:stepSize="1"
+            android:value="@{soundtrack.volume}"
             android:valueFrom="0"
             android:valueTo="100"
-            android:value="@{soundtrack.volume}"
             app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:soundtrack="@{soundtrack}"
+            app:onVolumeChanged="@{(slider, value, fromUser) -> onChangeListener.onVolumeChanged(soundtrack, value)}"
             app:thumbColor="@color/iconColor"
             app:tickColorActive="@color/volumeSliderTickActiveColor"
             app:tickColorInactive="@color/volumeSliderTickInactiveColor"
             app:trackColorActive="@color/volumeSliderTickActiveColor"
-            app:trackColorInactive="@color/volumeSliderTickInactiveColor"
-            app:volumeListener="@{onChangeListener}" />
+            app:trackColorInactive="@color/volumeSliderTickInactiveColor" />
 
         <ImageView
             android:id="@+id/volume_up_icon"
