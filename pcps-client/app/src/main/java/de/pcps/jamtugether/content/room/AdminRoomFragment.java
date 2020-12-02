@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import de.pcps.jamtugether.content.room.music.MusicianViewFragment;
 import de.pcps.jamtugether.content.room.overview.AdminRoomOverviewFragment;
 
-
 public class AdminRoomFragment extends RoomFragment {
 
     @NonNull

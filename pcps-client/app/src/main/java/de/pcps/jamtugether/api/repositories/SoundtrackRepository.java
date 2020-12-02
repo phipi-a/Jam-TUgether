@@ -2,8 +2,6 @@ package de.pcps.jamtugether.api.repositories;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,7 +18,7 @@ public class SoundtrackRepository {
     //SoundtrackService soundtrackService;
 
     @Inject
-    public SoundtrackRepository() {}
+    public SoundtrackRepository() { }
 
     public void getAllSoundtracks(int roomID, @NonNull BaseCallback<SoundtrackListResponse> callback) {
         //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);

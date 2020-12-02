@@ -37,7 +37,7 @@ public class JoinRoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentJoinRoomBinding binding = FragmentJoinRoomBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
         binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());

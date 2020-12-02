@@ -15,7 +15,7 @@ public class SoundtrackView extends View {
         super(context, attrs);
     }
 
-    public void observeSoundtrack(LiveData<Soundtrack> sound, LifecycleOwner lifecycleOwner) {
+    public void observeSoundtrack(@NonNull LiveData<Soundtrack> sound, @NonNull LifecycleOwner lifecycleOwner) {
         sound.observe(lifecycleOwner, this::draw);
     }
 

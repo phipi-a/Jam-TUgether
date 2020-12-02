@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
@@ -19,7 +18,6 @@ import de.pcps.jamtugether.content.room.music.soundtrack.SoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
-// this fragment contains soundtrack fragment AND the instrument fragment
 public class MusicianViewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
@@ -81,12 +79,10 @@ public class MusicianViewFragment extends Fragment {
     }
 
     private void addSoundtrackFragment() {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        NavigationUtils.replaceFragment(fragmentManager, SoundtrackFragment.newInstance(roomID, viewModel), R.id.soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID, viewModel), R.id.soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        NavigationUtils.replaceFragment(fragmentManager, fragment, R.id.instrument_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), fragment, R.id.instrument_fragment_container);
     }
 }

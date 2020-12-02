@@ -35,7 +35,7 @@ public class FluteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }

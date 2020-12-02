@@ -34,9 +34,9 @@
              leaving too much space between the controls and the actual view -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="-10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp">
 
             <de.pcps.jamtugether.content.soundtrack.SoundtrackView
                 android:id="@+id/soundtrack_view"

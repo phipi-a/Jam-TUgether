@@ -17,7 +17,7 @@ public class RoomRepository {
     //RoomService roomService;
 
     @Inject
-    public RoomRepository() {}
+    public RoomRepository() { }
 
     public void createRoom(@NonNull String password, @NonNull BaseCallback<CreateRoomResponse> callback) {
         //Call<CreateRoomResponse> call = roomService.createRoom(password);

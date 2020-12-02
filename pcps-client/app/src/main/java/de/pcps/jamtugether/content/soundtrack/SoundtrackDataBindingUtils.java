@@ -4,12 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.android.material.slider.Slider;
 
 import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
-import timber.log.Timber;
 
 public class SoundtrackDataBindingUtils {
 

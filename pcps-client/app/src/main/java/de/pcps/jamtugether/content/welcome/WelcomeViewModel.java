@@ -33,6 +33,7 @@ public class WelcomeViewModel extends ViewModel implements Instrument.ClickListe
         navigateToMenu.setValue(true);
     }
 
+    @NonNull
     public List<Instrument> getInstruments() {
         return Arrays.asList(Instrument.values());
     }

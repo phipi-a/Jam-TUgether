@@ -49,10 +49,6 @@ public class UiUtils {
         return createConfirmationDialog(context, context.getString(title), context.getString(message), callback);
     }
 
-    public static int getDimenPixels(@NonNull Context context, @DimenRes int dimen) {
-        return context.getResources().getDimensionPixelSize(dimen);
-    }
-
     public interface OnDialogPositiveButtonClickedCallback {
         void onPositiveButtonClicked();
     }

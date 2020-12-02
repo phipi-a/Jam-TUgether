@@ -89,7 +89,7 @@ public class JoinRoomViewModel extends ViewModel {
 
         roomRepository.joinRoom(roomID, password, new BaseCallback<JoinRoomResponse>() {
             @Override
-            public void onResponse(@NonNull JoinRoomResponse response) {
+            public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 navigateToRegularRoom.setValue(true);
             }

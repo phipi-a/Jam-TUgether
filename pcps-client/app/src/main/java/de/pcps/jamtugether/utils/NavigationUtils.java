@@ -1,15 +1,11 @@
 package de.pcps.jamtugether.utils;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.content.menu.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.content.menu.join.JoinRoomFragmentDirections;

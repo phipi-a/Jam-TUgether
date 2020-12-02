@@ -35,7 +35,7 @@ public class ShakerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentShakerBinding binding = FragmentShakerBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }

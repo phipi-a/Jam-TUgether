@@ -61,7 +61,7 @@ public class CreateRoomViewModel extends ViewModel {
 
         roomRepository.createRoom(password, new BaseCallback<CreateRoomResponse>() {
             @Override
-            public void onResponse(@NonNull CreateRoomResponse response) {
+            public void onSuccess(@NonNull CreateRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 roomID = response.getRoomID();
                 navigateToAdminRoom.setValue(true);

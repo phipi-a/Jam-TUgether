@@ -17,7 +17,7 @@ public abstract class BaseCallback<T> implements Callback<T> {
             if(body == null) {
                 onError(new GenericError());
             } else {
-                onResponse(body);
+                onSuccess(body);
             }
         } else {
             onError(Error.from(response.code()));
@@ -29,7 +29,7 @@ public abstract class BaseCallback<T> implements Callback<T> {
         onError(Error.from(t));
     }
 
-    public abstract void onResponse(@NonNull T response);
+    public abstract void onSuccess(@NonNull T response);
 
     public abstract void onError(@NonNull Error error);
 }
