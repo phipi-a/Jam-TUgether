@@ -39,28 +39,30 @@ public class FluteViewModel extends ViewModel {
     }
 
     public void startFlute(Context context) {
-        soundRecorder = new MediaRecorder();
-        soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        soundRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        soundRecorder.setOutputFile("/dev/null");
-        try {
-            soundRecorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!playing.getValue()) {
+            soundRecorder = new MediaRecorder();
+            soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            soundRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            soundRecorder.setOutputFile("/dev/null");
+            try {
+                soundRecorder.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(1)
+                    .build();
+            fluteSoundId = soundPool.load(context, R.raw.flute_sound, 1);
+
+            soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+                soundRecorder.start();
+                playing.setValue(true);
+
+                startSoundReact();
+
+            });
         }
-        soundPool = new SoundPool.Builder()
-                .setMaxStreams(1)
-                .build();
-        fluteSoundId = soundPool.load(context, R.raw.flute_sound, 1);
-
-        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            soundRecorder.start();
-            playing.setValue(true);
-
-            startSoundReact();
-
-        });
     }
 
     public void startSoundReact() {
@@ -94,10 +96,17 @@ public class FluteViewModel extends ViewModel {
         if (soundReactThread != null) {
             soundReactThread.interrupt();
             soundReactThread = null;
+            soundRecorder.stop();
+            soundRecorder.release();
             soundRecorder = null;
+            if(fluteStreamingId!=0) {
+                soundPool.stop(fluteStreamingId);
+                fluteStreamingId = 0;
+            }
+            soundPool.release();
             soundPool = null;
-            fluteStreamingId = 0;
             fluteSoundId = 0;
+            playing.setValue(false);
         }
     }
 
