@@ -2,6 +2,7 @@ package de.pcps.jamtugether.content.room.music.instruments.flute;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
-
 public class FluteFragment extends Fragment {
 
     private Activity activity;
@@ -37,7 +37,17 @@ public class FluteFragment extends Fragment {
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+
+        ClipDrawable clipDrawable = (ClipDrawable) binding.ivFluteFill.getDrawable();
+        viewModel.getPitchPercentage().observe(getViewLifecycleOwner(), percentage -> clipDrawable.setLevel((int) (10000 * percentage)));
+        viewModel.startFlute(activity);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewModel.stopFlute();
     }
 
     @Override
@@ -45,4 +55,5 @@ public class FluteFragment extends Fragment {
         super.onAttach(context);
         activity = (Activity) context;
     }
+
 }
