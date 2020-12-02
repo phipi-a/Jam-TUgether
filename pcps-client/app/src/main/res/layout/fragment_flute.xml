@@ -18,22 +18,25 @@
         <ImageView
             android:id="@+id/iv_flute"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:touchListener="@{viewModel}"
-
             android:src="@drawable/flute"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/iv_flute_fill"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
             android:src="@drawable/flute_clip"
-            app:layout_constraintBottom_toBottomOf="@id/iv_flute"
-            app:layout_constraintEnd_toEndOf="@id/iv_flute"
-            app:layout_constraintStart_toStartOf="@id/iv_flute"
-            app:layout_constraintTop_toTopOf="@id/iv_flute" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
