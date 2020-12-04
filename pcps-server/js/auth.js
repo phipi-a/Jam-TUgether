@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken')
 
+exports.checkPwdLen = function (password) {
+  if (password.length > 30) {
+  //  res.status(413).send('Password size is limited to 30 signs.')
+    throw new Error('Password size is limited to 30 signs.')
+  }
+}
+
 exports.createToken = function (room) {
   /* expires after half an hour (1800 seconds = 30 minutes) */
   return jwt.sign(room, process.env.ACCESS_TOKEN_SECRET, {}) + ''

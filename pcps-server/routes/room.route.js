@@ -1,7 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { createToken, verify } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify } = require('../js/auth.js')
 
 const app = express()
 
@@ -10,6 +10,7 @@ const roomRoute = express.Router()
 
 // DB schema
 const RoomSchema = require('../model/room.model')
+const { exists } = require('../model/room.model')
 
 // Create room function
 async function createRoom (roomID, password) {
@@ -18,10 +19,10 @@ async function createRoom (roomID, password) {
       return next(error)
     } else {
       console.log('Created room with ID: ' + roomID)
+      return roomID
     }
   })
 }
-
 
 /**
  * @openapi
@@ -50,50 +51,45 @@ async function createRoom (roomID, password) {
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
     // TODO: check password, limit to n characters
+    checkPwdLen(req.body.password)
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
     req.body.password = await bcrypt.hash(req.body.password, salt)
 
     // Generate roomID
     let newRoomID = 0
-    
-    numberOfRooms = await RoomSchema.countDocuments().exec()
+    const numberOfRooms = await RoomSchema.countDocuments().exec()
     console.log('numberofrooms = ' + numberOfRooms)
-    if (numberOfRooms == 0) {
+    if (numberOfRooms === 0) {
       newRoomID = 1
       // Create db entry
       createRoom(newRoomID, req.body.password)
     } else {
-      
       let size = 0
       // Find free roomID
       // Returns all _id and roomID values from db sorted
-      await RoomSchema.find({}, {roomID:1}).sort({ roomID: 'asc'}).exec((err, document) => {
+      await RoomSchema.find({}, { roomID: 1 }).sort({ roomID: 'asc' }).exec((_err, document) => {
         size = Object.keys(document).length
-        for (let key in document) {
-          // if a roomID is not used yet the new room gets that id
-          if (Number(key)+1 != Number(document[key].roomID)) {
+        for (const key in document) {
+        // if a roomID is not used yet the new room gets that id
+          if (Number(key) + 1 !== Number(document[key].roomID)) {
             newRoomID = Number(key) + 1
-            break;
+            break
           }
         }
-        if (newRoomID == 0) {
+        if (newRoomID === 0) {
           newRoomID = size + 1
         }
-        
         // Create db entry
         createRoom(newRoomID, req.body.password)
       })
     }
 
-    // TODO: web tokens
-    // const token = createToken(newRoomID + '')
-    // TODO send token to client and save token to user
-    // console.log(token)
+    const token = createToken(newRoomID + '')
+    //TODO save token for each user (privileges)
 
-    // send new room id to client
-    res.status(201).send(newRoomID.toString())
-
+    // TODO send new room id to client
+    res.status(201).send(newRoomID.toString() + '\n' + token)
   } catch {
     res.status(500).send('Couldn\'t create room.')
   }
@@ -102,7 +98,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 roomRoute.post('/create-rooms', async (req, res, next) => {
   try {
     // TODO: check password, limit to n characters
-
+    checkPwdLen(req.body.password)
     // Create salt and hash password
     let password = '1234'
     const salt = await bcrypt.genSalt()
@@ -112,9 +108,9 @@ roomRoute.post('/create-rooms', async (req, res, next) => {
     // Create db entries
     let i
     for (i = 1; i <= 4; i++) {
-      await RoomSchema.create({ roomID: i, password: password})
+      await RoomSchema.create({ roomID: i, password: password })
     }
-    console.log( await RoomSchema.find({}))
+    console.log(await RoomSchema.find({}))
     res.status(201).send('Created 4 rooms.')
   } catch {
     res.status(500).send('Couldn\'t create room.')
@@ -159,9 +155,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     if (await bcrypt.compare(req.body.password, room.password)) {
       const token = createToken(req.body.roomID + '')
-      // TODO: send token to client and save token to user
-      console.log(token)
-      res.status(200).send('Logged in successfuly')
+      res.status(200).send('Success ' + token)
     } else {
       res.status(401).send('Wrong Password.')
     }
@@ -190,10 +184,9 @@ roomRoute.post('/login', async (req, res) => {
  *         description: Failure
  */
 roomRoute.get('/room/{id}', async (req, res) => {
-  room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(500).send('Room does not exist!')
-    return
   } else {
     res.status(200).send(room.track)
   }
