@@ -11,7 +11,6 @@ import de.pcps.jamtugether.api.responses.JoinRoomResponse;
 import de.pcps.jamtugether.api.services.RoomService;
 import retrofit2.Call;
 
-// todo uncomment when room service is done
 @Singleton
 public class RoomRepository {
 

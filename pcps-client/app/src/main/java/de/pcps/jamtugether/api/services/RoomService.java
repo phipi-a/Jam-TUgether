@@ -8,26 +8,31 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-// todo add actual endpoints with correct response classes
 public interface RoomService {
 
     @POST("create-room")
-    Call<CreateRoomResponse> createRoom(@Body CreateRoomBody body);
+    Call<CreateRoomResponse> createRoom(@Body @NonNull CreateRoomBody body);
 
     @POST("login")
-    Call<JoinRoomResponse> joinRoom(@Body JoinRoomBody body);
+    Call<JoinRoomResponse> joinRoom(@Body @NonNull JoinRoomBody body);
 
-    public class CreateRoomBody {
-        private String password;
-        private int roomID = 1;
+    class CreateRoomBody {
+
+        @NonNull
+        private final String password;
+
+        private final int roomID = 1; // todo remove later
 
         public CreateRoomBody(@NonNull String password) {
             this.password = password;
         }
     }
 
-    public class JoinRoomBody {
-        private String password;
+    class JoinRoomBody {
+
+        @NonNull
+        private final String password;
+
         private int roomID;
 
         public JoinRoomBody(int roomID, @NonNull String password) {

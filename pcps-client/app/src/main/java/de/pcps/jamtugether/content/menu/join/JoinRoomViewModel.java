@@ -113,8 +113,8 @@ public class JoinRoomViewModel extends ViewModel {
         });
 
         // todo remove these 2 lines when room service is done
-        navigateToRegularRoom.setValue(true);
-        progressBarVisibility.setValue(View.INVISIBLE);
+        //navigateToRegularRoom.setValue(true);
+        //progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
