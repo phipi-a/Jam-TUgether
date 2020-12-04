@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.api;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.api.errors.Error;
@@ -16,6 +14,7 @@ public abstract class BaseCallback<T> implements Callback<T> {
     @Override
     public void onResponse(@NonNull Call<T> call, Response<T> response) {
         Timber.i(response.message());
+        Timber.d("response: %s", response);
         if(response.isSuccessful()) {
             T body = response.body();
             if(body == null) {
