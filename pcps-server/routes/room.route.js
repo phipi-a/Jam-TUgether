@@ -44,7 +44,7 @@ async function createRoom (roomID, password) {
  *               type: string
  *     responses:
  *       201:
- *         description: Created
+ *         description: roomID + JWToken
  *       500:
  *         description: Failure
  */
@@ -138,7 +138,7 @@ roomRoute.post('/create-rooms', async (req, res, next) => {
  *               type: string
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success + JWToken
  *       401:
  *         description: Wrong password or roomID
  *       500:
