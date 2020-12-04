@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
@@ -38,12 +40,14 @@ public class AppModule {
         return application;
     }
 
+    @Singleton
     @Provides
     @NonNull
     public SharedPreferences provideSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences(Preferences.FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    @Singleton
     @Provides
     @NonNull
     public Retrofit provideRetrofit() {
@@ -53,12 +57,14 @@ public class AppModule {
                 .build();
     }
 
+    @Singleton
     @Provides
     @NonNull
     public SoundtrackService provideMusicDataService(@NonNull Retrofit retrofit) {
         return retrofit.create(SoundtrackService.class);
     }
 
+    @Singleton
     @Provides
     @NonNull
     public RoomService provideRoomService(@NonNull Retrofit retrofit) {

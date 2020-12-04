@@ -79,7 +79,7 @@ public class MusicianViewFragment extends Fragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID, viewModel), R.id.soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID), R.id.soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {

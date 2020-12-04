@@ -70,7 +70,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         return showShakerFragment;
     }
 
-    static class Factory implements ViewModelProvider.Factory {
+    public static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;
 
