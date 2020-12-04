@@ -16,10 +16,10 @@ import java.io.IOException;
 import de.pcps.jamtugether.R;
 
 public class FluteViewModel extends ViewModel {
-    public static float PITCH_MIN_PERCENTAGE = 0.2f;
-    public static float PITCH_MAX_PERCENTAGE = 1f;
-    public static float PITCH_MULTIPLIER = 3f;
-    public static float PITCH_DEFAULT_PERCENTAGE = 0.3f;
+    private static float PITCH_MIN_PERCENTAGE = 0.2f;
+    private static float PITCH_MAX_PERCENTAGE = 1f;
+    private static float PITCH_MULTIPLIER = 3f;
+    private static float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
@@ -33,6 +33,12 @@ public class FluteViewModel extends ViewModel {
     private int fluteSoundId;
     private Thread soundReactThread;
     public void onPitchChanged(float newPitch) {
+        if (newPitch < FluteViewModel.PITCH_MIN_PERCENTAGE) {
+            newPitch = FluteViewModel.PITCH_MIN_PERCENTAGE;
+        }
+        if (newPitch > FluteViewModel.PITCH_MAX_PERCENTAGE) {
+            newPitch = FluteViewModel.PITCH_MAX_PERCENTAGE;
+        }
         pitchPercentage.setValue(newPitch);
     }
     public @NotNull LiveData<Float> getPitchPercentage() {
