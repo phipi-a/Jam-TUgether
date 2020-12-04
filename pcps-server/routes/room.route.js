@@ -191,7 +191,26 @@ roomRoute.get('/room/{id}', async (req, res) => {
     res.status(200).send(room.track)
   }
 })
-
+/**
+ * @openapi
+ * /api/test:
+ *   post:
+ *     summary:
+ *      Test request, simulates posting.
+ *     parameters:
+ *       - in: body
+ *         name: test
+ *         description: Send a Test Post.
+ *         schema:
+ *           type: object
+ *           required:
+ *             - JWToken in header field 'Authorization'
+ *     responses:
+ *       200:
+ *         description: 'test'
+ *       403:
+ *         description: Forbidden (invalid token)
+ */
 roomRoute.post('/test', verify, async (req, res) => {
   res.status(200).send('test')
 })
