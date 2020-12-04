@@ -33,7 +33,7 @@ const swaggerOptions = {
   },
   // In which files the documentation comments are
   apis: ['server.js', 'routes/room.route.js'],
-  // Define endpoint in documentation
+  // Define endpoint in documentation (doesn't work in swagger-ui-express 4.1.5)
   servers: [{ url: '/api', description: 'The API server'}]
 }
 
