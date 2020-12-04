@@ -3,6 +3,8 @@ package de.pcps.jamtugether.api.errors;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
+import timber.log.Timber;
+
 public abstract class Error {
 
     @StringRes
@@ -29,6 +31,7 @@ public abstract class Error {
     @NonNull
     public static Error from(int statusCode) {
         // todo maybe add more status codes
+        Timber.d("statusCode: %d", statusCode);
         switch (statusCode) {
             case 401:
                 return new UnauthorizedAccessError();
@@ -43,7 +46,7 @@ public abstract class Error {
 
     @NonNull
     public static Error from(Throwable throwable) {
-        // todo create error from throwable
+        Timber.d("error %s", throwable.getMessage());
         return new GenericError();
     }
 }
