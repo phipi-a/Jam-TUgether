@@ -5,6 +5,7 @@ import android.media.MediaRecorder;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -34,7 +35,7 @@ public class FluteViewModel extends ViewModel {
     public void onPitchChanged(float newPitch) {
         pitchPercentage.setValue(newPitch);
     }
-    public @NotNull MutableLiveData<Float> getPitchPercentage() {
+    public @NotNull LiveData<Float> getPitchPercentage() {
         return pitchPercentage;
     }
 
