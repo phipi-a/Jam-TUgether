@@ -1,5 +1,7 @@
 package de.pcps.jamtugether.api;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.api.errors.Error;
@@ -7,11 +9,13 @@ import de.pcps.jamtugether.api.errors.GenericError;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public abstract class BaseCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, Response<T> response) {
+        Timber.i(response.message());
         if(response.isSuccessful()) {
             T body = response.body();
             if(body == null) {
