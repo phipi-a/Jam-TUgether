@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.Soundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackAdminBinding;
 
 public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSoundtrackListAdapter.ViewHolder> {

@@ -8,11 +8,11 @@
 
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.content.soundtrack.Soundtrack" />
+            type="de.pcps.jamtugether.models.Soundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.content.soundtrack.Soundtrack.OnChangeListener" />
+            type="de.pcps.jamtugether.models.Soundtrack.OnChangeListener" />
     </data>
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp">
 
-            <de.pcps.jamtugether.content.soundtrack.SoundtrackView
+            <de.pcps.jamtugether.views.SoundtrackView
                 android:id="@+id/soundtrack_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/soundtrack_view_height"

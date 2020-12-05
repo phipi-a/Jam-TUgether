@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.responses.PushSoundtrackResponse;
 import de.pcps.jamtugether.api.responses.SoundtrackListResponse;
-import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.Soundtrack;
 
 // todo uncomment when sound track service is done
 @Singleton

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.soundtrack;
+package de.pcps.jamtugether.models;
 
 import android.view.View;
 
@@ -16,8 +16,10 @@ import de.pcps.jamtugether.R;
 
 public class Soundtrack extends ArrayList<Sound> {
 
-    // todo check with server group
+    // todo check this attribute with server group
     private final int id;
+
+    // todo ignore other attributes in json
 
     @NonNull
     private final MutableLiveData<Float> volume;
