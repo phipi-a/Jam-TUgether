@@ -1,4 +1,18 @@
 package de.pcps.jamtugether.api.responses;
 
-// todo replace with actual response
-public class JoinRoomResponse { }
+import androidx.annotation.NonNull;
+
+public class JoinRoomResponse {
+
+    @NonNull
+    private final String token;
+
+    public JoinRoomResponse(@NonNull String token) {
+        this.token = token;
+    }
+
+    @NonNull
+    public String getToken() {
+        return token;
+    }
+}

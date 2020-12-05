@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(currentFragmentID == R.id.admin_room_fragment || currentFragmentID == R.id.regular_room_fragment) {
+            // todo tell server that user is leaving room
             AlertDialog dialog = UiUtils.createConfirmationDialog(this, R.string.leave_room, R.string.leave_room_confirmation, MainActivity.super::onBackPressed);
             dialog.setOnShowListener(arg -> {
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));

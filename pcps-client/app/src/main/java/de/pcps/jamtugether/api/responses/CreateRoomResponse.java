@@ -1,12 +1,15 @@
 package de.pcps.jamtugether.api.responses;
 
-// todo replace with actual response
+import androidx.annotation.NonNull;
+
 public class CreateRoomResponse {
 
     private final int roomID;
+
+    @NonNull
     private final String token;
 
-    public CreateRoomResponse(int roomID, String token) {
+    public CreateRoomResponse(int roomID, @NonNull String token) {
         this.roomID = roomID;
         this.token = token;
     }
@@ -15,6 +18,7 @@ public class CreateRoomResponse {
         return roomID;
     }
 
+    @NonNull
     public String getToken() {
         return token;
     }
