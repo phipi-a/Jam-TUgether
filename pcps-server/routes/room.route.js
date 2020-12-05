@@ -52,6 +52,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
   try {
     // (TODO): check password, limit to n characters
     checkPwdLen(req.body.password)
+    
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
     req.body.password = await bcrypt.hash(req.body.password, salt)
