@@ -50,7 +50,7 @@ async function createRoom (roomID, password) {
  */
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
-    // TODO: check password, limit to n characters
+    // (TODO): check password, limit to n characters
     checkPwdLen(req.body.password)
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
@@ -212,7 +212,7 @@ roomRoute.get('/room/{id}', async (req, res) => {
  *         description: Forbidden (invalid token)
  */
 roomRoute.post('/test', verify, async (req, res) => {
-  res.status(200).send('test')
+  res.status(200).send('blub')
 })
 
 roomRoute.post('/test2', verify, async (req, res) => {
