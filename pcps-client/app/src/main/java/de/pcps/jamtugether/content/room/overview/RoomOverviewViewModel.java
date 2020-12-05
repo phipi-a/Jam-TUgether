@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
 
 public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
