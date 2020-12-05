@@ -44,6 +44,8 @@
     <string name="unauthorized_access_error_message">Room or password is invalid.</string>
     <string name="internal_server_error_title">Error</string>
     <string name="internal_server_error_message">Something went wrong.</string>
+    <string name="password_too_large_error_title">Error</string>
+    <string name="password_too_large_error_message">Password is too large.</string>
     <string name="forbidden_access_error_title">Error</string>
     <string name="forbidden_access_error_message">Something went wrong.</string>
     <string name="generic_error_title">Error</string>

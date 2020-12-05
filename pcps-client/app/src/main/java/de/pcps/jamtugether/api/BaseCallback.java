@@ -29,6 +29,7 @@ public abstract class BaseCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
+        Timber.e(t);
         onError(Error.from(t));
     }
 

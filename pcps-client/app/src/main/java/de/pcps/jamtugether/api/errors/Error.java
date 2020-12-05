@@ -30,13 +30,13 @@ public abstract class Error {
 
     @NonNull
     public static Error from(int statusCode) {
-        // todo maybe add more status codes
-        Timber.d("statusCode: %d", statusCode);
         switch (statusCode) {
             case 401:
                 return new UnauthorizedAccessError();
             case 403:
                 return new ForbiddenAccessError();
+            case 413:
+                return new PasswordTooLargeError();
             case 500:
                 return new InternalServerError();
             default:

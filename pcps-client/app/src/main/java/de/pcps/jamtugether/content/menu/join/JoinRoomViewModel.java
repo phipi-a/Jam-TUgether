@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.errors.Error;
+import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.responses.JoinRoomResponse;
@@ -105,16 +106,18 @@ public class JoinRoomViewModel extends ViewModel {
                     passwordInputError.setValue(context.getString(error.getMessage()));
                     return;
                 }
-                networkError.setValue(error);
 
+                if(error instanceof PasswordTooLargeError) {
+                    roomInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
+                    passwordInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
+                    return;
+                }
                 roomInputError.setValue(null);
                 passwordInputError.setValue(null);
+
+                networkError.setValue(error);
             }
         });
-
-        // todo remove these 2 lines when room service is done
-        //navigateToRegularRoom.setValue(true);
-        //progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
