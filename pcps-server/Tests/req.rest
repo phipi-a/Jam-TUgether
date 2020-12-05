@@ -1,7 +1,7 @@
 ### 
 POST http://localhost:3000/api/test 
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer yJhbGciOiJIUzI1NiJ9.MTc.EkISIE0nhNvKNufifH1YeqclHjXO3IL2MhKhGC3UsPU
 
 { 
   "id":"17"
@@ -13,7 +13,7 @@ POST http://localhost:3000/api/create-room
 Content-Type: application/json
 
 {
-  "password" : "12"
+  "password" : "12sadasfsafdsasgssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
 }
 
 ###
@@ -23,6 +23,6 @@ Content-Type: application/json
 
 {
   "roomID": "17",
-  "password" : "1"
+  "password" : "4311111111111111111111111111111111111111111111111111111111111111111111"
 
 }

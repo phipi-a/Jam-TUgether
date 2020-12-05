@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken')
 
+// define Error for too large password
+const PwErr = new Error('too large')
+exports.PwErr = PwErr
+
 exports.checkPwdLen = function (password) {
   if (password.length > 30) {
-  //  res.status(413).send('Password size is limited to 30 signs.')
-    throw new Error('Password size is limited to 30 signs.')
+    throw PwErr
   }
 }
 

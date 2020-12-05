@@ -1,7 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { checkPwdLen, createToken, verify } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify, PwErr } = require('../js/auth.js')
 
 const app = express()
 
@@ -51,7 +51,7 @@ async function createRoom (roomID, password) {
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
     // (TODO): check password, limit to n characters
-    checkPwdLen(req.body.password)
+    checkPwdLen(req.body.password, res)
     
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
@@ -91,15 +91,19 @@ roomRoute.post('/create-room', async (req, res, next) => {
 
     // TODO send new room id to client
     res.status(201).send(newRoomID.toString() + '\n' + token)
-  } catch {
-    res.status(500).send('Couldn\'t create room.')
+  } catch (err) {
+    if (err === PwErr) {
+      res.status(413).send('Password too large.')
+    } else {
+      res.status(500).send('Couldn\'t create room.')
+    }
   }
 })
 
 roomRoute.post('/create-rooms', async (req, res, next) => {
   try {
     // TODO: check password, limit to n characters
-    checkPwdLen(req.body.password)
+    checkPwdLen(req.body.password, res)
     // Create salt and hash password
     let password = '1234'
     const salt = await bcrypt.genSalt()
@@ -113,8 +117,12 @@ roomRoute.post('/create-rooms', async (req, res, next) => {
     }
     console.log(await RoomSchema.find({}))
     res.status(201).send('Created 4 rooms.')
-  } catch {
-    res.status(500).send('Couldn\'t create room.')
+  } catch (err) {
+    if (err === PwErr) {
+      res.status(413).send('Password too large.')
+    } else {
+      res.status(500).send('Couldn\'t create rooms.')
+    }
   }
 })
 
@@ -154,14 +162,19 @@ roomRoute.post('/login', async (req, res) => {
     if (!room) {
       return res.status(401).send('No room with matching roomId found')
     }
+    checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
       const token = createToken(req.body.roomID + '')
       res.status(200).send('Success ' + token)
     } else {
       res.status(401).send('Wrong Password.')
     }
-  } catch {
-    res.status(500).send('Something went wrong')
+  } catch (err) {
+    if (err === PwErr) {
+      res.status(413).send('Password too large.')
+    } else {
+      res.status(500).send('Couldn\'t create room.')
+    }
   }
 })
 
