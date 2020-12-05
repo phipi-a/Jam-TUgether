@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.Soundtrack;
 
 // todo replace with actual response
 public class SoundtrackListResponse {

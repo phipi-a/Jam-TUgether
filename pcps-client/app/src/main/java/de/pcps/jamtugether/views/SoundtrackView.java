@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.content.soundtrack;
+package de.pcps.jamtugether.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+
+import de.pcps.jamtugether.models.Soundtrack;
 
 public class SoundtrackView extends View {
 

@@ -10,9 +10,9 @@ import java.util.HashMap;
 import de.pcps.jamtugether.R;
 
 public enum Instrument {
-    FLUTE(R.string.instrument_flute, "flute", R.string.play_flute_help),
-    DRUMS(R.string.instrument_drums,"drums", R.string.play_drums_help),
-    SHAKER(R.string.instrument_shaker,"shaker", R.string.play_shaker_help);
+    FLUTE(R.string.instrument_flute, "flute", "flute", R.string.play_flute_help),
+    DRUMS(R.string.instrument_drums,"drums", "drums", R.string.play_drums_help),
+    SHAKER(R.string.instrument_shaker,"shaker", "shaker", R.string.play_shaker_help);
 
     @NonNull
     public static final Instrument FALLBACK = Instrument.FLUTE;
@@ -32,12 +32,16 @@ public enum Instrument {
     @NonNull
     private final String preferenceValue;
 
+    @NonNull
+    private final String serverString; // todo add server string
+
     @StringRes
     private final int helpMessage;
 
-    Instrument(@StringRes int name, @NonNull String preferenceValue, @StringRes int helpMessage) {
+    Instrument(@StringRes int name, @NonNull String preferenceValue, @NonNull String serverString, @StringRes int helpMessage) {
         this.name = name;
         this.preferenceValue = preferenceValue;
+        this.serverString = serverString;
         this.helpMessage = helpMessage;
     }
 
@@ -49,6 +53,11 @@ public enum Instrument {
     @NonNull
     public String getPreferenceValue() {
         return preferenceValue;
+    }
+
+    @NonNull
+    public String getServerString() {
+        return serverString;
     }
 
     @StringRes

@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.instrument.Instrument;
-import de.pcps.jamtugether.content.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
 
