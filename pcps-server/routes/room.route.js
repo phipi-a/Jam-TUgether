@@ -2,6 +2,7 @@ const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, PwErr } = require('../js/auth.js')
+const {jsonRoom, createJSON} = require('../js/prepareResponse.js')
 
 const app = express()
 
@@ -13,7 +14,7 @@ const RoomSchema = require('../model/room.model')
 const { exists } = require('../model/room.model')
 
 // Create room function
-async function createRoom (roomID, password) {
+async function createRoom (roomID, password, object) {
   RoomSchema.create({ roomID: roomID, password: password }, (error, data, next) => {
     if (error) {
       return next(error)
@@ -52,7 +53,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
   try {
     // (TODO): check password, limit to n characters
     checkPwdLen(req.body.password, res)
-    
+
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
     req.body.password = await bcrypt.hash(req.body.password, salt)
@@ -72,7 +73,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
       await RoomSchema.find({}, { roomID: 1 }).sort({ roomID: 'asc' }).exec((_err, document) => {
         size = Object.keys(document).length
         for (const key in document) {
-        // if a roomID is not used yet the new room gets that id
+        // if a roomID is not used yet the new room gets that id TODO ??
           if (Number(key) + 1 !== Number(document[key].roomID)) {
             newRoomID = Number(key) + 1
             break
@@ -85,12 +86,11 @@ roomRoute.post('/create-room', async (req, res, next) => {
         createRoom(newRoomID, req.body.password)
       })
     }
-
     const token = createToken(newRoomID + '')
-    //TODO save token for each user (privileges)
+    //  TODO save token for each user (privileges)
 
     // TODO send new room id to client
-    res.status(201).send(newRoomID.toString() + '\n' + token)
+    res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
@@ -165,7 +165,7 @@ roomRoute.post('/login', async (req, res) => {
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
       const token = createToken(req.body.roomID + '')
-      res.status(200).send('Success ' + token)
+      res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')
     }

@@ -13,7 +13,7 @@ POST http://localhost:3000/api/create-room
 Content-Type: application/json
 
 {
-  "password" : "12sadasfsafdsasgssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+  "password" : "12"
 }
 
 ###
@@ -23,6 +23,6 @@ Content-Type: application/json
 
 {
   "roomID": "17",
-  "password" : "4311111111111111111111111111111111111111111111111111111111111111111111"
+  "password" : "1"
 
 }
