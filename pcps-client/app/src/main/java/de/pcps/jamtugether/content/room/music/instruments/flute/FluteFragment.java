@@ -6,26 +6,24 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.jetbrains.annotations.NotNull;
-
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
+import timber.log.Timber;
+
 public class FluteFragment extends Fragment {
 
+    private static final int REQUEST_MICROPHONE = 1;
+
     private Activity activity;
-    private final int REQUEST_MICROPHONE =1;
 
     private FluteViewModel viewModel;
 
@@ -50,34 +48,27 @@ public class FluteFragment extends Fragment {
         ClipDrawable clipDrawable = (ClipDrawable) binding.ivFluteFill.getDrawable();
         viewModel.getPitchPercentage().observe(getViewLifecycleOwner(), percentage -> clipDrawable.setLevel((int) (10000 * percentage)));
 
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    REQUEST_MICROPHONE);
-        }else{
-            viewModel.startFlute(activity);
+        if (savedInstanceState == null) {
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
+            } else {
+                viewModel.startRecording(activity);
+            }
         }
+
         return binding.getRoot();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String @NotNull [] permissions, int @NotNull [] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_MICROPHONE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                viewModel.startFlute(activity);
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                viewModel.startRecording(activity);
             } else {
                 //TODO:Add Error Message
-                Log.e("FluteFragment", "onRequestPermissionsResult: No microphone permission");
+                Timber.e("onRequestPermissionsResult: No microphone permission");
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        viewModel.stopFlute();
     }
 
     @Override
@@ -85,5 +76,4 @@ public class FluteFragment extends Fragment {
         super.onAttach(context);
         activity = (Activity) context;
     }
-
 }

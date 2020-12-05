@@ -9,112 +9,113 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 
 import de.pcps.jamtugether.R;
 
 public class FluteViewModel extends ViewModel {
-    private static float PITCH_MIN_PERCENTAGE = 0.2f;
-    private static float PITCH_MAX_PERCENTAGE = 1f;
-    private static float PITCH_MULTIPLIER = 3f;
-    private static float PITCH_DEFAULT_PERCENTAGE = 0.3f;
+
+    private static final float PITCH_MIN_PERCENTAGE = 0.2f;
+    private static final float PITCH_MAX_PERCENTAGE = 1f;
+    private static final float PITCH_MULTIPLIER = 3f;
+    private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     @NonNull
-    private final MutableLiveData<Boolean> playing = new MutableLiveData<>(false);
+    private final MediaRecorder soundRecorder;
 
-    private MediaRecorder soundRecorder;
-    private SoundPool soundPool;
-    private int fluteStreamingId;
-    private int fluteSoundId;
-    private Thread soundReactThread;
-    public void onPitchChanged(float newPitch) {
-        if (newPitch < FluteViewModel.PITCH_MIN_PERCENTAGE) {
-            newPitch = FluteViewModel.PITCH_MIN_PERCENTAGE;
+    @NonNull
+    private final SoundPool soundPool;
+
+    @NonNull
+    private final Thread soundReactThread;
+
+    private int fluteStreamingID;
+    private int fluteSoundID;
+
+    public FluteViewModel() {
+        soundRecorder = new MediaRecorder();
+        soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        soundRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        soundRecorder.setOutputFile("/dev/null");
+        try {
+            soundRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if (newPitch > FluteViewModel.PITCH_MAX_PERCENTAGE) {
-            newPitch = FluteViewModel.PITCH_MAX_PERCENTAGE;
-        }
-        pitchPercentage.setValue(newPitch);
-    }
-    public @NotNull LiveData<Float> getPitchPercentage() {
-        return pitchPercentage;
-    }
 
-    public void startFlute(Context context) {
-        if(!playing.getValue()) {
-            soundRecorder = new MediaRecorder();
-            soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            soundRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            soundRecorder.setOutputFile("/dev/null");
-            try {
-                soundRecorder.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            soundPool = new SoundPool.Builder()
-                    .setMaxStreams(1)
-                    .build();
-            fluteSoundId = soundPool.load(context, R.raw.flute_sound, 1);
-
-            soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-                soundRecorder.start();
-                playing.setValue(true);
-
-                startSoundReact();
-
-            });
-        }
+        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
+        soundReactThread = createThread();
     }
 
-    public void startSoundReact() {
-        soundReactThread = new Thread() {
+    @NonNull
+    private Thread createThread() {
+        return new Thread() {
             @Override
             public void run() {
                 while (!this.isInterrupted()) {
                     int mm = soundRecorder.getMaxAmplitude();
                     if (mm != 0) {
                         if (mm < 10000) {
-                            if (fluteStreamingId != 0) {
-                                soundPool.stop(fluteStreamingId);
-                                fluteStreamingId = 0;
+                            if (fluteStreamingID != 0) {
+                                soundPool.stop(fluteStreamingID);
+                                fluteStreamingID = 0;
                             }
                         } else {
-                            if (fluteStreamingId == 0){
-                                float pitch=pitchPercentage.getValue() * PITCH_MULTIPLIER;
-                                fluteStreamingId = soundPool.play(fluteSoundId, 1, 1, 1, 99, pitch);
+                            if (fluteStreamingID == 0) {
+                                float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
+                                fluteStreamingID = soundPool.play(fluteSoundID, 1, 1, 1, 99, pitch);
                             }
                         }
                     }
-
                 }
-
             }
         };
-        soundReactThread.start();
     }
 
-    public void stopFlute() {
+    public void startRecording(@NonNull Context context) {
+        fluteSoundID = soundPool.load(context, R.raw.flute_sound, 1);
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+            soundRecorder.start();
+            soundReactThread.start();
+        });
+    }
+
+    public void onPitchChanged(float newPitch) {
+        if (newPitch < PITCH_MIN_PERCENTAGE) {
+            newPitch = PITCH_MIN_PERCENTAGE;
+        }
+        if (newPitch > PITCH_MAX_PERCENTAGE) {
+            newPitch = PITCH_MAX_PERCENTAGE;
+        }
+        pitchPercentage.setValue(newPitch);
+    }
+
+    private void stopFlute() {
         if (soundReactThread != null) {
             soundReactThread.interrupt();
-            soundReactThread = null;
             soundRecorder.stop();
             soundRecorder.release();
-            soundRecorder = null;
-            if(fluteStreamingId!=0) {
-                soundPool.stop(fluteStreamingId);
-                fluteStreamingId = 0;
+            if (fluteStreamingID != 0) {
+                soundPool.stop(fluteStreamingID);
+                fluteStreamingID = 0;
             }
             soundPool.release();
-            soundPool = null;
-            fluteSoundId = 0;
-            playing.setValue(false);
+            fluteSoundID = 0;
         }
     }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        stopFlute();
+    }
+
+    @NonNull
+    public LiveData<Float> getPitchPercentage() {
+        return pitchPercentage;
+    }
 }
