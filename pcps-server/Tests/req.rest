@@ -1,12 +1,10 @@
 ### 
-POST http://localhost:3000/api/test2  
+POST http://localhost:3000/api/test 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.MTc.EkISIE0nhNvKNufifH1YeqclHjXO3IL2MhKhGC3UsPU
+Authorization: Bearer 
 
 { 
-  "instrument": "1", 
-  "pitch": "1", 
-  "startTime": "143s"
+  "id":"17"
 }
 
 ###
@@ -15,8 +13,7 @@ POST http://localhost:3000/api/create-room
 Content-Type: application/json
 
 {
-  "password" : "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
-
+  "password" : "12"
 }
 
 ###
