@@ -9,10 +9,11 @@ import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 public class RegularRoomOverviewFragment extends RoomOverviewFragment {
 
     @NonNull
-    public static RegularRoomOverviewFragment newInstance(int roomID) {
+    public static RegularRoomOverviewFragment newInstance(int roomID, @NonNull String token) {
         RegularRoomOverviewFragment fragment = new RegularRoomOverviewFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
+        args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
     }

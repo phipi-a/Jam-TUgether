@@ -12,6 +12,9 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     private final int roomID;
 
     @NonNull
+    private final String token;
+
+    @NonNull
     private final MutableLiveData<Boolean> showFluteFragment = new MutableLiveData<>(false);
 
     @NonNull
@@ -20,8 +23,9 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
 
-    public MusicianViewViewModel(int roomID) {
+    public MusicianViewViewModel(int roomID, @NonNull String token) {
         this.roomID = roomID;
+        this.token = token;
     }
 
     @Override
@@ -74,8 +78,12 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
 
         private final int roomID;
 
-        public Factory(int roomID) {
+        @NonNull
+        private final String token;
+
+        public Factory(int roomID, @NonNull String token) {
             this.roomID = roomID;
+            this.token = token;
         }
 
         @SuppressWarnings("unchecked")
@@ -83,7 +91,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(MusicianViewViewModel.class)) {
-                return (T) new MusicianViewViewModel(roomID);
+                return (T) new MusicianViewViewModel(roomID, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

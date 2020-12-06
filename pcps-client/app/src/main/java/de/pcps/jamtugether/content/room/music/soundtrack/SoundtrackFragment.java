@@ -24,16 +24,18 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class SoundtrackFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String TOKEN_KEY = "token_key";
 
     private Context context;
 
     private SoundtrackViewModel viewModel;
 
     @NonNull
-    public static SoundtrackFragment newInstance(int roomID) {
+    public static SoundtrackFragment newInstance(int roomID, @NonNull String token) {
         SoundtrackFragment fragment = new SoundtrackFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
+        args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +45,8 @@ public class SoundtrackFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            Instrument.OnChangeCallback onChangeCallback = new ViewModelProvider(getParentFragment(), new MusicianViewViewModel.Factory(roomID)).get(MusicianViewViewModel.class);
+            String token = getArguments().getString(TOKEN_KEY);
+            Instrument.OnChangeCallback onChangeCallback = new ViewModelProvider(getParentFragment(), new MusicianViewViewModel.Factory(roomID, token)).get(MusicianViewViewModel.class);
             SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, onChangeCallback);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackViewModel.class);
         }

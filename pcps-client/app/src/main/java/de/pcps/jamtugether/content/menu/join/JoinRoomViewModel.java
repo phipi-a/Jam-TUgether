@@ -30,6 +30,8 @@ public class JoinRoomViewModel extends ViewModel {
 
     private int roomID;
 
+    private String token;
+
     @NonNull
     private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
 
@@ -92,6 +94,7 @@ public class JoinRoomViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
+                token = response.getToken();
                 navigateToRegularRoom.setValue(true);
             }
 
@@ -130,6 +133,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     @NonNull

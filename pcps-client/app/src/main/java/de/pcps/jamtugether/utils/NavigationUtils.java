@@ -29,12 +29,12 @@ public class NavigationUtils {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public static void navigateToAdminRoom(@NonNull NavController nc, int roomID) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID));
+    public static void navigateToAdminRoom(@NonNull NavController nc, int roomID, @NonNull String token) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID, token));
     }
 
-    public static void navigateToRegularRoom(@NonNull NavController nc, int roomID) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment(roomID));
+    public static void navigateToRegularRoom(@NonNull NavController nc, int roomID, @NonNull String token) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment(roomID, token));
     }
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {

@@ -17,6 +17,7 @@ import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 public abstract class RoomOverviewFragment extends Fragment {
 
     protected static final String ROOM_ID_KEY = "room_id_key";
+    protected static final String TOKEN_KEY = "token_key";
 
     protected RoomOverviewViewModel viewModel;
 
@@ -25,7 +26,8 @@ public abstract class RoomOverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID);
+            String token = getArguments().getString(TOKEN_KEY);
+            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, token);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
         }
     }

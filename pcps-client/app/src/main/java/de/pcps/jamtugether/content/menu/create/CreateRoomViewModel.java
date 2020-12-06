@@ -30,6 +30,8 @@ public class CreateRoomViewModel extends ViewModel {
     
     private int roomID;
 
+    private String token;
+
     @NonNull
     private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
 
@@ -66,6 +68,7 @@ public class CreateRoomViewModel extends ViewModel {
             public void onSuccess(@NonNull CreateRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 roomID = response.getRoomID();
+                token = response.getToken();
                 navigateToAdminRoom.setValue(true);
             }
 
@@ -96,6 +99,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     @NonNull
