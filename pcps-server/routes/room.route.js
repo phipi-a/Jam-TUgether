@@ -67,28 +67,19 @@ roomRoute.post('/create-room', async (req, res, next) => {
       // Create db entry
       createRoom(newRoomID, req.body.password)
     } else {
-      let size = 0
-      // TODO dummy ID choice, doesn't find new freed ID but sends correct ID since we have no DELETE room
-      newRoomID = await RoomSchema.count() + 1
-
-      // Find free roomID
+      // default value
+      newRoomID = numberOfRooms + 1
       // Returns all _id and roomID values from db sorted
-      await RoomSchema.find({}, { roomID: 1 }).sort({ roomID: 'asc' }).exec((_err, document) => {
-        size = Object.keys(document).length
-        for (const key in document) {
-        // if a roomID is not used yet the new room gets that id TODO ??
-          if (Number(key) + 1 !== Number(document[key].roomID)) {
-            newRoomID = Number(key) + 1
-            break
-          }
+      const allIndexes = await RoomSchema.find({}, { roomID: newRoomID - 1 }).sort({ roomID: 'asc' })
+      // Find free roomID
+      for (let i = 0; i < numberOfRooms; i++) {
+        if (Number(allIndexes[i]['roomID']) > i + 1) {
+          newRoomID = i + 1
+          break
         }
-        if (newRoomID === 0) {
-          newRoomID = size + 1
-        }
-        // Create db entry
-        createRoom(newRoomID, req.body.password)
-        return newRoomID
-      })
+      }
+      // Create db entry
+      createRoom(newRoomID, req.body.password)
     }
     const token = createToken()
     //  TODO save token for each user (privileges)
