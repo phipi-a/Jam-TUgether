@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 
 // define Error for too large password
 const PwErr = new Error('too large')
@@ -10,9 +11,11 @@ exports.checkPwdLen = function (password) {
   }
 }
 
-exports.createToken = function (room) {
+exports.createToken = function () {
+  // random bytes
+  const rndBytes = crypto.randomBytes(10).toString('hex')
   /* expires after half an hour (1800 seconds = 30 minutes) */
-  return jwt.sign(room, process.env.ACCESS_TOKEN_SECRET, {}) + ''
+  return jwt.sign(rndBytes, process.env.ACCESS_TOKEN_SECRET, {}) + ''
 }
 
 exports.verify = function (req, res, next) {

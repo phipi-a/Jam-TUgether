@@ -2,7 +2,7 @@ const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, PwErr } = require('../js/auth.js')
-const {jsonRoom, createJSON} = require('../js/prepareResponse.js')
+const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
 
 const app = express()
 
@@ -51,7 +51,7 @@ async function createRoom (roomID, password, object) {
  */
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
-    // (TODO): check password, limit to n characters
+    // check password, limit to n characters
     checkPwdLen(req.body.password, res)
 
     // Create salt and hash password
@@ -68,6 +68,9 @@ roomRoute.post('/create-room', async (req, res, next) => {
       createRoom(newRoomID, req.body.password)
     } else {
       let size = 0
+      // TODO dummy ID choice, doesn't find new freed ID but sends correct ID since we have no DELETE room
+      newRoomID = await RoomSchema.count() + 1
+
       // Find free roomID
       // Returns all _id and roomID values from db sorted
       await RoomSchema.find({}, { roomID: 1 }).sort({ roomID: 'asc' }).exec((_err, document) => {
@@ -84,9 +87,10 @@ roomRoute.post('/create-room', async (req, res, next) => {
         }
         // Create db entry
         createRoom(newRoomID, req.body.password)
+        return newRoomID
       })
     }
-    const token = createToken(newRoomID + '')
+    const token = createToken()
     //  TODO save token for each user (privileges)
 
     // TODO send new room id to client
@@ -164,7 +168,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
-      const token = createToken(req.body.roomID + '')
+      const token = createToken()
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')
