@@ -55,7 +55,7 @@ public class CreateRoomFragment extends Fragment {
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if(navigateToJamRoom) {
-                NavigationUtils.navigateToAdminRoom(NavHostFragment.findNavController(this), viewModel.getRoomID());
+                NavigationUtils.navigateToAdminRoom(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getToken());
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();
             }

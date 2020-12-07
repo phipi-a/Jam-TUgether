@@ -77,6 +77,9 @@
         <argument
             android:name="roomID"
             app:argType="integer" />
+        <argument
+            android:name="token"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/regular_room_fragment"
@@ -85,6 +88,9 @@
         <argument
             android:name="roomID"
             app:argType="integer" />
+        <argument
+            android:name="token"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"

@@ -7,11 +7,14 @@ import de.pcps.jamtugether.api.errors.GenericError;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public abstract class BaseCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, Response<T> response) {
+        Timber.i(response.message());
+        Timber.d("response: %s", response);
         if(response.isSuccessful()) {
             T body = response.body();
             if(body == null) {
@@ -26,6 +29,7 @@ public abstract class BaseCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
+        Timber.e(t);
         onError(Error.from(t));
     }
 

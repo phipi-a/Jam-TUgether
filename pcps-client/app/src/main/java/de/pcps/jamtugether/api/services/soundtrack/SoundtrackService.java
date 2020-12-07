@@ -1,10 +1,10 @@
-package de.pcps.jamtugether.api.services;
+package de.pcps.jamtugether.api.services.soundtrack;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.api.responses.DeleteSoundtrackResponse;
-import de.pcps.jamtugether.api.responses.PushSoundtrackResponse;
-import de.pcps.jamtugether.api.responses.SoundtrackListResponse;
+import de.pcps.jamtugether.api.responses.soundtrack.DeleteSoundtrackResponse;
+import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
+import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
 import de.pcps.jamtugether.models.Soundtrack;
 import retrofit2.Call;
 

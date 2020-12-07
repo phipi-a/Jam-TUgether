@@ -25,11 +25,15 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     private final int roomID;
 
     @NonNull
+    private final String token;
+
+    @NonNull
     private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
 
-    public RoomOverviewViewModel(int roomID) {
+    public RoomOverviewViewModel(int roomID, @NonNull String token) {
         AppInjector.inject(this);
         this.roomID = roomID;
+        this.token = token;
     }
 
     @NonNull
@@ -93,8 +97,12 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
 
         private final int roomID;
 
-        public Factory(int roomID) {
+        @NonNull
+        private final String token;
+
+        public Factory(int roomID, @NonNull String token) {
             this.roomID = roomID;
+            this.token = token;
         }
 
         @SuppressWarnings("unchecked")
@@ -102,7 +110,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomOverviewViewModel.class)) {
-                return (T) new RoomOverviewViewModel(roomID);
+                return (T) new RoomOverviewViewModel(roomID, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

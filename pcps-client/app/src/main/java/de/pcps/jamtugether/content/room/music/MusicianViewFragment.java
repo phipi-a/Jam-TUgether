@@ -21,16 +21,20 @@ import de.pcps.jamtugether.utils.NavigationUtils;
 public class MusicianViewFragment extends Fragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String TOKEN_KEY = "token_key";
 
     private int roomID;
+
+    private String token;
 
     private MusicianViewViewModel viewModel;
 
     @NonNull
-    public static MusicianViewFragment newInstance(int roomID) {
+    public static MusicianViewFragment newInstance(int roomID, @NonNull String token) {
         MusicianViewFragment fragment = new MusicianViewFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
+        args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +44,8 @@ public class MusicianViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             roomID = getArguments().getInt(ROOM_ID_KEY);
-            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID);
+            token = getArguments().getString(TOKEN_KEY);
+            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, token);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }
     }
@@ -79,7 +84,7 @@ public class MusicianViewFragment extends Fragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID), R.id.soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID, token), R.id.soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {

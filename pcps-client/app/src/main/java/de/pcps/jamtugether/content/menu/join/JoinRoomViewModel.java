@@ -14,9 +14,10 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.errors.Error;
+import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.responses.JoinRoomResponse;
+import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
 
 public class JoinRoomViewModel extends ViewModel {
@@ -28,6 +29,8 @@ public class JoinRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
 
     private int roomID;
+
+    private String token;
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
@@ -91,6 +94,7 @@ public class JoinRoomViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
+                token = response.getToken();
                 navigateToRegularRoom.setValue(true);
             }
 
@@ -105,16 +109,18 @@ public class JoinRoomViewModel extends ViewModel {
                     passwordInputError.setValue(context.getString(error.getMessage()));
                     return;
                 }
-                networkError.setValue(error);
 
+                if(error instanceof PasswordTooLargeError) {
+                    roomInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
+                    passwordInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
+                    return;
+                }
                 roomInputError.setValue(null);
                 passwordInputError.setValue(null);
+
+                networkError.setValue(error);
             }
         });
-
-        // todo remove these 2 lines when room service is done
-        navigateToRegularRoom.setValue(true);
-        progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
@@ -127,6 +133,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     @NonNull

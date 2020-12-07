@@ -14,8 +14,9 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.errors.Error;
+import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.responses.CreateRoomResponse;
+import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
 
 public class CreateRoomViewModel extends ViewModel {
@@ -27,6 +28,8 @@ public class CreateRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
     
     private int roomID;
+
+    private String token;
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
@@ -64,20 +67,25 @@ public class CreateRoomViewModel extends ViewModel {
             public void onSuccess(@NonNull CreateRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 roomID = response.getRoomID();
+                token = response.getToken();
                 navigateToAdminRoom.setValue(true);
             }
 
             @Override
             public void onError(@NonNull Error error) {
                 progressBarVisibility.setValue(View.INVISIBLE);
+
+                Context context = application.getApplicationContext();
+
+                if(error instanceof PasswordTooLargeError) {
+                    passwordInputError.setValue(context.getString(error.getMessage()));
+                    return;
+                }
+                passwordInputError.setValue(null);
+
                 networkError.setValue(error);
             }
         });
-
-        // todo remove these 3 lines when room service is done
-        roomID = 1;
-        navigateToAdminRoom.setValue(true);
-        progressBarVisibility.setValue(View.INVISIBLE);
     }
 
     public void onNetworkErrorShown() {
@@ -90,6 +98,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     @NonNull

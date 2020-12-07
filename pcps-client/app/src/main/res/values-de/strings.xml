@@ -42,6 +42,8 @@
     <string name="unauthorized_access_error_message">Raum oder Passwort ist ungültig.</string>
     <string name="internal_server_error_title">Fehler</string>
     <string name="internal_server_error_message">Etwas ist schief gelaufen.</string>
+    <string name="password_too_large_error_title">Fehler</string>
+    <string name="password_too_large_error_message">Passwort ist zu lang.</string>
     <string name="forbidden_access_error_title">Fehler</string>
     <string name="forbidden_access_error_message">Etwas ist schief gelaufen.</string>
     <string name="generic_error_title">Fehler</string>
