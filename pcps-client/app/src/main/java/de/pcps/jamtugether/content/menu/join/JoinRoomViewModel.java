@@ -17,7 +17,7 @@ import de.pcps.jamtugether.api.errors.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.responses.JoinRoomResponse;
+import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
 
 public class JoinRoomViewModel extends ViewModel {

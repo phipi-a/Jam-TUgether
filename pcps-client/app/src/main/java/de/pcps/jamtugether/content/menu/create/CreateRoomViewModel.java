@@ -16,9 +16,8 @@ import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.errors.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.responses.CreateRoomResponse;
+import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.dagger.AppInjector;
-import timber.log.Timber;
 
 public class CreateRoomViewModel extends ViewModel {
 

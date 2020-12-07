@@ -1,15 +1,15 @@
-package de.pcps.jamtugether.api.responses;
+package de.pcps.jamtugether.api.responses.room;
 
 import androidx.annotation.NonNull;
 
-public class CreateRoomResponse {
+public class JoinRoomResponse {
 
     private final int roomID;
 
     @NonNull
     private final String token;
 
-    public CreateRoomResponse(int roomID, @NonNull String token) {
+    public JoinRoomResponse(int roomID, @NonNull String token) {
         this.roomID = roomID;
         this.token = token;
     }
