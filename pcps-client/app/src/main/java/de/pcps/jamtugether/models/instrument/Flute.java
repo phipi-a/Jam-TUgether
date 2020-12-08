@@ -15,7 +15,6 @@ public class Flute extends Instrument {
 
     private static final int soundResourceID = R.raw.flute_sound;
 
-    @NonNull
     private SoundPool soundPool;
 
     private int fluteSoundID;
