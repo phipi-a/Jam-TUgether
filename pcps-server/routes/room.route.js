@@ -123,6 +123,61 @@ roomRoute.post('/create-rooms', async (req, res, next) => {
 
 /**
  * @openapi
+ * /api/delete-room:
+ *   post:
+ *     summary: Delete existing room.
+ *     parameters:
+ *       - in: body
+ *         name: room
+ *         description: Room to delete.
+ *         schema:
+ *           type: object
+ *           required:
+ *             - roomID
+ *             - password
+ *           properties:
+ *             roomID:
+ *               type: integer
+ *             password:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ *       401:
+ *         description: Wrong password or roomID
+ *       413:
+ *         description: Password too long
+ *       500:
+ *         description: Failure
+ */
+roomRoute.post('/delete-room', async (req, res) => {
+  try {
+    //check if room to delete exists
+    const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+
+    if (!room) {
+      return res.status(401).send('No room with matching roomId found')
+    }
+    //Check pw length
+    checkPwdLen(req.body.password, res)
+    //compare passwords and delete room
+    if (await bcrypt.compare(req.body.password, room.password)) {
+      RoomSchema.deleteOne({ roomID: req.body.roomID})
+      res.status(200).send('Room deleted')
+    } else {
+      res.status(401).send('Wrong Password.')
+    }
+  } catch (err){
+    if (err === PwErr) {
+      res.status(413).send('Password too large.')
+    } else {
+      res.status(500).send('Couldn\'t delete room.')
+    }
+  }
+})
+
+/**
+ * @openapi
  * /api/login:
  *   post:
  *     summary: Login to existing room.
