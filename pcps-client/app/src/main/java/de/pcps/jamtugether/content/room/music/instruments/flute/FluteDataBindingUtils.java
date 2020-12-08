@@ -16,7 +16,6 @@ public class FluteDataBindingUtils {
             int[] location = new int[2];
             view.getLocationInWindow(location);
             soundPitchPercentage = (event.getRawY() - location[1]) / view.getHeight();
-
             viewModel.onPitchChanged(soundPitchPercentage);
             return true;
         });
