@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.models.instruments.Instrument;
+import de.pcps.jamtugether.models.instruments.Instruments;
 
 @Singleton
 public class Preferences {
@@ -50,8 +51,8 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instrument.FALLBACK.getPreferenceValue());
-        return Instrument.from(preferenceValue);
+        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
+        return Instruments.from(preferenceValue);
     }
 
     public void setMainInstrument(@NonNull Instrument mainInstrument) {
