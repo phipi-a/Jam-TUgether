@@ -46,7 +46,9 @@ public abstract class Error {
 
     @NonNull
     public static Error from(Throwable throwable) {
-        Timber.d("error %s", throwable.getMessage());
+        if(throwable instanceof NoInternetConnectionException) {
+            return new NoInternetConnectionError();
+        }
         return new GenericError();
     }
 }
