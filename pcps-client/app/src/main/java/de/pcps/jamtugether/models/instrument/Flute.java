@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.models.instruments;
+package de.pcps.jamtugether.models.instrument;
 
 import android.content.Context;
 import android.media.SoundPool;
@@ -16,16 +16,16 @@ public class Flute extends Instrument {
     private static final int soundResourceID = R.raw.flute_sound;
 
     @NonNull
-    private final SoundPool soundPool;
+    private SoundPool soundPool;
 
     private int fluteSoundID;
 
     public Flute() {
         super(0, R.string.instrument_flute, R.string.play_flute_help, "flute", "flute");
-        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
     }
 
     public void prepare(@NonNull Context context, @NonNull SoundPool.OnLoadCompleteListener onLoadCompleteListener) {
+        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
         fluteSoundID = soundPool.load(context, soundResourceID, 1);
         soundPool.setOnLoadCompleteListener(onLoadCompleteListener);
     }

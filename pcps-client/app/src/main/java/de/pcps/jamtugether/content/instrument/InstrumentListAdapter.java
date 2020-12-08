@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.databinding.ViewInstrumentListItemBinding;
-import de.pcps.jamtugether.models.instruments.Instrument;
+import de.pcps.jamtugether.models.instrument.Instrument;
 
 public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentListAdapter.ViewHolder> {
 

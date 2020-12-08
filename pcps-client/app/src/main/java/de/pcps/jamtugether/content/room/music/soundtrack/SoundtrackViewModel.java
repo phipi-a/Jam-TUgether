@@ -17,10 +17,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.soundtrack.Soundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
-import de.pcps.jamtugether.models.instruments.Instrument;
-import de.pcps.jamtugether.models.instruments.Instruments;
+import de.pcps.jamtugether.models.instrument.Instrument;
+import de.pcps.jamtugether.models.instrument.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener, Soundtrack.OnChangeListener {
