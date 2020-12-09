@@ -3,6 +3,7 @@ package de.pcps.jamtugether.content.room.overview;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -17,7 +18,9 @@ import de.pcps.jamtugether.api.errors.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.dagger.AppInjector;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 
 public abstract class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
 
@@ -51,7 +54,7 @@ public abstract class RoomOverviewViewModel extends ViewModel implements Soundtr
     private List<Soundtrack> generateTestSoundtracks() {
         List<Soundtrack> list = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
-            list.add(new Soundtrack(i));
+            list.add(new SingleSoundtrack(i));
         }
         return list;
     }
@@ -62,10 +65,7 @@ public abstract class RoomOverviewViewModel extends ViewModel implements Soundtr
     }
 
     @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
-        // todo update stop button visibility of soundtrack
-        // todo update play button drawable of soundtrack
-    }
+    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
 
     @Override
     public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
@@ -80,13 +80,17 @@ public abstract class RoomOverviewViewModel extends ViewModel implements Soundtr
         // todo get all soundtracks from server and update current list after
     }
 
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
+    }
+
     public int getRoomID() {
         return roomID;
     }
 
     @NonNull
     public LiveData<Soundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), Soundtrack::compositeFrom);
+        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
     @NonNull

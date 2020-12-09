@@ -8,11 +8,11 @@
 
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.models.Soundtrack" />
+            type="de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.models.Soundtrack.OnDeleteListener" />
+            type="de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack.OnDeleteListener" />
     </data>
 
     <LinearLayout

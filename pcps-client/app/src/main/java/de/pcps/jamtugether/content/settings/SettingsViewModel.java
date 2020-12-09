@@ -10,7 +10,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.dagger.AppInjector;
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.models.instruments.Instrument;
+import de.pcps.jamtugether.models.instruments.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class SettingsViewModel extends ViewModel implements Instrument.ClickListener {
@@ -34,6 +35,6 @@ public class SettingsViewModel extends ViewModel implements Instrument.ClickList
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instrument.values());
+        return Arrays.asList(Instruments.LIST);
     }
 }

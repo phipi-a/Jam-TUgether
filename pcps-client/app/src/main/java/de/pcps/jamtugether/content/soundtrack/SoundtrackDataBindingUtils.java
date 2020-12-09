@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.google.android.material.slider.Slider;
 
 import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
 
 public class SoundtrackDataBindingUtils {
 

@@ -1,14 +1,24 @@
 package de.pcps.jamtugether.content.room.overview.admin;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.room.overview.RoomOverviewFragment;
 import de.pcps.jamtugether.content.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class AdminRoomOverviewFragment extends RoomOverviewFragment {
 

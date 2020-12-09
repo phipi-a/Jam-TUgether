@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.models;
+package de.pcps.jamtugether.models.music.volume;
 
 public class Volume {
 

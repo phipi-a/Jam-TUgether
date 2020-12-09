@@ -8,9 +8,9 @@ import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.errors.Error;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.content.room.overview.RoomOverviewViewModel;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 
-public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements Soundtrack.OnDeleteListener {
+public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements SingleSoundtrack.OnDeleteListener {
 
     @NonNull
     private final String password;
@@ -21,12 +21,12 @@ public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements
     }
 
     @Override
-    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) {
+    public void onDeleteButtonClicked(@NonNull SingleSoundtrack soundtrack) {
         // todo remove soundtrack from list if possible
-        deleteSoundtrack();
+        deleteSoundtrack(soundtrack);
     }
 
-    private void deleteSoundtrack() {
+    private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
         // todo
     }
 

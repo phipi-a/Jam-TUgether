@@ -7,12 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularSoundtrackListAdapter.ViewHolder> {
 
-    public RegularSoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+    public RegularSoundtrackListAdapter(@NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
         super(onChangeListener, lifecycleOwner);
     }
 
@@ -37,13 +37,13 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
             this.binding = binding;
         }
 
-        void bind(@NonNull Soundtrack soundtrack, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
-            binding.soundtrackControlsLayout.setSoundtrack(soundtrack);
+        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+            binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
             binding.soundtrackControlsLayout.setOnChangeListener(onChangeListener);
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 
-            binding.soundtrackView.draw(soundtrack);
+            binding.soundtrackView.draw(singleSoundtrack);
         }
 
         @NonNull

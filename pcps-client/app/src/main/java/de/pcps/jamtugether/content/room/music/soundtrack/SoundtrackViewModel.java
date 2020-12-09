@@ -17,12 +17,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.content.instrument.Instrument;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.dagger.AppInjector;
+import de.pcps.jamtugether.models.instruments.Instrument;
+import de.pcps.jamtugether.models.instruments.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
-
-import static de.pcps.jamtugether.content.instrument.Instrument.values;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener, Soundtrack.OnChangeListener {
 
@@ -66,14 +67,14 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     private List<Soundtrack> generateTestSoundtracks() {
         List<Soundtrack> list = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
-            list.add(new Soundtrack(i));
+            list.add(new SingleSoundtrack(i));
         }
         return list;
     }
 
     @NonNull
-    private Soundtrack generateTestOwnSoundtrack() {
-        return new Soundtrack(0);
+    private SingleSoundtrack generateTestOwnSoundtrack() {
+        return new SingleSoundtrack(0);
     }
 
     @Override
@@ -99,10 +100,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     }
 
     @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
-        // todo update stop button visibility of soundtrack
-        // todo update play button drawable of soundtrack
-    }
+    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
 
     @Override
     public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
@@ -124,7 +122,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(values());
+        return Arrays.asList(Instruments.LIST);
     }
 
     public void onHelpButtonClicked() {
@@ -159,7 +157,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public LiveData<Soundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), Soundtrack::compositeFrom);
+        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
     @NonNull
