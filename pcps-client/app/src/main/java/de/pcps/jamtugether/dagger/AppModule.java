@@ -11,10 +11,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
-import de.pcps.jamtugether.api.ApiConstants;
+import de.pcps.jamtugether.api.Constants;
+import de.pcps.jamtugether.api.InternetConnectionInterceptor;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.storage.Preferences;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -50,10 +52,14 @@ public class AppModule {
     @Singleton
     @Provides
     @NonNull
-    public Retrofit provideRetrofit() {
+    public Retrofit provideRetrofit(@NonNull InternetConnectionInterceptor interceptor) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor).build();
+
         return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl(ApiConstants.BASE_URL)
+                .client(client)
                 .build();
     }
 
