@@ -1,8 +1,12 @@
-package de.pcps.jamtugether.content.room.overview;
+package de.pcps.jamtugether.content.room.overview.regular;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
+import de.pcps.jamtugether.content.room.overview.RoomOverviewFragment;
 import de.pcps.jamtugether.content.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 
@@ -19,9 +23,15 @@ public class RegularRoomOverviewFragment extends RoomOverviewFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RegularRoomOverviewViewModel.Factory viewModelFactory = new RegularRoomOverviewViewModel.Factory(roomID, token);
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(RegularRoomOverviewViewModel.class);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     protected SoundtrackListAdapter createSoundtrackListAdapter() {
         return new RegularSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
     }
-
 }

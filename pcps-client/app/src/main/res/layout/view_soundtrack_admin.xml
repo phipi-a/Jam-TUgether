@@ -12,7 +12,7 @@
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.models.Soundtrack.OnChangeListener" />
+            type="de.pcps.jamtugether.models.Soundtrack.OnDeleteListener" />
     </data>
 
     <LinearLayout

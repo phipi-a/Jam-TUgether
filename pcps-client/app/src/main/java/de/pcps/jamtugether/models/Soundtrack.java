@@ -110,7 +110,9 @@ public class Soundtrack extends ArrayList<Sound> {
         void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack);
 
         void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack);
+    }
 
+    public interface OnDeleteListener {
         void onDeleteButtonClicked(@NonNull Soundtrack soundtrack);
     }
 }

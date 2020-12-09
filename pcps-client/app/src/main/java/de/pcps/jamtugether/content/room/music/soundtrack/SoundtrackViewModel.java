@@ -113,9 +113,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @Override
     public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
 
-    @Override
-    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) { /* wil never be called */ }
-
     private void fetchAllSoundtracks() {
         // todo get all soundtracks from server and update current list after
     }

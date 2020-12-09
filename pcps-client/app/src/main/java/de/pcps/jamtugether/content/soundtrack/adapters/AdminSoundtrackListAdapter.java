@@ -12,8 +12,12 @@ import de.pcps.jamtugether.databinding.ViewSoundtrackAdminBinding;
 
 public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSoundtrackListAdapter.ViewHolder> {
 
-    public AdminSoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+    @NonNull
+    private final Soundtrack.OnDeleteListener onDeleteListener;
+
+    public AdminSoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull Soundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
         super(onChangeListener, lifecycleOwner);
+        this.onDeleteListener = onDeleteListener;
     }
 
     @NonNull
@@ -24,7 +28,7 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), onChangeListener, lifecycleOwner);
+        holder.bind(getItem(position), onChangeListener, onDeleteListener, lifecycleOwner);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -37,9 +41,9 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
             this.binding = binding;
         }
 
-        void bind(@NonNull Soundtrack soundtrack, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+        void bind(@NonNull Soundtrack soundtrack, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull Soundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
             binding.setSoundtrack(soundtrack);
-            binding.setOnChangeListener(onChangeListener);
+            binding.setOnChangeListener(onDeleteListener);
 
             binding.soundtrackControlsLayout.setSoundtrack(soundtrack);
             binding.soundtrackControlsLayout.setOnChangeListener(onChangeListener);
