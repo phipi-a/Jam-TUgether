@@ -11,7 +11,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.dagger.AppInjector;
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.models.instrument.Instrument;
+import de.pcps.jamtugether.models.instrument.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class WelcomeViewModel extends ViewModel implements Instrument.ClickListener {
@@ -35,7 +36,7 @@ public class WelcomeViewModel extends ViewModel implements Instrument.ClickListe
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instrument.values());
+        return Arrays.asList(Instruments.LIST);
     }
 
     public void onNavigatedToMenu() {

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.models;
+package de.pcps.jamtugether.models.soundtrack;
 
 import androidx.annotation.NonNull;
 

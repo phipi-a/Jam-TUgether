@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.soundtrack.Soundtrack;
 
 public class SoundtrackView extends View {
 

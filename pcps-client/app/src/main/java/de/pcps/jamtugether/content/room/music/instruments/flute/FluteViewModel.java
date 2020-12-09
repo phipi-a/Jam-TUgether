@@ -2,7 +2,6 @@ package de.pcps.jamtugether.content.room.music.instruments.flute;
 
 import android.content.Context;
 import android.media.MediaRecorder;
-import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -11,7 +10,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.IOException;
 
-import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.models.instrument.Flute;
+import de.pcps.jamtugether.models.instrument.Instruments;
 
 public class FluteViewModel extends ViewModel {
 
@@ -21,19 +21,18 @@ public class FluteViewModel extends ViewModel {
     private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
     @NonNull
+    private final Flute flute = Instruments.FLUTE;
+
+    private int fluteStreamingID;
+
+    @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     @NonNull
     private final MediaRecorder soundRecorder;
 
     @NonNull
-    private final SoundPool soundPool;
-
-    @NonNull
     private final Thread soundReactThread;
-
-    private int fluteStreamingID;
-    private int fluteSoundID;
 
     public FluteViewModel() {
         soundRecorder = new MediaRecorder();
@@ -46,8 +45,6 @@ public class FluteViewModel extends ViewModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
         soundReactThread = createThread();
     }
 
@@ -57,17 +54,16 @@ public class FluteViewModel extends ViewModel {
             @Override
             public void run() {
                 while (!this.isInterrupted()) {
-                    int mm = soundRecorder.getMaxAmplitude();
-                    if (mm != 0) {
-                        if (mm < 10000) {
+                    int maxAmplitude = soundRecorder.getMaxAmplitude();
+                    if (maxAmplitude != 0) {
+                        if (maxAmplitude < 10000) {
                             if (fluteStreamingID != 0) {
-                                soundPool.stop(fluteStreamingID);
-                                fluteStreamingID = 0;
+                                fluteStreamingID = flute.stop(fluteStreamingID);
                             }
                         } else {
-                            if (fluteStreamingID == 0) {
+                            if (fluteStreamingID == 0 && pitchPercentage.getValue() != null) {
                                 float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
-                                fluteStreamingID = soundPool.play(fluteSoundID, 1, 1, 1, 99, pitch);
+                                fluteStreamingID = flute.play(pitch);
                             }
                         }
                     }
@@ -77,8 +73,7 @@ public class FluteViewModel extends ViewModel {
     }
 
     public void startRecording(@NonNull Context context) {
-        fluteSoundID = soundPool.load(context, R.raw.flute_sound, 1);
-        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+        flute.prepare(context, (soundPool, sampleId, status) -> {
             soundRecorder.start();
             soundReactThread.start();
         });
@@ -94,24 +89,20 @@ public class FluteViewModel extends ViewModel {
         pitchPercentage.setValue(newPitch);
     }
 
-    private void stopFlute() {
-        if (soundReactThread != null) {
-            soundReactThread.interrupt();
-            soundRecorder.stop();
-            soundRecorder.release();
-            if (fluteStreamingID != 0) {
-                soundPool.stop(fluteStreamingID);
-                fluteStreamingID = 0;
-            }
-            soundPool.release();
-            fluteSoundID = 0;
+    private void stopRecording() {
+        soundReactThread.interrupt();
+        soundRecorder.stop();
+        soundRecorder.release();
+        if (fluteStreamingID != 0) {
+            flute.stop(fluteStreamingID);
         }
+        flute.release();
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        stopFlute();
+        stopRecording();
     }
 
     @NonNull

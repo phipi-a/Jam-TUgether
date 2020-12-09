@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import de.pcps.jamtugether.api.responses.soundtrack.DeleteSoundtrackResponse;
 import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
 import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
-import de.pcps.jamtugether.models.Soundtrack;
+import de.pcps.jamtugether.models.soundtrack.Soundtrack;
 import retrofit2.Call;
 
 // todo add actual endpoints with correct response classes

@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.content.instrument.Instrument;
+import de.pcps.jamtugether.models.instrument.Instrument;
+import de.pcps.jamtugether.models.instrument.Instruments;
 
 public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback {
 
@@ -30,16 +31,12 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
-        switch (instrument) {
-            case FLUTE:
-                showFluteFragment.setValue(true);
-                break;
-            case DRUMS:
-                showDrumsFragment.setValue(true);
-                break;
-            case SHAKER:
-                showShakerFragment.setValue(true);
-                break;
+        if (instrument == Instruments.FLUTE) {
+            showFluteFragment.setValue(true);
+        } else if (instrument == Instruments.DRUMS) {
+            showDrumsFragment.setValue(true);
+        } else {
+            showShakerFragment.setValue(true);
         }
     }
 
