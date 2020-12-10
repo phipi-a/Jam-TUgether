@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.content.room.overview;
 
 import android.app.Application;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;

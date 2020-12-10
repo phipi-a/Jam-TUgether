@@ -22,12 +22,16 @@ public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements
 
     @Override
     public void onDeleteButtonClicked(@NonNull SingleSoundtrack soundtrack) {
-        // todo remove soundtrack from list if possible
         deleteSoundtrack(soundtrack);
     }
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
-        // todo
+        if(allSoundtracks.getValue() == null || !allSoundtracks.getValue().contains(soundtrack)) {
+            return;
+        }
+        // delete in local list
+        allSoundtracks.getValue().remove(soundtrack);
+        // todo tell server
     }
 
     public void onDeleteRoomButtonClicked() {
