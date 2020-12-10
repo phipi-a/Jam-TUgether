@@ -32,20 +32,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/soundtrack_first_item_margin_top"
+            android:layout_marginTop="@dimen/composite_soundtrack_margin_top"
             android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
 
-        <!-- todo set item margins through item decoration
-              set first item margin to default margin + sound_track_item_margin_top -->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_soundtracks_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/soundtrack_item_margin_top"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

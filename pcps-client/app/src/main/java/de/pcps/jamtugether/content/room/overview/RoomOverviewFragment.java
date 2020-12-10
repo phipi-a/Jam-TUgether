@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
+import de.pcps.jamtugether.content.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -51,6 +52,7 @@ public abstract class RoomOverviewFragment extends Fragment {
 
         SoundtrackListAdapter adapter = createSoundtrackListAdapter();
         binding.allSoundtracksRecyclerView.setAdapter(adapter);
+        binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(context));
         viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), adapter::submitList);
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
