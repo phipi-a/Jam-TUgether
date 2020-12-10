@@ -29,6 +29,8 @@ public class CreateRoomViewModel extends ViewModel {
     
     private int roomID;
 
+    private String password;
+
     private String token;
 
     @NonNull
@@ -56,6 +58,7 @@ public class CreateRoomViewModel extends ViewModel {
         }
         passwordInputError.setValue(null);
 
+        this.password = password;
         createRoom(password);
     }
 
@@ -98,6 +101,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getToken() {

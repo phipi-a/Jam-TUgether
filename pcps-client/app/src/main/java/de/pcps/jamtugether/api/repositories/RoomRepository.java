@@ -7,9 +7,11 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.BaseCallback;
 import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
+import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
+import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
 import retrofit2.Call;
 
@@ -31,6 +33,12 @@ public class RoomRepository {
     public void joinRoom(int roomID, @NonNull String password, @NonNull BaseCallback<JoinRoomResponse> callback) {
         JoinRoomBody body = new JoinRoomBody(roomID, password);
         Call<JoinRoomResponse> call = roomService.joinRoom(body);
+        call.enqueue(callback);
+    }
+
+    public void deleteRoom(int roomID, @NonNull String password, @NonNull BaseCallback<DeleteRoomResponse> callback) {
+        DeleteRoomBody body = new DeleteRoomBody(roomID, password);
+        Call<DeleteRoomResponse> call = roomService.deleteRoom(body);
         call.enqueue(callback);
     }
 }

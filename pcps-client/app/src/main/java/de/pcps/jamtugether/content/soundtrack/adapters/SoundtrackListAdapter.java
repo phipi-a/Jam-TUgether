@@ -5,18 +5,19 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.pcps.jamtugether.models.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
 
-public abstract class SoundtrackListAdapter<T extends RecyclerView.ViewHolder> extends ListAdapter<Soundtrack, T> {
+public abstract class SoundtrackListAdapter<T extends RecyclerView.ViewHolder> extends ListAdapter<SingleSoundtrack, T> {
 
     @NonNull
-    protected final Soundtrack.OnChangeListener onChangeListener;
+    protected final SingleSoundtrack.OnChangeListener onChangeListener;
 
     @NonNull
     protected final LifecycleOwner lifecycleOwner;
 
-    public SoundtrackListAdapter(@NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
-        super(Soundtrack.DIFF_UTIL_CALLBACK);
+    public SoundtrackListAdapter(@NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+        super(SingleSoundtrack.DIFF_UTIL_CALLBACK);
         this.onChangeListener = onChangeListener;
         this.lifecycleOwner = lifecycleOwner;
     }

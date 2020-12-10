@@ -1,8 +1,8 @@
-package de.pcps.jamtugether.models.soundtrack;
+package de.pcps.jamtugether.models.music.sound;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.models.instrument.Instrument;
+import de.pcps.jamtugether.models.instruments.Instrument;
 
 // the client sends this object to the server
 public class ServerSound extends Sound {
@@ -11,7 +11,7 @@ public class ServerSound extends Sound {
     private final int user;
 
     public ServerSound(int room, int user, @NonNull Instrument instrument, int startTime, int pitch) {
-        super(instrument, startTime, pitch);
+        super(instrument.getServerString(), startTime, pitch);
         this.room = room;
         this.user = user;
     }

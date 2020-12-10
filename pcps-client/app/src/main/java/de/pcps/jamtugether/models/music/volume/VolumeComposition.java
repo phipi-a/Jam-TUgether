@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.models.soundtrack;
+package de.pcps.jamtugether.models.music.volume;
 
 import androidx.annotation.NonNull;
 

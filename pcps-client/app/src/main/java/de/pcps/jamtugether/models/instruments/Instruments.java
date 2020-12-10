@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.models.instrument;
+package de.pcps.jamtugether.models.instruments;
 
 import androidx.annotation.NonNull;
 
@@ -16,7 +16,7 @@ public class Instruments {
     public static final Shaker SHAKER = Shaker.getInstance();
 
     @NonNull
-    public static final Instrument FALLBACK = FLUTE;
+    public static final Instrument FALLBACK = FLUTE; // todo maybe replace fallback with error message
 
     @NonNull
     public static final Instrument[] LIST = {FLUTE, DRUMS, SHAKER};
@@ -24,15 +24,25 @@ public class Instruments {
     @NonNull
     private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();
 
+    @NonNull
+    private static final HashMap<String, Instrument> serverMap = new HashMap<>();
+
     static {
         for(Instrument instrument : LIST) {
             preferenceMap.put(instrument.getPreferenceValue(), instrument);
+            serverMap.put(instrument.getServerString(), instrument);
         }
     }
 
     @NonNull
-    public static Instrument from(@NonNull String preferenceValue) {
-        Instrument instrument= preferenceMap.get(preferenceValue);
+    public static Instrument fromPreferences(@NonNull String preferenceValue) {
+        Instrument instrument = preferenceMap.get(preferenceValue);
+        return instrument != null ? instrument : FALLBACK;
+    }
+
+    @NonNull
+    public static Instrument fromServer(@NonNull String serverString) {
+        Instrument instrument = serverMap.get(serverString);
         return instrument != null ? instrument : FALLBACK;
     }
 }

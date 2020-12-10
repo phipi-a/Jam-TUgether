@@ -18,7 +18,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
-import de.pcps.jamtugether.models.instrument.Instrument;
+import de.pcps.jamtugether.models.instruments.Instrument;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class SoundtrackFragment extends Fragment {

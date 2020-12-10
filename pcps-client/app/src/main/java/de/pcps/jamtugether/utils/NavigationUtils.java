@@ -29,8 +29,8 @@ public class NavigationUtils {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public static void navigateToAdminRoom(@NonNull NavController nc, int roomID, @NonNull String token) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID, token));
+    public static void navigateToAdminRoom(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID, password, token));
     }
 
     public static void navigateToRegularRoom(@NonNull NavController nc, int roomID, @NonNull String token) {

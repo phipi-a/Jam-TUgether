@@ -1,5 +1,7 @@
 package de.pcps.jamtugether.content.room.overview;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,28 +9,34 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public abstract class RoomOverviewFragment extends Fragment {
 
     protected static final String ROOM_ID_KEY = "room_id_key";
     protected static final String TOKEN_KEY = "token_key";
 
+    protected int roomID;
+    protected String token;
+
     protected RoomOverviewViewModel viewModel;
+
+    private Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
-            int roomID = getArguments().getInt(ROOM_ID_KEY);
-            String token = getArguments().getString(TOKEN_KEY);
-            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, token);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
+            roomID = getArguments().getInt(ROOM_ID_KEY);
+            token = getArguments().getString(TOKEN_KEY);
         }
     }
 
@@ -45,7 +53,25 @@ public abstract class RoomOverviewFragment extends Fragment {
         binding.allSoundtracksRecyclerView.setAdapter(adapter);
         viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), adapter::submitList);
 
+        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if(networkError != null) {
+                AlertDialog dialog = UiUtils.createInfoDialog(context, networkError.getTitle(), networkError.getMessage());
+                dialog.setOnShowListener(arg -> {
+                    // todo find better way to color dialog buttons
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
+                    viewModel.onNetworkErrorShown();
+                });
+                dialog.show();
+            }
+        });
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     @SuppressWarnings("rawtypes")

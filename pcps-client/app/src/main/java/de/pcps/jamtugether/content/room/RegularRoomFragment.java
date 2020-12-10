@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import de.pcps.jamtugether.content.room.music.MusicianViewFragment;
-import de.pcps.jamtugether.content.room.overview.RegularRoomOverviewFragment;
+import de.pcps.jamtugether.content.room.overview.regular.RegularRoomOverviewFragment;
 
 public class RegularRoomFragment extends RoomFragment {
 

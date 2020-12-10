@@ -3,32 +3,46 @@ package de.pcps.jamtugether.content.room.overview;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.models.soundtrack.Soundtrack;
+import de.pcps.jamtugether.api.errors.Error;
+import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.dagger.AppInjector;
+import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 
-public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
+public abstract class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener {
 
     @Inject
-    Application application;
+    protected Application application;
 
-    private final int roomID;
+    @Inject
+    protected RoomRepository roomRepository;
+
+    @Inject
+    protected SoundtrackRepository soundtrackRepository;
+
+    protected final int roomID;
 
     @NonNull
-    private final String token;
+    protected final String token;
 
     @NonNull
-    private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
+    protected final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
+
+    @NonNull
+    protected final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     public RoomOverviewViewModel(int roomID, @NonNull String token) {
         AppInjector.inject(this);
@@ -40,7 +54,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     private List<Soundtrack> generateTestSoundtracks() {
         List<Soundtrack> list = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
-            list.add(new Soundtrack(i));
+            list.add(new SingleSoundtrack(i));
         }
         return list;
     }
@@ -51,10 +65,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     }
 
     @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
-        // todo update stop button visibility of soundtrack
-        // todo update play button drawable of soundtrack
-    }
+    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
 
     @Override
     public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
@@ -65,18 +76,12 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     @Override
     public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
 
-    @Override
-    public void onDeleteButtonClicked(@NonNull Soundtrack soundtrack) {
-        // todo update sound track list if sound track is in the list
-        deleteSoundtrack();
-    }
-
-    private void deleteSoundtrack() {
-        // todo delete soundtrack on server
-    }
-
     private void fetchAllSoundtracks() {
         // todo get all soundtracks from server and update current list after
+    }
+
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
     }
 
     public int getRoomID() {
@@ -85,7 +90,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
 
     @NonNull
     public LiveData<Soundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), Soundtrack::compositeFrom);
+        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
     @NonNull
@@ -93,26 +98,8 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
         return allSoundtracks;
     }
 
-    static class Factory implements ViewModelProvider.Factory {
-
-        private final int roomID;
-
-        @NonNull
-        private final String token;
-
-        public Factory(int roomID, @NonNull String token) {
-            this.roomID = roomID;
-            this.token = token;
-        }
-
-        @SuppressWarnings("unchecked")
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(RoomOverviewViewModel.class)) {
-                return (T) new RoomOverviewViewModel(roomID, token);
-            }
-            throw new IllegalArgumentException("Unknown ViewModel class");
-        }
+    @NonNull
+    public MutableLiveData<Error> getNetworkError() {
+        return networkError;
     }
 }
