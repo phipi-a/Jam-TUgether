@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.BaseCallback;
+import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
@@ -36,9 +37,9 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
-    public void deleteRoom(int roomID, @NonNull String password, @NonNull BaseCallback<DeleteRoomResponse> callback) {
+    public void deleteRoom(int roomID, @NonNull String password, @NonNull String token, @NonNull BaseCallback<DeleteRoomResponse> callback) {
         DeleteRoomBody body = new DeleteRoomBody(roomID, password);
-        Call<DeleteRoomResponse> call = roomService.deleteRoom(body);
+        Call<DeleteRoomResponse> call = roomService.deleteRoom(String.format(Constants.BEARER_TOKEN_FORMAT, token), body);
         call.enqueue(callback);
     }
 }

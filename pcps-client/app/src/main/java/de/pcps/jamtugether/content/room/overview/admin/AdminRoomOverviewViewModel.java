@@ -1,6 +1,8 @@
 package de.pcps.jamtugether.content.room.overview.admin;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +16,9 @@ public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements
 
     @NonNull
     private final String password;
+
+    @NonNull
+    private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>();
 
     public AdminRoomOverviewViewModel(int roomID, @NonNull String password, @NonNull String token) {
         super(roomID, token);
@@ -35,14 +40,22 @@ public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements
     }
 
     public void onDeleteRoomButtonClicked() {
+        showRoomDeletionConfirmDialog.setValue(true);
+    }
+
+    public void onRoomDeletionConfirmDialogShown() {
+        showRoomDeletionConfirmDialog.setValue(false);
+    }
+
+    public void onRoomDeletionConfirmButtonClicked() {
         deleteRoom();
     }
 
     private void deleteRoom() {
-        roomRepository.deleteRoom(roomID, password, new BaseCallback<DeleteRoomResponse>() {
+        roomRepository.deleteRoom(roomID, password, token, new BaseCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
-                // successful response
+                leaveRoom.setValue(true);
             }
 
             @Override
@@ -50,6 +63,11 @@ public class AdminRoomOverviewViewModel extends RoomOverviewViewModel implements
                 networkError.setValue(error);
             }
         });
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowRoomDeletionConfirmDialog() {
+        return showRoomDeletionConfirmDialog;
     }
 
     static class Factory implements ViewModelProvider.Factory {
