@@ -1,14 +1,12 @@
-### 
-POST http://localhost:3000/api/test 
+POST http://localhost:3000/api/test/
 Content-Type: application/json
-Authorization: Bearer yJhbGciOiJIUzI1NiJ9.MTc.EkISIE0nhNvKNufifH1YeqclHjXO3IL2MhKhGC3UsPU
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYzkwMWI3MDhjNTdkNTgyMjJlM2IiLCJpYXQiOjE2MDc2ODcxMjcsImV4cCI6MTYwNzY4ODkyN30.XO3CEyP-74OnMHJtU3it3P9yceeAqShy2EIOjnXezAQ '
 
-{ 
-  "id":"17"
+{
+  "roomID" : "17",
+  "password" : "12"
 }
-
 ###
-
 POST http://localhost:3000/api/create-room
 Content-Type: application/json
 
@@ -18,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/l
 Content-Type: application/json
 
 {

@@ -70,7 +70,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
       // default value
       newRoomID = numberOfRooms + 1
       // Returns all _id and roomID values from db sorted
-      const allIndexes = await RoomSchema.find({}, { roomID: newRoomID - 1 }).sort({ roomID: 'asc' })
+      const allIndexes = await RoomSchema.find({}, { roomID: 1 }).sort({ roomID: 'asc' })
       // Find free roomID
       for (let i = 0; i < numberOfRooms; i++) {
         if (Number(allIndexes[i]['roomID']) > i + 1) {
@@ -84,39 +84,13 @@ roomRoute.post('/create-room', async (req, res, next) => {
     const token = createToken()
     //  TODO save token for each user (privileges)
 
-    // TODO send new room id to client
     res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
     } else {
+      console.log(err)
       res.status(500).send('Couldn\'t create room.')
-    }
-  }
-})
-
-roomRoute.post('/create-rooms', async (req, res, next) => {
-  try {
-    // TODO: check password, limit to n characters
-    checkPwdLen(req.body.password, res)
-    // Create salt and hash password
-    let password = '1234'
-    const salt = await bcrypt.genSalt()
-    password = await bcrypt.hash(password, salt)
-
-    await RoomSchema.deleteMany({}).exec()
-    // Create db entries
-    let i
-    for (i = 1; i <= 4; i++) {
-      await RoomSchema.create({ roomID: i, password: password })
-    }
-    console.log(await RoomSchema.find({}))
-    res.status(201).send('Created 4 rooms.')
-  } catch (err) {
-    if (err === PwErr) {
-      res.status(413).send('Password too large.')
-    } else {
-      res.status(500).send('Couldn\'t create rooms.')
     }
   }
 })
@@ -150,24 +124,28 @@ roomRoute.post('/create-rooms', async (req, res, next) => {
  *       500:
  *         description: Failure
  */
-roomRoute.post('/delete-room', async (req, res) => {
+roomRoute.delete('/room', verify, async (req, res) => {
   try {
-    //check if room to delete exists
+    // check if room to delete exists
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
       return res.status(401).send('No room with matching roomId found')
     }
-    //Check pw length
+    // Check pw length
     checkPwdLen(req.body.password, res)
-    //compare passwords and delete room
+    // compare passwords and delete room
     if (await bcrypt.compare(req.body.password, room.password)) {
-      RoomSchema.deleteOne({ roomID: req.body.roomID})
-      res.status(200).send('Room deleted')
+      RoomSchema.deleteOne({ roomID: req.body.roomID }, (err, obj) => {
+        if (err) {
+          res.status(501).send(' Error, cannot delete room')
+        }
+        res.status(200).send('Room deleted')
+      })
     } else {
       res.status(401).send('Wrong Password.')
     }
-  } catch (err){
+  } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
     } else {
