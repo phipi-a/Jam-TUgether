@@ -26,7 +26,6 @@ exports.verify = function (req, res, next) {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
     if (err) {
-      //console.log(err + "\n" + token)
       return res.sendStatus(403)
     }
     req.id = id

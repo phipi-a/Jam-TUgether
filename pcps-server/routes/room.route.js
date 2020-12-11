@@ -25,6 +25,18 @@ async function createRoom (roomID, password, object) {
   })
 }
 
+// Update "updated" to current time
+async function updateRoom (roomID, password, res) {
+  // delete Room
+  RoomSchema.deleteOne({ roomID: roomID }, (err, obj) => {
+    if (err) {
+      res.status(501).send(' Error, cannot update room')
+    }
+  })
+  createRoom(roomID, password)
+  console.log(roomID)
+}
+
 /**
  * @openapi
  * /api/create-room:
@@ -192,6 +204,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
+      await updateRoom(req.body.roomID, room.password, res)
       const token = createToken()
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
@@ -230,6 +243,8 @@ roomRoute.get('/room/{id}', async (req, res) => {
   if (room == null) {
     res.status(500).send('Room does not exist!')
   } else {
+    await updateRoom(req.body.roomID, req.body.password, res)
+
     res.status(200).send(room.track)
   }
 })

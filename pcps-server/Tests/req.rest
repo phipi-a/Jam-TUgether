@@ -1,9 +1,9 @@
-POST http://localhost:3000/api/test/
+POST http://vm4.sese.tu-berlin.de:3000/api/test
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYzkwMWI3MDhjNTdkNTgyMjJlM2IiLCJpYXQiOjE2MDc2ODcxMjcsImV4cCI6MTYwNzY4ODkyN30.XO3CEyP-74OnMHJtU3it3P9yceeAqShy2EIOjnXezAQ '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNmNmOTE3YmJlMzQwMjUwNTE4ZTIiLCJpYXQiOjE2MDc2OTMyOTAsImV4cCI6MTYwNzY5NTA5MH0.d2oHexFm8tTYI9ievl5lEn-REH-3e2dxjZAoRlzbnnY "
 
 {
-  "roomID" : "17",
+  "roomID" : "1",
   "password" : "12"
 }
 ###
@@ -16,11 +16,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/l
+POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "roomID": "1",
+  "roomID": "2",
   "password" : "12"
 
 }

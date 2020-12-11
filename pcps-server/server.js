@@ -18,6 +18,9 @@ db.on('error', err => {
   console.error.bind(console, 'connection error:' + err)
 })
 
+// Include RoomSchema
+const RoomSchema = require('./model/room.model')
+
 // Express setup
 const app = express()
 app.use(express.json())
@@ -38,7 +41,6 @@ const swaggerOptions = {
 }
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions)
-
 // Api root
 const roomRoute = require('./routes/room.route')
 app.use('/api', roomRoute)

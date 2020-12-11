@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const roomSchema = new Schema({
   roomID: Number,
   password: String,
+  expire_at: { type: Date, default: Date.now, expires: 60 },
   track: {
     // richtiges Format einfügen
     spur_eins: String,
