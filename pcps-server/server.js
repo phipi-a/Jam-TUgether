@@ -59,7 +59,8 @@ const deleteUnusedRooms = async function () {
   console.log('Checking for unused rooms...')
   // cast current Date - 30 minutes (1800000 ms) to Date
   const time = new Date(Date.now() - 1800000)
-  console.log(Date(Date.now()), time)
+  // console.log(Date(Date.now()), time)
+  // delete all rooms that haven't been updated in the last 30 minutes
   const room = await RoomSchema.deleteMany({ updated: { $lte: time } })
 
   // run delteUnusedRooms every 10 minutes
