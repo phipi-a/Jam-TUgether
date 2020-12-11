@@ -13,6 +13,10 @@ import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
 
 public class NavigationUtils {
 
+    public static void navigateBack(@NonNull NavController nc) {
+        nc.popBackStack();
+    }
+
     public static void navigateToMenu(@NonNull NavController nc) {
         nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());
     }
