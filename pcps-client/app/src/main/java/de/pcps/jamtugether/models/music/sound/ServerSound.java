@@ -7,20 +7,20 @@ import de.pcps.jamtugether.models.instruments.Instrument;
 // the client sends this object to the server
 public class ServerSound extends Sound {
 
-    private final int room;
-    private final int user;
+    private final int roomID;
+    private final int userID;
 
-    public ServerSound(int room, int user, @NonNull Instrument instrument, int startTime, int pitch) {
+    public ServerSound(int roomID, int userID, @NonNull Instrument instrument, int startTime, int pitch) {
         super(instrument.getServerString(), startTime, pitch);
-        this.room = room;
-        this.user = user;
+        this.roomID = roomID;
+        this.userID = userID;
     }
 
-    public int getRoom() {
-        return room;
+    public int getRoomID() {
+        return roomID;
     }
 
-    public int getUser() {
-        return user;
+    public int getUserID() {
+        return userID;
     }
 }
