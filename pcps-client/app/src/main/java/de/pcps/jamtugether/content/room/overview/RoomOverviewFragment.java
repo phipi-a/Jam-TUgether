@@ -78,8 +78,6 @@ public abstract class RoomOverviewFragment extends Fragment {
             }
         });
 
-        binding.roomIdTextView.setOnClickListener(v -> ((AdminRoomOverviewViewModel) viewModel).onDeleteRoomButtonClicked());
-
         return binding.getRoot();
     }
 

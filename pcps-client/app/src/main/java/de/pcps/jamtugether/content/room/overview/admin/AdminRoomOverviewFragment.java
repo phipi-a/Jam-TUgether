@@ -65,7 +65,7 @@ public class AdminRoomOverviewFragment extends RoomOverviewFragment {
                 dialog.setOnShowListener(arg -> {
                     // todo find better way to color dialog buttons
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onNetworkErrorShown();
+                    adminRoomOverviewViewModel.onRoomDeletionConfirmDialogShown();
                 });
                 dialog.show();
             }
