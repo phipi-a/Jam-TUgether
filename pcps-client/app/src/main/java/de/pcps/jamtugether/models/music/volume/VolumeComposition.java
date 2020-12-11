@@ -6,22 +6,22 @@ import java.util.List;
 
 public class VolumeComposition {
 
-    private final int room;
+    private final int roomID;
 
     @NonNull
-    private final List<Integer> volumes;
+    private final List<Integer> volumeSequence;
 
-    public VolumeComposition(int room, @NonNull List<Integer> volumes) {
-        this.room = room;
-        this.volumes = volumes;
+    public VolumeComposition(int roomID, @NonNull List<Integer> volumeSequence) {
+        this.roomID = roomID;
+        this.volumeSequence = volumeSequence;
     }
 
-    public int getRoom() {
-        return room;
+    public int getRoomID() {
+        return roomID;
     }
 
     @NonNull
-    public List<Integer> getVolumes() {
-        return volumes;
+    public List<Integer> getVolumeSequence() {
+        return volumeSequence;
     }
 }
