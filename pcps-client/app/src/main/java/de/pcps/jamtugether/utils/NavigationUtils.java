@@ -13,6 +13,10 @@ import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
 
 public class NavigationUtils {
 
+    public static void navigateBack(@NonNull NavController nc) {
+        nc.popBackStack();
+    }
+
     public static void navigateToMenu(@NonNull NavController nc) {
         nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());
     }
@@ -39,5 +43,10 @@ public class NavigationUtils {
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
         fragmentManager.beginTransaction().replace(layout, fragment).commit();
+    }
+
+    public interface onBackPressedCallback {
+
+        void onBackPressed();
     }
 }

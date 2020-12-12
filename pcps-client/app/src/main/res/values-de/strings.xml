@@ -38,6 +38,9 @@
     <string name="leave_room">Raum verlassen</string>
     <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
 
+    <string name="delete_room">Raum löschen</string>
+    <string name="delete_room_confirmation">Bist du dir sicher, dass du diesen Raum löschen willst?</string>
+
     <string name="unauthorized_access_error_title">Fehler</string>
     <string name="unauthorized_access_error_message">Raum oder Passwort ist ungültig.</string>
     <string name="internal_server_error_title">Fehler</string>

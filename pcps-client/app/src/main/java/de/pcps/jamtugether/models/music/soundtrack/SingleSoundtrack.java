@@ -11,25 +11,25 @@ import de.pcps.jamtugether.models.music.sound.Sound;
 
 public class SingleSoundtrack extends Soundtrack {
 
-    private final int id;
+    private final int userID;
 
     @NonNull
     private final List<Sound> soundSequence;
 
-    public SingleSoundtrack(int id, @NonNull List<Sound> soundSequence) {
+    public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
         super();
-        this.id = id;
+        this.userID = userID;
         this.soundSequence = soundSequence;
     }
 
     // just for testing
     // todo remove later
-    public SingleSoundtrack(int id) {
-        this(id, new ArrayList<>());
+    public SingleSoundtrack(int userID) {
+        this(userID, new ArrayList<>());
     }
 
     public int getID() {
-        return id;
+        return userID;
     }
 
     @NonNull
@@ -43,12 +43,12 @@ public class SingleSoundtrack extends Soundtrack {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SingleSoundtrack singleSoundtrack = (SingleSoundtrack) o;
-        return id == singleSoundtrack.id;
+        return userID == singleSoundtrack.userID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
+        return Objects.hash(super.hashCode(), userID);
     }
 
     public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {

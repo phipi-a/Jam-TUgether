@@ -45,6 +45,9 @@ public abstract class RoomOverviewViewModel extends ViewModel implements Soundtr
     @NonNull
     protected final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
+    @NonNull
+    protected final MutableLiveData<Boolean> leaveRoom = new MutableLiveData<>();
+
     public RoomOverviewViewModel(int roomID, @NonNull String token) {
         AppInjector.inject(this);
         this.roomID = roomID;
@@ -85,8 +88,16 @@ public abstract class RoomOverviewViewModel extends ViewModel implements Soundtr
         networkError.setValue(null);
     }
 
+    public void onLeftRoom() {
+        leaveRoom.setValue(false);
+    }
+
     public int getRoomID() {
         return roomID;
+    }
+
+    public LiveData<Boolean> getLeaveRoom() {
+        return leaveRoom;
     }
 
     @NonNull
