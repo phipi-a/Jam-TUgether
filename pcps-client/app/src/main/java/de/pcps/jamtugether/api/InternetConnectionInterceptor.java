@@ -28,7 +28,6 @@ public class InternetConnectionInterceptor implements Interceptor {
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        Timber.d("intercept()");
         if(!NetworkUtils.hasInternetConnection(context)) {
             throw new NoInternetConnectionException();
         }
