@@ -140,7 +140,7 @@ roomRoute.delete('/room', verify, async (req, res) => {
         if (err) {
           res.status(501).send(' Error, cannot delete room')
         }
-        res.status(200).send('Room deleted')
+        res.status(200).json({ description: 'Deleted room' })
       })
     } else {
       res.status(401).send('Wrong Password.')
