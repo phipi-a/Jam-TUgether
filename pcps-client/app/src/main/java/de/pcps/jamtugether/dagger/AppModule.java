@@ -66,7 +66,7 @@ public class AppModule {
     @Singleton
     @Provides
     @NonNull
-    public SoundtrackService provideMusicDataService(@NonNull Retrofit retrofit) {
+    public SoundtrackService provideSoundtrackService(@NonNull Retrofit retrofit) {
         return retrofit.create(SoundtrackService.class);
     }
 
