@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.views.JamTabLayout;
 import de.pcps.jamtugether.databinding.FragmentTabLayoutBinding;
 
-public abstract class TabLayoutFragment extends Fragment {
+public abstract class TabLayoutFragment extends BaseFragment {
 
     protected JamTabLayout tabLayout;
 

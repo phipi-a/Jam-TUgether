@@ -3,6 +3,7 @@ package de.pcps.jamtugether;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -45,20 +46,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         navController.setGraph(graph);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(currentFragmentID == R.id.admin_room_fragment || currentFragmentID == R.id.regular_room_fragment) {
-            // todo tell server that user is leaving room
-            AlertDialog dialog = UiUtils.createConfirmationDialog(this, R.string.leave_room, R.string.leave_room_confirmation, MainActivity.super::onBackPressed);
-            dialog.setOnShowListener(arg -> {
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-            });
-            dialog.show();
-        } else {
-            super.onBackPressed();
-        }
     }
 }
