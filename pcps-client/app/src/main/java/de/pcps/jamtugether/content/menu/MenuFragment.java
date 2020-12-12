@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentMenuBinding;
 
-public class MenuFragment extends Fragment {
+public class MenuFragment extends BaseFragment {
 
     private MenuViewModel viewModel;
 

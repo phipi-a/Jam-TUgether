@@ -11,12 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.content.room.overview.admin.AdminRoomOverviewViewModel;
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.content.soundtrack.adapters.SoundtrackListAdapter;
@@ -24,7 +22,7 @@ import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
-public abstract class RoomOverviewFragment extends Fragment {
+public abstract class RoomOverviewFragment extends BaseFragment {
 
     protected static final String ROOM_ID_KEY = "room_id_key";
     protected static final String TOKEN_KEY = "token_key";

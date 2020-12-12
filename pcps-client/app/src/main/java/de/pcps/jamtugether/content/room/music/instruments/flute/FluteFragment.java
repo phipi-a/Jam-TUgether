@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import timber.log.Timber;
 
-public class FluteFragment extends Fragment {
+public class FluteFragment extends BaseFragment {
 
     private static final int REQUEST_MICROPHONE = 1;
 

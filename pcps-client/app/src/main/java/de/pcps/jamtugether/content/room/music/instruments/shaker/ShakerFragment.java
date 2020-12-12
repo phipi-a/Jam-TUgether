@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
 
-public class ShakerFragment extends Fragment {
+public class ShakerFragment extends BaseFragment {
 
     private Activity activity;
 

@@ -44,4 +44,9 @@ public class NavigationUtils {
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
         fragmentManager.beginTransaction().replace(layout, fragment).commit();
     }
+
+    public interface onBackPressedCallback {
+
+        void onBackPressed();
+    }
 }

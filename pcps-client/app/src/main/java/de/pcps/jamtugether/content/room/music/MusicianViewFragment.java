@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.content.room.music.instruments.drums.DrumsFragment;
 import de.pcps.jamtugether.content.room.music.instruments.flute.FluteFragment;
 import de.pcps.jamtugether.content.room.music.instruments.shaker.ShakerFragment;
@@ -18,7 +19,7 @@ import de.pcps.jamtugether.content.room.music.soundtrack.SoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
-public class MusicianViewFragment extends Fragment {
+public class MusicianViewFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
     private static final String TOKEN_KEY = "token_key";
