@@ -1,12 +1,8 @@
 package de.pcps.jamtugether;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
@@ -17,14 +13,11 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.dagger.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
-import de.pcps.jamtugether.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
 
     @Inject
     Preferences preferences;
-
-    private int currentFragmentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> currentFragmentID = destination.getId());
 
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.navigation);
