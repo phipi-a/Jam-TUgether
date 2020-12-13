@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:onClick="playKick"
+            android:onClick="@{()->viewModel.OnKickClicked()}"
             app:srcCompat="@drawable/drum"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="33dp"

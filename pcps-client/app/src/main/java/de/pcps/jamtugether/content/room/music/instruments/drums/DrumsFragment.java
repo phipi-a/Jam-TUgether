@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
+import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 
 public class DrumsFragment extends Fragment {
 
@@ -42,13 +44,9 @@ public class DrumsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(DrumsViewModel.class);
         //kick = MediaPlayer.create(getContext(),R.raw.drum_kick);
-        soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
-        kick=soundPool.load(getContext(),R.raw.drum_kick,1);
+
     }
 
-    public void playKick(View view){
-        soundPool.play(kick,1.0f,1.0f,0,0,10f);
-    }
 
     @Nullable
     @Override
@@ -56,6 +54,11 @@ public class DrumsFragment extends Fragment {
         FragmentDrumsBinding binding = FragmentDrumsBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
+        kick=soundPool.load(getContext(),R.raw.drum_kick,1);
+        viewModel.getKickClicked().observe(getViewLifecycleOwner(), isClicked -> {
+            soundPool.play(kick,1.0f,1.0f,0,0,10f);
+        });
         return binding.getRoot();
     }
 
