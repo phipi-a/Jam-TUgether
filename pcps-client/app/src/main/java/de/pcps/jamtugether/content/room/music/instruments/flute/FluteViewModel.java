@@ -24,18 +24,18 @@ public class FluteViewModel extends ViewModel {
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     @NonNull
-    private final MediaRecorder soundRecorder;
+    private  MediaRecorder soundRecorder;
 
     @NonNull
-    private final SoundPool soundPool;
+    private SoundPool soundPool;
 
     @NonNull
-    private final Thread soundReactThread;
+    private  Thread soundReactThread;
 
     private int fluteStreamingID;
     private int fluteSoundID;
 
-    public FluteViewModel() {
+    /*public FluteViewModel() {
         soundRecorder = new MediaRecorder();
         soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -49,7 +49,7 @@ public class FluteViewModel extends ViewModel {
 
         soundPool = new SoundPool.Builder().setMaxStreams(1).build();
         soundReactThread = createThread();
-    }
+    }*/
 
     @NonNull
     private Thread createThread() {
