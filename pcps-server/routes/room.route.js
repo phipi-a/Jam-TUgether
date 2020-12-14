@@ -27,8 +27,8 @@ async function createRoom (roomID, password, object) {
 
 // Update "updated" to current time
 async function updateRoom (roomID) {
-  const room = RoomSchema.updateOne({ roomID: roomID }, { updated: new Date(Date.now()) })
-  console.log(room)
+  const newDate = new Date(Date.now())
+  const room = RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
 }
 
 /**
@@ -101,6 +101,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
   }
 })
 
+// for testing purposes only
 roomRoute.post('/create-rooms', async (req, res, next) => {
   try {
     // TODO: check password, limit to n characters
@@ -289,9 +290,8 @@ roomRoute.post('/test', verify, async (req, res) => {
   res.status(200).send('blub')
 })
 
-roomRoute.post('/test2', verify, async (req, res) => {
-  const numberOfRooms = await RoomSchema.count().exec()
-  console.log(numberOfRooms)
+roomRoute.post('/test2', async (req, res) => {
+  updateRoom(req.body.roomID)
   res.status(200).send('test2')
 })
 

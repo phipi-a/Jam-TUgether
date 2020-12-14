@@ -36,7 +36,7 @@ const swaggerOptions = {
   // In which files the documentation comments are
   apis: ['server.js', 'routes/room.route.js'],
   // Define endpoint in documentation (doesn't work in swagger-ui-express 4.1.5)
-  servers: [{ url: '/api', description: 'The API server'}]
+  servers: [{ url: '/api', description: 'The API server' }]
 }
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions)
@@ -59,11 +59,10 @@ const deleteUnusedRooms = async function () {
   console.log('Checking for unused rooms...')
   // cast current Date - 30 minutes (1800000 ms) to Date
   const time = new Date(Date.now() - 1800000)
-  // console.log(Date(Date.now()), time)
   // delete all rooms that haven't been updated in the last 30 minutes
   const room = await RoomSchema.deleteMany({ updated: { $lte: time } })
 
-  // run delteUnusedRooms every 10 minutes
+  // run delteUnusedRooms every 10 minutes (600000s)
   setTimeout(deleteUnusedRooms, 600000)
 }
 deleteUnusedRooms()
