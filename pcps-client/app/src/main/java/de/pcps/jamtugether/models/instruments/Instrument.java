@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
-import java.io.Serializable;
-
 public abstract class Instrument {
 
     private final int ordinal;

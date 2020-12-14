@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.content.room.overview;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -99,37 +97,22 @@ public class RoomOverviewFragment extends BaseFragment {
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                AlertDialog dialog = UiUtils.createInfoDialog(context, networkError.getTitle(), networkError.getMessage());
-                dialog.setOnShowListener(arg -> {
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onNetworkErrorShown();
-                });
-                dialog.show();
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
+                viewModel.onNetworkErrorShown();
             }
         });
 
         viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
             if(showSoundtrackDeletionConfirmDialog) {
-                AlertDialog dialog = UiUtils.createConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
-                dialog.setOnShowListener(arg -> {
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onSoundtrackDeletionConfirmDialogShown();
-                });
-                dialog.show();
+                UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
+                viewModel.onSoundtrackDeletionConfirmDialogShown();
             }
         });
 
         viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
             if (showRoomDeletionConfirmDialog) {
-                AlertDialog dialog = UiUtils.createConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
-                dialog.setOnShowListener(arg -> {
-                    // todo find better way to color dialog buttons
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onRoomDeletionConfirmDialogShown();
-                });
-                dialog.show();
+                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
+                viewModel.onRoomDeletionConfirmDialogShown();
             }
         });
 

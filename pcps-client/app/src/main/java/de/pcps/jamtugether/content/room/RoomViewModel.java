@@ -20,13 +20,13 @@ public class RoomViewModel extends ViewModel implements AdminStatusChangeCallbac
         this.admin = admin;
     }
 
+    public void handleBackPressed() {
+        showLeaveRoomConfirmationDialog.setValue(true);
+    }
+
     @Override
     public void onAdminStatusChanged(boolean admin) {
         this.admin = admin;
-    }
-
-    public void handleBackPressed() {
-        showLeaveRoomConfirmationDialog.setValue(true);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {

@@ -10,7 +10,6 @@ import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;

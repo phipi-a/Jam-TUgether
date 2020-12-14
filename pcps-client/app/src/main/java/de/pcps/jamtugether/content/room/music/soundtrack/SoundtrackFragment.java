@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.content.room.music.soundtrack;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.BaseFragment;
 import de.pcps.jamtugether.content.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.content.soundtrack.SoundtrackDataBindingUtils;
@@ -71,12 +68,8 @@ public class SoundtrackFragment extends BaseFragment {
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {
-                AlertDialog dialog = UiUtils.createInfoDialog(context, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
-                dialog.setOnShowListener(arg -> {
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    viewModel.onHelpDialogShown();
-                });
-                dialog.show();
+                UiUtils.showInfoDialog(context, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
+                viewModel.onHelpDialogShown();
             }
         });
 

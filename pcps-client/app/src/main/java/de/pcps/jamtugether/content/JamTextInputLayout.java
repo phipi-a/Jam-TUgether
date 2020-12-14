@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.views;
+package de.pcps.jamtugether.content;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -18,7 +18,6 @@ public class JamTextInputLayout extends TextInputLayout {
 
     public JamTextInputLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
         this.setErrorTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.inputTextErrorColor)));
         this.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryTextColor)));
     }

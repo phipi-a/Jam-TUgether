@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.content.BaseFragment;
-import de.pcps.jamtugether.views.JamTabLayout;
 import de.pcps.jamtugether.databinding.FragmentTabLayoutBinding;
 
 public abstract class TabLayoutFragment extends BaseFragment {

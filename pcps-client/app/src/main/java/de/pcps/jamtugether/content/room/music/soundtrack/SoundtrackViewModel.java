@@ -115,6 +115,14 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         // todo get all soundtracks from server and update current list after
     }
 
+    public void onHelpButtonClicked() {
+        showHelpDialog.setValue(true);
+    }
+
+    public void onHelpDialogShown() {
+        showHelpDialog.setValue(false);
+    }
+
     @NonNull
     public Instrument getCurrentInstrument() {
         return currentInstrument;
@@ -123,14 +131,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     public List<Instrument> getInstruments() {
         return Arrays.asList(Instruments.LIST);
-    }
-
-    public void onHelpButtonClicked() {
-        showHelpDialog.setValue(true);
-    }
-
-    public void onHelpDialogShown() {
-        showHelpDialog.setValue(false);
     }
 
     public int getRoomID() {

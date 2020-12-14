@@ -14,7 +14,6 @@ import de.pcps.jamtugether.utils.NetworkUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import timber.log.Timber;
 
 @Singleton
 public class InternetConnectionInterceptor implements Interceptor {

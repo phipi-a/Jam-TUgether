@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp">
 
-            <de.pcps.jamtugether.views.SoundtrackView
+            <de.pcps.jamtugether.content.soundtrack.SoundtrackView
                 android:id="@+id/soundtrack_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/soundtrack_view_height"

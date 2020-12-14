@@ -3,8 +3,6 @@ package de.pcps.jamtugether.api.errors;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-import timber.log.Timber;
-
 public abstract class Error {
 
     @StringRes

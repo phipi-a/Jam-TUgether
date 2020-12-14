@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
 
 public abstract class SoundtrackListAdapter<T extends RecyclerView.ViewHolder> extends ListAdapter<SingleSoundtrack, T> {
 

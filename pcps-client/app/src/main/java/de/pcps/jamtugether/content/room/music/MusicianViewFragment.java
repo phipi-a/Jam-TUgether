@@ -46,6 +46,7 @@ public class MusicianViewFragment extends BaseFragment {
         if(getArguments() != null) {
             roomID = getArguments().getInt(ROOM_ID_KEY);
             token = getArguments().getString(TOKEN_KEY);
+
             MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, token);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }

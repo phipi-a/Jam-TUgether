@@ -13,8 +13,6 @@ public abstract class BaseCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        Timber.d("response: %s", response);
-        Timber.d("response message: %s", response.message());
         if(response.isSuccessful()) {
             T body = response.body();
             if(body == null) {

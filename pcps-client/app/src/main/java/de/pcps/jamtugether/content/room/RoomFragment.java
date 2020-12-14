@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.content.room;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,7 +16,6 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.content.room.music.MusicianViewFragment;
 import de.pcps.jamtugether.content.room.overview.RoomOverviewFragment;
 import de.pcps.jamtugether.utils.UiUtils;
-import de.pcps.jamtugether.views.JamTabView;
 
 public class RoomFragment extends TabLayoutFragment {
 
@@ -43,6 +40,7 @@ public class RoomFragment extends TabLayoutFragment {
             this.password = args.getPassword();
             this.token = args.getToken();
             this.admin = args.getAdmin();
+
             RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(admin);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomViewModel.class);
         }
@@ -55,13 +53,8 @@ public class RoomFragment extends TabLayoutFragment {
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if(showLeaveRoomConfirmationDialog) {
-                AlertDialog dialog = UiUtils.createConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
-                dialog.setOnShowListener(arg -> {
-                    viewModel.onLeaveRoomConfirmationDialogShown();
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.primaryTextColor));
-                });
-                dialog.show();
+                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
+                viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
 

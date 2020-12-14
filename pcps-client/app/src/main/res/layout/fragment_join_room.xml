@@ -36,7 +36,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <de.pcps.jamtugether.views.JamTextInputLayout
+                <de.pcps.jamtugether.content.JamTextInputLayout
                     android:id="@+id/room_id_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -57,9 +57,9 @@
                         android:inputType="number"
                         android:textCursorDrawable="@drawable/edit_text_cursor"
                         android:textSize="15dp" />
-                </de.pcps.jamtugether.views.JamTextInputLayout>
+                </de.pcps.jamtugether.content.JamTextInputLayout>
 
-                <de.pcps.jamtugether.views.JamTextInputLayout
+                <de.pcps.jamtugether.content.JamTextInputLayout
                     android:id="@+id/room_password_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                         android:inputType="textPassword"
                         android:textCursorDrawable="@drawable/edit_text_cursor"
                         android:textSize="15dp" />
-                </de.pcps.jamtugether.views.JamTextInputLayout>
+                </de.pcps.jamtugether.content.JamTextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/join_room_button"

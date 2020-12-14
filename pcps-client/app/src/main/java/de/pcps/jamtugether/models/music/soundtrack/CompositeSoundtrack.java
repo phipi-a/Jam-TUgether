@@ -19,6 +19,7 @@ public class CompositeSoundtrack extends Soundtrack {
         return soundtracks;
     }
 
+    @NonNull
     public static CompositeSoundtrack from(@NonNull List<SingleSoundtrack> soundtracks) {
         return new CompositeSoundtrack(soundtracks);
     }
