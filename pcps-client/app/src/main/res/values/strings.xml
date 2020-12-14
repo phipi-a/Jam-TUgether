@@ -39,6 +39,9 @@
     <string name="leave_room">Leave room</string>
     <string name="leave_room_confirmation">Are you sure that you want to leave this room?</string>
 
+    <string name="delete_soundtrack">Delete soundtrack</string>
+    <string name="delete_soundtrack_confirmation">Are you sure that you want to delete this soundtrack?</string>
+
     <string name="delete_room">Delete room</string>
     <string name="delete_room_confirmation">Are you sure that you want to delete this room?</string>
 

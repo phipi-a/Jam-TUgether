@@ -6,9 +6,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="roomID"
-            type="Integer" />
+            name="viewModel"
+            type="de.pcps.jamtugether.content.room.overview.RoomOverviewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,9 +23,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/room_margin_start"
             android:layout_marginTop="@dimen/room_margin_top"
-            android:text="@{@string/room_format(roomID)}"
+            android:text="@{@string/room_format(viewModel.getRoomID())}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/delete_room_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/room_margin_top"
+            android:layout_marginEnd="@dimen/room_margin_start"
+            android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
+            android:text="@string/delete_room"
+            android:textSize="16dp"
+            android:visibility="@{viewModel.getAdmin() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <include

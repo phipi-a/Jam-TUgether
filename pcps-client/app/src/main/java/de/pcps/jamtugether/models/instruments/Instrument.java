@@ -73,7 +73,7 @@ public abstract class Instrument {
         void onInstrumentClicked(@NonNull Instrument instrument);
     }
 
-    public interface OnChangeCallback extends Serializable {
+    public interface OnChangeCallback {
         void onInstrumentChanged(@NonNull Instrument instrument);
     }
 }

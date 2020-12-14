@@ -7,19 +7,19 @@ import java.util.List;
 public class CompositeSoundtrack extends Soundtrack {
 
     @NonNull
-    private final List<Soundtrack> soundtracks; // todo maybe make sure that every soundtrack is a single soundtrack
+    private final List<SingleSoundtrack> soundtracks;
 
-    public CompositeSoundtrack(@NonNull List<Soundtrack> soundtracks) {
+    public CompositeSoundtrack(@NonNull List<SingleSoundtrack> soundtracks) {
         super();
         this.soundtracks = soundtracks;
     }
 
     @NonNull
-    public List<Soundtrack> getSoundtracks() {
+    public List<SingleSoundtrack> getSoundtracks() {
         return soundtracks;
     }
 
-    public static CompositeSoundtrack from(@NonNull List<Soundtrack> soundtracks) {
+    public static CompositeSoundtrack from(@NonNull List<SingleSoundtrack> soundtracks) {
         return new CompositeSoundtrack(soundtracks);
     }
 }

@@ -30,6 +30,8 @@ public class JoinRoomViewModel extends ViewModel {
 
     private int roomID;
 
+    private String password;
+
     private String token;
 
     @NonNull
@@ -84,6 +86,7 @@ public class JoinRoomViewModel extends ViewModel {
             return;
         }
 
+        this.password = password;
         joinRoom(roomID, password);
     }
 
@@ -137,6 +140,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     public String getToken() {
         return token;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @NonNull

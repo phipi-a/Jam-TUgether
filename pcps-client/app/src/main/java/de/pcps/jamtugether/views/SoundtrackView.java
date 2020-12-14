@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import de.pcps.jamtugether.models.music.soundtrack.Soundtrack;
 import de.pcps.jamtugether.models.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.models.music.soundtrack.SingleSoundtrack;
 
@@ -19,15 +18,12 @@ public class SoundtrackView extends View {
         super(context, attrs);
     }
 
-    public void observeSoundtrack(@NonNull LiveData<Soundtrack> soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        soundtrack.observe(lifecycleOwner, baseSoundtrack -> {
-            if(baseSoundtrack instanceof SingleSoundtrack) {
-                draw((SingleSoundtrack) baseSoundtrack);
-            }
-            if(baseSoundtrack instanceof CompositeSoundtrack) {
-                draw((CompositeSoundtrack) baseSoundtrack);
-            }
-        });
+    public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        singleSoundtrack.observe(lifecycleOwner, this::draw);
+    }
+
+    public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        compositeSoundtrack.observe(lifecycleOwner, this::draw);
     }
 
     public void draw(@NonNull SingleSoundtrack singleSoundtrack) {
@@ -35,6 +31,8 @@ public class SoundtrackView extends View {
     }
 
     private void draw(@NonNull CompositeSoundtrack soundtrack) {
-        // todo
+        for(SingleSoundtrack singleSoundtrack : soundtrack.getSoundtracks()) {
+            draw(singleSoundtrack);
+        }
     }
 }

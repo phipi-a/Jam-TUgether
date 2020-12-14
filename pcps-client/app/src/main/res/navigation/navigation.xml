@@ -49,8 +49,8 @@
         android:name="de.pcps.jamtugether.content.menu.create.CreateRoomFragment"
         tools:layout="@layout/fragment_create_room">
         <action
-            android:id="@+id/action_create_room_fragment_to_admin_room_fragment"
-            app:destination="@id/admin_room_fragment"
+            android:id="@+id/action_create_room_fragment_to_room_fragment"
+            app:destination="@id/room_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -62,8 +62,8 @@
         android:name="de.pcps.jamtugether.content.menu.join.JoinRoomFragment"
         tools:layout="@layout/fragment_join_room">
         <action
-            android:id="@+id/action_join_room_fragment_to_regular_room_fragment"
-            app:destination="@id/regular_room_fragment"
+            android:id="@+id/action_join_room_fragment_to_room_fragment"
+            app:destination="@id/room_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -71,8 +71,8 @@
             app:popUpTo="@id/menu_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/admin_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.AdminRoomFragment"
+        android:id="@+id/room_fragment"
+        android:name="de.pcps.jamtugether.content.room.RoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
@@ -83,18 +83,9 @@
         <argument
             android:name="token"
             app:argType="string" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/regular_room_fragment"
-        android:name="de.pcps.jamtugether.content.room.RegularRoomFragment"
-        tools:layout="@layout/fragment_tab_layout">
         <argument
-            android:name="roomID"
-            app:argType="integer" />
-        <argument
-            android:name="token"
-            app:argType="string" />
+            android:name="admin"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"

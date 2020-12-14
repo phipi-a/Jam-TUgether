@@ -38,6 +38,9 @@
     <string name="leave_room">Raum verlassen</string>
     <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
 
+    <string name="delete_soundtrack">Tonspur löschen</string>
+    <string name="delete_soundtrack_confirmation">Bist du dir sicher, dass du diese Tonspur löschen willst?</string>
+
     <string name="delete_room">Raum löschen</string>
     <string name="delete_room_confirmation">Bist du dir sicher, dass du diesen Raum löschen willst?</string>
 

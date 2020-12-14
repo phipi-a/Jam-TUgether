@@ -3,9 +3,10 @@ package de.pcps.jamtugether.models.music.soundtrack;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.pcps.jamtugether.models.music.sound.Sound;
 
@@ -28,8 +29,16 @@ public class SingleSoundtrack extends Soundtrack {
         this(userID, new ArrayList<>());
     }
 
-    public int getID() {
+    public int getUserID() {
         return userID;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return "SingleSoundtrack{" +
+                "userID=" + userID +
+                ", soundSequence=" + soundSequence +
+                '}';
     }
 
     @NonNull
@@ -37,29 +46,15 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SingleSoundtrack singleSoundtrack = (SingleSoundtrack) o;
-        return userID == singleSoundtrack.userID;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), userID);
-    }
-
     public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
         @Override
         public boolean areItemsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
-            return oldItem.getID() == newItem.getID();
+            return oldItem.getUserID() == newItem.getUserID();
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
-            return oldItem.equals(newItem);
+            return oldItem.soundSequence.equals(newItem.soundSequence);
         }
     };
 

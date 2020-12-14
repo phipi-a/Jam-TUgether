@@ -33,20 +33,15 @@ public class NavigationUtils {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public static void navigateToAdminRoom(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToAdminRoomFragment(roomID, password, token));
+    public static void navigateToRoomAsRegular(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRoomFragment(roomID, password, token, false));
     }
 
-    public static void navigateToRegularRoom(@NonNull NavController nc, int roomID, @NonNull String token) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRegularRoomFragment(roomID, token));
+    public static void navigateToRoomAsAdmin(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToRoomFragment(roomID, password, token, true));
     }
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
         fragmentManager.beginTransaction().replace(layout, fragment).commit();
-    }
-
-    public interface onBackPressedCallback {
-
-        void onBackPressed();
     }
 }

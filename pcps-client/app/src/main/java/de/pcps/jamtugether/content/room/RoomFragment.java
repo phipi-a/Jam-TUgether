@@ -15,14 +15,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.content.room.music.MusicianViewFragment;
+import de.pcps.jamtugether.content.room.overview.RoomOverviewFragment;
 import de.pcps.jamtugether.utils.UiUtils;
 import de.pcps.jamtugether.views.JamTabView;
 
-public abstract class RoomFragment extends TabLayoutFragment {
+public class RoomFragment extends TabLayoutFragment {
 
-    protected int roomID;
-    
-    protected String token;
+    private int roomID;
+
+    private String password;
+
+    private String token;
+
+    private boolean admin;
 
     private RoomViewModel viewModel;
 
@@ -31,7 +37,15 @@ public abstract class RoomFragment extends TabLayoutFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(RoomViewModel.class);
+        if(getArguments() != null) {
+            RoomFragmentArgs args = RoomFragmentArgs.fromBundle(getArguments());
+            this.roomID = args.getRoomID();
+            this.password = args.getPassword();
+            this.token = args.getToken();
+            this.admin = args.getAdmin();
+            RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(admin);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomViewModel.class);
+        }
     }
 
     @Nullable
@@ -91,7 +105,7 @@ public abstract class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return RoomFragment.this.createFragment(position);
+                return position == 0 ? RoomOverviewFragment.newInstance(roomID, password, token, admin) : MusicianViewFragment.newInstance(roomID, token);
             }
 
             @Override
@@ -100,7 +114,4 @@ public abstract class RoomFragment extends TabLayoutFragment {
             }
         };
     }
-
-    @NonNull
-    protected abstract Fragment createFragment(int position);
 }

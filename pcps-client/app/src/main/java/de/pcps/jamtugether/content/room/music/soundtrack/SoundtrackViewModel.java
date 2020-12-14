@@ -47,10 +47,10 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<List<Soundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
 
     @NonNull
-    private final MutableLiveData<Soundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
+    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
 
     public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
@@ -64,8 +64,8 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     }
 
     @NonNull
-    private List<Soundtrack> generateTestSoundtracks() {
-        List<Soundtrack> list = new ArrayList<>();
+    private List<SingleSoundtrack> generateTestSoundtracks() {
+        List<SingleSoundtrack> list = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
             list.add(new SingleSoundtrack(i));
         }
@@ -151,17 +151,17 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     }
 
     @NonNull
-    private LiveData<List<Soundtrack>> getAllSoundtracks() {
+    private LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
         return allSoundtracks;
     }
 
     @NonNull
-    public LiveData<Soundtrack> getCompositeSoundtrack() {
+    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
     @NonNull
-    public LiveData<Soundtrack> getOwnSoundtrack() {
+    public LiveData<SingleSoundtrack> getOwnSoundtrack() {
         return ownSoundtrack;
     }
 
