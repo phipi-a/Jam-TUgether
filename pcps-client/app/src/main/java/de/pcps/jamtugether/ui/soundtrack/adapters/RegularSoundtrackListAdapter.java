@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
 import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
+import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularSoundtrackListAdapter.ViewHolder> {
 
@@ -44,7 +45,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 
-            binding.soundtrackView.draw(singleSoundtrack);
+            ((SoundtrackContainer) binding.soundtrackContainer).drawSingleSoundtrack(singleSoundtrack, lifecycleOwner);
         }
 
         @NonNull

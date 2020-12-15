@@ -36,15 +36,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp">
 
-            <de.pcps.jamtugether.ui.soundtrack.SoundtrackView
-                android:id="@+id/soundtrack_view"
+            <include
+                android:id="@+id/soundtrack_container"
+                layout="@layout/view_soundtrack_container"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/soundtrack_view_height"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@color/gray"
-                android:gravity="center"
-                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

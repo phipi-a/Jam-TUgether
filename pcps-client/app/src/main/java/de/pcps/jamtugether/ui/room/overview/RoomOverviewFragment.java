@@ -20,6 +20,7 @@ import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
+import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 import timber.log.Timber;
@@ -76,7 +77,7 @@ public class RoomOverviewFragment extends BaseFragment {
         binding.setViewModel(viewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
-        binding.compositeSoundtrackLayout.soundtrackView.observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(context));
 

@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.soundtrack;
+package de.pcps.jamtugether.ui.soundtrack.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

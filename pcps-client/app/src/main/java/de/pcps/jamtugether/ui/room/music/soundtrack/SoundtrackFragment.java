@@ -15,6 +15,7 @@ import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.UiUtils;
 import timber.log.Timber;
 
@@ -60,10 +61,10 @@ public class SoundtrackFragment extends BaseFragment {
         binding.setViewModel(viewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
-        binding.compositeSoundtrackLayout.soundtrackView.observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), viewModel, getViewLifecycleOwner());
-        binding.ownSoundtrackLayout.soundtrackView.observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
+        ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if(showHelpDialog) {
