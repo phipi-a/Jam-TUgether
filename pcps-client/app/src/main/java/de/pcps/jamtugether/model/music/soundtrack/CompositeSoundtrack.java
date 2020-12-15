@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
+
 public class CompositeSoundtrack extends Soundtrack {
 
     @NonNull

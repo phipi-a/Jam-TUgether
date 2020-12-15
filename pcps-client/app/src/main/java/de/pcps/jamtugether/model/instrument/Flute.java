@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
 
 public class Flute extends Instrument {
 

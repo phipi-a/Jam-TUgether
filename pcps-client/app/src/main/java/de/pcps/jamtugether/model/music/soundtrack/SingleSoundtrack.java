@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.pcps.jamtugether.model.music.sound.Sound;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 
 public class SingleSoundtrack extends Soundtrack {
 

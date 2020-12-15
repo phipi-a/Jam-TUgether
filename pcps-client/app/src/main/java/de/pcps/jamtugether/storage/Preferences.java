@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.model.instrument.Instrument;
-import de.pcps.jamtugether.model.instrument.Instruments;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.model.instrument.base.Instruments;
 
 @Singleton
 public class Preferences {

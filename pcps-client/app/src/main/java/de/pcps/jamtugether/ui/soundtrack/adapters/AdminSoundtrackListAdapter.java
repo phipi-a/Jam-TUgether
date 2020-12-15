@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackAdminBinding;
+import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
 
 public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSoundtrackListAdapter.ViewHolder> {
 

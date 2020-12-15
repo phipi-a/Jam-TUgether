@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.instrument.Instrument;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
 
 public class InstrumentSpinnerAdapter extends ArrayAdapter<Instrument> {
 

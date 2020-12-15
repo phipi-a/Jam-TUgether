@@ -14,7 +14,7 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
-import de.pcps.jamtugether.model.instrument.Instrument;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.utils.UiUtils;
 import timber.log.Timber;
 

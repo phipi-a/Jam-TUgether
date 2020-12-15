@@ -12,7 +12,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.api.Constants;
-import de.pcps.jamtugether.api.InternetConnectionInterceptor;
+import de.pcps.jamtugether.api.interceptors.InternetConnectionInterceptor;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.storage.Preferences;

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.api.BaseCallback;
+import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
@@ -93,7 +93,7 @@ public class JoinRoomViewModel extends ViewModel {
     private void joinRoom(int roomID, @NonNull String password) {
         progressBarVisibility.setValue(View.VISIBLE);
 
-        roomRepository.joinRoom(roomID, password, new BaseCallback<JoinRoomResponse>() {
+        roomRepository.joinRoom(roomID, password, new JamCallback<JoinRoomResponse>() {
             @Override
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);

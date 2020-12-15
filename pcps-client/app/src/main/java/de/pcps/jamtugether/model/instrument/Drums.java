@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
 
 // todo
 public class Drums extends Instrument {

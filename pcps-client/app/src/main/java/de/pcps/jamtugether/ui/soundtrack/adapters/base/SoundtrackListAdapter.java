@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.soundtrack.adapters;
+package de.pcps.jamtugether.ui.soundtrack.adapters.base;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;

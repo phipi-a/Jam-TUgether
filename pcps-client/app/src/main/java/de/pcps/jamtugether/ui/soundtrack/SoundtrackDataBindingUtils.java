@@ -10,7 +10,7 @@ import com.google.android.material.slider.Slider;
 import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.Soundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 
 public class SoundtrackDataBindingUtils {
 

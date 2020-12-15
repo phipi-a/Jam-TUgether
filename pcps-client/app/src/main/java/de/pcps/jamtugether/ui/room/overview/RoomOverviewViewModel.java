@@ -14,14 +14,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.api.BaseCallback;
+import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.ui.room.AdminStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.music.soundtrack.Soundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 
@@ -133,7 +133,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     }
 
     private void deleteRoom() {
-        roomRepository.deleteRoom(roomID, password, token, new BaseCallback<DeleteRoomResponse>() {
+        roomRepository.deleteRoom(roomID, password, token, new JamCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
                 leaveRoom.setValue(true);

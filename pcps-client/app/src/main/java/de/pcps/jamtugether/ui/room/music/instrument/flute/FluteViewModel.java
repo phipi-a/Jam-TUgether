@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel;
 import java.io.IOException;
 
 import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.Instruments;
+import de.pcps.jamtugether.model.instrument.base.Instruments;
 
 public class FluteViewModel extends ViewModel {
 

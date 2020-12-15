@@ -2,8 +2,8 @@ package de.pcps.jamtugether.model.music.sound;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.model.instrument.Instrument;
-import de.pcps.jamtugether.model.instrument.Instruments;
+import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.model.instrument.base.Instruments;
 
 // the client receives this object from the server
 public class Sound {

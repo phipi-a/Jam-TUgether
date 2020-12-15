@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.model.instrument;
+package de.pcps.jamtugether.model.instrument.base;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;

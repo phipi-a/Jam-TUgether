@@ -8,11 +8,11 @@
 
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.model.music.soundtrack.Soundtrack" />
+            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.model.music.soundtrack.Soundtrack.OnChangeListener" />
+            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.OnChangeListener" />
 
     </data>
 

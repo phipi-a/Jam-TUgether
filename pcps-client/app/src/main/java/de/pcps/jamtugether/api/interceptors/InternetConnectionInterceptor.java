@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api;
+package de.pcps.jamtugether.api.interceptors;
 
 import android.content.Context;
 

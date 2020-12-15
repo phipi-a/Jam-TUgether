@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.model.music.soundtrack;
+package de.pcps.jamtugether.model.music.soundtrack.base;
 
 import android.view.View;
 

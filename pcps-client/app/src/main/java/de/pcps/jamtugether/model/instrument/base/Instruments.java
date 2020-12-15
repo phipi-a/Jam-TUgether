@@ -1,8 +1,12 @@
-package de.pcps.jamtugether.model.instrument;
+package de.pcps.jamtugether.model.instrument.base;
 
 import androidx.annotation.NonNull;
 
 import java.util.HashMap;
+
+import de.pcps.jamtugether.model.instrument.Drums;
+import de.pcps.jamtugether.model.instrument.Flute;
+import de.pcps.jamtugether.model.instrument.Shaker;
 
 public class Instruments {
 
