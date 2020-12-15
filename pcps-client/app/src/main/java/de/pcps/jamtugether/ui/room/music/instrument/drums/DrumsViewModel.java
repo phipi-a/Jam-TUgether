@@ -16,22 +16,19 @@ public class DrumsViewModel extends AndroidViewModel {
         drums.prepare(application.getApplicationContext());
     }
 
-    public void OnKickClicked(){
-        drums.playKick();
-    }
-
-
-    public void OnCymbalClicked(){
-        drums.playCymbal();
-    }
-
-
-    public void OnSnareClicked(){
+    public void onSnareClicked() {
         drums.playSnare();
     }
 
+    public void onKickClicked() {
+        drums.playKick();
+    }
 
-    public void OnHatClicked(){
+    public void onHatClicked() {
         drums.playHat();
+    }
+
+    public void onCymbalClicked() {
+        drums.playCymbal();
     }
 }

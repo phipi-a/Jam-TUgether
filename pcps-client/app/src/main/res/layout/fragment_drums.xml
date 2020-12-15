@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage, ContentDescription">
 
     <data>
 
@@ -14,71 +14,61 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <ImageButton
-                android:id="@+id/snareButton"
+                android:id="@+id/snare_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginEnd="236dp"
-                android:onClick="@{()->viewModel.OnSnareClicked()}"
+                android:onClick="@{() -> viewModel.onSnareClicked()}"
                 android:scaleType="fitStart"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/snare" />
-
-
-            <ImageButton
-                android:id="@+id/kickButton"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="50dp"
-                android:onClick="@{()->viewModel.OnKickClicked()}"
-                android:scaleType="fitStart"
-                app:layout_constraintStart_toEndOf="@id/snareButton"
-                app:layout_constraintTop_toTopOf="@id/snareButton"
-                app:srcCompat="@drawable/kick" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/drums_snare" />
 
             <ImageButton
-                android:id="@+id/hatButton"
+                android:id="@+id/kick_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="50dp"
-                android:onClick="@{()->viewModel.OnHatClicked()}"
-                android:scaleType="fitStart"
-                app:layout_constraintTop_toBottomOf="@id/snareButton"
-                app:layout_constraintStart_toStartOf="@id/snareButton"
-                app:srcCompat="@drawable/hat" />
-
-            <ImageButton
-                android:id="@+id/cymbalButton"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="50dp"
                 android:layout_marginStart="50dp"
-                android:onClick="@{()->viewModel.OnCymbalClicked()}"
+                android:onClick="@{() -> viewModel.onKickClicked()}"
                 android:scaleType="fitStart"
-                app:layout_constraintTop_toBottomOf="@id/kickButton"
-                app:layout_constraintStart_toEndOf="@id/hatButton"
-                app:srcCompat="@drawable/cymbal" />
+                app:layout_constraintStart_toEndOf="@id/snare_button"
+                app:layout_constraintTop_toTopOf="@id/snare_button"
+                app:srcCompat="@drawable/drums_kick" />
 
+            <ImageButton
+                android:id="@+id/hat_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="50dp"
+                android:onClick="@{() -> viewModel.onHatClicked()}"
+                android:scaleType="fitStart"
+                app:layout_constraintStart_toStartOf="@id/snare_button"
+                app:layout_constraintTop_toBottomOf="@id/snare_button"
+                app:srcCompat="@drawable/drums_har" />
 
+            <ImageButton
+                android:id="@+id/cymbal_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
+                android:onClick="@{() -> viewModel.onCymbalClicked()}"
+                android:scaleType="fitStart"
+                app:layout_constraintStart_toEndOf="@id/hat_button"
+                app:layout_constraintTop_toBottomOf="@id/kick_button"
+                app:srcCompat="@drawable/drums_cymbal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
