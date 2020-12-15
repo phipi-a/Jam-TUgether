@@ -11,7 +11,7 @@ import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.dagger.AppInjector;
+import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class MainActivity extends AppCompatActivity {

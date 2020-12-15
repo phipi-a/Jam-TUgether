@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 
-import de.pcps.jamtugether.content.menu.MenuFragmentDirections;
-import de.pcps.jamtugether.content.menu.create.CreateRoomFragmentDirections;
-import de.pcps.jamtugether.content.menu.join.JoinRoomFragmentDirections;
-import de.pcps.jamtugether.content.welcome.WelcomeFragmentDirections;
+import de.pcps.jamtugether.ui.menu.MenuFragmentDirections;
+import de.pcps.jamtugether.ui.menu.create.CreateRoomFragmentDirections;
+import de.pcps.jamtugether.ui.menu.join.JoinRoomFragmentDirections;
+import de.pcps.jamtugether.ui.welcome.WelcomeFragmentDirections;
 
 public class NavigationUtils {
 

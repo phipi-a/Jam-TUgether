@@ -6,7 +6,7 @@
     tools:ignore="InvalidNavigation">
     <fragment
         android:id="@+id/welcome_fragment"
-        android:name="de.pcps.jamtugether.content.welcome.WelcomeFragment"
+        android:name="de.pcps.jamtugether.ui.welcome.WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcome_fragment_to_menu_fragment"
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/menu_fragment"
-        android:name="de.pcps.jamtugether.content.menu.MenuFragment"
+        android:name="de.pcps.jamtugether.ui.menu.MenuFragment"
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_menu_fragment_to_join_room_fragment"
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/create_room_fragment"
-        android:name="de.pcps.jamtugether.content.menu.create.CreateRoomFragment"
+        android:name="de.pcps.jamtugether.ui.menu.create.CreateRoomFragment"
         tools:layout="@layout/fragment_create_room">
         <action
             android:id="@+id/action_create_room_fragment_to_room_fragment"
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/join_room_fragment"
-        android:name="de.pcps.jamtugether.content.menu.join.JoinRoomFragment"
+        android:name="de.pcps.jamtugether.ui.menu.join.JoinRoomFragment"
         tools:layout="@layout/fragment_join_room">
         <action
             android:id="@+id/action_join_room_fragment_to_room_fragment"
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/room_fragment"
-        android:name="de.pcps.jamtugether.content.room.RoomFragment"
+        android:name="de.pcps.jamtugether.ui.room.RoomFragment"
         tools:layout="@layout/fragment_tab_layout">
         <argument
             android:name="roomID"
@@ -89,6 +89,6 @@
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="de.pcps.jamtugether.content.settings.SettingsFragment"
+        android:name="de.pcps.jamtugether.ui.settings.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
 </navigation>

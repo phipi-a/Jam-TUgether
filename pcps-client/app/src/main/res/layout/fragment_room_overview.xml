@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.overview.RoomOverviewViewModel" />
+            type="de.pcps.jamtugether.ui.room.overview.RoomOverviewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -17,7 +17,7 @@
             layout="@layout/view_soundtrack_controls" />
 
         <!-- "margin top" = "0dp" in order to look exactly like view_soundtrack_admin-->
-        <de.pcps.jamtugether.content.soundtrack.SoundtrackView
+        <de.pcps.jamtugether.ui.soundtrack.SoundtrackView
             android:id="@+id/soundtrack_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/soundtrack_view_height"

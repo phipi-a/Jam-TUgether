@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.welcome.WelcomeViewModel" />
+            type="de.pcps.jamtugether.ui.welcome.WelcomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
