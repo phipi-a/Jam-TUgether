@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,11 +28,11 @@ public class DrumsFragment extends Fragment {
 
     private DrumsViewModel viewModel;
 
-    //MediaPlayer kick;
-
     private SoundPool soundPool;
     private int kick;
-
+    private int cymbal;
+    private int snare;
+    private int hat;
 
 
     @NonNull
@@ -43,8 +44,6 @@ public class DrumsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(DrumsViewModel.class);
-        //kick = MediaPlayer.create(getContext(),R.raw.drum_kick);
-
     }
 
 
@@ -55,10 +54,40 @@ public class DrumsFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         soundPool = new SoundPool.Builder().setMaxStreams(1).build();
+
         kick=soundPool.load(getContext(),R.raw.drum_kick,1);
         viewModel.getKickClicked().observe(getViewLifecycleOwner(), isClicked -> {
             soundPool.play(kick,1.0f,1.0f,0,0,10f);
         });
+
+        cymbal=soundPool.load(getContext(),R.raw.drum_cymbal,1);
+        viewModel.getCymbalClicked().observe(getViewLifecycleOwner(), isClicked -> {
+            soundPool.play(cymbal,1.0f,1.0f,0,0,10f);
+        });
+
+        snare=soundPool.load(getContext(),R.raw.drum_snare,1);
+        viewModel.getSnareClicked().observe(getViewLifecycleOwner(), isClicked -> {
+            soundPool.play(snare,1.0f,1.0f,0,0,10f);
+        });
+
+        hat=soundPool.load(getContext(),R.raw.drum_hat,1);
+        viewModel.getHatClicked().observe(getViewLifecycleOwner(), isClicked -> {
+            soundPool.play(hat,1.0f,1.0f,0,0,10f);
+        });
+
+        /*imageButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+
+                    // Do what you want
+                    return true;
+                }
+                return false;
+            }
+        });*/
+
+
         return binding.getRoot();
     }
 
