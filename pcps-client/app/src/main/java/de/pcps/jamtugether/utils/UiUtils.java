@@ -8,7 +8,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.pcps.jamtugether.R;
 
@@ -19,34 +20,35 @@ public class UiUtils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    @NonNull
-    public static AlertDialog createInfoDialog(@NonNull Context context, @NonNull String title, @NonNull String message) {
-        return new AlertDialog.Builder(context)
+    public static void showInfoDialog(@NonNull Context context, @NonNull String title, @NonNull String message) {
+        new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                 })
-                .create();
+                .show();
     }
 
-    @NonNull
-    public static AlertDialog createInfoDialog(@NonNull Context context, @StringRes int title, @StringRes int message) {
-        return createInfoDialog(context, context.getString(title), context.getString(message));
+    public static void showInfoDialog(@NonNull Context context, @StringRes int title, @StringRes int message) {
+        showInfoDialog(context, context.getString(title), context.getString(message));
     }
 
-    public static AlertDialog createConfirmationDialog(@NonNull Context context, @NonNull String title, @NonNull String message, OnDialogPositiveButtonClickedCallback callback) {
-        return new AlertDialog.Builder(context)
+    public static void showConfirmationDialog(@NonNull Context context, @NonNull String title, @NonNull String message, OnDialogPositiveButtonClickedCallback callback) {
+        new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(R.string.yes, (dialog, which) -> callback.onPositiveButtonClicked())
                 .setNegativeButton(R.string.no, ((dialog, which) -> {
                 }))
-                .create();
+                .show();
     }
 
-    @NonNull
-    public static AlertDialog createConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, OnDialogPositiveButtonClickedCallback callback) {
-        return createConfirmationDialog(context, context.getString(title), context.getString(message), callback);
+    public static void showConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, OnDialogPositiveButtonClickedCallback callback) {
+        showConfirmationDialog(context, context.getString(title), context.getString(message), callback);
+    }
+
+    public static int getPixels(@NonNull Context context, @DimenRes int dimension) {
+        return context.getResources().getDimensionPixelSize(dimension);
     }
 
     public interface OnDialogPositiveButtonClickedCallback {

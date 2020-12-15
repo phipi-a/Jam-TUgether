@@ -2,7 +2,7 @@ package de.pcps.jamtugether;
 
 import android.app.Application;
 
-import de.pcps.jamtugether.dagger.AppInjector;
+import de.pcps.jamtugether.di.AppInjector;
 import timber.log.Timber;
 
 public class JamTUgetherApplication extends Application {

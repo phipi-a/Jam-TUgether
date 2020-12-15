@@ -14,8 +14,8 @@ exports.checkPwdLen = function (password) {
 exports.createToken = function () {
   // random bytes
   const rndBytes = crypto.randomBytes(10).toString('hex')
-  /* expires after half an hour (1800 seconds = 30 minutes) */
-  return jwt.sign(rndBytes, process.env.ACCESS_TOKEN_SECRET, {}) + ''
+  // expires after half an hour (1800 s = 30 min)
+  return jwt.sign({ data: '' + rndBytes }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
 }
 
 exports.verify = function (req, res, next) {
@@ -25,7 +25,10 @@ exports.verify = function (req, res, next) {
   if (token == null) return res.sendStatus(401) // if there isn't any token
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
-    if (err) return res.sendStatus(403)
+    if (err) {
+      //console.log(err + "\n" + token)
+      return res.sendStatus(403)
+    }
     req.id = id
     next()
   })

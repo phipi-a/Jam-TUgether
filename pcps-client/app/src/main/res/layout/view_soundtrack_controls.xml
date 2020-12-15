@@ -6,13 +6,16 @@
 
     <data>
 
+        <import type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.State" />
+        <import type="android.view.View" />
+
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.models.Soundtrack" />
+            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.models.Soundtrack.OnChangeListener" />
+            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.OnChangeListener" />
 
     </data>
 
@@ -75,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
-            app:imageResource="@{soundtrack.playPauseButtonImageResource}"
+            android:src="@{soundtrack.getState() == State.PLAYING ? @drawable/ic_pause : @drawable/ic_play}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
@@ -98,7 +101,7 @@
             android:layout_marginStart="10dp"
             android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
-            android:visibility="@{soundtrack.stopButtonVisibility}"
+            android:visibility="@{soundtrack.getState() == State.IDLE ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />

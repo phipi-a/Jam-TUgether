@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.menu.MenuViewModel" />
+            type="de.pcps.jamtugether.ui.menu.MenuViewModel" />
     </data>
 
     <ScrollView

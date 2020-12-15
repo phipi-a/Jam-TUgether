@@ -1,0 +1,37 @@
+package de.pcps.jamtugether.ui.soundtrack.views;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+
+import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
+
+public class SoundtrackNavigationLine extends View {
+
+    public SoundtrackNavigationLine(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        singleSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackUpdated(soundtrack, lifecycleOwner));
+    }
+
+    public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        compositeSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackUpdated(soundtrack, lifecycleOwner));
+    }
+
+    public void onSoundtrackUpdated(@NonNull Soundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        soundtrack.getProgress().observe(lifecycleOwner, this::onProgressChanged);
+    }
+
+    private void onProgressChanged(Integer progress) {
+        // todo draw
+    }
+}

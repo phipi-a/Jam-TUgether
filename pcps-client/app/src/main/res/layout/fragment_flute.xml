@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.content.room.music.instruments.flute.FluteViewModel" />
+            type="de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
