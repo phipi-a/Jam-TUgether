@@ -32,7 +32,7 @@
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/drums_snare" />
+                app:srcCompat="@drawable/drum_snare" />
 
             <ImageButton
                 android:id="@+id/kick_button"
@@ -43,7 +43,7 @@
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toEndOf="@id/snare_button"
                 app:layout_constraintTop_toTopOf="@id/snare_button"
-                app:srcCompat="@drawable/drums_kick" />
+                app:srcCompat="@drawable/drum_kick" />
 
             <ImageButton
                 android:id="@+id/hat_button"
@@ -66,7 +66,7 @@
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toEndOf="@id/hat_button"
                 app:layout_constraintTop_toBottomOf="@id/kick_button"
-                app:srcCompat="@drawable/drums_cymbal" />
+                app:srcCompat="@drawable/drum_cymbal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

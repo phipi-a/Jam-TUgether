@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.model.instrument;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
@@ -27,8 +28,16 @@ public class Flute extends Instrument {
     }
 
     public void prepare(@NonNull Context context, @NonNull SoundPool.OnLoadCompleteListener onLoadCompleteListener) {
-        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
-        soundPool.setOnLoadCompleteListener(onLoadCompleteListener);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(1)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             onLoadCompleteListener.onLoadComplete(soundPool, sampleId, status);
             fluteSoundLoaded = true;

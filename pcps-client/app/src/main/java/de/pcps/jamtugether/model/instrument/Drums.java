@@ -1,7 +1,10 @@
 package de.pcps.jamtugether.model.instrument;
 
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
@@ -9,9 +12,11 @@ import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
+
 import de.pcps.jamtugether.model.music.sound.Sound;
 import timber.log.Timber;
 
+// todo
 public class Drums extends Instrument {
 
     @Nullable
@@ -34,7 +39,14 @@ public class Drums extends Instrument {
     }
 
     public void prepare(@NonNull Context context) {
-        soundPool = new SoundPool.Builder().setMaxStreams(4).build();
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(4)
+                .setAudioAttributes(audioAttributes)
+                .build();
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             if(sampleId == snareSound) {
@@ -52,7 +64,6 @@ public class Drums extends Instrument {
         kickSound = soundPool.load(context, R.raw.drum_kick, 1);
         hatSound = soundPool.load(context, R.raw.drum_hat, 1);
         cymbalSound = soundPool.load(context, R.raw.drum_cymbal, 1);
-
     }
 
     @Override
@@ -95,8 +106,8 @@ public class Drums extends Instrument {
         }
     }
 
-    private void playSound(int sound) {
-        soundPool.play(sound, 1.0f, 1.0f, 0, 0, 10f);
+    private void playSound(int sound){
+        soundPool.play(sound,1,1,0,0,1);
     }
 
     @NonNull

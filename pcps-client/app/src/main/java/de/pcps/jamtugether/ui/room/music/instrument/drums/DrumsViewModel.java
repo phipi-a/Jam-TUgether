@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import de.pcps.jamtugether.model.instrument.Drums;
 
@@ -31,4 +33,5 @@ public class DrumsViewModel extends AndroidViewModel {
     public void onCymbalClicked() {
         drums.playCymbal();
     }
+
 }
