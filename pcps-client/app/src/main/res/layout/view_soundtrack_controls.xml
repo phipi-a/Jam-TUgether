@@ -13,10 +13,6 @@
             name="soundtrack"
             type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack" />
 
-        <variable
-            name="onChangeListener"
-            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.OnChangeListener" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +40,7 @@
             android:valueTo="100"
             app:layout_constraintStart_toEndOf="@id/volume_mute_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:onVolumeChanged="@{(slider, value, fromUser) -> onChangeListener.onVolumeChanged(soundtrack, value)}"
+            app:onVolumeChanged="@{(slider, value, fromUser) -> soundtrack.setVolume(value)}"
             app:thumbColor="@color/iconColor"
             app:tickColorActive="@color/volumeSliderTickActiveColor"
             app:tickColorInactive="@color/volumeSliderTickInactiveColor"
@@ -66,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:onClick="@{() -> onChangeListener.onFastRewindButtonClicked(soundtrack)}"
+            android:onClick="@{() -> soundtrack.fastRewind()}"
             android:src="@drawable/ic_fast_rewind"
             app:layout_constraintStart_toEndOf="@id/volume_up_icon"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -77,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
+            android:onClick="@{() -> soundtrack.togglePlayPause()}"
             android:src="@{soundtrack.getState() == State.PLAYING ? @drawable/ic_pause : @drawable/ic_play}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -88,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:onClick="@{() -> onChangeListener.onFastForwardButtonClicked(soundtrack)}"
+            android:onClick="@{() -> soundtrack.fastForward()}"
             android:src="@drawable/ic_fast_forward"
             app:layout_constraintStart_toEndOf="@id/play_pause_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -99,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
+            android:onClick="@{() -> soundtrack.stop()"
             android:src="@drawable/ic_stop"
             android:visibility="@{soundtrack.getState() == State.IDLE ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"

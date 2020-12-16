@@ -14,8 +14,8 @@ import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularSoundtrackListAdapter.ViewHolder> {
 
-    public RegularSoundtrackListAdapter(@NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
-        super(onChangeListener, lifecycleOwner);
+    public RegularSoundtrackListAdapter(@NonNull LifecycleOwner lifecycleOwner) {
+        super(lifecycleOwner);
     }
 
     @NonNull
@@ -26,7 +26,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), onChangeListener, lifecycleOwner);
+        holder.bind(getItem(position), lifecycleOwner);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -39,13 +39,12 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
             this.binding = binding;
         }
 
-        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
             binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
-            binding.soundtrackControlsLayout.setOnChangeListener(onChangeListener);
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 
-            ((SoundtrackContainer) binding.soundtrackContainer).drawSingleSoundtrack(singleSoundtrack, lifecycleOwner);
+            ((SoundtrackContainer) binding.soundtrackContainer).onSingleSoundtrackChanged(singleSoundtrack, lifecycleOwner);
         }
 
         @NonNull

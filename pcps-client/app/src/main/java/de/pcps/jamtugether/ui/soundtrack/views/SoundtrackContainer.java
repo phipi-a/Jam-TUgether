@@ -30,9 +30,9 @@ public class SoundtrackContainer extends ConstraintLayout {
         line = this.findViewById(R.id.soundtrack_navigation_line);
     }
 
-    public void drawSingleSoundtrack(@NonNull SingleSoundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        soundtrackView.draw(soundtrack);
-        line.onSoundtrackUpdated(soundtrack, lifecycleOwner);
+    public void onSingleSoundtrackChanged(@NonNull SingleSoundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackView.onSingleSoundtrackChanged(soundtrack);
+        line.onSoundtrackChanged(soundtrack, lifecycleOwner);
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {

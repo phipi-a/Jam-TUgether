@@ -60,10 +60,10 @@ public class SoundtrackFragment extends BaseFragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
-        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), viewModel, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {

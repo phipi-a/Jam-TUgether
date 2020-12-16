@@ -52,7 +52,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bg_button_clear"
-                android:onClick="@{() -> onChangeListener.onDeleteButtonClicked(soundtrack)}"
+                android:onClick="@{() -> onChangeListener.onDeleteSoundtrackButtonClicked(soundtrack)}"
                 android:src="@drawable/ic_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

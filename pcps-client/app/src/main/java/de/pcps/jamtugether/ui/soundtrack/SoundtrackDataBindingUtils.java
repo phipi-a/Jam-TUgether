@@ -19,19 +19,17 @@ public class SoundtrackDataBindingUtils {
         slider.addOnChangeListener(sliderOnChangeListener);
     }
 
-    public static void bindSingleSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<SingleSoundtrack> soundtrack, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+    public static void bindSingleSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<SingleSoundtrack> soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
         soundtrack.observe(lifecycleOwner, track -> {
             binding.setSoundtrack(track);
             binding.setLifecycleOwner(lifecycleOwner);
-            binding.setOnChangeListener(onChangeListener);
         });
     }
 
-    public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<CompositeSoundtrack> soundtrack, @NonNull Soundtrack.OnChangeListener onChangeListener, @NonNull LifecycleOwner lifecycleOwner) {
+    public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<CompositeSoundtrack> soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
         soundtrack.observe(lifecycleOwner, track -> {
             binding.setSoundtrack(track);
             binding.setLifecycleOwner(lifecycleOwner);
-            binding.setOnChangeListener(onChangeListener);
         });
     }
 }

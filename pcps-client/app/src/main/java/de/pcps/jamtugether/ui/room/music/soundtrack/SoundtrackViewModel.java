@@ -13,11 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.model.instrument.Flute;
+import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
@@ -25,7 +27,7 @@ import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener, Soundtrack.OnChangeListener {
+public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
     @Inject
     Application application;
@@ -65,16 +67,24 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     private List<SingleSoundtrack> generateTestSoundtracks() {
+        Random random = new Random();
         List<SingleSoundtrack> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            list.add(new SingleSoundtrack(i));
+        for(int i = 0; i < 5; i++) {
+            List<Sound> soundSequence = new ArrayList<>();
+            int soundAmount = random.nextInt(30)+10;
+            Instrument instrument = Instruments.LIST[i % 3];
+            for(int j = 0; j < soundAmount; j++) {
+                int pitch = random.nextInt(101);
+                soundSequence.add(new Sound(instrument.getServerString(), 1000 * j, 1000 * (j+1), pitch));
+            }
+            list.add(new SingleSoundtrack(i, soundSequence));
         }
         return list;
     }
 
     @NonNull
     private SingleSoundtrack generateTestOwnSoundtrack() {
-        return new SingleSoundtrack(0);
+        return new SingleSoundtrack(0, new ArrayList<>());
     }
 
     @Override
@@ -93,23 +103,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());
     }
-
-    @Override
-    public void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume) {
-        soundtrack.setVolume(volume);
-    }
-
-    @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
 
     private void fetchAllSoundtracks() {
         // todo get all soundtracks from server and update current list after

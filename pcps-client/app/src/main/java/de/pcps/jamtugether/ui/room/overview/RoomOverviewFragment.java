@@ -76,7 +76,7 @@ public class RoomOverviewFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(context));
@@ -85,11 +85,11 @@ public class RoomOverviewFragment extends BaseFragment {
 
         viewModel.getAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {
-                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, viewModel, getViewLifecycleOwner());
+                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             } else {
-                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
+                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             }
