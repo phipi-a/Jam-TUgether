@@ -54,7 +54,7 @@
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="@id/snare_button"
                 app:layout_constraintTop_toBottomOf="@id/snare_button"
-                app:srcCompat="@drawable/drums_har" />
+                app:srcCompat="@drawable/drum_hat" />
 
             <ImageButton
                 android:id="@+id/cymbal_button"
