@@ -74,6 +74,8 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         this.admin = new MutableLiveData<>(admin);
         this.soundtracksDataViewModel = soundtracksDataViewModel;
         this.userStatusChangeCallback = userStatusChangeCallback;
+
+        soundtracksDataViewModel.fetch();
     }
 
     @Override

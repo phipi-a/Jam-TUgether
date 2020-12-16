@@ -21,6 +21,7 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
+import de.pcps.jamtugether.ui.room.SoundtracksDataViewModel;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -46,10 +47,11 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
 
-    public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
+    public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback, @NonNull SoundtracksDataViewModel soundtracksDataViewModel) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.onChangeCallback = onChangeCallback;
+        soundtracksDataViewModel.fetch();
 
         Instrument mainInstrument = preferences.getMainInstrument();
         onChangeCallback.onInstrumentChanged(mainInstrument);
@@ -126,9 +128,13 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         @NonNull
         private final Instrument.OnChangeCallback onChangeCallback;
 
-        public Factory(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
+        @NonNull
+        private final SoundtracksDataViewModel soundtracksDataViewModel;
+
+        public Factory(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback, @NonNull SoundtracksDataViewModel soundtracksDataViewModel) {
             this.roomID = roomID;
             this.onChangeCallback = onChangeCallback;
+            this.soundtracksDataViewModel = soundtracksDataViewModel;
         }
 
         @SuppressWarnings("unchecked")
@@ -136,7 +142,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(SoundtrackViewModel.class)) {
-                return (T) new SoundtrackViewModel(roomID, onChangeCallback);
+                return (T) new SoundtrackViewModel(roomID, onChangeCallback, soundtracksDataViewModel);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

@@ -44,7 +44,7 @@ public class SoundtrackFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
             soundtracksDataViewModel = new ViewModelProvider(activity, new SoundtracksDataViewModel.Factory(roomID)).get(SoundtracksDataViewModel.class);
             MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(activity, new MusicianViewViewModel.Factory(roomID, token)).get(MusicianViewViewModel.class);
-            SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, musicianViewViewModel);
+            SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, musicianViewViewModel, soundtracksDataViewModel);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackViewModel.class);
         }
     }

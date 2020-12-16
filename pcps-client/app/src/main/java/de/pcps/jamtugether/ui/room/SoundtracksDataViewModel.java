@@ -23,6 +23,7 @@ import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.utils.TimeUtils;
 
 // view model that fetches soundtrack data regularly
 // and provides the according live data
@@ -34,7 +35,7 @@ public class SoundtracksDataViewModel extends ViewModel {
     private final int roomID;
 
     @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
 
     public SoundtracksDataViewModel(int roomID) {
         AppInjector.inject(this);
@@ -48,14 +49,15 @@ public class SoundtracksDataViewModel extends ViewModel {
 
             @Override
             public void run() {
-                fetchSoundtracks();
+                fetch();
                 handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
         }.run();
     }
 
-    private void fetchSoundtracks() {
+    public void fetch() {
         // todo
+        allSoundtracks.setValue(generateTestSoundtracks());
     }
 
     @NonNull
@@ -65,10 +67,10 @@ public class SoundtracksDataViewModel extends ViewModel {
         for(int i = 0; i < 10; i++) {
             List<Sound> soundSequence = new ArrayList<>();
             int soundAmount = random.nextInt(30)+10;
-            Instrument instrument = Instruments.LIST[i % 3];
+            Instrument instrument = Instruments.LIST[i % Instruments.LIST.length];
             for(int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(101);
-                soundSequence.add(new Sound(instrument.getServerString(), 1000 * j, 1000 * (j+1), pitch));
+                int pitch = random.nextInt(Sound.PITCH_RANGE+1);
+                soundSequence.add(new Sound(instrument.getServerString(), (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
             }
             list.add(new SingleSoundtrack(i, soundSequence));
         }
