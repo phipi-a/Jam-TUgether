@@ -18,6 +18,7 @@ public class SoundtrackControlsView extends ConstraintLayout {
 
     private Slider volumeSlider;
 
+    @NonNull
     private final ConstraintSet constraintSet;
 
     public SoundtrackControlsView(@NonNull Context context, @Nullable AttributeSet attrs) {

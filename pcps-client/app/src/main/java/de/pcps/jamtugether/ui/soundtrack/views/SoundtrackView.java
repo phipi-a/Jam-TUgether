@@ -26,6 +26,7 @@ public class SoundtrackView extends View {
     private SingleSoundtrack singleSoundtrack;
     private CompositeSoundtrack compositeSoundtrack;
 
+    @NonNull
     private final Paint paint = new Paint();
 
     public SoundtrackView(Context context, @Nullable AttributeSet attrs) {

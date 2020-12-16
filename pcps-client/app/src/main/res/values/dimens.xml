@@ -29,7 +29,7 @@
     <dimen name="composite_soundtrack_margin_top">25dp</dimen>
     <dimen name="soundtrack_item_margin_top">20dp</dimen>
     <!-- margin_start is 20dp to account for the 10dp space that
-         the right half of the clear button takes up-->
+         the right half of the clear button takes up -->
     <dimen name="soundtrack_item_margin_start">20dp</dimen>
     <dimen name="soundtrack_item_margin_end">10dp</dimen>
     <dimen name="soundtrack_item_clear_button_width">20dp</dimen>
