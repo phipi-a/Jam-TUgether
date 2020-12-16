@@ -66,6 +66,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     private SingleSoundtrack soundtrackToBeDeleted;
 
+    // todo set argument number to 5
     public RoomOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull SoundtracksDataViewModel soundtracksDataViewModel, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
