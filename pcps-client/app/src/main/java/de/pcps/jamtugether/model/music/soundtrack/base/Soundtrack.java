@@ -45,16 +45,27 @@ public abstract class Soundtrack {
     }
 
     public void togglePlayPause() {
-        if(state.getValue() == State.PLAYING) {
-            pause();
-        } else if(state.getValue() == State.PAUSED) {
-            resume();
+        if(state.getValue() == null) {
+            return;
+        }
+
+        switch (state.getValue()) {
+            case PLAYING:
+                pause();
+                break;
+            case PAUSED:
+                resume();
+                break;
+            case IDLE:
+            case STOPPED:
+                play();
         }
     }
 
     private void play() {
         state.setValue(State.PLAYING);
         // todo update progress regularly
+        //  continue at progress
     }
 
     private void pause() {
@@ -62,8 +73,8 @@ public abstract class Soundtrack {
         // todo
     }
 
-    public void resume() {
-        // todo
+    private void resume() {
+        play();
     }
 
     public void fastForward() {
@@ -78,6 +89,7 @@ public abstract class Soundtrack {
 
     public void stop() {
         state.setValue(State.STOPPED);
+        progress.setValue(0);
         // todo reset progress
     }
 
