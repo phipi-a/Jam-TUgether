@@ -15,25 +15,26 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <de.pcps.jamtugether.ui.soundtrack.views.SoundtrackControlsView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/volume_mute_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/soundtrack_mute_icon_width"
+            android:layout_height="@dimen/soundtrack_mute_icon_width"
             android:src="@drawable/ic_volume_mute"
             app:layout_constraintBottom_toBottomOf="@id/volume_slider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/volume_slider"
             app:tint="@color/iconColor" />
 
+        <!-- width of this slider is calculated later based on screen width -->
         <com.google.android.material.slider.Slider
             android:id="@+id/volume_slider"
-            android:layout_width="@dimen/volume_slider_width"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/soundtrack_volume_slider_margin_start"
             android:stepSize="1"
             android:value="@{soundtrack.volume}"
             android:valueFrom="0"
@@ -49,9 +50,9 @@
 
         <ImageView
             android:id="@+id/volume_up_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/soundtrack_volume_up_icon_width"
+            android:layout_height="@dimen/soundtrack_volume_up_icon_width"
+            android:layout_marginStart="@dimen/soundtrack_volume_up_icon_margin_start"
             android:src="@drawable/ic_volume_up"
             app:layout_constraintStart_toEndOf="@id/volume_slider"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
@@ -59,9 +60,9 @@
 
         <ImageView
             android:id="@+id/fast_rewind_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_width="@dimen/soundtrack_fast_rewind_icon_width"
+            android:layout_height="@dimen/soundtrack_fast_rewind_icon_width"
+            android:layout_marginStart="@dimen/soundtrack_fast_rewind_icon_margin_start"
             android:onClick="@{() -> soundtrack.fastRewind()}"
             android:src="@drawable/ic_fast_rewind"
             app:layout_constraintStart_toEndOf="@id/volume_up_icon"
@@ -70,9 +71,9 @@
 
         <ImageView
             android:id="@+id/play_pause_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_width="@dimen/soundtrack_play_pause_icon_width"
+            android:layout_height="@dimen/soundtrack_play_pause_icon_width"
+            android:layout_marginStart="@dimen/soundtrack_play_pause_icon_margin_start"
             android:onClick="@{() -> soundtrack.togglePlayPause()}"
             android:src="@{soundtrack.getState() == State.PLAYING ? @drawable/ic_pause : @drawable/ic_play}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
@@ -81,9 +82,9 @@
 
         <ImageView
             android:id="@+id/fast_forward_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_width="@dimen/soundtrack_fast_forward_icon_width"
+            android:layout_height="@dimen/soundtrack_fast_forward_icon_width"
+            android:layout_marginStart="@dimen/soundtrack_fast_forward_icon_margin_start"
             android:onClick="@{() -> soundtrack.fastForward()}"
             android:src="@drawable/ic_fast_forward"
             app:layout_constraintStart_toEndOf="@id/play_pause_button"
@@ -92,9 +93,9 @@
 
         <ImageView
             android:id="@+id/stop_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_width="@dimen/soundtrack_stop_icon_width"
+            android:layout_height="@dimen/soundtrack_stop_icon_width"
+            android:layout_marginStart="@dimen/soundtrack_stop_icon_margin_start"
             android:onClick="@{() -> soundtrack.stop()}"
             android:src="@drawable/ic_stop"
             android:visibility="@{soundtrack.getState() == State.IDLE ? View.INVISIBLE : View.VISIBLE}"
@@ -102,5 +103,5 @@
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </de.pcps.jamtugether.ui.soundtrack.views.SoundtrackControlsView>
 </layout>
