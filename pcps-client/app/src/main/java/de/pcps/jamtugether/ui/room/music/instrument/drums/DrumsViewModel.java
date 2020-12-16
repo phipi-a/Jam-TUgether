@@ -1,5 +1,34 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class DrumsViewModel extends ViewModel { }
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+import de.pcps.jamtugether.model.instrument.Drums;
+
+public class DrumsViewModel extends AndroidViewModel {
+
+    private final Drums drums = Drums.getInstance();
+
+    public DrumsViewModel(@NonNull Application application) {
+        super(application);
+        drums.prepare(application.getApplicationContext());
+    }
+
+    public void onSnareClicked() {
+        drums.playSnare();
+    }
+
+    public void onKickClicked() {
+        drums.playKick();
+    }
+
+    public void onHatClicked() {
+        drums.playHat();
+    }
+
+    public void onCymbalClicked() {
+        drums.playCymbal();
+    }
+}

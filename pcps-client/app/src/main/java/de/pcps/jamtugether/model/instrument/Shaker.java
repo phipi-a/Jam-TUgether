@@ -17,19 +17,19 @@ public class Shaker extends Instrument {
         super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
     }
 
-    @NonNull
-    public static Shaker getInstance() {
-        if(instance == null) {
-            instance = new Shaker();
-        }
-        return instance;
-    }
-
     @Override
     public void play(@NonNull Sound sound) {
         if(sound.getInstrument() != this) {
             return;
         }
         // todo
+    }
+
+    @NonNull
+    public static Shaker getInstance() {
+        if(instance == null) {
+            instance = new Shaker();
+        }
+        return instance;
     }
 }

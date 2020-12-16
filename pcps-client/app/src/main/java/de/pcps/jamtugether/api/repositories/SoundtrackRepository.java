@@ -57,7 +57,7 @@ public class SoundtrackRepository {
         //call.enqueue(callback);
     }
 
-    public void fetchSoundtracks(int currentRoomID) {
+    public void fetchSoundtracks(int currentRoomID) { // todo add callback so view models can display error message if necessary
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
         if(!fetching) {
@@ -79,7 +79,6 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks() {
-        // todo
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 

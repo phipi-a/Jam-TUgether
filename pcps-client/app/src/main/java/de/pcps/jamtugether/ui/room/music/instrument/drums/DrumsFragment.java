@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
+import de.pcps.jamtugether.ui.base.BaseFragment;
 
 public class DrumsFragment extends BaseFragment {
 
@@ -31,8 +31,19 @@ public class DrumsFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentDrumsBinding binding = FragmentDrumsBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+        /*imageButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+
+                    // Do what you want
+                    return true;
+                }
+                return false;
+            }
+        });*/
+
         return binding.getRoot();
     }
 }
