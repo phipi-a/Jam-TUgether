@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,13 +18,12 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
-import de.pcps.jamtugether.ui.room.AdminStatusChangeCallback;
+import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 
-public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnChangeListener, SingleSoundtrack.OnDeleteListener {
+public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
     @Inject
     Application application;
@@ -45,13 +43,10 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
     private final String token;
 
     @NonNull
-    private final AdminStatusChangeCallback adminStatusChangeCallback;
+    private final UserStatusChangeCallback userStatusChangeCallback;
 
     @NonNull
     private final MutableLiveData<Boolean> admin;
-
-    @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
@@ -67,53 +62,25 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
 
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    public RoomOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull AdminStatusChangeCallback adminStatusChangeCallback) {
+    public RoomOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.password = password;
         this.token = token;
         this.admin = new MutableLiveData<>(admin);
-        this.adminStatusChangeCallback = adminStatusChangeCallback;
-    }
+        this.userStatusChangeCallback = userStatusChangeCallback;
 
-    @NonNull
-    private List<SingleSoundtrack> generateTestSoundtracks() {
-        List<SingleSoundtrack> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            list.add(new SingleSoundtrack(i));
-        }
-        return list;
-    }
-
-    private void fetchAllSoundtracks() {
-        // todo get all soundtracks from server and update current list after
+        soundtrackRepository.fetchSoundtracks(roomID);
     }
 
     @Override
-    public void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume) {
-        soundtrack.setVolume(volume);
-    }
-
-    @Override
-    public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onStopButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) { }
-
-    @Override
-    public void onDeleteButtonClicked(@NonNull SingleSoundtrack soundtrack) {
+    public void onDeleteSoundtrackButtonClicked(@NonNull SingleSoundtrack soundtrack) {
         soundtrackToBeDeleted = soundtrack;
         showSoundtrackDeletionConfirmDialog.setValue(true);
     }
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
-        List<SingleSoundtrack> soundtracks = allSoundtracks.getValue();
+        List<SingleSoundtrack> soundtracks = getAllSoundtracks().getValue();
         if(soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
         }
@@ -125,7 +92,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
                 newList.add(singleSoundtrack);
             }
         }
-        allSoundtracks.setValue(newList);
+        soundtrackRepository.updateAllSoundtracks(newList);
 
         // todo tell server
 
@@ -199,12 +166,12 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
+        return soundtrackRepository.getCompositeSoundtrack();
     }
 
     @NonNull
     public LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
-        return allSoundtracks;
+        return soundtrackRepository.getAllSoundtracks();
     }
 
     @NonNull
@@ -225,14 +192,14 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
         private final boolean admin;
 
         @NonNull
-        private final AdminStatusChangeCallback adminStatusChangeCallback;
+        private final UserStatusChangeCallback userStatusChangeCallback;
 
-        public Factory(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull AdminStatusChangeCallback adminStatusChangeCallback) {
+        public Factory(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
             this.roomID = roomID;
             this.password = password;
             this.token = token;
             this.admin = admin;
-            this.adminStatusChangeCallback = adminStatusChangeCallback;
+            this.userStatusChangeCallback = userStatusChangeCallback;
         }
 
         @SuppressWarnings("unchecked")
@@ -240,7 +207,7 @@ public class RoomOverviewViewModel extends ViewModel implements Soundtrack.OnCha
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomOverviewViewModel.class)) {
-                return (T) new RoomOverviewViewModel(roomID, password, token, admin, adminStatusChangeCallback);
+                return (T) new RoomOverviewViewModel(roomID, password, token, admin, userStatusChangeCallback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

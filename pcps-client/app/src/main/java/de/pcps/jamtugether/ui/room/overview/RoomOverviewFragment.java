@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.AdminStatusChangeCallback;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
@@ -23,7 +23,6 @@ import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class RoomOverviewFragment extends BaseFragment {
 
@@ -33,8 +32,6 @@ public class RoomOverviewFragment extends BaseFragment {
     private static final String ADMIN_KEY = "admin_key";
 
     private RoomOverviewViewModel viewModel;
-
-    private Context context;
 
     @NonNull
     public static RoomOverviewFragment newInstance(int roomID, @NonNull String password, @NonNull String token, boolean admin) {
@@ -59,13 +56,9 @@ public class RoomOverviewFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
-            if (getParentFragment() != null) {
-                AdminStatusChangeCallback adminStatusChangeCallback = new ViewModelProvider(getParentFragment(), new RoomViewModel.Factory(admin)).get(RoomViewModel.class);
-                RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, password, token, admin, adminStatusChangeCallback);
-                viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
-            } else {
-                Timber.e("parent fragment is null (shouldn't happen)");
-            }
+            RoomViewModel roomViewModel = new ViewModelProvider(activity, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
+            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
         }
     }
 
@@ -76,20 +69,20 @@ public class RoomOverviewFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
-        binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(context));
+        binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
 
         final Runnable commitCallback = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
 
         viewModel.getAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {
-                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, viewModel, getViewLifecycleOwner());
+                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             } else {
-                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
+                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             }
@@ -97,21 +90,21 @@ public class RoomOverviewFragment extends BaseFragment {
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
+                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
         });
 
         viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
-            if(showSoundtrackDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
+            if (showSoundtrackDeletionConfirmDialog) {
+                UiUtils.showConfirmationDialog(activity, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
                 viewModel.onSoundtrackDeletionConfirmDialogShown();
             }
         });
 
         viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
             if (showRoomDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
+                UiUtils.showConfirmationDialog(activity, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
                 viewModel.onRoomDeletionConfirmDialogShown();
             }
         });
@@ -129,6 +122,6 @@ public class RoomOverviewFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.activity = (AppCompatActivity) context;
     }
 }

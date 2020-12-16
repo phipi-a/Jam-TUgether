@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.ui.room;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +30,6 @@ public class RoomFragment extends TabLayoutFragment {
 
     private RoomViewModel viewModel;
 
-    private Context context;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +40,8 @@ public class RoomFragment extends TabLayoutFragment {
             this.token = args.getToken();
             this.admin = args.getAdmin();
 
-            RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(admin);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomViewModel.class);
+            RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(roomID, admin);
+            viewModel = new ViewModelProvider(activity, viewModelFactory).get(RoomViewModel.class);
         }
     }
 
@@ -55,7 +52,7 @@ public class RoomFragment extends TabLayoutFragment {
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if(showLeaveRoomConfirmationDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
+                UiUtils.showConfirmationDialog(activity, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
@@ -68,12 +65,6 @@ public class RoomFragment extends TabLayoutFragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.context = context;
     }
 
     @Override

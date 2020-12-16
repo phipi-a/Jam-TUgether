@@ -19,8 +19,6 @@ import de.pcps.jamtugether.utils.UiUtils;
 
 public class JoinRoomFragment extends BaseFragment {
 
-    private Activity activity;
-
     private JoinRoomViewModel viewModel;
 
     @Override
@@ -55,11 +53,5 @@ public class JoinRoomFragment extends BaseFragment {
         });
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (Activity) context;
     }
 }

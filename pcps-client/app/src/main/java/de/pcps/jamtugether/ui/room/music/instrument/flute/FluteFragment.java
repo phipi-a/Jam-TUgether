@@ -1,8 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
@@ -22,8 +20,6 @@ import timber.log.Timber;
 public class FluteFragment extends BaseFragment {
 
     private static final int REQUEST_MICROPHONE = 1;
-
-    private Activity activity;
 
     private FluteViewModel viewModel;
 
@@ -69,11 +65,5 @@ public class FluteFragment extends BaseFragment {
                 Timber.e("onRequestPermissionsResult: No microphone permission");
             }
         }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (Activity) context;
     }
 }

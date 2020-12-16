@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
+import de.pcps.jamtugether.model.music.sound.Sound;
+
 public abstract class Instrument {
 
     private final int ordinal;
@@ -28,6 +30,8 @@ public abstract class Instrument {
         this.serverString = serverString;
     }
 
+    public abstract void play(@NonNull Sound sound);
+
     public int getOrdinal() {
         return ordinal;
     }
@@ -51,7 +55,6 @@ public abstract class Instrument {
     public String getServerString() {
         return serverString;
     }
-
 
     @NonNull
     public static final DiffUtil.ItemCallback<Instrument> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Instrument>() {

@@ -17,8 +17,8 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
     @NonNull
     private final SingleSoundtrack.OnDeleteListener onDeleteListener;
 
-    public AdminSoundtrackListAdapter(@NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
-        super(onChangeListener, lifecycleOwner);
+    public AdminSoundtrackListAdapter(@NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
+        super(lifecycleOwner);
         this.onDeleteListener = onDeleteListener;
     }
 
@@ -30,7 +30,7 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), onChangeListener, onDeleteListener, lifecycleOwner);
+        holder.bind(getItem(position), onDeleteListener, lifecycleOwner);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,16 +43,15 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
             this.binding = binding;
         }
 
-        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull SingleSoundtrack.OnChangeListener onChangeListener, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
+        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
             binding.setSoundtrack(singleSoundtrack);
             binding.setOnChangeListener(onDeleteListener);
 
             binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
-            binding.soundtrackControlsLayout.setOnChangeListener(onChangeListener);
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 
-            ((SoundtrackContainer) binding.soundtrackContainer).drawSingleSoundtrack(singleSoundtrack, lifecycleOwner);
+            ((SoundtrackContainer) binding.soundtrackContainer).onSingleSoundtrackChanged(singleSoundtrack, lifecycleOwner);
         }
 
         @NonNull

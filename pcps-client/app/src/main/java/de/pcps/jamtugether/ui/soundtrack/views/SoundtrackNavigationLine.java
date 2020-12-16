@@ -20,14 +20,14 @@ public class SoundtrackNavigationLine extends View {
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        singleSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackUpdated(soundtrack, lifecycleOwner));
+        singleSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackChanged(soundtrack, lifecycleOwner));
     }
 
     public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        compositeSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackUpdated(soundtrack, lifecycleOwner));
+        compositeSoundtrack.observe(lifecycleOwner, soundtrack -> onSoundtrackChanged(soundtrack, lifecycleOwner));
     }
 
-    public void onSoundtrackUpdated(@NonNull Soundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+    public void onSoundtrackChanged(@NonNull Soundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
         soundtrack.getProgress().observe(lifecycleOwner, this::onProgressChanged);
     }
 

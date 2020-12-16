@@ -44,9 +44,37 @@ public abstract class Soundtrack {
         this.volume.setValue(volume);
     }
 
-    public void play() {
+    public void togglePlayPause() {
+        if(state.getValue() == null) {
+            return;
+        }
+
+        switch (state.getValue()) {
+            case PLAYING:
+                pause();
+                break;
+            case PAUSED:
+                resume();
+                break;
+            case IDLE:
+            case STOPPED:
+                play();
+        }
+    }
+
+    private void play() {
         state.setValue(State.PLAYING);
         // todo update progress regularly
+        //  continue at progress
+    }
+
+    private void pause() {
+        state.setValue(State.PAUSED);
+        // todo
+    }
+
+    private void resume() {
+        play();
     }
 
     public void fastForward() {
@@ -59,17 +87,9 @@ public abstract class Soundtrack {
         //  update progress
     }
 
-    public void pause() {
-        state.setValue(State.PAUSED);
-        // todo
-    }
-
-    public void resume() {
-        // todo
-    }
-
     public void stop() {
         state.setValue(State.STOPPED);
+        progress.setValue(0);
         // todo reset progress
     }
 
@@ -78,18 +98,5 @@ public abstract class Soundtrack {
         PLAYING,
         PAUSED,
         STOPPED
-    }
-
-    public interface OnChangeListener {
-
-        void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume);
-
-        void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack);
-
-        void onStopButtonClicked(@NonNull Soundtrack soundtrack);
-
-        void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack);
-
-        void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack);
     }
 }

@@ -22,10 +22,6 @@ public class SingleSoundtrack extends Soundtrack {
         this.soundSequence = soundSequence;
     }
 
-    public SingleSoundtrack(int userID) {
-        this(userID, new ArrayList<>());
-    }
-
     public int getUserID() {
         return userID;
     }
@@ -47,7 +43,16 @@ public class SingleSoundtrack extends Soundtrack {
         }
     };
 
+    public int getLength() {
+        if(soundSequence.isEmpty()) {
+            return 0;
+        }
+        Sound firstSound = soundSequence.get(0);
+        Sound lastSound = soundSequence.get(soundSequence.size() - 1);
+        return lastSound.getEndTime() - firstSound.getStartTime();
+    }
+
     public interface OnDeleteListener {
-        void onDeleteButtonClicked(@NonNull SingleSoundtrack singleSoundtrack);
+        void onDeleteSoundtrackButtonClicked(@NonNull SingleSoundtrack singleSoundtrack);
     }
 }

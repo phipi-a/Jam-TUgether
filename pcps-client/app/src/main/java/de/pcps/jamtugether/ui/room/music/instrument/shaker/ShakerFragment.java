@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.ui.room.music.instrument.shaker;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +13,6 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
 
 public class ShakerFragment extends BaseFragment {
-
-    private Activity activity;
 
     private ShakerViewModel viewModel;
 
@@ -38,11 +34,5 @@ public class ShakerFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (Activity) context;
     }
 }
