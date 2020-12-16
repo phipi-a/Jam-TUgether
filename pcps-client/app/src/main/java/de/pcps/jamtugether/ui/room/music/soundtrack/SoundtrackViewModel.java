@@ -16,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
@@ -43,6 +44,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     private String helpDialogTitle;
     private String helpDialogMessage;
 
+    @NonNull
     private Instrument currentInstrument;
 
     @NonNull
@@ -93,6 +95,10 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         showHelpDialog.setValue(false);
     }
 
+    public void onSoundtrackRepositoryNetworkErrorShown() {
+        soundtrackRepository.onNetworkErrorShown();
+    }
+
     @NonNull
     public Instrument getCurrentInstrument() {
         return currentInstrument;
@@ -128,6 +134,11 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     public LiveData<SingleSoundtrack> getOwnSoundtrack() {
         return ownSoundtrack;
+    }
+
+    @NonNull
+    public LiveData<Error> getSoundtrackRepositoryNetworkError() {
+        return soundtrackRepository.getNetworkError();
     }
 
     static class Factory implements ViewModelProvider.Factory {

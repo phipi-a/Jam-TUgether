@@ -125,6 +125,10 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         deleteRoom();
     }
 
+    public void onSoundtrackRepositoryNetworkErrorShown() {
+        soundtrackRepository.onNetworkErrorShown();
+    }
+
     public void onNetworkErrorShown() {
         networkError.setValue(null);
     }
@@ -175,7 +179,12 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
     }
 
     @NonNull
-    public MutableLiveData<Error> getNetworkError() {
+    public LiveData<Error> getSoundtrackRepositoryNetworkError() {
+        return soundtrackRepository.getNetworkError();
+    }
+
+    @NonNull
+    public LiveData<Error> getNetworkError() {
         return networkError;
     }
 

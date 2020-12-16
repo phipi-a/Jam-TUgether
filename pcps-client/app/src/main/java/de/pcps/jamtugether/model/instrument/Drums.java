@@ -13,11 +13,17 @@ import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import timber.log.Timber;
 
-// todo
 public class Drums extends Instrument {
 
     @Nullable
     private static Drums instance;
+
+    /*
+     this is necessary in order to play a lot of
+     sounds in a short period of time because these sounds
+     start before another one ends
+     */;
+    private static final int SOUND_POOL_MAX_STREAMS = 100;
 
     private SoundPool soundPool;
 
@@ -42,7 +48,7 @@ public class Drums extends Instrument {
                 .build();
 
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(4)
+                .setMaxStreams(SOUND_POOL_MAX_STREAMS)
                 .setAudioAttributes(audioAttributes)
                 .build();
 

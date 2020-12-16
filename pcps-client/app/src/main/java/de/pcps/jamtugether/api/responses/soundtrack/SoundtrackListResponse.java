@@ -10,14 +10,14 @@ import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 public class SoundtrackListResponse {
 
     @NonNull
-    private final List<SingleSoundtrack> allSingleSoundtracks;
+    private final List<SingleSoundtrack> allSoundtracks;
 
-    public SoundtrackListResponse(@NonNull List<SingleSoundtrack> allSingleSoundtracks) {
-        this.allSingleSoundtracks = allSingleSoundtracks;
+    public SoundtrackListResponse(@NonNull List<SingleSoundtrack> allSoundtracks) {
+        this.allSoundtracks = allSoundtracks;
     }
 
     @NonNull
-    public List<SingleSoundtrack> getAllSingleSoundtracks() {
-        return allSingleSoundtracks;
+    public List<SingleSoundtrack> getAllSoundtracks() {
+        return allSoundtracks;
     }
 }

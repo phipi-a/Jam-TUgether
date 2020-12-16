@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
 import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
@@ -39,10 +40,13 @@ public class SoundtrackRepository {
     @NonNull
     private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
 
+    @NonNull
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+
     @Inject
     public SoundtrackRepository() { }
 
-    public void getAllSoundtracks(int roomID, @NonNull JamCallback<SoundtrackListResponse> callback) {
+    private void getAllSoundtracks(int roomID, @NonNull JamCallback<SoundtrackListResponse> callback) {
         //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);
         //call.enqueue(callback);
     }
@@ -57,7 +61,7 @@ public class SoundtrackRepository {
         //call.enqueue(callback);
     }
 
-    public void fetchSoundtracks(int currentRoomID) { // todo add callback so view models can display error message if necessary
+    public void fetchSoundtracks(int currentRoomID) {
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
         if(!fetching) {
@@ -79,6 +83,19 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks() {
+        getAllSoundtracks(currentRoomID, new JamCallback<SoundtrackListResponse>() {
+            @Override
+            public void onSuccess(@NonNull SoundtrackListResponse response) {
+                allSoundtracks.setValue(response.getAllSoundtracks());
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
+
+        // todo uncomment this line when soundtrack service is done
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 
@@ -99,6 +116,15 @@ public class SoundtrackRepository {
         return list;
     }
 
+    // updates soundtracks locally so the change can be visible immediately
+    public void updateAllSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
+        allSoundtracks.setValue(soundtracks);
+    }
+
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
+    }
+
     @NonNull
     public LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
         return allSoundtracks;
@@ -109,8 +135,8 @@ public class SoundtrackRepository {
         return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
-    // updates soundtracks locally so the change can be visible immediately
-    public void updateAllSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
-        allSoundtracks.setValue(soundtracks);
+    @NonNull
+    public LiveData<Error> getNetworkError() {
+        return networkError;
     }
 }

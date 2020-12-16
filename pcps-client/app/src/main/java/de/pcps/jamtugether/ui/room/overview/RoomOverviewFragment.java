@@ -88,6 +88,13 @@ public class RoomOverviewFragment extends BaseFragment {
             }
         });
 
+        viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if (networkError != null) {
+                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                viewModel.onSoundtrackRepositoryNetworkErrorShown();
+            }
+        });
+
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());

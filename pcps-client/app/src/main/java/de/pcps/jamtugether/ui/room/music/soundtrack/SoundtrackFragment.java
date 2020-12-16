@@ -64,6 +64,13 @@ public class SoundtrackFragment extends BaseFragment {
             }
         });
 
+        viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if (networkError != null) {
+                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                viewModel.onSoundtrackRepositoryNetworkErrorShown();
+            }
+        });
+
         return binding.getRoot();
     }
 }
