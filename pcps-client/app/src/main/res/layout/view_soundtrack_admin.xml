@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/delete_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/soundtrack_item_clear_button_width"
+                android:layout_height="@dimen/soundtrack_item_clear_button_width"
                 android:background="@drawable/bg_button_clear"
                 android:onClick="@{() -> onChangeListener.onDeleteSoundtrackButtonClicked(soundtrack)}"
                 android:src="@drawable/ic_delete"

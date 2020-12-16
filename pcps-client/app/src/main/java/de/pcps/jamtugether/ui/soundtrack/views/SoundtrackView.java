@@ -19,12 +19,14 @@ import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import timber.log.Timber;
 
 public class SoundtrackView extends View {
 
     private SingleSoundtrack singleSoundtrack;
     private CompositeSoundtrack compositeSoundtrack;
 
+    @NonNull
     private final Paint paint = new Paint();
 
     public SoundtrackView(Context context, @Nullable AttributeSet attrs) {
@@ -53,6 +55,7 @@ public class SoundtrackView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Timber.d("getWidth(): %d", this.getWidth());
         if (singleSoundtrack != null) {
             drawSingleSoundtrack(canvas, singleSoundtrack, false);
         } else if (compositeSoundtrack != null) {
