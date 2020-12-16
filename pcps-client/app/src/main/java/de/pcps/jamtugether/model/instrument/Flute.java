@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.model.music.sound.Sound;
 
 public class Flute extends Instrument {
 
@@ -49,5 +50,13 @@ public class Flute extends Instrument {
             instance = new Flute();
         }
         return instance;
+    }
+
+    @Override
+    public void play(@NonNull Sound sound) {
+        if(sound.getInstrument() != this) {
+            return;
+        }
+        // todo
     }
 }

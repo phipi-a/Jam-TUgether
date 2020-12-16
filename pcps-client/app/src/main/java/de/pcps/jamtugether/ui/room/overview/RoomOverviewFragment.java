@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.SoundtracksDataViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
@@ -57,9 +56,8 @@ public class RoomOverviewFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
-            SoundtracksDataViewModel soundtracksDataViewModel = new ViewModelProvider(activity, new SoundtracksDataViewModel.Factory(roomID)).get(SoundtracksDataViewModel.class);
             RoomViewModel roomViewModel = new ViewModelProvider(activity, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
-            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, password, token, admin, soundtracksDataViewModel, roomViewModel);
+            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
         }
     }

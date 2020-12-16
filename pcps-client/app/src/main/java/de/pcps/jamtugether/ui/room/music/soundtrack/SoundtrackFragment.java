@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.SoundtracksDataViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackBinding;
@@ -21,8 +20,6 @@ public class SoundtrackFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
     private static final String TOKEN_KEY = "token_key";
-
-    private SoundtracksDataViewModel soundtracksDataViewModel;
 
     private SoundtrackViewModel viewModel;
 
@@ -42,9 +39,8 @@ public class SoundtrackFragment extends BaseFragment {
         if(getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
             String token = getArguments().getString(TOKEN_KEY);
-            soundtracksDataViewModel = new ViewModelProvider(activity, new SoundtracksDataViewModel.Factory(roomID)).get(SoundtracksDataViewModel.class);
             MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(activity, new MusicianViewViewModel.Factory(roomID, token)).get(MusicianViewViewModel.class);
-            SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, musicianViewViewModel, soundtracksDataViewModel);
+            SoundtrackViewModel.Factory viewModelFactory = new SoundtrackViewModel.Factory(roomID, musicianViewViewModel);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackViewModel.class);
         }
     }
@@ -55,8 +51,8 @@ public class SoundtrackFragment extends BaseFragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, soundtracksDataViewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
-        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(soundtracksDataViewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());

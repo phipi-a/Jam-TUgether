@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.model.music.sound.Sound;
 
 // todo
 public class Drums extends Instrument {
@@ -22,5 +23,13 @@ public class Drums extends Instrument {
             instance = new Drums();
         }
         return instance;
+    }
+
+    @Override
+    public void play(@NonNull Sound sound) {
+        if(sound.getInstrument() != this) {
+            return;
+        }
+        // todo
     }
 }

@@ -54,7 +54,7 @@ public class SoundtrackView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (singleSoundtrack != null) {
-            drawSingleSoundtrack(canvas, singleSoundtrack);
+            drawSingleSoundtrack(canvas, singleSoundtrack, false);
         } else if (compositeSoundtrack != null) {
             drawCompositeSoundtrack(canvas);
         }
@@ -72,13 +72,17 @@ public class SoundtrackView extends View {
         }
     }
 
-    private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
+    private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, boolean asLines) {
         if (singleSoundtrack.getLength() == 0) {
             return;
         }
-
         paint.setColor(getPaintColor(singleSoundtrack));
-        drawRectangles(canvas, singleSoundtrack);
+
+        if(asLines) {
+            drawLines(canvas, singleSoundtrack);
+        } else {
+            drawRectangles(canvas, singleSoundtrack);
+        }
     }
 
     private void drawLines(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
@@ -113,7 +117,7 @@ public class SoundtrackView extends View {
 
     private void drawCompositeSoundtrack(@NonNull Canvas canvas) {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            drawSingleSoundtrack(canvas, singleSoundtrack);
+            drawSingleSoundtrack(canvas, singleSoundtrack, true);
         }
     }
 }

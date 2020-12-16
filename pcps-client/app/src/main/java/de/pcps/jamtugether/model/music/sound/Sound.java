@@ -15,7 +15,7 @@ public class Sound {
     @NonNull
     private final String instrument;
 
-    private final int startTime; // todo maybe change type to long
+    private final int startTime;
     private final int endTime;
     private final int pitch;
 
@@ -24,6 +24,10 @@ public class Sound {
         this.startTime = startTime;
         this.endTime = endTime;
         this.pitch = pitch;
+    }
+
+    public void play() {
+        getInstrument().play(this);
     }
 
     @NonNull

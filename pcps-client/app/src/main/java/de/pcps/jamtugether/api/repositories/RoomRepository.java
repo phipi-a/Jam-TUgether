@@ -1,5 +1,7 @@
 package de.pcps.jamtugether.api.repositories;
 
+import android.os.Handler;
+
 import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
@@ -23,7 +25,8 @@ public class RoomRepository {
     RoomService roomService;
 
     @Inject
-    public RoomRepository() { }
+    public RoomRepository() {
+    }
 
     public void createRoom(@NonNull String password, @NonNull JamCallback<CreateRoomResponse> callback) {
         CreateRoomBody body = new CreateRoomBody(password);

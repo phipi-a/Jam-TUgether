@@ -22,4 +22,5 @@
     <color name="volumeSliderTickInactiveColor">@color/gray</color>
     <color name="clearButtonColor">@color/white</color>
     <color name="clearButtonBackgroundColor">@color/black</color>
+    <color name="soundtrackNavigationLineColor">@color/black</color>
 </resources>
