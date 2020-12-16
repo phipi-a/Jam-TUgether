@@ -1,7 +1,10 @@
 package de.pcps.jamtugether.model.instrument;
 
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +23,6 @@ public class Drums extends Instrument {
     private int cymbal;
     private int snare;
     private int hat;
-    private DrumsViewModel viewModel;
 
 
 
@@ -46,15 +48,25 @@ public class Drums extends Instrument {
 
 
     public void prepare(@NonNull Context context){
-        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
-        snare=soundPool.load(context,R.raw.drum_snare,1);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(4)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+        //soundPool = new SoundPool.Builder().setMaxStreams(4).build();
         hat=soundPool.load(context,R.raw.drum_hat,1);
-        kick=soundPool.load(context,R.raw.drum_kick,1);
         cymbal=soundPool.load(context,R.raw.drum_cymbal,1);
+        kick=soundPool.load(context,R.raw.drum_kick,1);
+        snare=soundPool.load(context,R.raw.drum_snare,1);
     }
 
     private void playSound(int sound){
-        soundPool.play(sound,1.0f,1.0f,0,0,10f);
+
+        soundPool.play(sound,1,1,0,0,1);
     }
 
     @NonNull
