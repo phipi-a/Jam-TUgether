@@ -2,9 +2,6 @@ package de.pcps.jamtugether.model.instrument;
 
 import android.content.Context;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
@@ -40,22 +37,23 @@ public class Drums extends Instrument {
 
     public void prepare(@NonNull Context context) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build();
+
         soundPool = new SoundPool.Builder()
                 .setMaxStreams(4)
                 .setAudioAttributes(audioAttributes)
                 .build();
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            if(sampleId == snareSound) {
+            if (sampleId == snareSound) {
                 snareSoundLoaded = true;
-            } else if(sampleId == kickSound) {
+            } else if (sampleId == kickSound) {
                 kickSoundLoaded = true;
-            } else if(sampleId == hatSound) {
+            } else if (sampleId == hatSound) {
                 hatSoundLoaded = true;
-            } else if(sampleId == cymbalSound) {
+            } else if (sampleId == cymbalSound) {
                 cymbalSoundLoaded = true;
             }
         });
@@ -63,19 +61,19 @@ public class Drums extends Instrument {
         snareSound = soundPool.load(context, R.raw.drum_snare, 1);
         kickSound = soundPool.load(context, R.raw.drum_kick, 1);
         hatSound = soundPool.load(context, R.raw.drum_hat, 1);
-        cymbalSound = soundPool.load(context, R.raw.drum_cymbal, 1);
+        cymbalSound = soundPool.load(context, R.raw.drum_cymbal_long, 1);
     }
 
     @Override
     public void play(@NonNull Sound sound) {
-        if(sound.getInstrument() != this) {
+        if (sound.getInstrument() != this) {
             return;
         }
         // todo
     }
 
     public void playSnare() {
-        if(snareSoundLoaded) {
+        if (snareSoundLoaded) {
             playSound(snareSound);
         } else {
             Timber.w("snare sound not loaded yet");
@@ -83,7 +81,7 @@ public class Drums extends Instrument {
     }
 
     public void playKick() {
-        if(kickSoundLoaded) {
+        if (kickSoundLoaded) {
             playSound(kickSound);
         } else {
             Timber.w("kick sound not loaded yet");
@@ -91,7 +89,7 @@ public class Drums extends Instrument {
     }
 
     public void playHat() {
-        if(hatSoundLoaded) {
+        if (hatSoundLoaded) {
             playSound(hatSound);
         } else {
             Timber.w("hat sound not loaded yet");
@@ -99,15 +97,15 @@ public class Drums extends Instrument {
     }
 
     public void playCymbal() {
-        if(cymbalSoundLoaded) {
+        if (cymbalSoundLoaded) {
             playSound(cymbalSound);
         } else {
             Timber.w("cymbal sound not loaded yet");
         }
     }
 
-    private void playSound(int sound){
-        soundPool.play(sound,1,1,0,0,1);
+    private void playSound(int sound) {
+        soundPool.play(sound, 1, 1, 0, 0, 1);
     }
 
     @NonNull

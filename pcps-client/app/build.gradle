@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    def navigation_version = "2.3.1"
+    def navigation_version = "2.3.2"
     def dagger_version = "2.27"
     def retrofit_version = "2.9.0"
 
