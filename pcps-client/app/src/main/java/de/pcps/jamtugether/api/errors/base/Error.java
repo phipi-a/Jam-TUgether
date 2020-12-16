@@ -7,7 +7,7 @@ import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.GenericError;
 import de.pcps.jamtugether.api.errors.InternalServerError;
 import de.pcps.jamtugether.api.errors.NoInternetConnectionError;
-import de.pcps.jamtugether.api.errors.NoInternetConnectionException;
+import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 

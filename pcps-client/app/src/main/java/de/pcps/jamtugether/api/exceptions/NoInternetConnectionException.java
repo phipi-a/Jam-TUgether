@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api.errors;
+package de.pcps.jamtugether.api.exceptions;
 
 import java.io.IOException;
 

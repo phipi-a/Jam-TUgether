@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.api.errors.NoInternetConnectionException;
+import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
 import de.pcps.jamtugether.utils.NetworkUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
