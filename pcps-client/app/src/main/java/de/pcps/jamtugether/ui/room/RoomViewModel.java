@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class RoomViewModel extends ViewModel implements AdminStatusChangeCallback {
+public class RoomViewModel extends ViewModel implements UserStatusChangeCallback {
+
+    private final int roomID;
 
     private boolean admin;
 
@@ -16,7 +18,8 @@ public class RoomViewModel extends ViewModel implements AdminStatusChangeCallbac
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    public RoomViewModel(boolean admin) {
+    public RoomViewModel(int roomID, boolean admin) {
+        this.roomID = roomID;
         this.admin = admin;
     }
 
@@ -25,7 +28,7 @@ public class RoomViewModel extends ViewModel implements AdminStatusChangeCallbac
     }
 
     @Override
-    public void onAdminStatusChanged(boolean admin) {
+    public void onUserStatusChanged(boolean admin) {
         this.admin = admin;
     }
 
@@ -59,9 +62,12 @@ public class RoomViewModel extends ViewModel implements AdminStatusChangeCallbac
 
     public static class Factory implements ViewModelProvider.Factory {
 
+        private final int roomID;
+
         private final boolean admin;
 
-        public Factory(boolean admin) {
+        public Factory(int roomID, boolean admin) {
+            this.roomID = roomID;
             this.admin = admin;
         }
 
@@ -70,7 +76,7 @@ public class RoomViewModel extends ViewModel implements AdminStatusChangeCallbac
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomViewModel.class)) {
-                return (T) new RoomViewModel(admin);
+                return (T) new RoomViewModel(roomID, admin);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

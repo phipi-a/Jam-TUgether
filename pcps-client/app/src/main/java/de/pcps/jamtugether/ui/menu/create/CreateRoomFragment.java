@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.ui.menu.create;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +16,6 @@ import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class CreateRoomFragment extends BaseFragment {
-
-    private Activity activity;
 
     private CreateRoomViewModel viewModel;
 
@@ -54,11 +50,5 @@ public class CreateRoomFragment extends BaseFragment {
         });
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (Activity) context;
     }
 }

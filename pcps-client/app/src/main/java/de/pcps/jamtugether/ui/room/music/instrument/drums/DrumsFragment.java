@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +13,6 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
 
 public class DrumsFragment extends BaseFragment {
-
-    private Activity activity;
 
     private DrumsViewModel viewModel;
 
@@ -38,11 +34,5 @@ public class DrumsFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (Activity) context;
     }
 }

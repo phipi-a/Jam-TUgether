@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:onClick="@{() -> soundtrack.stop()"
+            android:onClick="@{() -> soundtrack.stop()}"
             android:src="@drawable/ic_stop"
             android:visibility="@{soundtrack.getState() == State.IDLE ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"

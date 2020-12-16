@@ -6,21 +6,16 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.music.sound.Sound;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
@@ -49,9 +44,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(generateTestSoundtracks());
-
-    @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
 
     public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
@@ -63,23 +55,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         onChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
-    }
-
-    @NonNull
-    private List<SingleSoundtrack> generateTestSoundtracks() {
-        Random random = new Random();
-        List<SingleSoundtrack> list = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {
-            List<Sound> soundSequence = new ArrayList<>();
-            int soundAmount = random.nextInt(30)+10;
-            Instrument instrument = Instruments.LIST[i % 3];
-            for(int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(101);
-                soundSequence.add(new Sound(instrument.getServerString(), 1000 * j, 1000 * (j+1), pitch));
-            }
-            list.add(new SingleSoundtrack(i, soundSequence));
-        }
-        return list;
     }
 
     @NonNull
@@ -102,10 +77,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         String instrumentName = context.getString(instrument.getName());
         helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
         helpDialogMessage = context.getString(instrument.getHelpMessage());
-    }
-
-    private void fetchAllSoundtracks() {
-        // todo get all soundtracks from server and update current list after
     }
 
     public void onHelpButtonClicked() {
@@ -141,16 +112,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
-    }
-
-    @NonNull
-    private LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
-        return allSoundtracks;
-    }
-
-    @NonNull
-    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
     }
 
     @NonNull

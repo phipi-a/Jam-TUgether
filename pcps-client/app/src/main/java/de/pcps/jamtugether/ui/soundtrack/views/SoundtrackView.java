@@ -53,9 +53,9 @@ public class SoundtrackView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(singleSoundtrack != null) {
+        if (singleSoundtrack != null) {
             drawSingleSoundtrack(canvas, singleSoundtrack);
-        } else if(compositeSoundtrack != null) {
+        } else if (compositeSoundtrack != null) {
             drawCompositeSoundtrack(canvas);
         }
     }
@@ -63,9 +63,9 @@ public class SoundtrackView extends View {
     @ColorInt
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
         final Instrument instrument = singleSoundtrack.getSoundSequence().get(0).getInstrument();
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             return Color.BLUE;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             return Color.RED;
         } else {
             return Color.GREEN;
@@ -73,17 +73,12 @@ public class SoundtrackView extends View {
     }
 
     private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        if(singleSoundtrack.getLength() == 0) {
+        if (singleSoundtrack.getLength() == 0) {
             return;
         }
 
         paint.setColor(getPaintColor(singleSoundtrack));
-        boolean line = false;
-        if(line) {
-            drawLines(canvas, singleSoundtrack);
-        } else {
-            drawRectangles(canvas, singleSoundtrack);
-        }
+        drawRectangles(canvas, singleSoundtrack);
     }
 
     private void drawLines(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
@@ -92,11 +87,11 @@ public class SoundtrackView extends View {
         float lastX = -1;
         float lastY = -1;
 
-        for(Sound sound : singleSoundtrack.getSoundSequence()) {
+        for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
             float y = this.getY() + heightOfPitchOne * (Sound.MAX_PITCH - sound.getPitch());
-            if(lastX == xStart && lastY != -1) {
+            if (lastX == xStart && lastY != -1) {
                 canvas.drawLine(xStart, lastY, xStart, y, paint);
             }
             canvas.drawLine(xStart, y, xEnd, y, paint);
@@ -108,7 +103,7 @@ public class SoundtrackView extends View {
     private void drawRectangles(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
         float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
-        for(Sound sound : singleSoundtrack.getSoundSequence()) {
+        for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
             float y = this.getY() + heightOfPitchOne * (Sound.MAX_PITCH - sound.getPitch());
@@ -117,7 +112,7 @@ public class SoundtrackView extends View {
     }
 
     private void drawCompositeSoundtrack(@NonNull Canvas canvas) {
-        for(SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             drawSingleSoundtrack(canvas, singleSoundtrack);
         }
     }
