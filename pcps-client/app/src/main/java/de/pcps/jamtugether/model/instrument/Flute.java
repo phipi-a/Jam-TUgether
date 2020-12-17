@@ -30,6 +30,8 @@ public class Flute extends Instrument {
 
     private boolean fluteSoundLoaded;
 
+    private int streamID;
+
     @Inject
     public Flute(@NonNull Context context) {
         super(0, R.string.instrument_flute, R.string.play_flute_help, PREFERENCE_VALUE, SERVER_STRING);
@@ -44,14 +46,11 @@ public class Flute extends Instrument {
                 .setAudioAttributes(audioAttributes)
                 .build();
 
-        fluteSound = soundPool.load(context, R.raw.flute_sound, 1);
-    }
-
-    public void setOnLoadCompleteListener(@NonNull SoundPool.OnLoadCompleteListener onLoadCompleteListener) {
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            onLoadCompleteListener.onLoadComplete(soundPool, sampleId, status);
             fluteSoundLoaded = true;
         });
+
+        fluteSound = soundPool.load(context, R.raw.flute_sound, 1);
     }
 
     @Override
@@ -61,18 +60,17 @@ public class Flute extends Instrument {
 
     public int play(float pitch) {
         if (fluteSoundLoaded) {
-            return soundPool.play(fluteSound, 1, 1, 1, 99, pitch);
+            streamID = soundPool.play(fluteSound, 1, 1, 1, 99, pitch);
+            return streamID;
         }
         Timber.w("flute sound not loaded yet");
         return 0;
     }
 
-    public int stop(int fluteStreamingID) {
-        soundPool.stop(fluteStreamingID);
+    public int stop() {
+        if(streamID != 0) {
+            soundPool.stop(streamID);
+        }
         return 0;
-    }
-
-    public void release() {
-        soundPool.release();
     }
 }

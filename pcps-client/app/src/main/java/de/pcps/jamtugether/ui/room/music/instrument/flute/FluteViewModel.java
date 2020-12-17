@@ -59,9 +59,7 @@ public class FluteViewModel extends ViewModel {
                     int maxAmplitude = soundRecorder.getMaxAmplitude();
                     if (maxAmplitude != 0) {
                         if (maxAmplitude < 10000) {
-                            if (fluteStreamingID != 0) {
-                                fluteStreamingID = flute.stop(fluteStreamingID);
-                            }
+                            fluteStreamingID = flute.stop();
                         } else {
                             if (fluteStreamingID == 0 && pitchPercentage.getValue() != null) {
                                 float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
@@ -75,10 +73,8 @@ public class FluteViewModel extends ViewModel {
     }
 
     public void startRecording() {
-        flute.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            soundRecorder.start();
-            soundReactThread.start();
-        });
+        soundRecorder.start();
+        soundReactThread.start();
     }
 
     public void onPitchChanged(float newPitch) {
@@ -95,10 +91,7 @@ public class FluteViewModel extends ViewModel {
         soundReactThread.interrupt();
         soundRecorder.stop();
         soundRecorder.release();
-        if (fluteStreamingID != 0) {
-            flute.stop(fluteStreamingID);
-        }
-        flute.release();
+        flute.stop();
     }
 
     @Override

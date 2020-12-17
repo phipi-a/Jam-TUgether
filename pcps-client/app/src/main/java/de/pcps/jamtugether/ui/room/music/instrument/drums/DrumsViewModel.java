@@ -31,4 +31,10 @@ public class DrumsViewModel extends ViewModel {
     public void onCymbalClicked() {
         drums.playCymbal();
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        drums.stop();
+    }
 }

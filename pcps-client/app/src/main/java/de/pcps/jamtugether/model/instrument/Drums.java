@@ -6,6 +6,9 @@ import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -44,9 +47,12 @@ public class Drums extends Instrument {
     private boolean hatSoundLoaded;
     private boolean cymbalSoundLoaded;
 
+    private final List<Integer> streamIDs;
+
     @Inject
     public Drums(@NonNull Context context) {
         super(1, R.string.instrument_drums, R.string.play_drums_help, PREFERENCE_VALUE, SERVER_STRING);
+        this.streamIDs = new ArrayList<>();
 
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -114,6 +120,16 @@ public class Drums extends Instrument {
     }
 
     private void playSound(int sound) {
-        soundPool.play(sound, 1, 1, 0, 0, 1);
+        int streamID = soundPool.play(sound, 1, 1, 0, 0, 1);
+
+        if(!streamIDs.contains(streamID) && streamID != 0) {
+            streamIDs.add(streamID);
+        }
+    }
+
+    public void stop() {
+        for(int streamID : streamIDs) {
+            soundPool.stop(streamID);
+        }
     }
 }
