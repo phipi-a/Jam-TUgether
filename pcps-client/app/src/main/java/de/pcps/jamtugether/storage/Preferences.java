@@ -18,11 +18,17 @@ public class Preferences {
     private static final String USER_NEVER_CHOSE_INSTRUMENT_KEY = "pref_key_user_never_chose_instrument";
     private static final String MAIN_INSTRUMENT_KEY = "pref_key_main_instrument";
 
-    @Inject
-    SharedPreferences sharedPreferences;
+    @NonNull
+    private final SharedPreferences sharedPreferences;
+
+    @NonNull
+    private final Instruments instruments;
 
     @Inject
-    public Preferences() {}
+    public Preferences(@NonNull SharedPreferences sharedPreferences, @NonNull Instruments instruments) {
+        this.sharedPreferences = sharedPreferences;
+        this.instruments = instruments;
+    }
 
     private boolean getBoolean(@NonNull String key, boolean defaultValue) {
         return sharedPreferences.getBoolean(key, defaultValue);
@@ -51,8 +57,8 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
-        return Instruments.fromPreferences(preferenceValue);
+        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, instruments.getFallback().getPreferenceValue());
+        return instruments.fromPreferences(preferenceValue);
     }
 
     public void setMainInstrument(@NonNull Instrument mainInstrument) {

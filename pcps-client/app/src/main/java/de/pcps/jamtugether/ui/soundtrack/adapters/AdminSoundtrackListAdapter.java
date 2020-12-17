@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackAdminBinding;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 
@@ -17,8 +18,8 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
     @NonNull
     private final SingleSoundtrack.OnDeleteListener onDeleteListener;
 
-    public AdminSoundtrackListAdapter(@NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
-        super(lifecycleOwner);
+    public AdminSoundtrackListAdapter(@NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
+        super(onChangeCallback, lifecycleOwner);
         this.onDeleteListener = onDeleteListener;
     }
 
@@ -30,7 +31,7 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), onDeleteListener, lifecycleOwner);
+        holder.bind(getItem(position), onChangeCallback, onDeleteListener, lifecycleOwner);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,11 +44,12 @@ public class AdminSoundtrackListAdapter extends SoundtrackListAdapter<AdminSound
             this.binding = binding;
         }
 
-        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
+        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
             binding.setSoundtrack(singleSoundtrack);
             binding.setOnChangeListener(onDeleteListener);
 
             binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
+            binding.soundtrackControlsLayout.setOnChangeListener(onChangeCallback);
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 

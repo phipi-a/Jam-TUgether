@@ -15,11 +15,10 @@ import androidx.lifecycle.LiveData;
 
 import de.pcps.jamtugether.model.instrument.Drums;
 import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.model.instrument.Shaker;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
-import timber.log.Timber;
 
 public class SoundtrackView extends View {
 
@@ -55,7 +54,6 @@ public class SoundtrackView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Timber.d("getWidth(): %d", this.getWidth());
         if (singleSoundtrack != null) {
             drawSingleSoundtrack(canvas, singleSoundtrack, false);
         } else if (compositeSoundtrack != null) {
@@ -65,13 +63,16 @@ public class SoundtrackView extends View {
 
     @ColorInt
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
-        final Instrument instrument = singleSoundtrack.getSoundSequence().get(0).getInstrument();
-        if (instrument == Flute.getInstance()) {
-            return Color.BLUE;
-        } else if (instrument == Drums.getInstance()) {
-            return Color.RED;
-        } else {
-            return Color.GREEN;
+        String instrumentString = singleSoundtrack.getSoundSequence().get(0).getInstrument();
+        switch (instrumentString) {
+            case Flute.SERVER_STRING:
+                return Color.BLUE;
+            case Drums.SERVER_STRING:
+                return Color.RED;
+            case Shaker.SERVER_STRING:
+                return Color.GREEN;
+            default:
+                return Color.GRAY;
         }
     }
 

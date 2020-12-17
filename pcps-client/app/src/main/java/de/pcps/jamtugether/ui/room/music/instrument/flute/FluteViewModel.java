@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
-import android.content.Context;
 import android.media.MediaRecorder;
 
 import androidx.annotation.NonNull;
@@ -10,8 +9,10 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
+import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
 
 public class FluteViewModel extends ViewModel {
 
@@ -20,8 +21,8 @@ public class FluteViewModel extends ViewModel {
     private static final float PITCH_MULTIPLIER = 3f;
     private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
-    @NonNull
-    private final Flute flute = Instruments.FLUTE;
+    @Inject
+    Flute flute;
 
     private int fluteStreamingID;
 
@@ -35,6 +36,7 @@ public class FluteViewModel extends ViewModel {
     private final Thread soundReactThread;
 
     public FluteViewModel() {
+        AppInjector.inject(this);
         soundRecorder = new MediaRecorder();
         soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -57,9 +59,7 @@ public class FluteViewModel extends ViewModel {
                     int maxAmplitude = soundRecorder.getMaxAmplitude();
                     if (maxAmplitude != 0) {
                         if (maxAmplitude < 10000) {
-                            if (fluteStreamingID != 0) {
-                                fluteStreamingID = flute.stop(fluteStreamingID);
-                            }
+                            fluteStreamingID = flute.stop();
                         } else {
                             if (fluteStreamingID == 0 && pitchPercentage.getValue() != null) {
                                 float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
@@ -72,11 +72,9 @@ public class FluteViewModel extends ViewModel {
         };
     }
 
-    public void startRecording(@NonNull Context context) {
-        flute.prepare(context, (soundPool, sampleId, status) -> {
-            soundRecorder.start();
-            soundReactThread.start();
-        });
+    public void startRecording() {
+        soundRecorder.start();
+        soundReactThread.start();
     }
 
     public void onPitchChanged(float newPitch) {
@@ -93,10 +91,7 @@ public class FluteViewModel extends ViewModel {
         soundReactThread.interrupt();
         soundRecorder.stop();
         soundRecorder.release();
-        if (fluteStreamingID != 0) {
-            flute.stop(fluteStreamingID);
-        }
-        flute.release();
+        flute.stop();
     }
 
     @Override

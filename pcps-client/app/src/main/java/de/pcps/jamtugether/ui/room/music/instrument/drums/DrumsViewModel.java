@@ -1,21 +1,19 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
-import android.app.Application;
+import androidx.lifecycle.ViewModel;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import javax.inject.Inject;
 
+import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.instrument.Drums;
 
-public class DrumsViewModel extends AndroidViewModel {
+public class DrumsViewModel extends ViewModel {
 
-    private final Drums drums = Drums.getInstance();
+    @Inject
+    Drums drums;
 
-    public DrumsViewModel(@NonNull Application application) {
-        super(application);
-        drums.prepare(application.getApplicationContext());
+    public DrumsViewModel() {
+        AppInjector.inject(this);
     }
 
     public void onSnareClicked() {
@@ -34,4 +32,9 @@ public class DrumsViewModel extends AndroidViewModel {
         drums.playCymbal();
     }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        drums.stop();
+    }
 }

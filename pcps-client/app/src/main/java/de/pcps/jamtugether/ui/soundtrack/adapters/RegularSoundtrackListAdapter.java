@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularSoundtrackListAdapter.ViewHolder> {
 
-    public RegularSoundtrackListAdapter(@NonNull LifecycleOwner lifecycleOwner) {
-        super(lifecycleOwner);
+    public RegularSoundtrackListAdapter(@NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+        super(onChangeCallback, lifecycleOwner);
     }
 
     @NonNull
@@ -26,7 +27,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), lifecycleOwner);
+        holder.bind(getItem(position), onChangeCallback, lifecycleOwner);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -39,8 +40,9 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<RegularS
             this.binding = binding;
         }
 
-        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
             binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
+            binding.soundtrackControlsLayout.setOnChangeListener(onChangeCallback);
             binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
             binding.soundtrackControlsLayout.executePendingBindings();
 

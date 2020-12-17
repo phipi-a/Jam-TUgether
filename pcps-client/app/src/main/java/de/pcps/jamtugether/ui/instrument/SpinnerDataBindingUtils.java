@@ -10,7 +10,6 @@ import androidx.databinding.BindingAdapter;
 import java.util.List;
 
 import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
 
 public class SpinnerDataBindingUtils {
 
@@ -22,7 +21,7 @@ public class SpinnerDataBindingUtils {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Instrument mainInstrument = Instruments.LIST[position];
+                Instrument mainInstrument = instrumentList.get(position);
                 clickListener.onInstrumentClicked(mainInstrument);
             }
 

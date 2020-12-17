@@ -26,13 +26,9 @@ public class Sound {
         this.pitch = pitch;
     }
 
-    public void play() {
-        getInstrument().play(this);
-    }
-
     @NonNull
-    public Instrument getInstrument() {
-        return Instruments.fromServer(instrument);
+    public String getInstrument() {
+        return instrument;
     }
 
     public int getStartTime() {

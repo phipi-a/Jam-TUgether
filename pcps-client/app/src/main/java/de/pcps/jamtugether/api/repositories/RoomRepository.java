@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.api.repositories;
 
-import android.os.Handler;
-
 import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
@@ -21,11 +19,12 @@ import retrofit2.Call;
 @Singleton
 public class RoomRepository {
 
-    @Inject
-    RoomService roomService;
+    @NonNull
+    private final RoomService roomService;
 
     @Inject
-    public RoomRepository() {
+    public RoomRepository(@NonNull RoomService roomService) {
+        this.roomService = roomService;
     }
 
     public void createRoom(@NonNull String password, @NonNull JamCallback<CreateRoomResponse> callback) {

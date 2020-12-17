@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +18,9 @@ public class WelcomeViewModel extends ViewModel implements Instrument.ClickListe
 
     @Inject
     Preferences preferences;
+
+    @Inject
+    Instruments instruments;
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
@@ -36,7 +38,7 @@ public class WelcomeViewModel extends ViewModel implements Instrument.ClickListe
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instruments.LIST);
+        return instruments.getList();
     }
 
     public void onNavigatedToMenu() {

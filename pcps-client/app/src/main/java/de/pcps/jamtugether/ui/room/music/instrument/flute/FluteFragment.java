@@ -48,7 +48,7 @@ public class FluteFragment extends BaseFragment {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
             } else {
-                viewModel.startRecording(activity);
+                viewModel.startRecording();
             }
         }
 
@@ -59,7 +59,7 @@ public class FluteFragment extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_MICROPHONE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                viewModel.startRecording(activity);
+                viewModel.startRecording();
             } else {
                 //TODO:Add Error Message
                 Timber.e("onRequestPermissionsResult: No microphone permission");

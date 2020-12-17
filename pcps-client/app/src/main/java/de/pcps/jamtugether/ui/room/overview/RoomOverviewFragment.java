@@ -69,7 +69,7 @@ public class RoomOverviewFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
@@ -78,11 +78,11 @@ public class RoomOverviewFragment extends BaseFragment {
 
         viewModel.getAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {
-                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel, getViewLifecycleOwner());
+                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel.getSoundtrackOnChangeCallback(), viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             } else {
-                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(getViewLifecycleOwner());
+                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             }

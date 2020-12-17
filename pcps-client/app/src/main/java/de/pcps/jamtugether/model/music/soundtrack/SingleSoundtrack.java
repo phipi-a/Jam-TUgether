@@ -9,7 +9,7 @@ import java.util.List;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 
-public class SingleSoundtrack extends Soundtrack {
+public class SingleSoundtrack extends Soundtrack implements Cloneable{
 
     private final int userID;
 
@@ -22,6 +22,12 @@ public class SingleSoundtrack extends Soundtrack {
         this.soundSequence = soundSequence;
     }
 
+    @NonNull
+    @Override
+    public SingleSoundtrack clone() throws CloneNotSupportedException {
+        return (SingleSoundtrack) super.clone();
+    }
+
     public int getUserID() {
         return userID;
     }
@@ -29,6 +35,15 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     public List<Sound> getSoundSequence() {
         return soundSequence;
+    }
+
+    public int getLength() {
+        if(soundSequence.isEmpty()) {
+            return 0;
+        }
+        Sound firstSound = soundSequence.get(0);
+        Sound lastSound = soundSequence.get(soundSequence.size() - 1);
+        return lastSound.getEndTime() - firstSound.getStartTime();
     }
 
     public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
@@ -42,15 +57,6 @@ public class SingleSoundtrack extends Soundtrack {
             return oldItem.soundSequence.equals(newItem.soundSequence);
         }
     };
-
-    public int getLength() {
-        if(soundSequence.isEmpty()) {
-            return 0;
-        }
-        Sound firstSound = soundSequence.get(0);
-        Sound lastSound = soundSequence.get(soundSequence.size() - 1);
-        return lastSound.getEndTime() - firstSound.getStartTime();
-    }
 
     public interface OnDeleteListener {
         void onDeleteSoundtrackButtonClicked(@NonNull SingleSoundtrack singleSoundtrack);

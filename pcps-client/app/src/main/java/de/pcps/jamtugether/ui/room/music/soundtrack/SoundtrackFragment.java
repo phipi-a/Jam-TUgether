@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
@@ -51,10 +52,10 @@ public class SoundtrackFragment extends BaseFragment {
         FragmentSoundtrackBinding binding = FragmentSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
-        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, viewModel.getOwnSoundtrack(), viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
