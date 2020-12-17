@@ -67,7 +67,7 @@ public class Drums extends Instrument {
         snareSound = soundPool.load(context, R.raw.drum_snare, 1);
         kickSound = soundPool.load(context, R.raw.drum_kick, 1);
         hatSound = soundPool.load(context, R.raw.drum_hat, 1);
-        cymbalSound = soundPool.load(context, R.raw.drum_cymbal_long, 1);
+        cymbalSound = soundPool.load(context, R.raw.drum_cymbal, 1);
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             if (sampleId == snareSound) {
