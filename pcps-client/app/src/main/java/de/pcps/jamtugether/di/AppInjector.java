@@ -6,6 +6,9 @@ import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
+import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
 import de.pcps.jamtugether.ui.room.music.soundtrack.SoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.overview.RoomOverviewViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
@@ -45,6 +48,14 @@ public class AppInjector {
 
     public static void inject(@NonNull SoundtrackViewModel soundtrackViewModel) {
         appComponent.inject(soundtrackViewModel);
+    }
+
+    public static void inject(@NonNull FluteViewModel fluteViewModel) {
+        appComponent.inject(fluteViewModel);
+    }
+
+    public static void inject(@NonNull DrumsViewModel drumsViewModel) {
+        appComponent.inject(drumsViewModel);
     }
 }
 

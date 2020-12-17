@@ -5,7 +5,9 @@ import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
@@ -13,10 +15,14 @@ import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import timber.log.Timber;
 
+@Singleton
 public class Drums extends Instrument {
 
-    @Nullable
-    private static Drums instance;
+    @NonNull
+    public static final String PREFERENCE_VALUE = "drums";
+
+    @NonNull
+    public static final String SERVER_STRING = "drums";
 
     /*
      this is necessary in order to play a lot of
@@ -25,23 +31,23 @@ public class Drums extends Instrument {
      */;
     private static final int SOUND_POOL_MAX_STREAMS = 100;
 
-    private SoundPool soundPool;
+    @NonNull
+    private final SoundPool soundPool;
 
-    private int snareSound;
-    private int kickSound;
-    private int hatSound;
-    private int cymbalSound;
+    private final int snareSound;
+    private final int kickSound;
+    private final int hatSound;
+    private final int cymbalSound;
 
     private boolean snareSoundLoaded;
     private boolean kickSoundLoaded;
     private boolean hatSoundLoaded;
     private boolean cymbalSoundLoaded;
 
-    public Drums() {
-        super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
-    }
+    @Inject
+    public Drums(@NonNull Context context) {
+        super(1, R.string.instrument_drums, R.string.play_drums_help, PREFERENCE_VALUE, SERVER_STRING);
 
-    public void prepare(@NonNull Context context) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -51,6 +57,11 @@ public class Drums extends Instrument {
                 .setMaxStreams(SOUND_POOL_MAX_STREAMS)
                 .setAudioAttributes(audioAttributes)
                 .build();
+
+        snareSound = soundPool.load(context, R.raw.drum_snare, 1);
+        kickSound = soundPool.load(context, R.raw.drum_kick, 1);
+        hatSound = soundPool.load(context, R.raw.drum_hat, 1);
+        cymbalSound = soundPool.load(context, R.raw.drum_cymbal_long, 1);
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             if (sampleId == snareSound) {
@@ -63,18 +74,10 @@ public class Drums extends Instrument {
                 cymbalSoundLoaded = true;
             }
         });
-
-        snareSound = soundPool.load(context, R.raw.drum_snare, 1);
-        kickSound = soundPool.load(context, R.raw.drum_kick, 1);
-        hatSound = soundPool.load(context, R.raw.drum_hat, 1);
-        cymbalSound = soundPool.load(context, R.raw.drum_cymbal_long, 1);
     }
 
     @Override
-    public void play(@NonNull Sound sound) {
-        if (sound.getInstrument() != this) {
-            return;
-        }
+    public void play(@NonNull Sound sound, float volume) {
         // todo
     }
 
@@ -112,13 +115,5 @@ public class Drums extends Instrument {
 
     private void playSound(int sound) {
         soundPool.play(sound, 1, 1, 0, 0, 1);
-    }
-
-    @NonNull
-    public static Drums getInstance() {
-        if (instance == null) {
-            instance = new Drums();
-        }
-        return instance;
     }
 }

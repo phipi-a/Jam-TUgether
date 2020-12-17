@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,6 +22,8 @@ import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.instrument.base.Instruments;
+import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.player.SoundtrackPlayers;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
@@ -34,7 +35,13 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     Preferences preferences;
 
     @Inject
+    Instruments instruments;
+
+    @Inject
     SoundtrackRepository soundtrackRepository;
+
+    @Inject
+    SoundtrackPlayers soundtrackPlayers;
 
     private final int roomID;
 
@@ -106,7 +113,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instruments.LIST);
+        return instruments.getList();
     }
 
     public int getRoomID() {
@@ -119,6 +126,11 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     public String getHelpDialogMessage() {
         return helpDialogMessage;
+    }
+
+    @NonNull
+    public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
+        return soundtrackPlayers;
     }
 
     @NonNull

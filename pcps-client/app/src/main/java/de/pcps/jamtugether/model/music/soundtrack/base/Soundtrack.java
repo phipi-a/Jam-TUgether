@@ -30,9 +30,17 @@ public abstract class Soundtrack {
         return state;
     }
 
+    public void setState(@NonNull State state) {
+        this.state.setValue(state);
+    }
+
     @NonNull
     public LiveData<Integer> getProgress() {
         return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress.setValue(progress);
     }
 
     @NonNull
@@ -44,59 +52,23 @@ public abstract class Soundtrack {
         this.volume.setValue(volume);
     }
 
-    public void togglePlayPause() {
-        if(state.getValue() == null) {
-            return;
-        }
-
-        switch (state.getValue()) {
-            case PLAYING:
-                pause();
-                break;
-            case PAUSED:
-                resume();
-                break;
-            case IDLE:
-            case STOPPED:
-                play();
-        }
-    }
-
-    private void play() {
-        state.setValue(State.PLAYING);
-        // todo update progress regularly
-        //  continue at progress
-    }
-
-    private void pause() {
-        state.setValue(State.PAUSED);
-        // todo
-    }
-
-    private void resume() {
-        play();
-    }
-
-    public void fastForward() {
-        // todo
-        //  update progress
-    }
-
-    public void fastRewind() {
-        // todo
-        //  update progress
-    }
-
-    public void stop() {
-        state.setValue(State.STOPPED);
-        progress.setValue(0);
-        // todo reset progress
-    }
-
     public enum State {
         IDLE,
         PLAYING,
         PAUSED,
         STOPPED
+    }
+
+    public interface OnChangeCallback {
+
+        void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume);
+
+        void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack);
+
+        void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack);
+
+        void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack);
+
+        void onStopButtonClicked(@NonNull Soundtrack soundtrack);
     }
 }

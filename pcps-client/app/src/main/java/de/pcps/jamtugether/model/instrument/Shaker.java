@@ -1,35 +1,33 @@
 package de.pcps.jamtugether.model.instrument;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.music.sound.Sound;
 
 // todo
+@Singleton
 public class Shaker extends Instrument {
 
-    @Nullable
-    private static Shaker instance;
+    @NonNull
+    public static final String PREFERENCE_VALUE = "shaker";
 
-    public Shaker() {
-        super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
+    @NonNull
+    public static final String SERVER_STRING = "shaker";
+
+    @Inject
+    public Shaker(@NonNull Context context) {
+        super(2, R.string.instrument_shaker, R.string.play_shaker_help, PREFERENCE_VALUE, SERVER_STRING);
     }
 
     @Override
-    public void play(@NonNull Sound sound) {
-        if(sound.getInstrument() != this) {
-            return;
-        }
+    public void play(@NonNull Sound sound, float volume) {
         // todo
-    }
-
-    @NonNull
-    public static Shaker getInstance() {
-        if(instance == null) {
-            instance = new Shaker();
-        }
-        return instance;
     }
 }

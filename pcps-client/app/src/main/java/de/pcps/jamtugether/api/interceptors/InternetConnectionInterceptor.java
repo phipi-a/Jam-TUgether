@@ -18,11 +18,12 @@ import okhttp3.Response;
 @Singleton
 public class InternetConnectionInterceptor implements Interceptor {
 
-    @Inject
-    Context context;
+    private final Context context;
 
     @Inject
-    public InternetConnectionInterceptor() { }
+    public InternetConnectionInterceptor(@NonNull Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override

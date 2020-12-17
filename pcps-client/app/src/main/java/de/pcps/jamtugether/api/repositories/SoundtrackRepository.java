@@ -19,8 +19,8 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
 import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
+import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
@@ -30,8 +30,8 @@ import de.pcps.jamtugether.utils.TimeUtils;
 @Singleton
 public class SoundtrackRepository {
 
-    //@Inject
-    //SoundtrackService soundtrackService;
+    @NonNull
+    private final SoundtrackService soundtrackService;
 
     private int currentRoomID;
 
@@ -44,7 +44,9 @@ public class SoundtrackRepository {
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     @Inject
-    public SoundtrackRepository() { }
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService) {
+        this.soundtrackService = soundtrackService;
+    }
 
     private void getAllSoundtracks(int roomID, @NonNull JamCallback<SoundtrackListResponse> callback) {
         //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);
@@ -106,10 +108,11 @@ public class SoundtrackRepository {
         for(int i = 0; i < 10; i++) {
             List<Sound> soundSequence = new ArrayList<>();
             int soundAmount = random.nextInt(30)+10;
-            Instrument instrument = Instruments.LIST[i % Instruments.LIST.length];
+            String[] instruments = {"flute", "drums", "shaker"};
+            String serverString = instruments[i % instruments.length];
             for(int j = 0; j < soundAmount; j++) {
                 int pitch = random.nextInt(Sound.PITCH_RANGE+1);
-                soundSequence.add(new Sound(instrument.getServerString(), (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
+                soundSequence.add(new Sound(serverString, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
             }
             list.add(new SingleSoundtrack(i, soundSequence));
         }

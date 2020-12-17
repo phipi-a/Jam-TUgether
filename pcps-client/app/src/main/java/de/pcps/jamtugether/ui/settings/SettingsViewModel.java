@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import androidx.lifecycle.ViewModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +17,9 @@ public class SettingsViewModel extends ViewModel implements Instrument.ClickList
 
     @Inject
     Preferences preferences;
+
+    @Inject
+    Instruments instruments;
 
     public SettingsViewModel() {
         AppInjector.inject(this);
@@ -35,6 +37,6 @@ public class SettingsViewModel extends ViewModel implements Instrument.ClickList
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return Arrays.asList(Instruments.LIST);
+        return instruments.getList();
     }
 }

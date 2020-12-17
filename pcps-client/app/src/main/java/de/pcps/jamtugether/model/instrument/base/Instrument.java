@@ -30,7 +30,7 @@ public abstract class Instrument {
         this.serverString = serverString;
     }
 
-    public abstract void play(@NonNull Sound sound);
+    public abstract void play(@NonNull Sound sound, float volume);
 
     public int getOrdinal() {
         return ordinal;

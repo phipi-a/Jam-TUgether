@@ -2,51 +2,94 @@ package de.pcps.jamtugether.model.instrument.base;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import de.pcps.jamtugether.model.instrument.Drums;
 import de.pcps.jamtugether.model.instrument.Flute;
 import de.pcps.jamtugether.model.instrument.Shaker;
 
+@Singleton
 public class Instruments {
 
     @NonNull
-    public static final Flute FLUTE = Flute.getInstance();
+    private final Flute flute;
 
     @NonNull
-    public static final Drums DRUMS = Drums.getInstance();
+    private final Drums drums;
 
     @NonNull
-    public static final Shaker SHAKER = Shaker.getInstance();
+    private final Shaker shaker;
 
     @NonNull
-    public static final Instrument FALLBACK = FLUTE; // todo maybe replace fallback with error message
+    private final List<Instrument> list;
 
     @NonNull
-    public static final Instrument[] LIST = {FLUTE, DRUMS, SHAKER};
+    private final Instrument fallback; // todo maybe replace fallback with error message
 
     @NonNull
-    private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();
+    private final HashMap<String, Instrument> preferenceMap = new HashMap<>();
 
     @NonNull
-    private static final HashMap<String, Instrument> serverMap = new HashMap<>();
+    private final HashMap<String, Instrument> serverMap = new HashMap<>();
 
-    static {
-        for(Instrument instrument : LIST) {
+    @Inject
+    public Instruments(@NonNull Flute flute, @NonNull Drums drums, @NonNull Shaker shaker) {
+        this.flute = flute;
+        this.drums = drums;
+        this.shaker = shaker;
+
+        this.list = new ArrayList<>();
+        this.list.add(flute);
+        this.list.add(drums);
+        this.list.add(shaker);
+
+        this.fallback = flute;
+
+        for(Instrument instrument : list) {
             preferenceMap.put(instrument.getPreferenceValue(), instrument);
             serverMap.put(instrument.getServerString(), instrument);
         }
     }
 
     @NonNull
-    public static Instrument fromPreferences(@NonNull String preferenceValue) {
-        Instrument instrument = preferenceMap.get(preferenceValue);
-        return instrument != null ? instrument : FALLBACK;
+    public Flute getFlute() {
+        return flute;
     }
 
     @NonNull
-    public static Instrument fromServer(@NonNull String serverString) {
+    public Drums getDrums() {
+        return drums;
+    }
+
+    @NonNull
+    public Shaker getShaker() {
+        return shaker;
+    }
+
+    @NonNull
+    public List<Instrument> getList() {
+        return list;
+    }
+
+    @NonNull
+    public Instrument getFallback() {
+        return fallback;
+    }
+
+    @NonNull
+    public Instrument fromPreferences(@NonNull String preferenceValue) {
+        Instrument instrument = preferenceMap.get(preferenceValue);
+        return instrument != null ? instrument : fallback;
+    }
+
+    @NonNull
+    public Instrument fromServer(@NonNull String serverString) {
         Instrument instrument = serverMap.get(serverString);
-        return instrument != null ? instrument : FALLBACK;
+        return instrument != null ? instrument : fallback;
     }
 }
