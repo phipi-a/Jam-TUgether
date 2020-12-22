@@ -1,7 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { checkPwdLen, createToken, verify, PwErr } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
 
 const app = express()
@@ -81,9 +81,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
       // Create db entry
       createRoom(newRoomID, req.body.password)
     }
-    const token = createToken()
-    //  TODO save token for each user (privileges)
-
+    const token = createToken('Admin')
     res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
@@ -124,7 +122,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *       500:
  *         description: Failure
  */
-roomRoute.delete('/room', verify, async (req, res) => {
+roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
   try {
     // check if room to delete exists
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
@@ -192,7 +190,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
-      const token = createToken()
+      const token = createToken('User')
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')
