@@ -80,7 +80,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
       // Create db entry
       await createRoom(newRoomID, req.body.password)
     }
-    // sleep for 0.5 seconds
+    // sleep for 0.1 milisecond
     await new Promise(resolve => setTimeout(resolve, 0.1))
     const token = await createToken('Admin', newRoomID)
     res.status(201).send(createJSON(newRoomID.toString(), token))
@@ -118,6 +118,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *         description: Success
  *       401:
  *         description: Wrong password or roomID
+ *       408:
+ *          description: expired admin, Sends new token
  *       413:
  *         description: Password too long
  *       500:
