@@ -15,12 +15,15 @@ public class Sound {
     @NonNull
     private final String instrument;
 
+    private final int element;
+
     private final int startTime;
     private final int endTime;
     private final int pitch;
 
-    public Sound(@NonNull String instrument, int startTime, int endTime, int pitch) {
+    public Sound(@NonNull String instrument, int element, int startTime, int endTime, int pitch) {
         this.instrument = instrument;
+        this.element = element;
         this.startTime = startTime;
         this.endTime = endTime;
         this.pitch = pitch;
@@ -29,6 +32,10 @@ public class Sound {
     @NonNull
     public String getInstrument() {
         return instrument;
+    }
+
+    public int getElement() {
+        return element;
     }
 
     public int getStartTime() {

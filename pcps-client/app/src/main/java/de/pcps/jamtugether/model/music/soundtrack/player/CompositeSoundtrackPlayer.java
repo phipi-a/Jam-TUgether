@@ -1,34 +1,35 @@
 package de.pcps.jamtugether.model.music.soundtrack.player;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.runnable.CompositeSoundtrackRunnable;
 
-// todo maybe create abstract class if worth it
 @Singleton
 public class CompositeSoundtrackPlayer {
 
-    @NonNull
-    private final SingleSoundtrackPlayer singleSoundtrackPlayer;
+    private final HashMap<List<Integer>, CompositeSoundtrackRunnable> runnableMap = new HashMap<>();
 
     @NonNull
     private final Instruments instruments;
 
     @Inject
-    public CompositeSoundtrackPlayer(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull Instruments instruments) {
-        this.singleSoundtrackPlayer = singleSoundtrackPlayer;
+    public CompositeSoundtrackPlayer(@NonNull Instruments instruments) {
         this.instruments = instruments;
     }
 
     public void changeVolume(@NonNull CompositeSoundtrack soundtrack, float volume) {
-        // todo
-        soundtrack.setVolume(volume);
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack) != null ? getRunnable(soundtrack) : createRunnable(soundtrack);
+        runnable.setVolume(volume);
     }
 
     public void playOrPause(@NonNull CompositeSoundtrack soundtrack) {
@@ -56,32 +57,54 @@ public class CompositeSoundtrackPlayer {
     }
 
     private void play(@NonNull CompositeSoundtrack soundtrack) {
-        int progress = soundtrack.getProgress().getValue();
-        // todo
-
-        soundtrack.setState(Soundtrack.State.PLAYING);
+        CompositeSoundtrackRunnable runnable = createRunnable(soundtrack);
+        runnable.start();
     }
 
     private void pause(@NonNull CompositeSoundtrack soundtrack) {
-        // todo
-        soundtrack.setState(Soundtrack.State.PAUSED);
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.pause();
+        }
     }
 
     private void resume(@NonNull CompositeSoundtrack soundtrack) {
-        play(soundtrack);
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.resume();
+        }
     }
 
     public void fastForward(@NonNull CompositeSoundtrack soundtrack) {
-        // todo update progress
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.fastForward();
+        }
     }
 
     public void fastRewind(@NonNull CompositeSoundtrack soundtrack) {
-        // todo update progress
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.fastRewind();
+        }
     }
 
     public void stop(@NonNull CompositeSoundtrack soundtrack) {
-        // todo
-        soundtrack.setState(Soundtrack.State.STOPPED);
-        soundtrack.setProgress(0);
+        CompositeSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.stop();
+        }
+    }
+
+    @Nullable
+    private CompositeSoundtrackRunnable getRunnable(@NonNull CompositeSoundtrack soundtrack) {
+        return runnableMap.get(soundtrack.getUserIDs());
+    }
+
+    @NonNull
+    private CompositeSoundtrackRunnable createRunnable(@NonNull CompositeSoundtrack soundtrack) {
+        CompositeSoundtrackRunnable runnable = new CompositeSoundtrackRunnable(soundtrack, instruments);
+        runnableMap.put(soundtrack.getUserIDs(), runnable);
+        return runnable;
     }
 }

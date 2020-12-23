@@ -1,17 +1,22 @@
 package de.pcps.jamtugether.model.music.soundtrack.player;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.model.instrument.base.Instrument;
 import de.pcps.jamtugether.model.instrument.base.Instruments;
 import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.music.soundtrack.runnable.SingleSoundtrackRunnable;
 import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 
 @Singleton
 public class SingleSoundtrackPlayer {
+
+    private final HashMap<Integer, SingleSoundtrackRunnable> runnableMap = new HashMap<>();
 
     @NonNull
     private final Instruments instruments;
@@ -22,8 +27,8 @@ public class SingleSoundtrackPlayer {
     }
 
     public void changeVolume(@NonNull SingleSoundtrack soundtrack, float volume) {
-        // todo
-        soundtrack.setVolume(volume);
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack) != null ? getRunnable(soundtrack) : createRunnable(soundtrack);
+        runnable.setVolume(volume);
     }
 
     public void playOrPause(@NonNull SingleSoundtrack soundtrack) {
@@ -51,35 +56,54 @@ public class SingleSoundtrackPlayer {
     }
 
     private void play(@NonNull SingleSoundtrack soundtrack) {
-        String serverString = soundtrack.getSoundSequence().get(0).getInstrument();
-        Instrument instrument = instruments.fromServer(serverString);
-
-        int progress = soundtrack.getProgress().getValue();
-        // todo
-
-        soundtrack.setState(Soundtrack.State.PLAYING);
+        SingleSoundtrackRunnable runnable = createRunnable(soundtrack);
+        runnable.start();
     }
 
     private void pause(@NonNull SingleSoundtrack soundtrack) {
-        // todo
-        soundtrack.setState(Soundtrack.State.PAUSED);
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.pause();
+        }
     }
 
     private void resume(@NonNull SingleSoundtrack soundtrack) {
-        play(soundtrack);
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.resume();
+        }
     }
 
     public void fastForward(@NonNull SingleSoundtrack soundtrack) {
-        // todo update progress
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.fastForward();
+        }
     }
 
     public void fastRewind(@NonNull SingleSoundtrack soundtrack) {
-        // todo update progress
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.fastRewind();
+        }
     }
 
     public void stop(@NonNull SingleSoundtrack soundtrack) {
-        // todo
-        soundtrack.setState(Soundtrack.State.STOPPED);
-        soundtrack.setProgress(0);
+        SingleSoundtrackRunnable runnable = getRunnable(soundtrack);
+        if (runnable != null) {
+            runnable.stop();
+        }
+    }
+
+    @Nullable
+    private SingleSoundtrackRunnable getRunnable(@NonNull SingleSoundtrack soundtrack) {
+        return runnableMap.get(soundtrack.getUserID());
+    }
+
+    @NonNull
+    private SingleSoundtrackRunnable createRunnable(@NonNull SingleSoundtrack soundtrack) {
+        SingleSoundtrackRunnable runnable = new SingleSoundtrackRunnable(soundtrack, instruments);
+        runnableMap.put(soundtrack.getUserID(), runnable);
+        return runnable;
     }
 }

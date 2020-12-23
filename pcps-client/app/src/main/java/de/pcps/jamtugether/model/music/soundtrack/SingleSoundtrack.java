@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.model.music.soundtrack;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 import de.pcps.jamtugether.model.music.sound.Sound;
 import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
 
-public class SingleSoundtrack extends Soundtrack implements Cloneable{
+public class SingleSoundtrack extends Soundtrack implements Cloneable {
 
     private final int userID;
 
@@ -37,6 +38,31 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable{
         return soundSequence;
     }
 
+    @NonNull
+    public List<Sound> getSoundsFor(int currentTime) {
+        List<Sound> sounds = new ArrayList<>();
+        for(Sound sound : soundSequence) {
+            if(sound.getStartTime() == currentTime) {
+                sounds.add(sound);
+            }
+
+            //if(sound.getStartTime() <= currentTime && currentTime < sound.getEndTime()) {
+            // sounds.add(sound);
+            //}
+        }
+        return sounds;
+    }
+
+    @Nullable
+    public String getInstrument() {
+        if(soundSequence.isEmpty()) {
+            return null;
+        }
+
+        return soundSequence.get(0).getInstrument();
+    }
+
+    @Override
     public int getLength() {
         if(soundSequence.isEmpty()) {
             return 0;

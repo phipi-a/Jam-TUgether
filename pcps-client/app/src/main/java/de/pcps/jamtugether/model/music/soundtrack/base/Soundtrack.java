@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.pcps.jamtugether.model.music.sound.Sound;
+
 /*
  * represents a soundtrack from a UI standpoint
  * this can either be a single or composite soundtrack
@@ -51,6 +56,11 @@ public abstract class Soundtrack {
     public void setVolume(float volume) {
         this.volume.setValue(volume);
     }
+
+    /**
+     * @return Soundtrack length in millis
+     */
+    public abstract int getLength();
 
     public enum State {
         IDLE,

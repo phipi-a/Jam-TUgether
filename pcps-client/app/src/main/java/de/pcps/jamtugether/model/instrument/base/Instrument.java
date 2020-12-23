@@ -1,10 +1,12 @@
 package de.pcps.jamtugether.model.instrument.base;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
-import de.pcps.jamtugether.model.music.sound.Sound;
+import de.pcps.jamtugether.model.music.soundpool.base.BaseSoundPool;
 
 public abstract class Instrument {
 
@@ -22,15 +24,28 @@ public abstract class Instrument {
     @NonNull
     private final String serverString;
 
-    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
+    @NonNull
+    protected final Context context;
+
+    @NonNull
+    protected final BaseSoundPool soundPool;
+
+    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString, @NonNull Context context) {
         this.ordinal = ordinal;
         this.name = name;
         this.helpMessage = helpMessage;
         this.preferenceValue = preferenceValue;
         this.serverString = serverString;
+        this.context = context;
+        this.soundPool = createSoundPool();
     }
 
-    public abstract void play(@NonNull Sound sound, float volume);
+    public abstract BaseSoundPool createSoundPool();
+
+    public int stop() {
+        soundPool.stop();
+        return 0;
+    }
 
     public int getOrdinal() {
         return ordinal;

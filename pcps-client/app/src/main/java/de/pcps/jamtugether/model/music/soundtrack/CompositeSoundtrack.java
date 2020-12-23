@@ -38,4 +38,29 @@ public class CompositeSoundtrack extends Soundtrack {
         }
         return new CompositeSoundtrack(clonedList);
     }
+
+    @Override
+    public int getLength() {
+        if(soundtracks.isEmpty()) {
+            return 0;
+        }
+        int maxLength = 0;
+
+        for(SingleSoundtrack singleSoundtrack : soundtracks) {
+            int length = singleSoundtrack.getLength();
+            if(length > maxLength) {
+                maxLength = length;
+            }
+        }
+        return maxLength;
+    }
+
+    @NonNull
+    public List<Integer> getUserIDs() {
+        List<Integer> userIDs = new ArrayList<>();
+        for(SingleSoundtrack soundtrack : soundtracks) {
+            userIDs.add(soundtrack.getUserID());
+        }
+        return userIDs;
+    }
 }

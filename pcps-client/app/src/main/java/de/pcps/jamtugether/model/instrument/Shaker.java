@@ -9,7 +9,8 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.music.sound.Sound;
+import de.pcps.jamtugether.model.music.soundpool.FluteSoundPool;
+import de.pcps.jamtugether.model.music.soundpool.base.BaseSoundPool;
 
 // todo
 @Singleton
@@ -23,11 +24,14 @@ public class Shaker extends Instrument {
 
     @Inject
     public Shaker(@NonNull Context context) {
-        super(2, R.string.instrument_shaker, R.string.play_shaker_help, PREFERENCE_VALUE, SERVER_STRING);
+        super(2, R.string.instrument_shaker, R.string.play_shaker_help, PREFERENCE_VALUE, SERVER_STRING, context);
+    }
+
+    public void shake() {
     }
 
     @Override
-    public void play(@NonNull Sound sound, float volume) {
-        // todo
+    public BaseSoundPool createSoundPool() {
+        return new FluteSoundPool(context);
     }
 }

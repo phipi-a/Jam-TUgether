@@ -97,7 +97,7 @@ public class SoundtrackRepository {
             }
         });
 
-        // todo uncomment this line when soundtrack service is done
+        // todo uncomment this line + generateTestSoundtracks() method when soundtrack service is done
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 
@@ -109,10 +109,11 @@ public class SoundtrackRepository {
             List<Sound> soundSequence = new ArrayList<>();
             int soundAmount = random.nextInt(30)+10;
             String[] instruments = {"flute", "drums", "shaker"};
-            String serverString = instruments[i % instruments.length];
+            String serverString = "flute";
             for(int j = 0; j < soundAmount; j++) {
                 int pitch = random.nextInt(Sound.PITCH_RANGE+1);
-                soundSequence.add(new Sound(serverString, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
+                int element = 0;
+                soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
             }
             list.add(new SingleSoundtrack(i, soundSequence));
         }

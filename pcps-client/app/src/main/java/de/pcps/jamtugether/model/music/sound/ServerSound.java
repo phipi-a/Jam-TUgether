@@ -10,8 +10,8 @@ public class ServerSound extends Sound {
     private final int roomID;
     private final int userID;
 
-    public ServerSound(int roomID, int userID, @NonNull Instrument instrument, int startTime, int endTime, int pitch) {
-        super(instrument.getServerString(), startTime, endTime, pitch);
+    public ServerSound(int roomID, int userID, @NonNull Instrument instrument, int element, int startTime, int endTime, int pitch) {
+        super(instrument.getServerString(), element, startTime, endTime, pitch);
         this.roomID = roomID;
         this.userID = userID;
     }
