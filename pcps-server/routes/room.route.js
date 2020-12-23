@@ -15,13 +15,12 @@ const { exists } = require('../model/room.model')
 
 // Create room function
 async function createRoom (roomID, password, object) {
-  RoomSchema.create({ roomID: roomID, password: password }, (error, data, next) => {
+  await RoomSchema.create({ roomID: roomID, password: password, adminBytes: 'non-existing' }, (error, data, next) => {
     if (error) {
       return next(error)
-    } else {
-      console.log('Created room with ID: ' + roomID)
-      return roomID
     }
+    console.log('Created room with ID: ' + roomID)
+    return roomID
   })
 }
 
@@ -65,7 +64,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
     if (numberOfRooms === 0) {
       newRoomID = 1
       // Create db entry
-      createRoom(newRoomID, req.body.password)
+      await createRoom(newRoomID, req.body.password)
     } else {
       // default value
       newRoomID = numberOfRooms + 1
@@ -79,9 +78,11 @@ roomRoute.post('/create-room', async (req, res, next) => {
         }
       }
       // Create db entry
-      createRoom(newRoomID, req.body.password)
+      await createRoom(newRoomID, req.body.password)
     }
-    const token = createToken('Admin', newRoomID.toString())
+    // sleep for 0.5 seconds
+    await new Promise(resolve => setTimeout(resolve, 0.1))
+    const token = await createToken('Admin', newRoomID)
     res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
@@ -190,7 +191,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
-      const token = createToken('User', req.body.roomID.toString())
+      const token = await createToken('User', req.body.roomID)
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')

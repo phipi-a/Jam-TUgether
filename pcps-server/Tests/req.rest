@@ -1,9 +1,9 @@
 DELETE  http://localhost:3000/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjFiZDIxNWI4MjIwODRiNjJhNDdjIiwicm9vbSI6IjQiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2MDg3MTQxMjgsImV4cCI6MTYwODcxNTkyOH0.fUUQKGF_l6dtFn0dROE1-iaQ7UjlDPsuoFqXJbU3fPI '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImYyZDI2YmI1ZDVhY2FiMzZhZmExIiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA4NzIwNjY4LCJleHAiOjE2MDg3MjI0Njh9.aWpCR0xZqWVEnjRU-cYx2z2mV9QWXkRAiF480lX99ho '
 
 {
-  "roomID" : "4",
+  "roomID" : "3",
   "password" : "12"
 }
 ###

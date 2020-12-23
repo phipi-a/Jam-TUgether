@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const roomSchema = new Schema({
   roomID: Number,
   password: String,
+  adminBytes: String,
   track: {
     // richtiges Format einfügen
     spur_eins: String,
