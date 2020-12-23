@@ -81,7 +81,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
       // Create db entry
       createRoom(newRoomID, req.body.password)
     }
-    const token = createToken('Admin')
+    const token = createToken('Admin', newRoomID.toString())
     res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
@@ -190,7 +190,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
-      const token = createToken('User')
+      const token = createToken('User', req.body.roomID.toString())
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')

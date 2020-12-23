@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const jwtDecode = require('jwt-decode')
 const crypto = require('crypto')
 
 // define Error for too large password
@@ -12,11 +11,11 @@ exports.checkPwdLen = function (password) {
   }
 }
 
-exports.createToken = function (permission) {
+exports.createToken = function (permission, roomID) {
   // random bytes
   const rndBytes = crypto.randomBytes(10).toString('hex')
-  // expires after half an hour (1800 s = 30 min)
-  return jwt.sign({ rndmPayload: '' + rndBytes, role: permission }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+  // For expires after half an hour (1800 s = 30 min)
+  return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
 }
 
 function decodeToken (token) {
@@ -30,8 +29,8 @@ exports.verifyAdmin = function (req, res, next) {
   if (!decodedToken) {
     res.status(401).send('Decoding problems')
   }
-  if (decodedToken.role !== 'Admin') {
-    return res.status(403).send('Not Admin')
+  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID) {
+    return res.status(403).send('Not Admin of this room!')
   }
   next()
 }

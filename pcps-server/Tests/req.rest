@@ -1,9 +1,9 @@
-POST http://localhost:3000/api/test/
+DELETE  http://localhost:3000/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYzkwMWI3MDhjNTdkNTgyMjJlM2IiLCJpYXQiOjE2MDc2ODcxMjcsImV4cCI6MTYwNzY4ODkyN30.XO3CEyP-74OnMHJtU3it3P9yceeAqShy2EIOjnXezAQ '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjFiZDIxNWI4MjIwODRiNjJhNDdjIiwicm9vbSI6IjQiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE2MDg3MTQxMjgsImV4cCI6MTYwODcxNTkyOH0.fUUQKGF_l6dtFn0dROE1-iaQ7UjlDPsuoFqXJbU3fPI '
 
 {
-  "roomID" : "17",
+  "roomID" : "4",
   "password" : "12"
 }
 ###
@@ -13,14 +13,11 @@ Content-Type: application/json
 {
   "password" : "12"
 }
-
 ###
-
-POST http://localhost:3000/api/l
+POST  http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "roomID": "1",
+  "roomID" : "1",
   "password" : "12"
-
 }
