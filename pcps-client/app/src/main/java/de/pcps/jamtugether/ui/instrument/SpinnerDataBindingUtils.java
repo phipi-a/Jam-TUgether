@@ -9,7 +9,7 @@ import androidx.databinding.BindingAdapter;
 
 import java.util.List;
 
-import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 public class SpinnerDataBindingUtils {
 

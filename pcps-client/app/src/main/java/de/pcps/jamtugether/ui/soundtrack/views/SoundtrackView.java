@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import de.pcps.jamtugether.model.instrument.Drums;
-import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.Shaker;
-import de.pcps.jamtugether.model.music.sound.Sound;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class SoundtrackView extends View {
 

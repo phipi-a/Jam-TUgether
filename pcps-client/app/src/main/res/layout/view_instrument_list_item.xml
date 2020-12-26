@@ -5,11 +5,11 @@
 
         <variable
             name="instrument"
-            type="de.pcps.jamtugether.model.instrument.base.Instrument" />
+            type="de.pcps.jamtugether.audio.instrument.base.Instrument" />
 
         <variable
             name="clickListener"
-            type="de.pcps.jamtugether.model.instrument.base.Instrument.ClickListener" />
+            type="de.pcps.jamtugether.audio.instrument.base.Instrument.ClickListener" />
     </data>
 
     <androidx.appcompat.widget.AppCompatButton

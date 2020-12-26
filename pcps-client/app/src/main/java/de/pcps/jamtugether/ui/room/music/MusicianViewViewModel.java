@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.model.instrument.Drums;
-import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.Shaker;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback {
 

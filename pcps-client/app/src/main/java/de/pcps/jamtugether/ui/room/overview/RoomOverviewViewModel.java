@@ -18,12 +18,12 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
-import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.player.SoundtrackPlayers;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.audio.player.SoundtrackPlayers;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 

@@ -17,13 +17,13 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
-import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.player.SoundtrackPlayers;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.audio.player.SoundtrackPlayers;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {

@@ -15,18 +15,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
-import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
-import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.music.sound.Sound;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-// todo uncomment when sound track service is done
+// todo add calls
 @Singleton
 public class SoundtrackRepository {
 
@@ -46,21 +42,6 @@ public class SoundtrackRepository {
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService) {
         this.soundtrackService = soundtrackService;
-    }
-
-    private void getAllSoundtracks(int roomID, @NonNull JamCallback<SoundtrackListResponse> callback) {
-        //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);
-        //call.enqueue(callback);
-    }
-
-    public void pushSoundtrack(@NonNull SingleSoundtrack singleSoundtrack, int roomID, @NonNull JamCallback<PushSoundtrackResponse> callback) {
-        //Call<PushSoundtrackResponse> call = soundtrackService.publishSoundtrack(soundtrack, roomID);
-        //call.enqueue(callback);
-    }
-
-    public void deleteSoundtrack(@NonNull SingleSoundtrack singleSoundtrack, int roomID, @NonNull JamCallback<PushSoundtrackResponse> callback) {
-        //Call<DeleteSoundtrackResponse> call = soundtrackService.deleteSoundtrack(soundtrack, roomID);
-        //call.enqueue(callback);
     }
 
     public void fetchSoundtracks(int currentRoomID) {
@@ -85,19 +66,6 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks() {
-        getAllSoundtracks(currentRoomID, new JamCallback<SoundtrackListResponse>() {
-            @Override
-            public void onSuccess(@NonNull SoundtrackListResponse response) {
-                allSoundtracks.setValue(response.getAllSoundtracks());
-            }
-
-            @Override
-            public void onError(@NonNull Error error) {
-                networkError.setValue(error);
-            }
-        });
-
-        // todo uncomment this line + generateTestSoundtracks() method when soundtrack service is done
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 

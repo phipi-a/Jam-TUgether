@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Flute;
 
 public class FluteViewModel extends ViewModel {
 

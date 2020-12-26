@@ -6,16 +6,16 @@
 
     <data>
 
-        <import type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.State" />
+        <import type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack.State" />
         <import type="android.view.View" />
 
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack" />
+            type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.OnChangeCallback" />
+            type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack.OnChangeCallback" />
 
     </data>
 

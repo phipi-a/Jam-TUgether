@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Drums;
 
 public class DrumsViewModel extends ViewModel {
 
