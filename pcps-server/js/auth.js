@@ -45,7 +45,7 @@ exports.verifyAdmin = async function (req, res, next) {
   // prevent old Admin to access
   const room = await RoomSchema.findOne({ roomID: decodedToken.room }).exec()
 
-  if (decodedToken.randomBytes !== room.randomBytes) {
+  if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
     const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
     return res.status(408).send('Old Admin new Token: ' + token)
