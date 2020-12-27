@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+
 /*
  * represents a soundtrack from a UI standpoint
  * this can either be a single or composite soundtrack
@@ -18,12 +20,6 @@ public abstract class Soundtrack {
 
     @NonNull
     private final MutableLiveData<Float> volume;
-
-    /**
-     * indicates whether soundtrack hasn't started playing yet
-     * after being resumed
-     */
-    protected boolean justResumed;
 
     public Soundtrack() {
         this.state = new MutableLiveData<>(State.IDLE);
@@ -60,14 +56,6 @@ public abstract class Soundtrack {
 
     public void postProgress(int progress) {
         this.progress.postValue(progress);
-    }
-
-    public boolean getJustResumed() {
-        return justResumed;
-    }
-
-    public void setJustResumed(boolean justResumed) {
-        this.justResumed = justResumed;
     }
 
     public abstract boolean isEmpty();

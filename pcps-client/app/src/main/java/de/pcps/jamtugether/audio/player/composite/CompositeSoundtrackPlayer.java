@@ -32,7 +32,8 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
         if(soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            return threadMap.get(compositeSoundtrack.getUserIDs());
+            SoundtrackPlayingThread thread = threadMap.get(compositeSoundtrack.getUserIDs());
+            return thread != null ? thread : createThread(soundtrack);
         }
         return null;
     }

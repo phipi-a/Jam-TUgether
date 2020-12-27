@@ -22,15 +22,16 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     public SingleSoundtrackPlayingThread(@NonNull SingleSoundtrack soundtrack) {
         super(soundtrack);
         this.soundtrack = soundtrack;
-
-        soundPool = soundtrack.getSoundPool();
+        this.soundPool = soundtrack.getSoundPool();
     }
 
+    @NonNull
     @Override
-    public List<SoundWithStreamID> play(int millis) {
+    public List<SoundWithStreamID> play(int millis, boolean finishSounds) {
         List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
-        for(Sound sound : soundtrack.getSoundsFor(millis)) {
-            int streamID = soundPool.onPlayElement(sound.getElement(), sound.getPitch());
+        for(Sound sound : soundtrack.getSoundsFor(millis, finishSounds)) {
+            int soundRes = soundtrack.getInstrument().getSoundResource(sound.getElement());
+            int streamID = soundPool.playSoundRes(soundRes, sound.getPitch());
             soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
         }
         return soundsWithStreamIDs;

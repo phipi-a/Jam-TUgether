@@ -13,7 +13,6 @@ import androidx.lifecycle.LiveData;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public class SoundtrackNavigationLine extends View {
 
@@ -28,7 +27,7 @@ public class SoundtrackNavigationLine extends View {
         super.draw(canvas);
         SoundtrackContainer container = (SoundtrackContainer) getParent();
         SoundtrackView soundtrackView = container.getSoundtrackView();
-        float onePercentWidth = (soundtrackView.getWidth() - this.getWidth() * 2) / 100.0f;
+        float onePercentWidth = (soundtrackView.getWidth() - this.getWidth()) / 100.0f;
         this.setX(soundtrackView.getX() + onePercentWidth * progress);
     }
 
@@ -45,7 +44,6 @@ public class SoundtrackNavigationLine extends View {
     }
 
     private void onProgressChanged(Integer progress) {
-        Timber.d("onProgressChanged() %d", progress);
         this.progress = progress;
         this.invalidate();
     }

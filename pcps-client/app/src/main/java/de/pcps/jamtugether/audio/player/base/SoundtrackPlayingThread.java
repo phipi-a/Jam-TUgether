@@ -15,11 +15,24 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private static final int FAST_FORWARD_OFFSET = (int) TimeUtils.ONE_SECOND;
     private static final int FAST_REWIND_OFFSET = (int) -TimeUtils.ONE_SECOND;
 
+    private boolean running = false;
     private boolean paused = false;
     private boolean stopped = false;
+    private boolean finished = false;
+    private boolean justForwarded = false;
+    private boolean justResumed = false;
 
     private int progressInMillis = 0;
-    private long lastMillis = -1;
+
+    /**
+     * last time stamp of thread
+     */
+    private long lastMillis;
+
+    /**
+     * last progress in millis that was played in soundtrack
+     */
+    private long lastProgressInMillis = -1;
 
     @NonNull
     private final Soundtrack soundtrack;
@@ -27,6 +40,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     /**
      * maps a sound to the given stream id
      */
+    @NonNull
     protected final HashMap<Sound, Integer> streamIDsMap;
 
     public SoundtrackPlayingThread(@NonNull Soundtrack soundtrack) {
@@ -37,34 +51,33 @@ public abstract class SoundtrackPlayingThread extends Thread {
     @Override
     public void run() {
         while (!stopped) {
-            if(paused) {
+            if(paused || finished) {
                 continue;
             }
             if (progressInMillis == soundtrack.getLength()) {
                 soundtrack.postState(Soundtrack.State.IDLE);
                 stopAllSounds();
-                // soundtrack finished playing
-                break;
-            }
-            long millis = System.currentTimeMillis();
-            if (millis == lastMillis) {
+                finished = true;
                 continue;
             }
-            if(lastMillis == -1) {
-                this.progressInMillis = 0;
-            } else {
-                this.progressInMillis += (int) (millis - lastMillis);
+            if(progressInMillis != lastProgressInMillis) { // in order to not play a sound more than once
+                lastProgressInMillis = progressInMillis;
+                List<SoundWithStreamID> soundsWithStreamIDs = play(progressInMillis, justResumed || justForwarded);
+                for (SoundWithStreamID soundWithStreamID : soundsWithStreamIDs) {
+                    streamIDsMap.put(soundWithStreamID.getSound(), soundWithStreamID.getStreamID());
+                }
+                stopSounds(progressInMillis);
+                if (justResumed) {
+                    justResumed = false;
+                }
+                if (justForwarded) {
+                    justForwarded = false;
+                }
             }
-            this.lastMillis = millis;
+            long millis = System.currentTimeMillis();
+            this.progressInMillis += (int) (millis - lastMillis);
             soundtrack.postProgress(calculateProgress(progressInMillis));
-            List<SoundWithStreamID> soundsWithStreamIDs = play(progressInMillis);
-            for(SoundWithStreamID soundWithStreamID : soundsWithStreamIDs) {
-                streamIDsMap.put(soundWithStreamID.getSound(), soundWithStreamID.getStreamID());
-            }
-            stopSounds(progressInMillis);
-            if (soundtrack.getJustResumed()) {
-                soundtrack.setJustResumed(false);
-            }
+            this.lastMillis = millis;
         }
     }
 
@@ -72,12 +85,20 @@ public abstract class SoundtrackPlayingThread extends Thread {
      * plays all sounds that start at the given time
      * resumes sounds if necessary
      * returns a list of sounds with their corresponding streaming ids from the sounds that are playing
+     *
+     * @param finishSounds indicates whether sounds have to be finished after having been interrupted by pause
+     *                     or fastRewind/fastForward
      */
-    public abstract List<SoundWithStreamID> play(int millis);
+    @NonNull
+    public abstract List<SoundWithStreamID> play(int millis, boolean finishSounds);
 
-    public void start() {
-        super.start();
-        soundtrack.postProgress(0);
+    public void play() {
+        lastMillis = System.currentTimeMillis();
+        if (!running) {
+            super.start();
+            running = true;
+        }
+        soundtrack.postProgress(calculateProgress(progressInMillis));
         soundtrack.postState(Soundtrack.State.PLAYING);
     }
 
@@ -89,13 +110,14 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     public void resumeSoundtrack() {
         lastMillis = System.currentTimeMillis();
+        justResumed = true;
         paused = false;
-        soundtrack.setJustResumed(true);
         soundtrack.postState(Soundtrack.State.PLAYING);
     }
 
     public void fastForward() {
         stopAllSounds();
+        justForwarded = true;
         int progressInMillis = this.progressInMillis + FAST_FORWARD_OFFSET;
         this.progressInMillis = Math.min(progressInMillis, soundtrack.getLength());
         soundtrack.postProgress(calculateProgress(this.progressInMillis));
@@ -103,15 +125,20 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     public void fastRewind() {
         stopAllSounds();
+        justForwarded = true;
         int progressInMillis = this.progressInMillis + FAST_REWIND_OFFSET;
         this.progressInMillis = Math.max(progressInMillis, 0);
         soundtrack.postProgress(calculateProgress(this.progressInMillis));
+        if(finished) { // in order to not start playing immediately
+            pause();
+            finished = false;
+        }
     }
 
     public void stopSoundtrack() {
         stopAllSounds();
-        soundtrack.postProgress(0);
         stopped = true;
+        soundtrack.postProgress(0);
         soundtrack.postState(Soundtrack.State.STOPPED);
     }
 

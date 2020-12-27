@@ -3,6 +3,7 @@ package de.pcps.jamtugether.audio.instrument.base;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
@@ -54,6 +55,9 @@ public abstract class Instrument {
     public int getName() {
         return name;
     }
+
+    @RawRes
+    public abstract int getSoundResource(int element);
 
     @StringRes
     public int getHelpMessage() {

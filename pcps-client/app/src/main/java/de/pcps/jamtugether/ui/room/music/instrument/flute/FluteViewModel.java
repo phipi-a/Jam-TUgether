@@ -9,9 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
-import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.Flute;
 
 public class FluteViewModel extends ViewModel {
@@ -23,7 +20,7 @@ public class FluteViewModel extends ViewModel {
 
     private final Flute flute = Flute.getInstance();
 
-    private int fluteStreamingID;
+    private int streamID;
 
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
@@ -57,11 +54,11 @@ public class FluteViewModel extends ViewModel {
                     int maxAmplitude = soundRecorder.getMaxAmplitude();
                     if (maxAmplitude != 0) {
                         if (maxAmplitude < 10000) {
-                            fluteStreamingID = flute.stop();
+                            streamID = flute.stop();
                         } else {
-                            if (fluteStreamingID == 0 && pitchPercentage.getValue() != null) {
+                            if (streamID == 0 && pitchPercentage.getValue() != null) {
                                 float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
-                                fluteStreamingID = flute.play(pitch);
+                                streamID = flute.play(pitch);
                             }
                         }
                     }

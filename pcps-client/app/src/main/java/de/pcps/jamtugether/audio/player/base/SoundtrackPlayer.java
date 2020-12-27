@@ -37,9 +37,9 @@ public abstract class SoundtrackPlayer {
     }
 
     private void play(@NonNull Soundtrack soundtrack) {
-        SoundtrackPlayingThread thread = createThread(soundtrack);
+        SoundtrackPlayingThread thread = getThread(soundtrack);
         if(thread != null) {
-            thread.start();
+            thread.play();
         }
     }
 

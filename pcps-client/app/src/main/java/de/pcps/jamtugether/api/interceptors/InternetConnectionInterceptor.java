@@ -18,6 +18,7 @@ import okhttp3.Response;
 @Singleton
 public class InternetConnectionInterceptor implements Interceptor {
 
+    @NonNull
     private final Context context;
 
     @Inject

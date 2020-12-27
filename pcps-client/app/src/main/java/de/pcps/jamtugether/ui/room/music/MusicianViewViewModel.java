@@ -33,16 +33,12 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
-        switch (instrument.getServerString()) {
-            case Flute.SERVER_STRING:
-                showFluteFragment.setValue(true);
-                break;
-            case Drums.SERVER_STRING:
-                showDrumsFragment.setValue(true);
-                break;
-            case Shaker.SERVER_STRING:
-                showShakerFragment.setValue(true);
-                break;
+        if(instrument == Flute.getInstance()) {
+            showFluteFragment.setValue(true);
+        } else if(instrument == Drums.getInstance()) {
+            showDrumsFragment.setValue(true);
+        } else if(instrument == Shaker.getInstance()) {
+            showShakerFragment.setValue(true);
         }
     }
 

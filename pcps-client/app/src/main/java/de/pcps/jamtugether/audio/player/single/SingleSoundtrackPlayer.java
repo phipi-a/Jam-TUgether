@@ -31,7 +31,8 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
         if(soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            return threadMap.get(singleSoundtrack.getUserID());
+            SoundtrackPlayingThread thread = threadMap.get(singleSoundtrack.getUserID());
+            return thread != null ? thread : createThread(soundtrack);
         }
         return null;
     }

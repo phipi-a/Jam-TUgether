@@ -4,9 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import androidx.annotation.RawRes;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -19,36 +17,57 @@ public class Drums extends Instrument {
     @Nullable
     private static Drums instance;
 
-    @NonNull
-    public static final String PREFERENCE_VALUE = "drums";
+    @RawRes
+    private static final int SNARE = R.raw.drum_snare;
 
-    @NonNull
-    public static final String SERVER_STRING = "drums";
+    @RawRes
+    private static final int KICK = R.raw.drum_kick;
+
+    @RawRes
+    private static final int HAT = R.raw.drum_hat;
+
+    @RawRes
+    private static final int CYMBAL = R.raw.drum_cymbal;
 
     public Drums() {
-        super(1, R.string.instrument_drums, R.string.play_drums_help, PREFERENCE_VALUE, SERVER_STRING);
+        super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
     }
 
     public void playSnare() {
-        soundPool.onPlaySoundRes(R.raw.drum_snare, 1);
+        soundPool.playSoundRes(SNARE, 1);
     }
 
     public void playKick() {
-        soundPool.onPlaySoundRes(R.raw.drum_kick, 1);
+        soundPool.playSoundRes(KICK, 1);
     }
 
     public void playHat() {
-        soundPool.onPlaySoundRes(R.raw.drum_hat, 1);
+        soundPool.playSoundRes(HAT, 1);
     }
 
     public void playCymbal() {
-        soundPool.onPlaySoundRes(R.raw.drum_cymbal, 1);
+        soundPool.playSoundRes(CYMBAL, 1);
     }
 
     @NonNull
     @Override
     public BaseSoundPool createSoundPool(@NonNull Context context) {
         return new DrumsSoundPool(context);
+    }
+
+    @RawRes
+    @Override
+    public int getSoundResource(int element) {
+        switch (element) {
+            case 0:
+                return SNARE;
+            case 1:
+                return KICK;
+            case 2:
+                return HAT;
+            default:
+                return CYMBAL;
+        }
     }
 
     @NonNull

@@ -10,12 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.pcps.jamtugether.audio.instrument.Drums;
-import de.pcps.jamtugether.audio.instrument.Shaker;
-import de.pcps.jamtugether.audio.instrument.SoundResource;
-import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
-import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
-import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
 
 /**
  * A simple sound pool wrapper
@@ -61,7 +57,7 @@ public abstract class BaseSoundPool {
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loadedSoundIDs.add(sampleId));
     }
 
-    public int onPlaySoundRes(int soundResID, float pitch) {
+    public int playSoundRes(int soundResID, float pitch) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
             return 0;
@@ -74,15 +70,6 @@ public abstract class BaseSoundPool {
             return streamID;
         }
         return 0;
-    }
-
-    public int onPlayElement(int element, float pitch) {
-        SoundResource soundResource = SoundResource.from(element);
-        if (soundResource == null) {
-            return 0;
-        } else {
-            return onPlaySoundRes(soundResource.getSoundResID(), pitch);
-        }
     }
 
     public abstract int play(int soundID, float pitch);
@@ -108,14 +95,8 @@ public abstract class BaseSoundPool {
     }
 
     @NonNull
-    public static BaseSoundPool from(@NonNull String instrument, @NonNull Context context) {
-        switch (instrument) {
-            case Drums.SERVER_STRING:
-                return new DrumsSoundPool(context);
-            case Shaker.SERVER_STRING:
-                return new ShakerSoundPool(context);
-            default:
-                return new FluteSoundPool(context);
-        }
+    public static BaseSoundPool from(@NonNull String instrumentString, @NonNull Context context) {
+        Instrument instrument = Instruments.fromServer(instrumentString);
+        return instrument.createSoundPool(context);
     }
 }

@@ -49,15 +49,15 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
     }
 
     @NonNull
-    public List<Sound> getSoundsFor(int currentTime) {
+    public List<Sound> getSoundsFor(int currentTime, boolean finishSounds) {
         List<Sound> sounds = new ArrayList<>();
         for (Sound sound : soundSequence) {
             // add sounds that start at given time
             if(sound.getStartTime() == currentTime) {
                 sounds.add(sound);
             }
-            if(justResumed) {
-                // add sounds that were interrupted because of pause
+            if(finishSounds) {
+                // finish sounds that were interrupted because of pause or that were jumped to because of forwarding
                 if (sound.getStartTime() < currentTime && currentTime < sound.getEndTime()) {
                     sounds.add(sound);
                 }
