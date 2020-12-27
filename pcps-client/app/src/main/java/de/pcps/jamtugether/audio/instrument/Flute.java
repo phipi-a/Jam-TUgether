@@ -27,7 +27,7 @@ public class Flute extends Instrument {
     }
 
     public int play(float pitch) {
-        return soundPool.onPlaySoundRes(R.raw.flute_sound, 2, 0);
+        return soundPool.onPlaySoundRes(R.raw.flute_sound, 2);
     }
 
     @Override

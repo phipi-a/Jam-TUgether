@@ -2,8 +2,12 @@ package de.pcps.jamtugether.audio.player.composite;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
@@ -19,30 +23,44 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     }
 
     @Override
-    public void play(int millis) {
-        for(SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            for(Sound sound : singleSoundtrack.getSoundsFor(millis)) {
+    public List<SoundWithStreamID> play(int millis) {
+        List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+            for (Sound sound : singleSoundtrack.getSoundsFor(millis)) {
                 BaseSoundPool soundPool = singleSoundtrack.getSoundPool();
-                if(soundPool == null) {
+                if (soundPool == null) {
                     continue;
                 }
-                soundPool.onPlayElement(sound.getElement(), sound.getPitch(), sound.getLength());
+                int streamID = soundPool.onPlayElement(sound.getElement(), sound.getPitch());
+                soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
             }
         }
+        return soundsWithStreamIDs;
     }
 
     @Override
-    protected void stopSound() {
-        for(SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            singleSoundtrack.getSoundPool().stop();
+    protected void stopAllSounds() {
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+            singleSoundtrack.getSoundPool().stopAllSounds();
         }
     }
 
     @Override
     public void setVolume(float volume) {
         compositeSoundtrack.postVolume(volume);
-        for(SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             singleSoundtrack.getSoundPool().setVolume(volume / 100);
+        }
+    }
+
+    @Override
+    protected void stopSounds(int millis) {
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+            for (Sound sound : singleSoundtrack.getSoundSequence()) {
+                if (sound.getEndTime() == millis && streamIDsMap.containsKey(sound)) {
+                    singleSoundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
+                }
+            }
         }
     }
 }

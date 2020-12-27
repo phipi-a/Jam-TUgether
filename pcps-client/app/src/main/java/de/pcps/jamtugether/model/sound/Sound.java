@@ -46,8 +46,4 @@ public class Sound {
     public int getPitch() {
         return pitch;
     }
-
-    public int getLength() {
-        return endTime - startTime;
-    }
 }

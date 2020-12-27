@@ -2,13 +2,14 @@ package de.pcps.jamtugether.audio.player.single;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import timber.log.Timber;
 
 public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
@@ -26,20 +27,32 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     }
 
     @Override
-    public void play(int millis) {
+    public List<SoundWithStreamID> play(int millis) {
+        List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
         for(Sound sound : soundtrack.getSoundsFor(millis)) {
-            soundPool.onPlayElement(sound.getElement(), sound.getPitch(), sound.getLength());
+            int streamID = soundPool.onPlayElement(sound.getElement(), sound.getPitch());
+            soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
         }
+        return soundsWithStreamIDs;
     }
 
     @Override
-    protected void stopSound() {
-        soundPool.stop();
+    protected void stopAllSounds() {
+        soundPool.stopAllSounds();
     }
 
     @Override
     public void setVolume(float volume) {
         soundtrack.postVolume(volume);
         soundPool.setVolume(volume / 100);
+    }
+
+    @Override
+    protected void stopSounds(int millis) {
+        for(Sound sound : soundtrack.getSoundSequence()) {
+            if(sound.getEndTime() == millis && streamIDsMap.containsKey(sound)) {
+                soundPool.stopSound(streamIDsMap.get(sound));
+            }
+        }
     }
 }

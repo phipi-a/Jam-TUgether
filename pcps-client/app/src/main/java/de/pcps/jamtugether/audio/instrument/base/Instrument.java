@@ -43,7 +43,7 @@ public abstract class Instrument {
     public abstract BaseSoundPool createSoundPool();
 
     public int stop() {
-        soundPool.stop();
+        soundPool.stopAllSounds();
         return 0;
     }
 

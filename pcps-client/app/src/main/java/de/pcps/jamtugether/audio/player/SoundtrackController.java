@@ -12,7 +12,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 @Singleton
-public class SoundtrackPlayers implements Soundtrack.OnChangeCallback {
+public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @NonNull
     private final SingleSoundtrackPlayer singleSoundtrackPlayer;
@@ -21,7 +21,7 @@ public class SoundtrackPlayers implements Soundtrack.OnChangeCallback {
     private final CompositeSoundtrackPlayer compositeSoundtrackPlayer;
 
     @Inject
-    public SoundtrackPlayers(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer) {
+    public SoundtrackController(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer) {
         this.singleSoundtrackPlayer = singleSoundtrackPlayer;
         this.compositeSoundtrackPlayer = compositeSoundtrackPlayer;
     }

@@ -14,7 +14,7 @@ public class FluteSoundPool extends BaseSoundPool {
     }
 
     @Override
-    public int play(int soundID, float pitch, int length) {
+    public int play(int soundID, float pitch) {
         return soundPool.play(soundID, volume, volume, 0, 0, 1);
     }
 }

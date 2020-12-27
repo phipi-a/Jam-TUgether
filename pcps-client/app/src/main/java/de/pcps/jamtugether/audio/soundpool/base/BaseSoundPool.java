@@ -61,14 +61,13 @@ public abstract class BaseSoundPool {
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loadedSoundIDs.add(sampleId));
     }
 
-    public int onPlaySoundRes(int soundResID, float pitch, int length) {
-        // todo add ability to add length
+    public int onPlaySoundRes(int soundResID, float pitch) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
             return 0;
         }
         if (soundIsLoaded(soundID)) {
-            int streamID = play(soundID, pitch, -1);
+            int streamID = play(soundID, pitch);
             if (!streamIDs.contains(streamID) && streamID != 0) {
                 streamIDs.add(streamID);
             }
@@ -77,23 +76,29 @@ public abstract class BaseSoundPool {
         return 0;
     }
 
-    public int onPlayElement(int element, float pitch, int length) {
+    public int onPlayElement(int element, float pitch) {
         SoundResource soundResource = SoundResource.from(element);
         if (soundResource == null) {
             return 0;
         } else {
-            return onPlaySoundRes(soundResource.getSoundResID(), pitch, length);
+            return onPlaySoundRes(soundResource.getSoundResID(), pitch);
         }
     }
 
-    public abstract int play(int soundID, float pitch, int length);
+    public abstract int play(int soundID, float pitch);
 
     public void setVolume(float volume) {
         this.volume = volume;
     }
 
-    public void stop() {
+    public void stopAllSounds() {
         for (Integer streamID : streamIDs) {
+            soundPool.stop(streamID);
+        }
+    }
+
+    public void stopSound(int streamID) {
+        if(streamIDs.contains(streamID)) {
             soundPool.stop(streamID);
         }
     }

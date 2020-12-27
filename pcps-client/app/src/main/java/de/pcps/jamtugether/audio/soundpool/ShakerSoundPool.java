@@ -15,7 +15,7 @@ public class ShakerSoundPool extends BaseSoundPool {
     }
 
     @Override
-    public int play(int soundID, float pitch, int length) {
+    public int play(int soundID, float pitch) {
         return 0;
     }
 }

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -24,13 +23,8 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     @NonNull
     private final HashMap<Integer, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
-    @NonNull
-    private final Instruments instruments;
-
     @Inject
-    public SingleSoundtrackPlayer(@NonNull Instruments instruments) {
-        this.instruments = instruments;
-    }
+    public SingleSoundtrackPlayer() { }
 
     @Nullable
     @Override

@@ -23,7 +23,7 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.audio.player.SoundtrackPlayers;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
@@ -41,7 +41,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     SoundtrackRepository soundtrackRepository;
 
     @Inject
-    SoundtrackPlayers soundtrackPlayers;
+    SoundtrackController soundtrackController;
 
     private final int roomID;
 
@@ -130,7 +130,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
-        return soundtrackPlayers;
+        return soundtrackController;
     }
 
     @NonNull

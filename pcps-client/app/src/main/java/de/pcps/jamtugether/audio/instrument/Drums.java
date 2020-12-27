@@ -28,19 +28,19 @@ public class Drums extends Instrument {
     }
 
     public void playSnare() {
-        soundPool.onPlaySoundRes(R.raw.drum_snare, 1, 0);
+        soundPool.onPlaySoundRes(R.raw.drum_snare, 1);
     }
 
     public void playKick() {
-        soundPool.onPlaySoundRes(R.raw.drum_kick, 1, 0);
+        soundPool.onPlaySoundRes(R.raw.drum_kick, 1);
     }
 
     public void playHat() {
-        soundPool.onPlaySoundRes(R.raw.drum_hat, 1, 0);
+        soundPool.onPlaySoundRes(R.raw.drum_hat, 1);
     }
 
     public void playCymbal() {
-        soundPool.onPlaySoundRes(R.raw.drum_cymbal, 1, 0);
+        soundPool.onPlaySoundRes(R.raw.drum_cymbal, 1);
     }
 
     @Override

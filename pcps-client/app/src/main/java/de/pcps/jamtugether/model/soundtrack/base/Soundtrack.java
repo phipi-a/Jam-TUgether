@@ -73,7 +73,7 @@ public abstract class Soundtrack {
     public abstract boolean isEmpty();
 
     /**
-     * @return Soundtrack length in millis
+     * @return soundtrack length in millis
      */
     public abstract int getLength();
 

@@ -18,8 +18,8 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.audio.player.SoundtrackPlayers;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -37,7 +37,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
     SoundtrackRepository soundtrackRepository;
 
     @Inject
-    SoundtrackPlayers soundtrackPlayers;
+    SoundtrackController soundtrackController;
 
     private final int roomID;
 
@@ -156,7 +156,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     @NonNull
     public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
-        return soundtrackPlayers;
+        return soundtrackController;
     }
 
     @NonNull
