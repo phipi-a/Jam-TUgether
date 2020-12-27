@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const fs = require('fs')
 
-const atsecret = crypto.randomBytes(12).toString('hex')
+const atsecret = crypto.randomBytes(16).toString('hex')
 
 fs.writeFile('.env', 'ACCESS_TOKEN_SECRET=' + atsecret, function (err, data) {
   if (err) {

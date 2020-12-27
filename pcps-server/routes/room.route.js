@@ -1,7 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { checkPwdLen, createToken, verify, PwErr } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
 
 const app = express()
@@ -15,13 +15,12 @@ const { exists } = require('../model/room.model')
 
 // Create room function
 async function createRoom (roomID, password, object) {
-  RoomSchema.create({ roomID: roomID, password: password }, (error, data, next) => {
+  await RoomSchema.create({ roomID: roomID, password: password, adminBytes: 'non-existing' }, (error, data, next) => {
     if (error) {
       return next(error)
-    } else {
-      console.log('Created room with ID: ' + roomID)
-      return roomID
     }
+    console.log('Created room with ID: ' + roomID)
+    return roomID
   })
 }
 
@@ -65,7 +64,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
     if (numberOfRooms === 0) {
       newRoomID = 1
       // Create db entry
-      createRoom(newRoomID, req.body.password)
+      await createRoom(newRoomID, req.body.password)
     } else {
       // default value
       newRoomID = numberOfRooms + 1
@@ -79,11 +78,11 @@ roomRoute.post('/create-room', async (req, res, next) => {
         }
       }
       // Create db entry
-      createRoom(newRoomID, req.body.password)
+      await createRoom(newRoomID, req.body.password)
     }
-    const token = createToken()
-    //  TODO save token for each user (privileges)
-
+    // sleep for 0.1 milisecond
+    await new Promise(resolve => setTimeout(resolve, 0.1))
+    const token = await createToken('Admin', newRoomID)
     res.status(201).send(createJSON(newRoomID.toString(), token))
   } catch (err) {
     if (err === PwErr) {
@@ -119,12 +118,14 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *         description: Success
  *       401:
  *         description: Wrong password or roomID
+ *       408:
+ *          description: expired admin, Sends new token
  *       413:
  *         description: Password too long
  *       500:
  *         description: Failure
  */
-roomRoute.delete('/room', verify, async (req, res) => {
+roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
   try {
     // check if room to delete exists
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
@@ -192,7 +193,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
-      const token = createToken()
+      const token = await createToken('User', req.body.roomID)
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
       res.status(401).send('Wrong Password.')
