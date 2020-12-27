@@ -23,10 +23,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     @Inject
     Application application;
-    
+
     @Inject
     RoomRepository roomRepository;
-    
+
     private int roomID;
 
     private String password;
@@ -38,7 +38,7 @@ public class CreateRoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
-    
+
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
@@ -52,7 +52,7 @@ public class CreateRoomViewModel extends ViewModel {
     public void onCreateRoomButtonClicked(@NonNull String password) {
         Context context = application.getApplicationContext();
 
-        if(password.isEmpty()) {
+        if (password.isEmpty()) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             return;
         }
@@ -80,7 +80,7 @@ public class CreateRoomViewModel extends ViewModel {
 
                 Context context = application.getApplicationContext();
 
-                if(error instanceof PasswordTooLargeError) {
+                if (error instanceof PasswordTooLargeError) {
                     passwordInputError.setValue(context.getString(error.getMessage()));
                     return;
                 }
@@ -120,14 +120,14 @@ public class CreateRoomViewModel extends ViewModel {
     public LiveData<String> getPasswordInputError() {
         return passwordInputError;
     }
-    
+
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
     }
 
     @NonNull
-    public MutableLiveData<Integer> getProgressBarVisibility() {
+    public LiveData<Integer> getProgressBarVisibility() {
         return progressBarVisibility;
     }
 }

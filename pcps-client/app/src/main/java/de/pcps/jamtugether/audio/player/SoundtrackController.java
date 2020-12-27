@@ -28,7 +28,7 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @Override
     public void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             singleSoundtrackPlayer.changeVolume((SingleSoundtrack) soundtrack, volume);
         } else {
             compositeSoundtrackPlayer.changeVolume((CompositeSoundtrack) soundtrack, volume);
@@ -37,7 +37,7 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @Override
     public void onPlayPauseButtonClicked(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             singleSoundtrackPlayer.playOrPause((SingleSoundtrack) soundtrack);
         } else {
             compositeSoundtrackPlayer.playOrPause((CompositeSoundtrack) soundtrack);
@@ -46,7 +46,7 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @Override
     public void onFastForwardButtonClicked(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             singleSoundtrackPlayer.fastForward((SingleSoundtrack) soundtrack);
         } else {
             compositeSoundtrackPlayer.fastForward((CompositeSoundtrack) soundtrack);
@@ -55,7 +55,7 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @Override
     public void onFastRewindButtonClicked(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             singleSoundtrackPlayer.fastRewind((SingleSoundtrack) soundtrack);
         } else {
             compositeSoundtrackPlayer.fastRewind((CompositeSoundtrack) soundtrack);
@@ -64,7 +64,7 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
 
     @Override
     public void onStopButtonClicked(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             singleSoundtrackPlayer.stop((SingleSoundtrack) soundtrack);
         } else {
             compositeSoundtrackPlayer.stop((CompositeSoundtrack) soundtrack);

@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;

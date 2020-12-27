@@ -21,12 +21,6 @@ public class Shaker extends Instrument {
         super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
     }
 
-    @NonNull
-    @Override
-    public BaseSoundPool createSoundPool(@NonNull Context context) {
-        return new ShakerSoundPool(context);
-    }
-
     @RawRes
     @Override
     public int getSoundResource(int element) {
@@ -35,8 +29,14 @@ public class Shaker extends Instrument {
     }
 
     @NonNull
+    @Override
+    public BaseSoundPool createSoundPool(@NonNull Context context) {
+        return new ShakerSoundPool(context);
+    }
+
+    @NonNull
     public static Shaker getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Shaker();
         }
         return instance;

@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
@@ -37,7 +36,7 @@ public class SoundtrackFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
             String token = getArguments().getString(TOKEN_KEY);
             MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(activity, new MusicianViewViewModel.Factory(roomID, token)).get(MusicianViewViewModel.class);
@@ -59,7 +58,7 @@ public class SoundtrackFragment extends BaseFragment {
         ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(viewModel.getOwnSoundtrack(), getViewLifecycleOwner());
 
         viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
-            if(showHelpDialog) {
+            if (showHelpDialog) {
                 UiUtils.showInfoDialog(activity, viewModel.getHelpDialogTitle(), viewModel.getHelpDialogMessage());
                 viewModel.onHelpDialogShown();
             }

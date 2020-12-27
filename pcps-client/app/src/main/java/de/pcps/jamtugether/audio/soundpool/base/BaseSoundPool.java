@@ -30,6 +30,7 @@ public abstract class BaseSoundPool {
     /**
      * maps sound resource id to sound id
      */
+    @NonNull
     private final HashMap<Integer, Integer> soundResMap;
 
     protected float volume = 1;
@@ -57,6 +58,8 @@ public abstract class BaseSoundPool {
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loadedSoundIDs.add(sampleId));
     }
 
+    protected abstract int play(int soundID, float pitch);
+
     public int playSoundRes(int soundResID, float pitch) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
@@ -72,20 +75,18 @@ public abstract class BaseSoundPool {
         return 0;
     }
 
-    public abstract int play(int soundID, float pitch);
-
     public void setVolume(float volume) {
         this.volume = volume;
     }
 
-    public void stopAllSounds() {
-        for (Integer streamID : streamIDs) {
+    public void stopSound(int streamID) {
+        if (streamIDs.contains(streamID)) {
             soundPool.stop(streamID);
         }
     }
 
-    public void stopSound(int streamID) {
-        if(streamIDs.contains(streamID)) {
+    public void stopAllSounds() {
+        for (Integer streamID : streamIDs) {
             soundPool.stop(streamID);
         }
     }

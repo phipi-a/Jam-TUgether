@@ -86,14 +86,14 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
         List<SingleSoundtrack> soundtracks = getAllSoundtracks().getValue();
-        if(soundtracks == null || !soundtracks.contains(soundtrack)) {
+        if (soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
         }
 
         // delete from local list
         List<SingleSoundtrack> newList = new ArrayList<>();
-        for(SingleSoundtrack singleSoundtrack : soundtracks) {
-            if(singleSoundtrack != soundtrack) {
+        for (SingleSoundtrack singleSoundtrack : soundtracks) {
+            if (singleSoundtrack != soundtrack) {
                 newList.add(singleSoundtrack);
             }
         }
@@ -174,6 +174,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         return showRoomDeletionConfirmDialog;
     }
 
+    @NonNull
     public LiveData<Boolean> getLeaveRoom() {
         return leaveRoom;
     }

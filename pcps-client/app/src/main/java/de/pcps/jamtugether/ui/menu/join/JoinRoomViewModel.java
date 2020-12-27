@@ -59,21 +59,21 @@ public class JoinRoomViewModel extends ViewModel {
         boolean emptyRoom = false;
         boolean emptyPassword = false;
 
-        if(roomIDString.isEmpty()) {
+        if (roomIDString.isEmpty()) {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
             emptyRoom = true;
         }
 
-        if(password.isEmpty()) {
+        if (password.isEmpty()) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             emptyPassword = true;
         }
 
-        if(emptyRoom || emptyPassword) {
-            if(!emptyRoom) {
+        if (emptyRoom || emptyPassword) {
+            if (!emptyRoom) {
                 roomInputError.setValue(null);
             }
-            if(!emptyPassword) {
+            if (!emptyPassword) {
                 passwordInputError.setValue(null);
             }
             return;
@@ -107,13 +107,13 @@ public class JoinRoomViewModel extends ViewModel {
 
                 Context context = application.getApplicationContext();
 
-                if(error instanceof UnauthorizedAccessError) {
+                if (error instanceof UnauthorizedAccessError) {
                     roomInputError.setValue(context.getString(error.getMessage()));
                     passwordInputError.setValue(context.getString(error.getMessage()));
                     return;
                 }
 
-                if(error instanceof PasswordTooLargeError) {
+                if (error instanceof PasswordTooLargeError) {
                     roomInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
                     passwordInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
                     return;

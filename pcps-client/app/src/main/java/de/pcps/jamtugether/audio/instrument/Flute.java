@@ -23,8 +23,10 @@ public class Flute extends Instrument {
         super(0, R.string.instrument_flute, R.string.play_flute_help, "flute", "flute");
     }
 
-    public int play(float pitch) {
-        return soundPool.playSoundRes(FLUTE, 2);
+    @RawRes
+    @Override
+    public int getSoundResource(int element) {
+        return FLUTE;
     }
 
     @NonNull
@@ -33,15 +35,13 @@ public class Flute extends Instrument {
         return new FluteSoundPool(context);
     }
 
-    @RawRes
-    @Override
-    public int getSoundResource(int element) {
-        return FLUTE;
+    public int play(float pitch) {
+        return soundPool.playSoundRes(FLUTE, 2);
     }
 
     @NonNull
     public static Flute getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Flute();
         }
         return instance;

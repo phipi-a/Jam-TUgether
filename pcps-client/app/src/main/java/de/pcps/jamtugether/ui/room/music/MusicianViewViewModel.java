@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,11 +34,11 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             showFluteFragment.setValue(true);
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             showDrumsFragment.setValue(true);
-        } else if(instrument == Shaker.getInstance()) {
+        } else if (instrument == Shaker.getInstance()) {
             showShakerFragment.setValue(true);
         }
     }
@@ -59,17 +60,17 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowFluteFragment() {
+    public LiveData<Boolean> getShowFluteFragment() {
         return showFluteFragment;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowDrumsFragment() {
+    public LiveData<Boolean> getShowDrumsFragment() {
         return showDrumsFragment;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowShakerFragment() {
+    public LiveData<Boolean> getShowShakerFragment() {
         return showShakerFragment;
     }
 

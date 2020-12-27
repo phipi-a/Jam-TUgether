@@ -7,11 +7,6 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public abstract class SoundtrackPlayer {
 
-    public void changeVolume(@NonNull Soundtrack soundtrack, float volume) {
-        SoundtrackPlayingThread thread = getThread(soundtrack) != null ? getThread(soundtrack) : createThread(soundtrack);
-        thread.setVolume(volume);
-    }
-
     public void playOrPause(@NonNull Soundtrack soundtrack) {
         if (soundtrack.isEmpty()) {
             return;
@@ -38,7 +33,7 @@ public abstract class SoundtrackPlayer {
 
     private void play(@NonNull Soundtrack soundtrack) {
         SoundtrackPlayingThread thread = getThread(soundtrack);
-        if(thread != null) {
+        if (thread != null) {
             thread.play();
         }
     }
@@ -78,9 +73,16 @@ public abstract class SoundtrackPlayer {
         }
     }
 
-    @Nullable
-    protected abstract SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack);
+    public void changeVolume(@NonNull Soundtrack soundtrack, float volume) {
+        SoundtrackPlayingThread thread = getThread(soundtrack);
+        if (thread != null) {
+            thread.setVolume(volume);
+        }
+    }
 
     @Nullable
     protected abstract SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack);
+
+    @Nullable
+    protected abstract SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack);
 }

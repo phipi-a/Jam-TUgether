@@ -35,7 +35,7 @@ public class InstrumentSpinnerAdapter extends ArrayAdapter<Instrument> {
 
     @NonNull
     private View getInstrumentView(int position, @Nullable View convertView, @NonNull ViewGroup parent, int textAlignment) {
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.view_instrument_spinner_item, parent, false);
         }

@@ -24,23 +24,13 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     private final HashMap<Integer, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
-    public SingleSoundtrackPlayer() { }
-
-    @Nullable
-    @Override
-    protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
-            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            SoundtrackPlayingThread thread = threadMap.get(singleSoundtrack.getUserID());
-            return thread != null ? thread : createThread(soundtrack);
-        }
-        return null;
+    public SingleSoundtrackPlayer() {
     }
 
     @Nullable
     @Override
     protected SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
             SingleSoundtrackPlayingThread thread = new SingleSoundtrackPlayingThread(singleSoundtrack);
             threadMap.put(singleSoundtrack.getUserID(), thread);
@@ -49,10 +39,21 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         return null;
     }
 
+    @Nullable
+    @Override
+    protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            SoundtrackPlayingThread thread = threadMap.get(singleSoundtrack.getUserID());
+            return thread != null ? thread : createThread(soundtrack);
+        }
+        return null;
+    }
+
     @Override
     public void stop(@NonNull Soundtrack soundtrack) {
         super.stop(soundtrack);
-        if(soundtrack instanceof SingleSoundtrack) {
+        if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
             threadMap.remove(singleSoundtrack.getUserID());
         }

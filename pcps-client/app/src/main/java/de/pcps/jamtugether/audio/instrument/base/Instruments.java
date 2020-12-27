@@ -24,10 +24,11 @@ public class Instruments {
     @NonNull
     private static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER};
 
+    @NonNull
     public static final List<Instrument> LIST = Arrays.asList(ARRAY);
 
     @NonNull
-    public static final Instrument FALLBACK = FLUTE; // todo maybe replace fallback with error message
+    public static final Instrument FALLBACK = FLUTE;
 
     @NonNull
     private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();
@@ -36,7 +37,7 @@ public class Instruments {
     private static final HashMap<String, Instrument> serverMap = new HashMap<>();
 
     static {
-        for(Instrument instrument : ARRAY) {
+        for (Instrument instrument : ARRAY) {
             preferenceMap.put(instrument.getPreferenceValue(), instrument);
             serverMap.put(instrument.getServerString(), instrument);
         }

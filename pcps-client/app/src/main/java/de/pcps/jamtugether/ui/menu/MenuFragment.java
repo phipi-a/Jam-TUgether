@@ -31,21 +31,21 @@ public class MenuFragment extends BaseFragment {
         binding.setViewModel(viewModel);
 
         viewModel.getNavigateToSettings().observe(getViewLifecycleOwner(), navigateToSettings -> {
-            if(navigateToSettings) {
+            if (navigateToSettings) {
                 NavigationUtils.navigateToSettings(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToSettings();
             }
         });
 
         viewModel.getNavigateToCreateRoom().observe(getViewLifecycleOwner(), navigateToCreateRoom -> {
-            if(navigateToCreateRoom) {
+            if (navigateToCreateRoom) {
                 NavigationUtils.navigateToCreateRoom(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToCreateRoom();
             }
         });
 
         viewModel.getNavigateToJoinRoom().observe(getViewLifecycleOwner(), navigateToJoinRoom -> {
-            if(navigateToJoinRoom) {
+            if (navigateToJoinRoom) {
                 NavigationUtils.navigateToJoinRoom(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToJoinRoom();
             }

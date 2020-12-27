@@ -11,6 +11,20 @@ import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 
 public abstract class Instrument {
 
+    @NonNull
+    public static final DiffUtil.ItemCallback<Instrument> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Instrument>() {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
+            return true;
+        }
+    };
+
     private final int ordinal;
 
     @StringRes
@@ -35,12 +49,15 @@ public abstract class Instrument {
         this.serverString = serverString;
     }
 
-    public void loadSounds(@NonNull Context context) {
-        soundPool = createSoundPool(context);
-    }
+    @RawRes
+    public abstract int getSoundResource(int element);
 
     @NonNull
     public abstract BaseSoundPool createSoundPool(@NonNull Context context);
+
+    public void loadSounds(@NonNull Context context) {
+        soundPool = createSoundPool(context);
+    }
 
     public int stop() {
         soundPool.stopAllSounds();
@@ -56,9 +73,6 @@ public abstract class Instrument {
         return name;
     }
 
-    @RawRes
-    public abstract int getSoundResource(int element);
-
     @StringRes
     public int getHelpMessage() {
         return helpMessage;
@@ -73,20 +87,6 @@ public abstract class Instrument {
     public String getServerString() {
         return serverString;
     }
-
-    @NonNull
-    public static final DiffUtil.ItemCallback<Instrument> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Instrument>() {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
-            return oldItem == newItem;
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
-            return true;
-        }
-    };
 
     public interface ClickListener {
         void onInstrumentClicked(@NonNull Instrument instrument);

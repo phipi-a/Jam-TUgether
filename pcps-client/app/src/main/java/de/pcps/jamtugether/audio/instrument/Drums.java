@@ -33,6 +33,27 @@ public class Drums extends Instrument {
         super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
     }
 
+    @RawRes
+    @Override
+    public int getSoundResource(int element) {
+        switch (element) {
+            case 0:
+                return SNARE;
+            case 1:
+                return KICK;
+            case 2:
+                return HAT;
+            default:
+                return CYMBAL;
+        }
+    }
+
+    @NonNull
+    @Override
+    public BaseSoundPool createSoundPool(@NonNull Context context) {
+        return new DrumsSoundPool(context);
+    }
+
     public void playSnare() {
         soundPool.playSoundRes(SNARE, 1);
     }
@@ -50,29 +71,8 @@ public class Drums extends Instrument {
     }
 
     @NonNull
-    @Override
-    public BaseSoundPool createSoundPool(@NonNull Context context) {
-        return new DrumsSoundPool(context);
-    }
-
-    @RawRes
-    @Override
-    public int getSoundResource(int element) {
-        switch (element) {
-            case 0:
-                return SNARE;
-            case 1:
-                return KICK;
-            case 2:
-                return HAT;
-            default:
-                return CYMBAL;
-        }
-    }
-
-    @NonNull
     public static Drums getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Drums();
         }
         return instance;

@@ -65,13 +65,13 @@ public class SoundtrackView extends View {
     @ColorInt
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
         Instrument instrument = singleSoundtrack.getSoundSequence().get(0).getInstrument();
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             return Color.BLUE;
         }
-        if(instrument == Drums.getInstance()) {
+        if (instrument == Drums.getInstance()) {
             return Color.RED;
         }
-        if(instrument == Shaker.getInstance()) {
+        if (instrument == Shaker.getInstance()) {
             return Color.GREEN;
         }
         return Color.GRAY;
@@ -83,7 +83,7 @@ public class SoundtrackView extends View {
         }
         paint.setColor(getPaintColor(singleSoundtrack));
 
-        if(asLines) {
+        if (asLines) {
             drawLines(canvas, singleSoundtrack);
         } else {
             drawRectangles(canvas, singleSoundtrack);

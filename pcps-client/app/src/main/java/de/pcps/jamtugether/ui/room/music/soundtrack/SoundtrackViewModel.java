@@ -76,7 +76,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @Override
     public void onInstrumentClicked(@NonNull Instrument instrument) {
-        if(instrument != currentInstrument) {
+        if (instrument != currentInstrument) {
             onChangeCallback.onInstrumentChanged(instrument);
             updateHelpDialogData(instrument);
             currentInstrument = instrument;

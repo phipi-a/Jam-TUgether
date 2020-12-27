@@ -51,7 +51,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     @Override
     public void run() {
         while (!stopped) {
-            if(paused || finished) {
+            if (paused || finished) {
                 continue;
             }
             if (progressInMillis == soundtrack.getLength()) {
@@ -60,7 +60,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
                 finished = true;
                 continue;
             }
-            if(progressInMillis != lastProgressInMillis) { // in order to not play a sound more than once
+            if (progressInMillis != lastProgressInMillis) { // in order to not play a sound more than once
                 lastProgressInMillis = progressInMillis;
                 List<SoundWithStreamID> soundsWithStreamIDs = play(progressInMillis, justResumed || justForwarded);
                 for (SoundWithStreamID soundWithStreamID : soundsWithStreamIDs) {
@@ -74,6 +74,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
                     justForwarded = false;
                 }
             }
+
             long millis = System.currentTimeMillis();
             this.progressInMillis += (int) (millis - lastMillis);
             soundtrack.postProgress(calculateProgress(progressInMillis));
@@ -129,7 +130,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
         int progressInMillis = this.progressInMillis + FAST_REWIND_OFFSET;
         this.progressInMillis = Math.max(progressInMillis, 0);
         soundtrack.postProgress(calculateProgress(this.progressInMillis));
-        if(finished) { // in order to not start playing immediately
+        if (finished) { // in order to not start playing immediately
             pause();
             finished = false;
         }

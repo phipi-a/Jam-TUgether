@@ -25,23 +25,13 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     protected final HashMap<List<Integer>, SoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
-    public CompositeSoundtrackPlayer() { }
-
-    @Nullable
-    @Override
-    protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof CompositeSoundtrack) {
-            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            SoundtrackPlayingThread thread = threadMap.get(compositeSoundtrack.getUserIDs());
-            return thread != null ? thread : createThread(soundtrack);
-        }
-        return null;
+    public CompositeSoundtrackPlayer() {
     }
 
     @Nullable
     @Override
     protected SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack) {
-        if(soundtrack instanceof CompositeSoundtrack) {
+        if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack);
             threadMap.put(compositeSoundtrack.getUserIDs(), thread);
@@ -50,10 +40,21 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         return null;
     }
 
+    @Nullable
+    @Override
+    protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
+        if (soundtrack instanceof CompositeSoundtrack) {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            SoundtrackPlayingThread thread = threadMap.get(compositeSoundtrack.getUserIDs());
+            return thread != null ? thread : createThread(soundtrack);
+        }
+        return null;
+    }
+
     @Override
     public void stop(@NonNull Soundtrack soundtrack) {
         super.stop(soundtrack);
-        if(soundtrack instanceof CompositeSoundtrack) {
+        if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getUserIDs());
         }

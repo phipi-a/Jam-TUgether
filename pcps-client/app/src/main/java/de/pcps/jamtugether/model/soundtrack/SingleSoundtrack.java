@@ -17,6 +17,19 @@ import timber.log.Timber;
 
 public class SingleSoundtrack extends Soundtrack implements Cloneable {
 
+    @NonNull
+    public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
+            return oldItem.getUserID() == newItem.getUserID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
+            return oldItem.soundSequence.equals(newItem.soundSequence);
+        }
+    };
+
     private final int userID;
 
     @NonNull
@@ -27,68 +40,20 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
      */
     private BaseSoundPool soundPool;
 
+    private int length;
+
     public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
         super();
         this.userID = userID;
         this.soundSequence = soundSequence;
     }
 
-    @NonNull
-    @Override
-    public SingleSoundtrack clone() throws CloneNotSupportedException {
-        return (SingleSoundtrack) super.clone();
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    @NonNull
-    public List<Sound> getSoundSequence() {
-        return soundSequence;
-    }
-
-    @NonNull
-    public List<Sound> getSoundsFor(int currentTime, boolean finishSounds) {
-        List<Sound> sounds = new ArrayList<>();
-        for (Sound sound : soundSequence) {
-            // add sounds that start at given time
-            if(sound.getStartTime() == currentTime) {
-                sounds.add(sound);
-            }
-            if(finishSounds) {
-                // finish sounds that were interrupted because of pause or that were jumped to because of forwarding
-                if (sound.getStartTime() < currentTime && currentTime < sound.getEndTime()) {
-                    sounds.add(sound);
-                }
-            }
-        }
-        return sounds;
-    }
-
-    @Nullable
-    public Instrument getInstrument() {
-        if (soundSequence.isEmpty()) {
-            return null;
-        }
-        return soundSequence.get(0).getInstrument();
-    }
-
     public void loadSounds(@NonNull Context context) {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return;
         }
         Instrument instrument = soundSequence.get(0).getInstrument();
         soundPool = instrument.createSoundPool(context);
-    }
-
-    public BaseSoundPool getSoundPool() {
-        return soundPool;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return soundSequence.isEmpty();
     }
 
     @Override
@@ -101,17 +66,55 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
         return lastSound.getEndTime() - firstSound.getStartTime();
     }
 
-    public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
-            return oldItem.getUserID() == newItem.getUserID();
-        }
+    @Override
+    public boolean isEmpty() {
+        return soundSequence.isEmpty();
+    }
 
-        @Override
-        public boolean areContentsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
-            return oldItem.soundSequence.equals(newItem.soundSequence);
+    @Nullable
+    public Instrument getInstrument() {
+        if (soundSequence.isEmpty()) {
+            return null;
         }
-    };
+        return soundSequence.get(0).getInstrument();
+    }
+
+    @NonNull
+    public List<Sound> getSoundsFor(int currentTime, boolean finishSounds) {
+        List<Sound> sounds = new ArrayList<>();
+        for (Sound sound : soundSequence) {
+            // add sounds that start at given time
+            if (sound.getStartTime() == currentTime) {
+                sounds.add(sound);
+            }
+            if (finishSounds) {
+                // finish sounds that were interrupted because of pause or that were jumped to because of forwarding
+                if (sound.getStartTime() < currentTime && currentTime < sound.getEndTime()) {
+                    sounds.add(sound);
+                }
+            }
+        }
+        return sounds;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    @NonNull
+    public List<Sound> getSoundSequence() {
+        return soundSequence;
+    }
+
+    public BaseSoundPool getSoundPool() {
+        return soundPool;
+    }
+
+    @NonNull
+    @Override
+    public SingleSoundtrack clone() throws CloneNotSupportedException {
+        return (SingleSoundtrack) super.clone();
+    }
 
     public interface OnDeleteListener {
         void onDeleteSoundtrackButtonClicked(@NonNull SingleSoundtrack singleSoundtrack);

@@ -7,6 +7,7 @@
     <data>
 
         <import type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack.State" />
+
         <import type="android.view.View" />
 
         <variable

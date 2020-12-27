@@ -51,7 +51,7 @@ public class SoundtrackRepository {
     public void fetchSoundtracks(int currentRoomID) {
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
-        if(!fetching) {
+        if (!fetching) {
             startFetchingSoundtracks();
             fetching = true;
         }
@@ -77,15 +77,15 @@ public class SoundtrackRepository {
     private List<SingleSoundtrack> generateTestSoundtracks() {
         Random random = new Random();
         List<SingleSoundtrack> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             List<Sound> soundSequence = new ArrayList<>();
             int soundAmount = 10; // random.nextInt(30)+10;
             String[] instruments = {"flute", "drums", "shaker"};
             String serverString = "flute";
-            for(int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(Sound.PITCH_RANGE+1);
+            for (int j = 0; j < soundAmount; j++) {
+                int pitch = random.nextInt(Sound.PITCH_RANGE + 1);
                 int element = 0;
-                soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
+                soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
             }
             SingleSoundtrack singleSoundtrack = new SingleSoundtrack(i, soundSequence);
             singleSoundtrack.loadSounds(context);

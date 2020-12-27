@@ -52,7 +52,7 @@ public abstract class Error {
 
     @NonNull
     public static Error from(Throwable throwable) {
-        if(throwable instanceof NoInternetConnectionException) {
+        if (throwable instanceof NoInternetConnectionException) {
             return new NoInternetConnectionError();
         }
         return new GenericError();

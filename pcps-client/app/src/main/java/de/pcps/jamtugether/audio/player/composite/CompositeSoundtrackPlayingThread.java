@@ -41,13 +41,6 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     }
 
     @Override
-    protected void stopAllSounds() {
-        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            singleSoundtrack.getSoundPool().stopAllSounds();
-        }
-    }
-
-    @Override
     public void setVolume(float volume) {
         compositeSoundtrack.postVolume(volume);
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
@@ -63,6 +56,13 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
                     singleSoundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
                 }
             }
+        }
+    }
+
+    @Override
+    protected void stopAllSounds() {
+        for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+            singleSoundtrack.getSoundPool().stopAllSounds();
         }
     }
 }

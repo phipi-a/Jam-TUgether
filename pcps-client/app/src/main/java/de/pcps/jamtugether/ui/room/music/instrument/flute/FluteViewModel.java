@@ -18,6 +18,7 @@ public class FluteViewModel extends ViewModel {
     private static final float PITCH_MULTIPLIER = 3f;
     private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
+    @NonNull
     private final Flute flute = Flute.getInstance();
 
     private int streamID;
@@ -29,7 +30,7 @@ public class FluteViewModel extends ViewModel {
     private final MediaRecorder soundRecorder;
 
     @NonNull
-    private final Thread soundReactThread;
+    private final Thread soundRecordingThread;
 
     public FluteViewModel() {
         soundRecorder = new MediaRecorder();
@@ -42,7 +43,7 @@ public class FluteViewModel extends ViewModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        soundReactThread = createThread();
+        soundRecordingThread = createThread();
     }
 
     @NonNull
@@ -69,7 +70,7 @@ public class FluteViewModel extends ViewModel {
 
     public void startRecording() {
         soundRecorder.start();
-        soundReactThread.start();
+        soundRecordingThread.start();
     }
 
     public void onPitchChanged(float newPitch) {
@@ -83,20 +84,20 @@ public class FluteViewModel extends ViewModel {
     }
 
     private void stopRecording() {
-        soundReactThread.interrupt();
+        soundRecordingThread.interrupt();
         soundRecorder.stop();
         soundRecorder.release();
         flute.stop();
+    }
+
+    @NonNull
+    public LiveData<Float> getPitchPercentage() {
+        return pitchPercentage;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         stopRecording();
-    }
-
-    @NonNull
-    public LiveData<Float> getPitchPercentage() {
-        return pitchPercentage;
     }
 }

@@ -13,10 +13,12 @@ public class JamTUgetherApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AppInjector.buildAppComponent(this);
-        if(BuildConfig.DEBUG) {
+
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        for(Instrument instrument : Instruments.LIST) {
+
+        for (Instrument instrument : Instruments.LIST) {
             instrument.loadSounds(this.getApplicationContext());
         }
     }

@@ -18,6 +18,36 @@ public class CompositeSoundtrack extends Soundtrack {
         this.soundtracks = soundtracks;
     }
 
+    @Override
+    public int getLength() {
+        if (isEmpty()) {
+            return 0;
+        }
+        int maxLength = 0;
+
+        for (SingleSoundtrack singleSoundtrack : soundtracks) {
+            int length = singleSoundtrack.getLength();
+            if (length > maxLength) {
+                maxLength = length;
+            }
+        }
+        return maxLength;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return soundtracks.isEmpty();
+    }
+
+    @NonNull
+    public List<Integer> getUserIDs() {
+        List<Integer> userIDs = new ArrayList<>();
+        for (SingleSoundtrack soundtrack : soundtracks) {
+            userIDs.add(soundtrack.getUserID());
+        }
+        return userIDs;
+    }
+
     @NonNull
     public List<SingleSoundtrack> getSoundtracks() {
         return soundtracks;
@@ -29,7 +59,7 @@ public class CompositeSoundtrack extends Soundtrack {
         // composite soundtrack list are not tied to the ones shown in the UI
 
         List<SingleSoundtrack> clonedList = new ArrayList<>();
-        for(SingleSoundtrack singleSoundtrack : soundtracks) {
+        for (SingleSoundtrack singleSoundtrack : soundtracks) {
             try {
                 clonedList.add(singleSoundtrack.clone());
             } catch (CloneNotSupportedException exception) {
@@ -37,35 +67,5 @@ public class CompositeSoundtrack extends Soundtrack {
             }
         }
         return new CompositeSoundtrack(clonedList);
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return soundtracks.isEmpty();
-    }
-
-    @Override
-    public int getLength() {
-        if(isEmpty()) {
-            return 0;
-        }
-        int maxLength = 0;
-
-        for(SingleSoundtrack singleSoundtrack : soundtracks) {
-            int length = singleSoundtrack.getLength();
-            if(length > maxLength) {
-                maxLength = length;
-            }
-        }
-        return maxLength;
-    }
-
-    @NonNull
-    public List<Integer> getUserIDs() {
-        List<Integer> userIDs = new ArrayList<>();
-        for(SingleSoundtrack soundtrack : soundtracks) {
-            userIDs.add(soundtrack.getUserID());
-        }
-        return userIDs;
     }
 }
