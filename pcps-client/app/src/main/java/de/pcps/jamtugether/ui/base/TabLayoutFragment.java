@@ -28,7 +28,7 @@ public abstract class TabLayoutFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(tabLayout != null) {
+        if (tabLayout != null) {
             tabLayout.unregisterOnPageChangeCallback();
         }
     }

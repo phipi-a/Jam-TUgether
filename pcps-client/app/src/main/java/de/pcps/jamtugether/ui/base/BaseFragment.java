@@ -13,7 +13,9 @@ import androidx.fragment.app.FragmentActivity;
 public abstract class BaseFragment extends Fragment {
 
     private FragmentActivity fragmentActivity;
+
     protected AppCompatActivity activity;
+
     protected Context context;
 
     @NonNull

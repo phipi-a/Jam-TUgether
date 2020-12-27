@@ -18,12 +18,12 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
-import de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.player.SoundtrackPlayers;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -37,7 +37,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
     SoundtrackRepository soundtrackRepository;
 
     @Inject
-    SoundtrackPlayers soundtrackPlayers;
+    SoundtrackController soundtrackController;
 
     private final int roomID;
 
@@ -86,14 +86,14 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
         List<SingleSoundtrack> soundtracks = getAllSoundtracks().getValue();
-        if(soundtracks == null || !soundtracks.contains(soundtrack)) {
+        if (soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
         }
 
         // delete from local list
         List<SingleSoundtrack> newList = new ArrayList<>();
-        for(SingleSoundtrack singleSoundtrack : soundtracks) {
-            if(singleSoundtrack != soundtrack) {
+        for (SingleSoundtrack singleSoundtrack : soundtracks) {
+            if (singleSoundtrack != soundtrack) {
                 newList.add(singleSoundtrack);
             }
         }
@@ -156,7 +156,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     @NonNull
     public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
-        return soundtrackPlayers;
+        return soundtrackController;
     }
 
     @NonNull
@@ -174,6 +174,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         return showRoomDeletionConfirmDialog;
     }
 
+    @NonNull
     public LiveData<Boolean> getLeaveRoom() {
         return leaveRoom;
     }

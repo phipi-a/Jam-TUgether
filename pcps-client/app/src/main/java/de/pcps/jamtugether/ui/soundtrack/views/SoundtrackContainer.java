@@ -10,8 +10,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class SoundtrackContainer extends ConstraintLayout {
 
@@ -43,5 +43,9 @@ public class SoundtrackContainer extends ConstraintLayout {
     public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
         soundtrackView.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);
         line.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);
+    }
+
+    public SoundtrackView getSoundtrackView() {
+        return soundtrackView;
     }
 }

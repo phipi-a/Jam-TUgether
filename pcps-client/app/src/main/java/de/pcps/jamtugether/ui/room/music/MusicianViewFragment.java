@@ -43,7 +43,7 @@ public class MusicianViewFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             roomID = getArguments().getInt(ROOM_ID_KEY);
             token = getArguments().getString(TOKEN_KEY);
 
@@ -57,26 +57,26 @@ public class MusicianViewFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMusicianViewBinding binding = FragmentMusicianViewBinding.inflate(inflater, container, false);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             addSoundtrackFragment();
         }
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
-            if(showFluteFragment) {
+            if (showFluteFragment) {
                 replaceInstrumentFragment(FluteFragment.newInstance());
                 viewModel.onFluteFragmentShown();
             }
         });
 
         viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
-            if(showDrumsFragment) {
+            if (showDrumsFragment) {
                 replaceInstrumentFragment(DrumsFragment.newInstance());
                 viewModel.onDrumsFragmentShown();
             }
         });
 
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
-            if(showShakerFragment) {
+            if (showShakerFragment) {
                 replaceInstrumentFragment(ShakerFragment.newInstance());
                 viewModel.onShakerFragmentShown();
             }

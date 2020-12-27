@@ -9,10 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
-import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Flute;
 
 public class FluteViewModel extends ViewModel {
 
@@ -21,10 +18,10 @@ public class FluteViewModel extends ViewModel {
     private static final float PITCH_MULTIPLIER = 3f;
     private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
-    @Inject
-    Flute flute;
+    @NonNull
+    private final Flute flute = Flute.getInstance();
 
-    private int fluteStreamingID;
+    private int streamID;
 
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
@@ -33,10 +30,9 @@ public class FluteViewModel extends ViewModel {
     private final MediaRecorder soundRecorder;
 
     @NonNull
-    private final Thread soundReactThread;
+    private final Thread soundRecordingThread;
 
     public FluteViewModel() {
-        AppInjector.inject(this);
         soundRecorder = new MediaRecorder();
         soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -47,7 +43,7 @@ public class FluteViewModel extends ViewModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        soundReactThread = createThread();
+        soundRecordingThread = createThread();
     }
 
     @NonNull
@@ -59,11 +55,11 @@ public class FluteViewModel extends ViewModel {
                     int maxAmplitude = soundRecorder.getMaxAmplitude();
                     if (maxAmplitude != 0) {
                         if (maxAmplitude < 10000) {
-                            fluteStreamingID = flute.stop();
+                            streamID = flute.stop();
                         } else {
-                            if (fluteStreamingID == 0 && pitchPercentage.getValue() != null) {
+                            if (streamID == 0 && pitchPercentage.getValue() != null) {
                                 float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
-                                fluteStreamingID = flute.play(pitch);
+                                streamID = flute.play(pitch);
                             }
                         }
                     }
@@ -74,7 +70,7 @@ public class FluteViewModel extends ViewModel {
 
     public void startRecording() {
         soundRecorder.start();
-        soundReactThread.start();
+        soundRecordingThread.start();
     }
 
     public void onPitchChanged(float newPitch) {
@@ -88,20 +84,20 @@ public class FluteViewModel extends ViewModel {
     }
 
     private void stopRecording() {
-        soundReactThread.interrupt();
+        soundRecordingThread.interrupt();
         soundRecorder.stop();
         soundRecorder.release();
         flute.stop();
+    }
+
+    @NonNull
+    public LiveData<Float> getPitchPercentage() {
+        return pitchPercentage;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         stopRecording();
-    }
-
-    @NonNull
-    public LiveData<Float> getPitchPercentage() {
-        return pitchPercentage;
     }
 }

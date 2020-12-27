@@ -35,14 +35,14 @@ public class CreateRoomFragment extends BaseFragment {
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if(networkError != null) {
+            if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
         });
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
-            if(navigateToJamRoom) {
+            if (navigateToJamRoom) {
                 NavigationUtils.navigateToRoomAsAdmin(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getPassword(), viewModel.getToken());
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();

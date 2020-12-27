@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.api.repositories;
 
+import android.content.Context;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
@@ -14,24 +15,22 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.api.Constants;
-import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.responses.soundtrack.PushSoundtrackResponse;
-import de.pcps.jamtugether.api.responses.soundtrack.SoundtrackListResponse;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.music.sound.Sound;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-// todo uncomment when sound track service is done
+// todo add calls
 @Singleton
 public class SoundtrackRepository {
 
     @NonNull
     private final SoundtrackService soundtrackService;
+
+    @NonNull
+    private final Context context;
 
     private int currentRoomID;
 
@@ -44,29 +43,15 @@ public class SoundtrackRepository {
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     @Inject
-    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService) {
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
-    }
-
-    private void getAllSoundtracks(int roomID, @NonNull JamCallback<SoundtrackListResponse> callback) {
-        //Call<SoundtrackListResponse> call = soundtrackService.getAllSoundtracks(roomID);
-        //call.enqueue(callback);
-    }
-
-    public void pushSoundtrack(@NonNull SingleSoundtrack singleSoundtrack, int roomID, @NonNull JamCallback<PushSoundtrackResponse> callback) {
-        //Call<PushSoundtrackResponse> call = soundtrackService.publishSoundtrack(soundtrack, roomID);
-        //call.enqueue(callback);
-    }
-
-    public void deleteSoundtrack(@NonNull SingleSoundtrack singleSoundtrack, int roomID, @NonNull JamCallback<PushSoundtrackResponse> callback) {
-        //Call<DeleteSoundtrackResponse> call = soundtrackService.deleteSoundtrack(soundtrack, roomID);
-        //call.enqueue(callback);
+        this.context = context;
     }
 
     public void fetchSoundtracks(int currentRoomID) {
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
-        if(!fetching) {
+        if (!fetching) {
             startFetchingSoundtracks();
             fetching = true;
         }
@@ -79,25 +64,12 @@ public class SoundtrackRepository {
             @Override
             public void run() {
                 fetchSoundtracks();
-                handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
+                //handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
         }.run();
     }
 
     private void fetchSoundtracks() {
-        getAllSoundtracks(currentRoomID, new JamCallback<SoundtrackListResponse>() {
-            @Override
-            public void onSuccess(@NonNull SoundtrackListResponse response) {
-                allSoundtracks.setValue(response.getAllSoundtracks());
-            }
-
-            @Override
-            public void onError(@NonNull Error error) {
-                networkError.setValue(error);
-            }
-        });
-
-        // todo uncomment this line when soundtrack service is done
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 
@@ -105,16 +77,19 @@ public class SoundtrackRepository {
     private List<SingleSoundtrack> generateTestSoundtracks() {
         Random random = new Random();
         List<SingleSoundtrack> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             List<Sound> soundSequence = new ArrayList<>();
-            int soundAmount = random.nextInt(30)+10;
+            int soundAmount = 10; // random.nextInt(30)+10;
             String[] instruments = {"flute", "drums", "shaker"};
-            String serverString = instruments[i % instruments.length];
-            for(int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(Sound.PITCH_RANGE+1);
-                soundSequence.add(new Sound(serverString, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
+            String serverString = "flute";
+            for (int j = 0; j < soundAmount; j++) {
+                int pitch = random.nextInt(Sound.PITCH_RANGE + 1);
+                int element = 0;
+                soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
             }
-            list.add(new SingleSoundtrack(i, soundSequence));
+            SingleSoundtrack singleSoundtrack = new SingleSoundtrack(i, soundSequence);
+            singleSoundtrack.loadSounds(context);
+            list.add(singleSoundtrack);
         }
         return list;
     }

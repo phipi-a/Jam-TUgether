@@ -6,16 +6,17 @@
 
     <data>
 
-        <import type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.State" />
+        <import type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack.State" />
+
         <import type="android.view.View" />
 
         <variable
             name="soundtrack"
-            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack" />
+            type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack" />
 
         <variable
             name="onChangeListener"
-            type="de.pcps.jamtugether.model.music.soundtrack.base.Soundtrack.OnChangeCallback" />
+            type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack.OnChangeCallback" />
 
     </data>
 
@@ -102,7 +103,7 @@
             android:layout_marginStart="@dimen/soundtrack_stop_icon_margin_start"
             android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
-            android:visibility="@{soundtrack.getState() == State.IDLE ? View.INVISIBLE : View.VISIBLE}"
+            android:visibility="@{soundtrack.getState() == State.IDLE || soundtrack.getState() == State.STOPPED ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />

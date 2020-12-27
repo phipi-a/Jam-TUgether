@@ -33,7 +33,7 @@ public class RoomFragment extends TabLayoutFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             RoomFragmentArgs args = RoomFragmentArgs.fromBundle(getArguments());
             this.roomID = args.getRoomID();
             this.password = args.getPassword();
@@ -51,14 +51,14 @@ public class RoomFragment extends TabLayoutFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
-            if(showLeaveRoomConfirmationDialog) {
+            if (showLeaveRoomConfirmationDialog) {
                 UiUtils.showConfirmationDialog(activity, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
 
         viewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
-            if(navigateBack) {
+            if (navigateBack) {
                 this.navigateBack();
                 viewModel.onNavigatedBack();
             }

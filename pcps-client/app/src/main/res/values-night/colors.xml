@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- dark mode -->
     <color name="colorPrimary">@color/black</color>
     <color name="colorPrimaryVariant">@color/black</color>
     <color name="colorOnPrimary">@color/black</color>

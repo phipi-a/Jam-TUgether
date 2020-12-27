@@ -23,7 +23,7 @@ public class JamTabLayout extends TabLayout {
             JamTabLayout tabLayout = JamTabLayout.this;
             for (int currentPosition = 0; currentPosition < tabLayout.getTabCount(); currentPosition++) {
                 Tab tab = tabLayout.getTabAt(currentPosition);
-                if(tab == null || tab.getCustomView() == null) {
+                if (tab == null || tab.getCustomView() == null) {
                     continue;
                 }
                 JamTabView tabView = (JamTabView) tab.getCustomView();

@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.ui.menu.join;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,14 +36,14 @@ public class JoinRoomFragment extends BaseFragment {
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if(networkError != null) {
+            if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
         });
 
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
-            if(navigateToRegularRoom) {
+            if (navigateToRegularRoom) {
                 NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getToken(), viewModel.getPassword());
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();

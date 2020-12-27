@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.navigation);
 
-        if(preferences.userNeverChoseInstrument()) {
+        if (preferences.userNeverChoseInstrument()) {
             graph.setStartDestination(R.id.welcome_fragment);
         } else {
             graph.setStartDestination(R.id.menu_fragment);

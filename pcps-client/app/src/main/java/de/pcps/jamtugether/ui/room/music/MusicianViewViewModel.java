@@ -1,14 +1,15 @@
 package de.pcps.jamtugether.ui.room.music;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.model.instrument.Drums;
-import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.Shaker;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback {
 
@@ -33,16 +34,12 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
-        switch (instrument.getServerString()) {
-            case Flute.SERVER_STRING:
-                showFluteFragment.setValue(true);
-                break;
-            case Drums.SERVER_STRING:
-                showDrumsFragment.setValue(true);
-                break;
-            case Shaker.SERVER_STRING:
-                showShakerFragment.setValue(true);
-                break;
+        if (instrument == Flute.getInstance()) {
+            showFluteFragment.setValue(true);
+        } else if (instrument == Drums.getInstance()) {
+            showDrumsFragment.setValue(true);
+        } else if (instrument == Shaker.getInstance()) {
+            showShakerFragment.setValue(true);
         }
     }
 
@@ -63,17 +60,17 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowFluteFragment() {
+    public LiveData<Boolean> getShowFluteFragment() {
         return showFluteFragment;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowDrumsFragment() {
+    public LiveData<Boolean> getShowDrumsFragment() {
         return showDrumsFragment;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getShowShakerFragment() {
+    public LiveData<Boolean> getShowShakerFragment() {
         return showShakerFragment;
     }
 

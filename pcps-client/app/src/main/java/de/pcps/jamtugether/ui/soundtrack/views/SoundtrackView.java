@@ -13,12 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import de.pcps.jamtugether.model.instrument.Drums;
-import de.pcps.jamtugether.model.instrument.Flute;
-import de.pcps.jamtugether.model.instrument.Shaker;
-import de.pcps.jamtugether.model.music.sound.Sound;
-import de.pcps.jamtugether.model.music.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.music.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class SoundtrackView extends View {
 
@@ -63,17 +64,17 @@ public class SoundtrackView extends View {
 
     @ColorInt
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
-        String instrumentString = singleSoundtrack.getSoundSequence().get(0).getInstrument();
-        switch (instrumentString) {
-            case Flute.SERVER_STRING:
-                return Color.BLUE;
-            case Drums.SERVER_STRING:
-                return Color.RED;
-            case Shaker.SERVER_STRING:
-                return Color.GREEN;
-            default:
-                return Color.GRAY;
+        Instrument instrument = singleSoundtrack.getSoundSequence().get(0).getInstrument();
+        if (instrument == Flute.getInstance()) {
+            return Color.BLUE;
         }
+        if (instrument == Drums.getInstance()) {
+            return Color.RED;
+        }
+        if (instrument == Shaker.getInstance()) {
+            return Color.GREEN;
+        }
+        return Color.GRAY;
     }
 
     private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, boolean asLines) {
@@ -82,7 +83,7 @@ public class SoundtrackView extends View {
         }
         paint.setColor(getPaintColor(singleSoundtrack));
 
-        if(asLines) {
+        if (asLines) {
             drawLines(canvas, singleSoundtrack);
         } else {
             drawRectangles(canvas, singleSoundtrack);

@@ -25,7 +25,7 @@ public class SoundtrackItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.top = UiUtils.getPixels(context, R.dimen.soundtrack_item_margin_top);
 
-        if(parent.getChildAdapterPosition(view) == state.getItemCount() - 1) { // last item
+        if (parent.getChildAdapterPosition(view) == state.getItemCount() - 1) { // last item
             outRect.bottom = UiUtils.getPixels(context, R.dimen.soundtrack_last_item_bottom);
         }
     }

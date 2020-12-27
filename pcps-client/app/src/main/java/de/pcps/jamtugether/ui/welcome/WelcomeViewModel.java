@@ -9,18 +9,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.storage.Preferences;
 
 public class WelcomeViewModel extends ViewModel implements Instrument.ClickListener {
 
     @Inject
     Preferences preferences;
-
-    @Inject
-    Instruments instruments;
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
@@ -38,7 +35,7 @@ public class WelcomeViewModel extends ViewModel implements Instrument.ClickListe
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return instruments.getList();
+        return Instruments.LIST;
     }
 
     public void onNavigatedToMenu() {

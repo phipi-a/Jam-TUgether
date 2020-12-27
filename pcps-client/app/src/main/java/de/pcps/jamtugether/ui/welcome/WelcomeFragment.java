@@ -35,7 +35,7 @@ public class WelcomeFragment extends BaseFragment {
         adapter.submitList(viewModel.getInstruments());
 
         viewModel.getNavigateToMenu().observe(getViewLifecycleOwner(), navigateToMenu -> {
-            if(navigateToMenu) {
+            if (navigateToMenu) {
                 NavigationUtils.navigateToMenu(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToMenu();
             }

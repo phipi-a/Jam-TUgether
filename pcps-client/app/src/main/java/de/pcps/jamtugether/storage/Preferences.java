@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.model.instrument.base.Instrument;
-import de.pcps.jamtugether.model.instrument.base.Instruments;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
 
 @Singleton
 public class Preferences {
@@ -21,13 +21,9 @@ public class Preferences {
     @NonNull
     private final SharedPreferences sharedPreferences;
 
-    @NonNull
-    private final Instruments instruments;
-
     @Inject
-    public Preferences(@NonNull SharedPreferences sharedPreferences, @NonNull Instruments instruments) {
+    public Preferences(@NonNull SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        this.instruments = instruments;
     }
 
     private boolean getBoolean(@NonNull String key, boolean defaultValue) {
@@ -57,8 +53,8 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, instruments.getFallback().getPreferenceValue());
-        return instruments.fromPreferences(preferenceValue);
+        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
+        return Instruments.fromPreferences(preferenceValue);
     }
 
     public void setMainInstrument(@NonNull Instrument mainInstrument) {
