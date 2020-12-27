@@ -27,7 +27,7 @@ public abstract class Soundtrack {
 
     public Soundtrack() {
         this.state = new MutableLiveData<>(State.IDLE);
-        this.volume = new MutableLiveData<>(0f);
+        this.volume = new MutableLiveData<>(100f);
         this.progress = new MutableLiveData<>(0);
     }
 

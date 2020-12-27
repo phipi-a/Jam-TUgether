@@ -40,6 +40,6 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @Override
     public void setVolume(float volume) {
         soundtrack.postVolume(volume);
-        soundPool.setVolume(volume);
+        soundPool.setVolume(volume / 100);
     }
 }

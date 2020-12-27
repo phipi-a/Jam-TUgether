@@ -42,7 +42,7 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     public void setVolume(float volume) {
         compositeSoundtrack.postVolume(volume);
         for(SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            singleSoundtrack.getSoundPool().setVolume(volume);
+            singleSoundtrack.getSoundPool().setVolume(volume / 100);
         }
     }
 }

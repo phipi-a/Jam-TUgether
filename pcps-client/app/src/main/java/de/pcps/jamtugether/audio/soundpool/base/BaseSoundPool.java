@@ -62,6 +62,7 @@ public abstract class BaseSoundPool {
     }
 
     public int onPlaySoundRes(int soundResID, float pitch, int length) {
+        // todo add ability to add length
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
             return 0;
