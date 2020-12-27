@@ -1,20 +1,14 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import javax.inject.Inject;
-
-import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.Drums;
 
 public class DrumsViewModel extends ViewModel {
 
-    @Inject
-    Drums drums;
-
-    public DrumsViewModel() {
-        AppInjector.inject(this);
-    }
+    @NonNull
+    private final Drums drums = Drums.getInstance();
 
     public void onSnareClicked() {
         drums.playSnare();

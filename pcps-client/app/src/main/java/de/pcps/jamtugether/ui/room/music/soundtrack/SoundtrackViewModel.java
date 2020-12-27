@@ -35,9 +35,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     Preferences preferences;
 
     @Inject
-    Instruments instruments;
-
-    @Inject
     SoundtrackRepository soundtrackRepository;
 
     @Inject
@@ -113,7 +110,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return instruments.getList();
+        return Instruments.LIST;
     }
 
     public int getRoomID() {

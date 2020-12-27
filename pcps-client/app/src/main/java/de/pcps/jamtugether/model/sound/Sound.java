@@ -2,6 +2,9 @@ package de.pcps.jamtugether.model.sound;
 
 import androidx.annotation.NonNull;
 
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
+
 // the client receives this object from the server
 public class Sound {
 
@@ -27,8 +30,8 @@ public class Sound {
     }
 
     @NonNull
-    public String getInstrument() {
-        return instrument;
+    public Instrument getInstrument() {
+        return Instruments.fromServer(instrument);
     }
 
     public int getElement() {

@@ -24,23 +24,22 @@ public abstract class Instrument {
     @NonNull
     private final String serverString;
 
-    @NonNull
-    protected final Context context;
+    protected BaseSoundPool soundPool;
 
-    @NonNull
-    protected final BaseSoundPool soundPool;
-
-    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString, @NonNull Context context) {
+    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
         this.ordinal = ordinal;
         this.name = name;
         this.helpMessage = helpMessage;
         this.preferenceValue = preferenceValue;
         this.serverString = serverString;
-        this.context = context;
-        this.soundPool = createSoundPool();
     }
 
-    public abstract BaseSoundPool createSoundPool();
+    public void loadSounds(@NonNull Context context) {
+        soundPool = createSoundPool(context);
+    }
+
+    @NonNull
+    public abstract BaseSoundPool createSoundPool(@NonNull Context context);
 
     public int stop() {
         soundPool.stopAllSounds();

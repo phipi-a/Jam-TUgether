@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -51,14 +52,13 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
     public List<Sound> getSoundsFor(int currentTime) {
         List<Sound> sounds = new ArrayList<>();
         for (Sound sound : soundSequence) {
-            if (justResumed) {
-                // add sounds that were interrupted because of pause + sounds that start at given time
-                if (sound.getStartTime() <= currentTime && currentTime < sound.getEndTime()) {
-                    sounds.add(sound);
-                }
-            } else {
-                // only add sounds that start at given time
-                if (sound.getStartTime() == currentTime) {
+            // add sounds that start at given time
+            if(sound.getStartTime() == currentTime) {
+                sounds.add(sound);
+            }
+            if(justResumed) {
+                // add sounds that were interrupted because of pause
+                if (sound.getStartTime() < currentTime && currentTime < sound.getEndTime()) {
                     sounds.add(sound);
                 }
             }
@@ -67,7 +67,7 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
     }
 
     @Nullable
-    public String getInstrument() {
+    public Instrument getInstrument() {
         if (soundSequence.isEmpty()) {
             return null;
         }
@@ -78,8 +78,8 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
         if(isEmpty()) {
             return;
         }
-        String instrument = soundSequence.get(0).getInstrument();
-        soundPool = BaseSoundPool.from(instrument, context);
+        Instrument instrument = soundSequence.get(0).getInstrument();
+        soundPool = instrument.createSoundPool(context);
     }
 
     public BaseSoundPool getSoundPool() {

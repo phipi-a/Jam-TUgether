@@ -31,8 +31,4 @@ public interface AppComponent {
     void inject(RoomOverviewViewModel roomOverviewViewModel);
 
     void inject(SoundtrackViewModel soundtrackViewModel);
-
-    void inject(FluteViewModel fluteViewModel);
-
-    void inject(DrumsViewModel drumsViewModel);
 }

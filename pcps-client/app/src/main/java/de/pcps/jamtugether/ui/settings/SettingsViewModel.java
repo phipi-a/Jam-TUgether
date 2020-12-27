@@ -18,9 +18,6 @@ public class SettingsViewModel extends ViewModel implements Instrument.ClickList
     @Inject
     Preferences preferences;
 
-    @Inject
-    Instruments instruments;
-
     public SettingsViewModel() {
         AppInjector.inject(this);
     }
@@ -37,6 +34,6 @@ public class SettingsViewModel extends ViewModel implements Instrument.ClickList
 
     @NonNull
     public List<Instrument> getInstruments() {
-        return instruments.getList();
+        return Instruments.LIST;
     }
 }

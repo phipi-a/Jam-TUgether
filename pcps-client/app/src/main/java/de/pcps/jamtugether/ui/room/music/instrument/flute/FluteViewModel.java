@@ -21,8 +21,7 @@ public class FluteViewModel extends ViewModel {
     private static final float PITCH_MULTIPLIER = 3f;
     private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
-    @Inject
-    Flute flute;
+    private final Flute flute = Flute.getInstance();
 
     private int fluteStreamingID;
 
@@ -36,7 +35,6 @@ public class FluteViewModel extends ViewModel {
     private final Thread soundReactThread;
 
     public FluteViewModel() {
-        AppInjector.inject(this);
         soundRecorder = new MediaRecorder();
         soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
