@@ -8,6 +8,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
+import timber.log.Timber;
 
 public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
@@ -17,12 +18,11 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @NonNull
     private final BaseSoundPool soundPool;
 
-    public SingleSoundtrackPlayingThread(@NonNull SingleSoundtrack soundtrack, @NonNull Instruments instruments) {
+    public SingleSoundtrackPlayingThread(@NonNull SingleSoundtrack soundtrack) {
         super(soundtrack);
         this.soundtrack = soundtrack;
 
-        Instrument instrument = instruments.fromServer(soundtrack.getInstrument());
-        soundPool = instrument.createSoundPool();
+        soundPool = soundtrack.getSoundPool();
     }
 
     @Override
@@ -37,6 +37,7 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
         soundPool.stop();
     }
 
+    @Override
     public void setVolume(float volume) {
         soundtrack.postVolume(volume);
         soundPool.setVolume(volume);

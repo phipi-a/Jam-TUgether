@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 public class SoundtrackNavigationLine extends View {
 
@@ -32,6 +33,7 @@ public class SoundtrackNavigationLine extends View {
     }
 
     private void onProgressChanged(Integer progress) {
+        Timber.d("progress: %d", progress);
         // todo draw
     }
 }

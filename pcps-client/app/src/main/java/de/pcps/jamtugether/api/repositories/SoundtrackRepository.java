@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.api.repositories;
 
+import android.content.Context;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
@@ -14,7 +15,6 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.model.sound.Sound;
@@ -29,6 +29,9 @@ public class SoundtrackRepository {
     @NonNull
     private final SoundtrackService soundtrackService;
 
+    @NonNull
+    private final Context context;
+
     private int currentRoomID;
 
     private boolean fetching;
@@ -40,8 +43,9 @@ public class SoundtrackRepository {
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     @Inject
-    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService) {
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
+        this.context = context;
     }
 
     public void fetchSoundtracks(int currentRoomID) {
@@ -60,7 +64,7 @@ public class SoundtrackRepository {
             @Override
             public void run() {
                 fetchSoundtracks();
-                handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
+                //handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
         }.run();
     }
@@ -75,7 +79,7 @@ public class SoundtrackRepository {
         List<SingleSoundtrack> list = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
             List<Sound> soundSequence = new ArrayList<>();
-            int soundAmount = random.nextInt(30)+10;
+            int soundAmount = 10; // random.nextInt(30)+10;
             String[] instruments = {"flute", "drums", "shaker"};
             String serverString = "flute";
             for(int j = 0; j < soundAmount; j++) {
@@ -83,7 +87,9 @@ public class SoundtrackRepository {
                 int element = 0;
                 soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j+1), pitch));
             }
-            list.add(new SingleSoundtrack(i, soundSequence));
+            SingleSoundtrack singleSoundtrack = new SingleSoundtrack(i, soundSequence);
+            singleSoundtrack.loadSounds(context);
+            list.add(singleSoundtrack);
         }
         return list;
     }

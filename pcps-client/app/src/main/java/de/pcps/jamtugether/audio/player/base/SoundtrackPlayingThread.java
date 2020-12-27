@@ -14,9 +14,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private boolean stopped = false;
 
     private int progressInMillis = 0;
-
-    private long startTimeMillis = -1;
-    private int lastMillis = -1;
+    private long lastMillis = -1;
 
     @NonNull
     private final Soundtrack soundtrack;
@@ -27,21 +25,28 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     @Override
     public void run() {
-        while (!paused && !stopped) {
-            if (startTimeMillis == -1) {
-                startTimeMillis = System.currentTimeMillis();
+        while (!stopped) {
+            if(paused) {
+                continue;
             }
-            int millis = (int) (System.currentTimeMillis() - startTimeMillis);
+            long millis = System.currentTimeMillis();
             if (millis == lastMillis) {
                 continue;
             }
+            if(lastMillis == -1) {
+                this.progressInMillis = 0;
+            } else {
+                this.progressInMillis += (int) (millis - lastMillis);
+            }
             this.lastMillis = millis;
-            play(millis);
+            soundtrack.postProgress(calculateProgress(progressInMillis));
+            play(progressInMillis);
             if (soundtrack.getJustResumed()) {
                 soundtrack.setJustResumed(false);
             }
-            if (millis == soundtrack.getLength()) {
+            if (progressInMillis == soundtrack.getLength()) {
                 soundtrack.postState(Soundtrack.State.IDLE);
+                stopSound();
                 stopped = true;
             }
         }
@@ -62,6 +67,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void resumeSoundtrack() {
+        lastMillis = System.currentTimeMillis();
         paused = false;
         soundtrack.setJustResumed(true);
         soundtrack.postState(Soundtrack.State.PLAYING);
@@ -70,21 +76,15 @@ public abstract class SoundtrackPlayingThread extends Thread {
     public void fastForward() {
         stopSound();
         int progressInMillis = this.progressInMillis + FAST_FORWARD_OFFSET;
-        if (progressInMillis > soundtrack.getLength()) {
-            return;
-        }
-        this.progressInMillis = progressInMillis;
-        soundtrack.postProgress(progressInMillis / soundtrack.getLength() * 100);
+        this.progressInMillis = Math.min(progressInMillis, soundtrack.getLength());
+        soundtrack.postProgress(calculateProgress(progressInMillis));
     }
 
     public void fastRewind() {
         stopSound();
         int progressInMillis = this.progressInMillis + FAST_REWIND_OFFSET;
-        if (progressInMillis < 0) {
-            return;
-        }
-        this.progressInMillis = progressInMillis;
-        soundtrack.postProgress(progressInMillis / soundtrack.getLength() * 100);
+        this.progressInMillis = Math.max(progressInMillis, 0);
+        soundtrack.postProgress(calculateProgress(progressInMillis));
     }
 
     public void stopSoundtrack() {
@@ -93,6 +93,12 @@ public abstract class SoundtrackPlayingThread extends Thread {
         stopped = true;
         soundtrack.postState(Soundtrack.State.STOPPED);
     }
+
+    private int calculateProgress(int millis) {
+        return millis / soundtrack.getLength() * 100;
+    }
+
+    protected abstract void setVolume(float volume);
 
     protected abstract void stopSound();
 }

@@ -14,7 +14,7 @@ public abstract class Soundtrack {
     private final MutableLiveData<State> state;
 
     @NonNull
-    private final MutableLiveData<Integer> progress; // 1 - 100
+    private final MutableLiveData<Integer> progress;
 
     @NonNull
     private final MutableLiveData<Float> volume;
@@ -36,10 +36,6 @@ public abstract class Soundtrack {
         return state;
     }
 
-    public void setState(@NonNull State state) {
-        this.state.setValue(state);
-    }
-
     public void postState(@NonNull State state) {
         this.state.postValue(state);
     }
@@ -47,6 +43,10 @@ public abstract class Soundtrack {
     @NonNull
     public LiveData<Float> getVolume() {
         return volume;
+    }
+
+    public void postVolume(float volume) {
+        this.volume.postValue(volume);
     }
 
     public void setVolume(float volume) {
@@ -59,11 +59,7 @@ public abstract class Soundtrack {
     }
 
     public void postProgress(int progress) {
-        this.progress.setValue(progress);
-    }
-
-    public void postVolume(float volume) {
-        this.volume.postValue(volume);
+        this.progress.postValue(progress);
     }
 
     public boolean getJustResumed() {
@@ -73,6 +69,8 @@ public abstract class Soundtrack {
     public void setJustResumed(boolean justResumed) {
         this.justResumed = justResumed;
     }
+
+    public abstract boolean isEmpty();
 
     /**
      * @return Soundtrack length in millis

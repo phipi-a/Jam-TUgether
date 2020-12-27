@@ -9,12 +9,19 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
+import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
+/**
+ * This player is responsible for playing every single soundtrack of the app
+ * It keeps track of what thread is responsible for what soundtrack
+ */
 @Singleton
-public class SingleSoundtrackPlayer {
+public class SingleSoundtrackPlayer extends SoundtrackPlayer {
 
+    @NonNull
     private final HashMap<Integer, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @NonNull
@@ -25,84 +32,34 @@ public class SingleSoundtrackPlayer {
         this.instruments = instruments;
     }
 
-    public void changeVolume(@NonNull SingleSoundtrack soundtrack, float volume) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack) != null ? getThread(soundtrack) : createThread(soundtrack);
-        thread.setVolume(volume);
-    }
-
-    public void playOrPause(@NonNull SingleSoundtrack soundtrack) {
-        if (soundtrack.getSoundSequence().isEmpty()) {
-            return;
+    @Nullable
+    @Override
+    protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
+        if(soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            return threadMap.get(singleSoundtrack.getUserID());
         }
-
-        Soundtrack.State state = soundtrack.getState().getValue();
-
-        if (state == null) {
-            return;
-        }
-
-        switch (state) {
-            case PLAYING:
-                pause(soundtrack);
-                break;
-            case PAUSED:
-                resume(soundtrack);
-                break;
-            case IDLE:
-            case STOPPED:
-                play(soundtrack);
-        }
-    }
-
-    private void play(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = createThread(soundtrack);
-        thread.start();
-    }
-
-    private void pause(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack);
-        if (thread != null) {
-            thread.pause();
-        }
-    }
-
-    private void resume(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack);
-        if (thread != null) {
-            thread.resumeSoundtrack();
-        }
-    }
-
-    public void fastForward(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack);
-        if (thread != null) {
-            thread.fastForward();
-        }
-    }
-
-    public void fastRewind(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack);
-        if (thread != null) {
-            thread.fastRewind();
-        }
-    }
-
-    public void stop(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = getThread(soundtrack);
-        if (thread != null) {
-            thread.stopSoundtrack();
-        }
+        return null;
     }
 
     @Nullable
-    private SingleSoundtrackPlayingThread getThread(@NonNull SingleSoundtrack soundtrack) {
-        return threadMap.get(soundtrack.getUserID());
+    @Override
+    protected SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack) {
+        if(soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            SingleSoundtrackPlayingThread thread = new SingleSoundtrackPlayingThread(singleSoundtrack);
+            threadMap.put(singleSoundtrack.getUserID(), thread);
+            return thread;
+        }
+        return null;
     }
 
-    @NonNull
-    private SingleSoundtrackPlayingThread createThread(@NonNull SingleSoundtrack soundtrack) {
-        SingleSoundtrackPlayingThread thread = new SingleSoundtrackPlayingThread(soundtrack, instruments);
-        threadMap.put(soundtrack.getUserID(), thread);
-        return thread;
+    @Override
+    public void stop(@NonNull Soundtrack soundtrack) {
+        super.stop(soundtrack);
+        if(soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            threadMap.remove(singleSoundtrack.getUserID());
+        }
     }
 }

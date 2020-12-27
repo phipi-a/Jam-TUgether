@@ -40,8 +40,13 @@ public class CompositeSoundtrack extends Soundtrack {
     }
 
     @Override
+    public boolean isEmpty() {
+        return soundtracks.isEmpty();
+    }
+
+    @Override
     public int getLength() {
-        if(soundtracks.isEmpty()) {
+        if(isEmpty()) {
             return 0;
         }
         int maxLength = 0;

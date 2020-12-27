@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
+import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 
 // todo
@@ -32,6 +33,6 @@ public class Shaker extends Instrument {
 
     @Override
     public BaseSoundPool createSoundPool() {
-        return new FluteSoundPool(context);
+        return new ShakerSoundPool(context);
     }
 }

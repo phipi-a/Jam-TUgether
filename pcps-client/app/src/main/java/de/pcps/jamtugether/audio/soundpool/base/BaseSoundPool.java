@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.Shaker;
 import de.pcps.jamtugether.audio.instrument.SoundResource;
-import timber.log.Timber;
+import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
+import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
+import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
 
 /**
  * A simple sound pool wrapper
@@ -68,8 +72,6 @@ public abstract class BaseSoundPool {
                 streamIDs.add(streamID);
             }
             return streamID;
-        } else {
-            Timber.w("sound not loaded yet");
         }
         return 0;
     }
@@ -97,5 +99,17 @@ public abstract class BaseSoundPool {
 
     public boolean soundIsLoaded(int soundID) {
         return loadedSoundIDs.contains(soundID);
+    }
+
+    @NonNull
+    public static BaseSoundPool from(@NonNull String instrument, @NonNull Context context) {
+        switch (instrument) {
+            case Drums.SERVER_STRING:
+                return new DrumsSoundPool(context);
+            case Shaker.SERVER_STRING:
+                return new ShakerSoundPool(context);
+            default:
+                return new FluteSoundPool(context);
+        }
     }
 }

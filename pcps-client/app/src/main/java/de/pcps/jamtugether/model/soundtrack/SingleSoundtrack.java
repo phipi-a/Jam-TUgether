@@ -1,5 +1,7 @@
 package de.pcps.jamtugether.model.soundtrack;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
@@ -7,8 +9,10 @@ import androidx.recyclerview.widget.DiffUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 public class SingleSoundtrack extends Soundtrack implements Cloneable {
 
@@ -16,6 +20,11 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
 
     @NonNull
     private final List<Sound> soundSequence;
+
+    /**
+     * The sound pool on which this soundtrack is being played
+     */
+    private BaseSoundPool soundPool;
 
     public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
         super();
@@ -65,9 +74,26 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
         return soundSequence.get(0).getInstrument();
     }
 
+    public void loadSounds(@NonNull Context context) {
+        if(isEmpty()) {
+            return;
+        }
+        String instrument = soundSequence.get(0).getInstrument();
+        soundPool = BaseSoundPool.from(instrument, context);
+    }
+
+    public BaseSoundPool getSoundPool() {
+        return soundPool;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return soundSequence.isEmpty();
+    }
+
     @Override
     public int getLength() {
-        if (soundSequence.isEmpty()) {
+        if (isEmpty()) {
             return 0;
         }
         Sound firstSound = soundSequence.get(0);
