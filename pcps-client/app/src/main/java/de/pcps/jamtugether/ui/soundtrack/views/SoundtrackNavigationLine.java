@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 public class SoundtrackNavigationLine extends View {
 

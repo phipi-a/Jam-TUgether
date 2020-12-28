@@ -11,6 +11,7 @@ import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
+import timber.log.Timber;
 
 public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
@@ -20,6 +21,7 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     public CompositeSoundtrackPlayingThread(@NonNull CompositeSoundtrack soundtrack) {
         super(soundtrack);
         this.compositeSoundtrack = soundtrack;
+        Timber.d("composite soundtrack: %s", compositeSoundtrack);
     }
 
     @NonNull
@@ -28,12 +30,8 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
         List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             for (Sound sound : singleSoundtrack.getSoundsFor(millis, finishSounds)) {
-                BaseSoundPool soundPool = singleSoundtrack.getSoundPool();
-                if (soundPool == null) {
-                    continue;
-                }
                 int soundRes = singleSoundtrack.getInstrument().getSoundResource(sound.getElement());
-                int streamID = soundPool.playSoundRes(soundRes, sound.getPitch());
+                int streamID = singleSoundtrack.getSoundPool().playSoundRes(soundRes, sound.getPitch());
                 soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
             }
         }
@@ -42,7 +40,7 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
     @Override
     public void setVolume(float volume) {
-        compositeSoundtrack.postVolume(volume);
+        compositeSoundtrack.setVolume(volume);
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             singleSoundtrack.getSoundPool().setVolume(volume / 100);
         }

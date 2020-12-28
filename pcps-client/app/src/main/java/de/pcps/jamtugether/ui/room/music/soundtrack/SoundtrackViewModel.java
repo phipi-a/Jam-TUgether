@@ -57,11 +57,17 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
 
+    @NonNull
+    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
+
     public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.onChangeCallback = onChangeCallback;
         soundtrackRepository.fetchSoundtracks(roomID);
+
+        // save live data reference in order to assign exact same live data to multiple observers
+        this.compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
 
         Instrument mainInstrument = preferences.getMainInstrument();
         onChangeCallback.onInstrumentChanged(mainInstrument);
@@ -137,7 +143,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return soundtrackRepository.getCompositeSoundtrack();
+        return compositeSoundtrack;
     }
 
     @NonNull

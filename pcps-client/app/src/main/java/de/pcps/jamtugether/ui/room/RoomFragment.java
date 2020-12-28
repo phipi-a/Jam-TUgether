@@ -15,7 +15,7 @@ import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
 import de.pcps.jamtugether.ui.base.TabLayoutFragment;
 import de.pcps.jamtugether.ui.base.views.JamTabView;
 import de.pcps.jamtugether.ui.room.music.MusicianViewFragment;
-import de.pcps.jamtugether.ui.room.overview.RoomOverviewFragment;
+import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class RoomFragment extends TabLayoutFragment {
@@ -91,7 +91,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? RoomOverviewFragment.newInstance(roomID, password, token, admin) : MusicianViewFragment.newInstance(roomID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, admin) : MusicianViewFragment.newInstance(roomID, token);
             }
 
             @Override

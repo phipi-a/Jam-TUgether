@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -21,6 +22,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 // todo add calls
 @Singleton
@@ -70,6 +72,7 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks() {
+        Timber.d("fetchSoundtracks()");
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 
@@ -110,7 +113,7 @@ public class SoundtrackRepository {
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
+        return Transformations.map(getAllSoundtracks(), allSoundtracks -> CompositeSoundtrack.from(allSoundtracks, context));
     }
 
     @NonNull

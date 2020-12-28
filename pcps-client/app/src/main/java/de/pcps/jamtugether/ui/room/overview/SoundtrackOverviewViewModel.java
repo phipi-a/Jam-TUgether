@@ -25,7 +25,7 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
-public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
+public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
     @Inject
     Application application;
@@ -65,9 +65,12 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
     @NonNull
     private final MutableLiveData<Boolean> leaveRoom = new MutableLiveData<>();
 
+    @NonNull
+    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
+
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    public RoomOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.password = password;
@@ -76,6 +79,9 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         this.userStatusChangeCallback = userStatusChangeCallback;
 
         soundtrackRepository.fetchSoundtracks(roomID);
+
+        // save live data reference in order to assign exact same live data to multiple observers
+        this.compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
     }
 
     @Override
@@ -181,7 +187,7 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return soundtrackRepository.getCompositeSoundtrack();
+        return compositeSoundtrack;
     }
 
     @NonNull
@@ -226,8 +232,8 @@ public class RoomOverviewViewModel extends ViewModel implements SingleSoundtrack
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(RoomOverviewViewModel.class)) {
-                return (T) new RoomOverviewViewModel(roomID, password, token, admin, userStatusChangeCallback);
+            if (modelClass.isAssignableFrom(SoundtrackOverviewViewModel.class)) {
+                return (T) new SoundtrackOverviewViewModel(roomID, password, token, admin, userStatusChangeCallback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

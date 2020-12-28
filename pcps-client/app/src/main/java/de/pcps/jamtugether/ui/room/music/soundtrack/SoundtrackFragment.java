@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;

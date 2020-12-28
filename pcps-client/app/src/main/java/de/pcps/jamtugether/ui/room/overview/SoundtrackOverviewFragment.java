@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
@@ -24,18 +26,18 @@ import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
-public class RoomOverviewFragment extends BaseFragment {
+public class SoundtrackOverviewFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
     private static final String PASSWORD_KEY = "password_key";
     private static final String TOKEN_KEY = "token_key";
     private static final String ADMIN_KEY = "admin_key";
 
-    private RoomOverviewViewModel viewModel;
+    private SoundtrackOverviewViewModel viewModel;
 
     @NonNull
-    public static RoomOverviewFragment newInstance(int roomID, @NonNull String password, @NonNull String token, boolean admin) {
-        RoomOverviewFragment fragment = new RoomOverviewFragment();
+    public static SoundtrackOverviewFragment newInstance(int roomID, @NonNull String password, @NonNull String token, boolean admin) {
+        SoundtrackOverviewFragment fragment = new SoundtrackOverviewFragment();
         Bundle args = new Bundle();
 
         args.putInt(ROOM_ID_KEY, roomID);
@@ -57,8 +59,8 @@ public class RoomOverviewFragment extends BaseFragment {
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
             RoomViewModel roomViewModel = new ViewModelProvider(activity, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
-            RoomOverviewViewModel.Factory viewModelFactory = new RoomOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(RoomOverviewViewModel.class);
+            SoundtrackOverviewViewModel.Factory viewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackOverviewViewModel.class);
         }
     }
 

@@ -9,6 +9,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public abstract class SoundtrackPlayingThread extends Thread {
 
@@ -22,7 +23,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private boolean justForwarded = false;
     private boolean justResumed = false;
 
-    private int progressInMillis = 0;
+    private int progressInMillis;
 
     /**
      * last time stamp of thread
@@ -96,16 +97,21 @@ public abstract class SoundtrackPlayingThread extends Thread {
     public void play() {
         lastMillis = System.currentTimeMillis();
         if (!running) {
+            progressInMillis = 0;
             super.start();
             running = true;
+        }
+        if(finished) {
+            progressInMillis = 0;
+            finished = false;
         }
         soundtrack.postProgress(calculateProgress(progressInMillis));
         soundtrack.postState(Soundtrack.State.PLAYING);
     }
 
     public void pause() {
-        stopAllSounds();
         paused = true;
+        stopAllSounds();
         soundtrack.postState(Soundtrack.State.PAUSED);
     }
 

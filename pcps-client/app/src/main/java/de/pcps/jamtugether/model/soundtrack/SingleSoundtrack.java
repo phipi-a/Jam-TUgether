@@ -15,7 +15,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import timber.log.Timber;
 
-public class SingleSoundtrack extends Soundtrack implements Cloneable {
+public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
@@ -40,8 +40,6 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
      */
     private BaseSoundPool soundPool;
 
-    private int length;
-
     public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
         super();
         this.userID = userID;
@@ -58,6 +56,7 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
 
     @Override
     public int getLength() {
+
         if (isEmpty()) {
             return 0;
         }
@@ -111,9 +110,10 @@ public class SingleSoundtrack extends Soundtrack implements Cloneable {
     }
 
     @NonNull
-    @Override
-    public SingleSoundtrack clone() throws CloneNotSupportedException {
-        return (SingleSoundtrack) super.clone();
+    public SingleSoundtrack clone(@NonNull Context context) {
+        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.soundSequence);
+        cloned.loadSounds(context);
+        return cloned;
     }
 
     public interface OnDeleteListener {
