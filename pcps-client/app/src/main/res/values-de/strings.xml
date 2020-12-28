@@ -1,3 +1,59 @@
 <resources>
     <string name="app_name">Jam TUgether</string>
+
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+    <string name="choose_main_instrument">Wähle dein Hauptinstrument</string>
+    <string name="main_instrument_info">Dieses Instrument wird für dich bei Betreten eines Raumes automatisch ausgewählt. Du kannst das in den Einstellungen jederzeit ändern.</string>
+    <string name="join_room_info">Raum betreten</string>
+    <string name="room_id">Raum ID</string>
+
+    <string name="instrument_flute">Flöte</string>
+    <string name="instrument_drums">Schlagzeug</string>
+    <string name="instrument_shaker">Rassel</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="main_instrument">Hauptinstrument</string>
+
+    <string name="create_room">Raum erstellen</string>
+    <string name="join_room">Raum betreten</string>
+
+    <string name="password">Passwort</string>
+
+    <string name="room_over_view">Übersicht</string>
+    <string name="musician_view">Musikeransicht</string>
+
+    <string name="room_input_empty">Du musst einen Raum eingeben.</string>
+    <string name="room_invalid">Dieser Raum ist ungültig.</string>
+    <string name="password_input_empty">Du musst ein Passwort eingeben.</string>
+
+    <string name="play_instrument_format">%s spielen</string>
+    <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
+    <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
+    <string name="play_shaker_help">Schüttel dein Handy.</string>
+
+    <string name="room_format">Raum %d</string>
+
+    <string name="leave_room">Raum verlassen</string>
+    <string name="leave_room_confirmation">Bist du dir sicher, dass du diesen Raum verlassen willst?</string>
+
+    <string name="delete_soundtrack">Tonspur löschen</string>
+    <string name="delete_soundtrack_confirmation">Bist du dir sicher, dass du diese Tonspur löschen willst?</string>
+
+    <string name="delete_room">Raum löschen</string>
+    <string name="delete_room_confirmation">Bist du dir sicher, dass du diesen Raum löschen willst?</string>
+
+    <string name="unauthorized_access_error_title">Fehler</string>
+    <string name="unauthorized_access_error_message">Raum oder Passwort ist ungültig.</string>
+    <string name="internal_server_error_title">Fehler</string>
+    <string name="internal_server_error_message">Etwas ist schief gelaufen.</string>
+    <string name="password_too_large_error_title">Fehler</string>
+    <string name="password_too_large_error_message">Passwort ist zu lang.</string>
+    <string name="forbidden_access_error_title">Fehler</string>
+    <string name="forbidden_access_error_message">Etwas ist schief gelaufen.</string>
+    <string name="no_internet_connection_title">Kein Internet</string>
+    <string name="no_internet_connection_message">Du hast keine Internetverbindung.</string>
+    <string name="generic_error_title">Fehler</string>
+    <string name="generic_error_message">Etwas ist schief gelaufen.</string>
 </resources>

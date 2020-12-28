@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">@color/black</color>
+    <color name="colorPrimaryVariant">@color/black</color>
+    <color name="colorOnPrimary">@color/black</color>
+    <color name="colorSecondary">@color/black</color>
+    <color name="colorSecondaryVariant">@color/black</color>
+    <color name="colorOnSecondary">@color/black</color>
+
+    <color name="buttonBorderColor">@color/white</color>
+    <color name="primaryTextColor">@color/white</color>
+    <color name="iconColor">@color/white</color>
+    <color name="volumeSliderTickActiveColor">@color/white</color>
+    <color name="volumeSliderTickInactiveColor">@color/gray</color>
+    <color name="clearButtonColor">@color/black</color>
+    <color name="clearButtonBackgroundColor">@color/white</color>
+    <color name="soundtrackNavigationLineColor">@color/white</color>
+
+</resources>

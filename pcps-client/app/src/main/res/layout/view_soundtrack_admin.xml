@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <data>
+
+        <variable
+            name="soundtrack"
+            type="de.pcps.jamtugether.model.soundtrack.SingleSoundtrack" />
+
+        <variable
+            name="onChangeListener"
+            type="de.pcps.jamtugether.model.soundtrack.SingleSoundtrack.OnDeleteListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+        android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/soundtrack_controls_layout"
+            layout="@layout/view_soundtrack_controls" />
+
+        <!-- "margin top" = "sound track margin top * (-1)" in order to
+             align the actual sound track view to the bottom of the controls
+             Otherwise, the clear button would be aligned to the control layout
+             leaving too much space between the controls and the actual view -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp">
+
+            <include
+                android:id="@+id/soundtrack_container"
+                layout="@layout/view_soundtrack_container"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/soundtrack_view_height"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/delete_button"
+                android:layout_width="@dimen/soundtrack_item_clear_button_width"
+                android:layout_height="@dimen/soundtrack_item_clear_button_width"
+                android:background="@drawable/bg_button_clear"
+                android:onClick="@{() -> onChangeListener.onDeleteSoundtrackButtonClicked(soundtrack)}"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/clearButtonColor" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

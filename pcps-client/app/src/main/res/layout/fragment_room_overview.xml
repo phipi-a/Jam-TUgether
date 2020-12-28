@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="de.pcps.jamtugether.ui.room.overview.RoomOverviewViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/room_id_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/room_id_text_view_margin_start"
+            android:layout_marginTop="@dimen/room_id_text_view_margin_top"
+            android:text="@{@string/room_format(viewModel.getRoomID())}"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/delete_room_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/room_id_text_view_margin_top"
+            android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
+            android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
+            android:text="@string/delete_room"
+            android:textSize="16dp"
+            android:visibility="@{viewModel.getAdmin() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/composite_soundtrack_layout"
+            layout="@layout/view_soundtrack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="@dimen/composite_soundtrack_margin_top"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_soundtracks_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/composite_soundtrack_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
