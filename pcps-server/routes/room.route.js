@@ -200,6 +200,7 @@ roomRoute.post('/login', async (req, res) => {
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
+      await updateRoom(req.body.roomID)
       const token = await createToken('User', req.body.roomID)
       res.status(201).send(createJSON(req.body.roomID.toString(), token))
     } else {
