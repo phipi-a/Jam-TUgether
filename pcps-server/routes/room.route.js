@@ -24,6 +24,12 @@ async function createRoom (roomID, password, object) {
   })
 }
 
+// Update "updated" to current time
+async function updateRoom (roomID) {
+  const newDate = new Date(Date.now())
+  const room = RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
+}
+
 /**
  * @openapi
  * /api/create-room:
@@ -187,6 +193,7 @@ roomRoute.post('/login', async (req, res) => {
   try {
     // Search room with roomID in database
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+    console.log(req.body.roomID, room)
 
     if (!room) {
       return res.status(401).send('No room with matching roomId found')
@@ -231,6 +238,7 @@ roomRoute.get('/room/{id}', async (req, res) => {
   if (room == null) {
     res.status(500).send('Room does not exist!')
   } else {
+    await updateRoom(req.params.id)
     res.status(200).send(room.track)
   }
 })
@@ -258,9 +266,8 @@ roomRoute.post('/test', verify, async (req, res) => {
   res.status(200).send('blub')
 })
 
-roomRoute.post('/test2', verify, async (req, res) => {
-  const numberOfRooms = await RoomSchema.count().exec()
-  console.log(numberOfRooms)
+roomRoute.post('/test2', async (req, res) => {
+  updateRoom(req.body.roomID)
   res.status(200).send('test2')
 })
 
