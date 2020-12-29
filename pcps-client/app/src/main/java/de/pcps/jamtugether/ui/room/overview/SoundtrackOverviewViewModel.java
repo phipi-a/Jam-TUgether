@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room.overview;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -51,7 +52,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final UserStatusChangeCallback userStatusChangeCallback;
 
     @NonNull
-    private final MutableLiveData<Boolean> admin;
+    private final MutableLiveData<Boolean> userIsAdmin;
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
@@ -63,25 +64,47 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>();
 
     @NonNull
-    private final MutableLiveData<Boolean> leaveRoom = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
 
     @NonNull
-    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
+
+    @NonNull
+    private final List<SingleSoundtrack> previousSoundtracks;
 
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean userIsAdmin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.password = password;
         this.token = token;
-        this.admin = new MutableLiveData<>(admin);
+        this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
         this.userStatusChangeCallback = userStatusChangeCallback;
+        this.previousSoundtracks = new ArrayList<>();
 
         soundtrackRepository.fetchSoundtracks(roomID);
+    }
 
-        // save live data reference in order to assign exact same live data to multiple observers
-        this.compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
+    public void observeSoundtrackRepository(@NonNull LifecycleOwner lifecycleOwner) {
+        // when soundtracks are updated, UI attributes are being reset
+        // which is why the previous UI state has to be set manually
+        soundtrackRepository.getAllSoundtracks().observe(lifecycleOwner, singleSoundtracks -> {
+            if(!previousSoundtracks.isEmpty()) {
+                for(SingleSoundtrack previousSoundtrack : previousSoundtracks) {
+                    for(SingleSoundtrack currentSoundtrack : singleSoundtracks) {
+                        if(previousSoundtrack.getUserID() == currentSoundtrack.getUserID()) {
+                            currentSoundtrack.setVolume(previousSoundtrack.getVolume());
+                            currentSoundtrack.setState(previousSoundtrack.getState().getValue());
+                            currentSoundtrack.setProgress(previousSoundtrack.getProgress().getValue());
+                        }
+                    }
+                }
+            }
+            previousSoundtracks.clear();
+            previousSoundtracks.addAll(singleSoundtracks);
+            this.allSoundtracks.setValue(singleSoundtracks);
+        });
     }
 
     @Override
@@ -114,7 +137,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         roomRepository.deleteRoom(roomID, password, token, new JamCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
-                leaveRoom.setValue(true);
+                navigateBack.setValue(true);
             }
 
             @Override
@@ -152,8 +175,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         showRoomDeletionConfirmDialog.setValue(false);
     }
 
-    public void onLeftRoom() {
-        leaveRoom.setValue(false);
+    public void onRoomDeleted() {
+        navigateBack.setValue(false);
+        soundtrackController.stopPlayers();
     }
 
     public int getRoomID() {
@@ -166,8 +190,8 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Boolean> getAdmin() {
-        return admin;
+    public LiveData<Boolean> getUserIsAdmin() {
+        return userIsAdmin;
     }
 
     @NonNull
@@ -181,18 +205,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Boolean> getLeaveRoom() {
-        return leaveRoom;
-    }
-
-    @NonNull
-    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return compositeSoundtrack;
+    public LiveData<Boolean> getNavigateBack() {
+        return navigateBack;
     }
 
     @NonNull
     public LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
-        return soundtrackRepository.getAllSoundtracks();
+        return allSoundtracks;
     }
 
     @NonNull

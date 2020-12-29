@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
+import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
@@ -22,7 +23,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
 
     @NonNull
-    protected final HashMap<List<Integer>, SoundtrackPlayingThread> threadMap = new HashMap<>();
+    private final HashMap<List<Integer>, SoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
     public CompositeSoundtrackPlayer() {
@@ -58,5 +59,13 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getUserIDs());
         }
+    }
+
+    @Override
+    public void stop() {
+        for(SoundtrackPlayingThread thread : threadMap.values()) {
+            thread.stopThread();
+        }
+        threadMap.clear();
     }
 }

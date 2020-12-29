@@ -38,6 +38,10 @@ public abstract class Soundtrack {
         return state;
     }
 
+    public void setState(@NonNull State state) {
+        this.state.setValue(state);
+    }
+
     public void postState(@NonNull State state) {
         this.state.postValue(state);
     }
@@ -53,6 +57,10 @@ public abstract class Soundtrack {
     @NonNull
     public LiveData<Integer> getProgress() {
         return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress.setValue(progress);
     }
 
     public void postProgress(int progress) {

@@ -10,6 +10,7 @@ import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackController implements Soundtrack.OnChangeCallback {
@@ -69,5 +70,10 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
         } else {
             compositeSoundtrackPlayer.stop((CompositeSoundtrack) soundtrack);
         }
+    }
+
+    public void stopPlayers() {
+        singleSoundtrackPlayer.stop();
+        compositeSoundtrackPlayer.stop();
     }
 }

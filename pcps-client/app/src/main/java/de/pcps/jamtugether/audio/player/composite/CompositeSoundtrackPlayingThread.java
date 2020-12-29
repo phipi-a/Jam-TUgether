@@ -21,7 +21,6 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     public CompositeSoundtrackPlayingThread(@NonNull CompositeSoundtrack soundtrack) {
         super(soundtrack);
         this.compositeSoundtrack = soundtrack;
-        Timber.d("composite soundtrack: %s", compositeSoundtrack);
     }
 
     @NonNull

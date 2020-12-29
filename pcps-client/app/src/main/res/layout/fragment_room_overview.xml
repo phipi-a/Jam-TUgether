@@ -37,7 +37,7 @@
             android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
             android:text="@string/delete_room"
             android:textSize="16dp"
-            android:visibility="@{viewModel.getAdmin() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.getUserIsAdmin() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

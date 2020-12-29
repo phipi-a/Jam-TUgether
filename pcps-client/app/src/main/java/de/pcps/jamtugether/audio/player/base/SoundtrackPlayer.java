@@ -81,6 +81,8 @@ public abstract class SoundtrackPlayer {
         }
     }
 
+    public abstract void stop();
+
     @Nullable
     protected abstract SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack);
 

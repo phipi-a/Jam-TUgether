@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
@@ -33,7 +33,8 @@ public class SoundtrackOverviewFragment extends BaseFragment {
     private static final String TOKEN_KEY = "token_key";
     private static final String ADMIN_KEY = "admin_key";
 
-    private SoundtrackOverviewViewModel viewModel;
+    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
+    private SoundtrackOverviewViewModel soundtrackOverviewViewModel;
 
     @NonNull
     public static SoundtrackOverviewFragment newInstance(int roomID, @NonNull String password, @NonNull String token, boolean admin) {
@@ -58,9 +59,13 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
-            RoomViewModel roomViewModel = new ViewModelProvider(activity, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
-            SoundtrackOverviewViewModel.Factory viewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(SoundtrackOverviewViewModel.class);
+            Fragment roomFragment = getParentFragment();
+
+            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID)).get(CompositeSoundtrackViewModel.class);
+
+            RoomViewModel roomViewModel = new ViewModelProvider(roomFragment, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
+            SoundtrackOverviewViewModel.Factory soundtrackOverviewViewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
+            soundtrackOverviewViewModel = new ViewModelProvider(this, soundtrackOverviewViewModelFactory).get(SoundtrackOverviewViewModel.class);
         }
     }
 
@@ -69,59 +74,61 @@ public class SoundtrackOverviewFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentRoomOverviewBinding binding = FragmentRoomOverviewBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setViewModel(viewModel);
+        binding.setViewModel(soundtrackOverviewViewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, viewModel.getCompositeSoundtrack(), viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
-        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(viewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        soundtrackOverviewViewModel.observeSoundtrackRepository(getViewLifecycleOwner());
+
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
+        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(compositeSoundtrackViewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
 
         final Runnable commitCallback = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
 
-        viewModel.getAdmin().observe(getViewLifecycleOwner(), admin -> {
+        soundtrackOverviewViewModel.getUserIsAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {
-                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(viewModel.getSoundtrackOnChangeCallback(), viewModel, getViewLifecycleOwner());
+                AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), soundtrackOverviewViewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
+                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             } else {
-                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(viewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
+                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
+                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             }
         });
 
-        viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        soundtrackOverviewViewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
-                viewModel.onSoundtrackRepositoryNetworkErrorShown();
+                soundtrackOverviewViewModel.onSoundtrackRepositoryNetworkErrorShown();
             }
         });
 
-        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        soundtrackOverviewViewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
-                viewModel.onNetworkErrorShown();
+                soundtrackOverviewViewModel.onNetworkErrorShown();
             }
         });
 
-        viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
+        soundtrackOverviewViewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
             if (showSoundtrackDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
-                viewModel.onSoundtrackDeletionConfirmDialogShown();
+                UiUtils.showConfirmationDialog(activity, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, soundtrackOverviewViewModel::onSoundtrackDeletionConfirmButtonClicked);
+                soundtrackOverviewViewModel.onSoundtrackDeletionConfirmDialogShown();
             }
         });
 
-        viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
+        soundtrackOverviewViewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
             if (showRoomDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
-                viewModel.onRoomDeletionConfirmDialogShown();
+                UiUtils.showConfirmationDialog(activity, R.string.delete_room, R.string.delete_room_confirmation, soundtrackOverviewViewModel::onRoomDeletionConfirmButtonClicked);
+                soundtrackOverviewViewModel.onRoomDeletionConfirmDialogShown();
             }
         });
 
-        viewModel.getLeaveRoom().observe(getViewLifecycleOwner(), leaveRoom -> {
+        soundtrackOverviewViewModel.getNavigateBack().observe(getViewLifecycleOwner(), leaveRoom -> {
             if (leaveRoom) {
                 NavigationUtils.navigateBack(NavHostFragment.findNavController(this));
-                viewModel.onLeftRoom();
+                soundtrackOverviewViewModel.onRoomDeleted();
             }
         });
 

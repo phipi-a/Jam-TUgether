@@ -6,11 +6,19 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import javax.inject.Inject;
+
+import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.di.AppInjector;
+
 public class RoomViewModel extends ViewModel implements UserStatusChangeCallback {
+
+    @Inject
+    SoundtrackController soundtrackController;
 
     private final int roomID;
 
-    private boolean admin;
+    private boolean userIsAdmin;
 
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
@@ -18,9 +26,10 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    public RoomViewModel(int roomID, boolean admin) {
+    public RoomViewModel(int roomID, boolean userIsAdmin) {
+        AppInjector.inject(this);
         this.roomID = roomID;
-        this.admin = admin;
+        this.userIsAdmin = userIsAdmin;
     }
 
     public void handleBackPressed() {
@@ -29,7 +38,7 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     @Override
     public void onUserStatusChanged(boolean admin) {
-        this.admin = admin;
+        this.userIsAdmin = admin;
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -42,6 +51,7 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
     }
 
     private void onUserLeft() {
+        soundtrackController.stopPlayers();
         // todo tell sever
         //  add admin info
     }
@@ -64,11 +74,11 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
         private final int roomID;
 
-        private final boolean admin;
+        private final boolean userIsAdmin;
 
-        public Factory(int roomID, boolean admin) {
+        public Factory(int roomID, boolean userIsAdmin) {
             this.roomID = roomID;
-            this.admin = admin;
+            this.userIsAdmin = userIsAdmin;
         }
 
         @SuppressWarnings("unchecked")
@@ -76,7 +86,7 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomViewModel.class)) {
-                return (T) new RoomViewModel(roomID, admin);
+                return (T) new RoomViewModel(roomID, userIsAdmin);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

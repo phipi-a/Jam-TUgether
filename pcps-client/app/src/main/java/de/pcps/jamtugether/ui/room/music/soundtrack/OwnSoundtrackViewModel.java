@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -26,7 +25,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class SoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
+public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
     @Inject
     Application application;
@@ -46,6 +45,7 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     private final Instrument.OnChangeCallback onChangeCallback;
 
     private String helpDialogTitle;
+
     private String helpDialogMessage;
 
     @NonNull
@@ -57,17 +57,11 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
 
-    @NonNull
-    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
-
-    public SoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
+    public OwnSoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.onChangeCallback = onChangeCallback;
         soundtrackRepository.fetchSoundtracks(roomID);
-
-        // save live data reference in order to assign exact same live data to multiple observers
-        this.compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
 
         Instrument mainInstrument = preferences.getMainInstrument();
         onChangeCallback.onInstrumentChanged(mainInstrument);
@@ -142,11 +136,6 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
     }
 
     @NonNull
-    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return compositeSoundtrack;
-    }
-
-    @NonNull
     public LiveData<SingleSoundtrack> getOwnSoundtrack() {
         return ownSoundtrack;
     }
@@ -172,8 +161,8 @@ public class SoundtrackViewModel extends ViewModel implements Instrument.ClickLi
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(SoundtrackViewModel.class)) {
-                return (T) new SoundtrackViewModel(roomID, onChangeCallback);
+            if (modelClass.isAssignableFrom(OwnSoundtrackViewModel.class)) {
+                return (T) new OwnSoundtrackViewModel(roomID, onChangeCallback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

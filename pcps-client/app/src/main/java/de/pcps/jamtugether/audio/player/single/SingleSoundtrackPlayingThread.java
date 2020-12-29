@@ -6,23 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
+import timber.log.Timber;
 
 public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
     @NonNull
     private final SingleSoundtrack soundtrack;
 
-    @NonNull
-    private final BaseSoundPool soundPool;
-
     public SingleSoundtrackPlayingThread(@NonNull SingleSoundtrack soundtrack) {
         super(soundtrack);
         this.soundtrack = soundtrack;
-        this.soundPool = soundtrack.getSoundPool();
     }
 
     @NonNull
@@ -31,7 +27,7 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
         List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
         for (Sound sound : soundtrack.getSoundsFor(millis, finishSounds)) {
             int soundRes = soundtrack.getInstrument().getSoundResource(sound.getElement());
-            int streamID = soundPool.playSoundRes(soundRes, sound.getPitch());
+            int streamID = soundtrack.getSoundPool().playSoundRes(soundRes, sound.getPitch());
             soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
         }
         return soundsWithStreamIDs;
@@ -40,20 +36,20 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @Override
     public void setVolume(float volume) {
         soundtrack.setVolume(volume);
-        soundPool.setVolume(volume / 100);
+        soundtrack.getSoundPool().setVolume(volume / 100);
     }
 
     @Override
     protected void stopSounds(int millis) {
         for (Sound sound : soundtrack.getSoundSequence()) {
             if (sound.getEndTime() == millis && streamIDsMap.containsKey(sound)) {
-                soundPool.stopSound(streamIDsMap.get(sound));
+                soundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
             }
         }
     }
 
     @Override
     protected void stopAllSounds() {
-        soundPool.stopAllSounds();
+        soundtrack.getSoundPool().stopAllSounds();
     }
 }

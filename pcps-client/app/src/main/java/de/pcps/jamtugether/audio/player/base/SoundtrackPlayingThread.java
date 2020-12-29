@@ -20,6 +20,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private boolean paused = false;
     private boolean stopped = false;
     private boolean finished = false;
+
     private boolean justForwarded = false;
     private boolean justResumed = false;
 
@@ -147,6 +148,11 @@ public abstract class SoundtrackPlayingThread extends Thread {
         stopped = true;
         soundtrack.postProgress(0);
         soundtrack.postState(Soundtrack.State.STOPPED);
+    }
+
+    public void stopThread() {
+        stopAllSounds();
+        stopped = true;
     }
 
     private int calculateProgress(int millis) {
