@@ -1,15 +1,14 @@
 package de.pcps.jamtugether.ui.room;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 
@@ -18,29 +17,17 @@ public class CompositeSoundtrackViewModel extends ViewModel {
     @Inject
     SoundtrackRepository soundtrackRepository;
 
-    @NonNull
-    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>();
+    @Inject
+    SoundtrackController soundtrackController;
 
-    private CompositeSoundtrack previousCompositeSoundtrack;
+    @NonNull
+    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     public CompositeSoundtrackViewModel(int roomID) {
         AppInjector.inject(this);
 
         soundtrackRepository.fetchSoundtracks(roomID);
-    }
-
-    public void observeSoundtrackRepository(@NonNull LifecycleOwner lifecycleOwner) {
-        // when soundtracks are updated, UI attributes are being reset
-        // which is why the previous UI state has to be set manually
-        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
-            if(previousCompositeSoundtrack != null) {
-                compositeSoundtrack.setVolume(previousCompositeSoundtrack.getVolume());
-                compositeSoundtrack.setState(previousCompositeSoundtrack.getState().getValue());
-                compositeSoundtrack.setProgress(previousCompositeSoundtrack.getProgress().getValue());
-            }
-            previousCompositeSoundtrack = compositeSoundtrack;
-            this.compositeSoundtrack.setValue(compositeSoundtrack);
-        });
+        compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
     }
 
     @NonNull

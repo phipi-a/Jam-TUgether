@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import javax.crypto.spec.PSource;
+
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import timber.log.Timber;
 
 /*
@@ -24,6 +27,9 @@ public abstract class Soundtrack {
         this.state = new MutableLiveData<>(State.IDLE);
         this.progress = new MutableLiveData<>(0);
         this.volume = 100f;
+        if(this instanceof CompositeSoundtrack) {
+            Timber.d("composite soundtrack created: %s, %d", hashCode(), this.progress.getValue());
+        }
     }
 
     /**
@@ -64,6 +70,9 @@ public abstract class Soundtrack {
     }
 
     public void postProgress(int progress) {
+        if(this instanceof CompositeSoundtrack) {
+            Timber.d("postProgress(): %d, hashCode(): %s", progress, this.hashCode());
+        }
         this.progress.postValue(progress);
     }
 

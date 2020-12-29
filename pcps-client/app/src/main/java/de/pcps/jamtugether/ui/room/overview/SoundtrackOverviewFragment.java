@@ -76,14 +76,14 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(soundtrackOverviewViewModel);
 
-        soundtrackOverviewViewModel.observeSoundtrackRepository(getViewLifecycleOwner());
-
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
         ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(compositeSoundtrackViewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
 
         final Runnable commitCallback = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
+
+        soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), soundtracks -> soundtrackOverviewViewModel.onSoundtracksChanged());
 
         soundtrackOverviewViewModel.getUserIsAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {

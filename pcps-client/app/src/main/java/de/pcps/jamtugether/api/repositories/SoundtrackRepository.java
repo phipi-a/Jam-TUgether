@@ -15,6 +15,7 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.model.sound.Sound;
@@ -65,13 +66,12 @@ public class SoundtrackRepository {
             @Override
             public void run() {
                 fetchSoundtracks();
-                //handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
+                handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
         }.run();
     }
 
     private void fetchSoundtracks() {
-        Timber.d("fetchSoundtracks()");
         allSoundtracks.setValue(generateTestSoundtracks());
     }
 

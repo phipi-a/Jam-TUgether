@@ -3,7 +3,6 @@ package de.pcps.jamtugether.ui.room.overview;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -23,7 +22,6 @@ import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
@@ -66,12 +64,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
 
-    @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
-
-    @NonNull
-    private final List<SingleSoundtrack> previousSoundtracks;
-
     private SingleSoundtrack soundtrackToBeDeleted;
 
     public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean userIsAdmin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
@@ -81,30 +73,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         this.token = token;
         this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
         this.userStatusChangeCallback = userStatusChangeCallback;
-        this.previousSoundtracks = new ArrayList<>();
-
-        soundtrackRepository.fetchSoundtracks(roomID);
     }
 
-    public void observeSoundtrackRepository(@NonNull LifecycleOwner lifecycleOwner) {
-        // when soundtracks are updated, UI attributes are being reset
-        // which is why the previous UI state has to be set manually
-        soundtrackRepository.getAllSoundtracks().observe(lifecycleOwner, singleSoundtracks -> {
-            if(!previousSoundtracks.isEmpty()) {
-                for(SingleSoundtrack previousSoundtrack : previousSoundtracks) {
-                    for(SingleSoundtrack currentSoundtrack : singleSoundtracks) {
-                        if(previousSoundtrack.getUserID() == currentSoundtrack.getUserID()) {
-                            currentSoundtrack.setVolume(previousSoundtrack.getVolume());
-                            currentSoundtrack.setState(previousSoundtrack.getState().getValue());
-                            currentSoundtrack.setProgress(previousSoundtrack.getProgress().getValue());
-                        }
-                    }
-                }
-            }
-            previousSoundtracks.clear();
-            previousSoundtracks.addAll(singleSoundtracks);
-            this.allSoundtracks.setValue(singleSoundtracks);
-        });
+    public void onSoundtracksChanged() {
+        soundtrackController.stopPlayers();
     }
 
     @Override
@@ -211,7 +183,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     @NonNull
     public LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
-        return allSoundtracks;
+        return soundtrackRepository.getAllSoundtracks();
     }
 
     @NonNull

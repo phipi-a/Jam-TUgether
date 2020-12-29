@@ -55,18 +55,23 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(generateTestOwnSoundtrack());
+    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>();
 
     public OwnSoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.onChangeCallback = onChangeCallback;
-        soundtrackRepository.fetchSoundtracks(roomID);
 
         Instrument mainInstrument = preferences.getMainInstrument();
         onChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
+
+        onSoundtrackCreated(generateTestOwnSoundtrack());
+    }
+
+    public void onSoundtrackCreated(@NonNull SingleSoundtrack ownSoundtrack) {
+        this.ownSoundtrack.setValue(ownSoundtrack);
     }
 
     @NonNull

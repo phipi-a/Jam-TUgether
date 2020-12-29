@@ -2,6 +2,8 @@ package de.pcps.jamtugether.audio.player;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -10,7 +12,6 @@ import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 @Singleton
 public class SoundtrackController implements Soundtrack.OnChangeCallback {

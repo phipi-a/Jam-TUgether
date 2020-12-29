@@ -28,8 +28,8 @@ public class RoomFragment extends TabLayoutFragment {
 
     private boolean userIsAdmin;
 
+    @Nullable
     private RoomViewModel roomViewModel;
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,11 +41,8 @@ public class RoomFragment extends TabLayoutFragment {
             this.token = args.getToken();
             this.userIsAdmin = args.getAdmin();
 
-            RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(roomID, userIsAdmin);
-            roomViewModel = new ViewModelProvider(this, viewModelFactory).get(RoomViewModel.class);
-
-            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID);
-            compositeSoundtrackViewModel = new ViewModelProvider(this, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
+            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, userIsAdmin);
+            roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
         }
     }
 
@@ -53,8 +50,6 @@ public class RoomFragment extends TabLayoutFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        compositeSoundtrackViewModel.observeSoundtrackRepository(getViewLifecycleOwner());
 
         roomViewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
