@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public abstract class SoundtrackPlayer {
 

@@ -34,6 +34,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
     private static final String ADMIN_KEY = "admin_key";
 
     private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
+
     private SoundtrackOverviewViewModel soundtrackOverviewViewModel;
 
     @NonNull

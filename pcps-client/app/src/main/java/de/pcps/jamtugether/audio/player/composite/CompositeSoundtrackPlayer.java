@@ -11,7 +11,6 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 

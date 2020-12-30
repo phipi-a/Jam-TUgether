@@ -16,7 +16,7 @@ public class JamTimberTree extends Timber.DebugTree {
     }
 
     @Override
-    protected void log(int priority, String tag, @NotNull String message, Throwable t) {
+    protected void log(int priority, @NonNull String tag, @NotNull String message, Throwable t) {
         super.log(priority, prefix.concat(" ").concat(tag), message, t);
     }
 }

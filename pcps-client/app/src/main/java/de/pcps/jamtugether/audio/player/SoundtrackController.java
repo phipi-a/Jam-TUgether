@@ -2,8 +2,6 @@ package de.pcps.jamtugether.audio.player;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

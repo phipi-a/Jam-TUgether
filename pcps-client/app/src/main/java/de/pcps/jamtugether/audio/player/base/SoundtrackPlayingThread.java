@@ -9,7 +9,6 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public abstract class SoundtrackPlayingThread extends Thread {
 

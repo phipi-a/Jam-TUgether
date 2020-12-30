@@ -16,12 +16,15 @@ import retrofit2.http.POST;
 
 public interface RoomService {
 
+    @NonNull
     @POST("create-room")
     Call<CreateRoomResponse> createRoom(@Body @NonNull CreateRoomBody body);
 
+    @NonNull
     @POST("login")
     Call<JoinRoomResponse> joinRoom(@Body @NonNull JoinRoomBody body);
 
+    @NonNull
     @HTTP(method = "DELETE", path = "room", hasBody = true)
     Call<DeleteRoomResponse> deleteRoom(@Header ("Authorization") @NonNull String token, @Body @NonNull DeleteRoomBody body);
 }

@@ -24,6 +24,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
     private static final String TOKEN_KEY = "token_key";
 
     private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
+
     private OwnSoundtrackViewModel ownSoundtrackViewModel;
 
     @NonNull

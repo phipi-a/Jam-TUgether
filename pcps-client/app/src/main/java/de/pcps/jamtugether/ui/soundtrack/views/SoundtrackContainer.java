@@ -12,12 +12,13 @@ import androidx.lifecycle.LiveData;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import timber.log.Timber;
 
 public class SoundtrackContainer extends ConstraintLayout {
 
+    @Nullable
     private SoundtrackView soundtrackView;
 
+    @Nullable
     private SoundtrackNavigationLine line;
 
     public SoundtrackContainer(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -32,20 +33,30 @@ public class SoundtrackContainer extends ConstraintLayout {
     }
 
     public void onSingleSoundtrackChanged(@NonNull SingleSoundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        if(soundtrackView == null || line == null) {
+            return;
+        }
         soundtrackView.onSingleSoundtrackChanged(soundtrack);
         line.onSoundtrackChanged(soundtrack, lifecycleOwner);
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        if(soundtrackView == null || line == null) {
+            return;
+        }
         soundtrackView.observeSingleSoundtrack(singleSoundtrack, lifecycleOwner);
         line.observeSingleSoundtrack(singleSoundtrack, lifecycleOwner);
     }
 
     public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
+        if(soundtrackView == null || line == null) {
+            return;
+        }
         soundtrackView.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);
         line.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);
     }
 
+    @Nullable
     public SoundtrackView getSoundtrackView() {
         return soundtrackView;
     }

@@ -13,12 +13,11 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
-    public static DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
+    public static final DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
         @Override
         public boolean areItemsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
             return oldItem.getUserID() == newItem.getUserID();
@@ -38,6 +37,7 @@ public class SingleSoundtrack extends Soundtrack {
     /**
      * The sound pool on which this soundtrack is being played
      */
+    @Nullable
     private BaseSoundPool soundPool;
 
     public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
@@ -105,6 +105,7 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence;
     }
 
+    @Nullable
     public BaseSoundPool getSoundPool() {
         return soundPool;
     }

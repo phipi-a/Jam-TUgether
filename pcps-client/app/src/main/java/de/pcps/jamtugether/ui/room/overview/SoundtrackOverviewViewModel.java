@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room.overview;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -64,6 +65,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
 
+    @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
 
     public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean userIsAdmin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {

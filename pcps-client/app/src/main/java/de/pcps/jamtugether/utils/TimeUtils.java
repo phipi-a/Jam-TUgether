@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 
 public class TimeUtils {
 
@@ -12,7 +13,7 @@ public class TimeUtils {
     public static final long ONE_MINUTE = ONE_SECOND * 60;
     public static final long ONE_HOUR = ONE_MINUTE * 60;
 
-    public static int getSoundDuration(int soundResID, @NonNull Context context) {
-        return MediaPlayer.create(context, soundResID).getDuration();
+    public static int getSoundDuration(@RawRes int soundRes, @NonNull Context context) {
+        return MediaPlayer.create(context, soundRes).getDuration();
     }
 }

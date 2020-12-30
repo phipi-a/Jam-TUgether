@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,7 +29,6 @@ public class RoomFragment extends TabLayoutFragment {
 
     private boolean userIsAdmin;
 
-    @Nullable
     private RoomViewModel roomViewModel;
 
     @Override
@@ -84,6 +84,7 @@ public class RoomFragment extends TabLayoutFragment {
                 return JamTabView.from(tabLayout);
             }
 
+            @StringRes
             @Override
             public int getTabTitle(int position) {
                 return position == 0 ? R.string.room_over_view : R.string.musician_view;

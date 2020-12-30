@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -44,8 +45,10 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     private final Instrument.OnChangeCallback onChangeCallback;
 
+    @Nullable
     private String helpDialogTitle;
 
+    @Nullable
     private String helpDialogMessage;
 
     @NonNull
@@ -122,10 +125,12 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         return roomID;
     }
 
+    @Nullable
     public String getHelpDialogTitle() {
         return helpDialogTitle;
     }
 
+    @Nullable
     public String getHelpDialogMessage() {
         return helpDialogMessage;
     }

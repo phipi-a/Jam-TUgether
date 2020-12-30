@@ -5,13 +5,13 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import timber.log.Timber;
 
 public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
@@ -29,8 +29,13 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
         List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             for (Sound sound : singleSoundtrack.getSoundsFor(millis, finishSounds)) {
-                int soundRes = singleSoundtrack.getInstrument().getSoundResource(sound.getElement());
-                int streamID = singleSoundtrack.getSoundPool().playSoundRes(soundRes, sound.getPitch());
+                Instrument instrument = singleSoundtrack.getInstrument();
+                BaseSoundPool soundPool = singleSoundtrack.getSoundPool();
+                if(instrument == null || soundPool == null) {
+                    continue;
+                }
+                int soundRes = instrument.getSoundResource(sound.getElement());
+                int streamID = soundPool.playSoundRes(soundRes, sound.getPitch());
                 soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
             }
         }
@@ -41,7 +46,9 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     public void setVolume(float volume) {
         compositeSoundtrack.setVolume(volume);
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            singleSoundtrack.getSoundPool().setVolume(volume / 100);
+            if(singleSoundtrack.getSoundPool() != null) {
+                singleSoundtrack.getSoundPool().setVolume(volume / 100);
+            }
         }
     }
 
@@ -50,7 +57,9 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             for (Sound sound : singleSoundtrack.getSoundSequence()) {
                 if (sound.getEndTime() == millis && streamIDsMap.containsKey(sound)) {
-                    singleSoundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
+                    if(singleSoundtrack.getSoundPool() != null) {
+                        singleSoundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
+                    }
                 }
             }
         }
@@ -59,7 +68,9 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @Override
     protected void stopAllSounds() {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            singleSoundtrack.getSoundPool().stopAllSounds();
+            if(singleSoundtrack.getSoundPool() != null) {
+                singleSoundtrack.getSoundPool().stopAllSounds();
+            }
         }
     }
 }

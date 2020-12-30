@@ -11,7 +11,6 @@ import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public class SoundtrackDataBindingUtils {
 

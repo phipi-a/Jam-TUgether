@@ -22,9 +22,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
-// todo add calls
 @Singleton
 public class SoundtrackRepository {
 

@@ -27,6 +27,9 @@ public class SoundtrackNavigationLine extends View {
         super.draw(canvas);
         SoundtrackContainer container = (SoundtrackContainer) getParent();
         SoundtrackView soundtrackView = container.getSoundtrackView();
+        if(soundtrackView == null) {
+            return;
+        }
         float onePercentWidth = (soundtrackView.getWidth() - this.getWidth()) / 100.0f;
         this.setX(soundtrackView.getX() + onePercentWidth * progress);
     }

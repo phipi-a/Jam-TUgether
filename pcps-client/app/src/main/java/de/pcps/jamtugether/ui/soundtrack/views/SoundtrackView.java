@@ -23,7 +23,10 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class SoundtrackView extends View {
 
+    @Nullable
     private SingleSoundtrack singleSoundtrack;
+
+    @Nullable
     private CompositeSoundtrack compositeSoundtrack;
 
     @NonNull
@@ -53,7 +56,7 @@ public class SoundtrackView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (singleSoundtrack != null) {
             drawSingleSoundtrack(canvas, singleSoundtrack, false);
