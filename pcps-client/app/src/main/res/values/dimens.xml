@@ -12,18 +12,18 @@
 
     <!-- soundtrack controls dimens for
          volume slider width calculation -->
-    <dimen name="soundtrack_mute_icon_width">27dp</dimen>
+    <dimen name="soundtrack_mute_icon_width">25dp</dimen>
     <dimen name="soundtrack_volume_slider_margin_start">5dp</dimen>
     <dimen name="soundtrack_volume_up_icon_margin_start">5dp</dimen>
-    <dimen name="soundtrack_volume_up_icon_width">27dp</dimen>
+    <dimen name="soundtrack_volume_up_icon_width">25dp</dimen>
     <dimen name="soundtrack_fast_rewind_icon_margin_start">20dp</dimen>
-    <dimen name="soundtrack_fast_rewind_icon_width">27dp</dimen>
+    <dimen name="soundtrack_fast_rewind_icon_width">25dp</dimen>
     <dimen name="soundtrack_play_pause_icon_margin_start">10dp</dimen>
-    <dimen name="soundtrack_play_pause_icon_width">27dp</dimen>
+    <dimen name="soundtrack_play_pause_icon_width">25dp</dimen>
     <dimen name="soundtrack_fast_forward_icon_margin_start">10dp</dimen>
-    <dimen name="soundtrack_fast_forward_icon_width">27dp</dimen>
+    <dimen name="soundtrack_fast_forward_icon_width">25dp</dimen>
     <dimen name="soundtrack_stop_icon_margin_start">10dp</dimen>
-    <dimen name="soundtrack_stop_icon_width">27dp</dimen>
+    <dimen name="soundtrack_stop_icon_width">25dp</dimen>
     <dimen name="soundtrack_stop_icon_margin_end">20dp</dimen>
 
     <dimen name="composite_soundtrack_margin_top">25dp</dimen>

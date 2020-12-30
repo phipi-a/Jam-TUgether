@@ -20,12 +20,12 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -40,6 +40,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     @Inject
     SingleSoundtrackPlayer singleSoundtrackPlayer;
+
+    @Inject
+    CompositeSoundtrackPlayer compositeSoundtrackPlayer;
 
     @Inject
     SoundtrackController soundtrackController;
@@ -91,6 +94,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
             // soundtracks that didn't change keep playing after refresh
             List<SingleSoundtrack> keepPlayingList = getSameSoundtracks(newSoundtracks);
             singleSoundtrackPlayer.stopExcept(keepPlayingList);
+
+            if(keepPlayingList.size() < previousSoundtracks.size()) { // at least one soundtrack changed after fetching
+                compositeSoundtrackPlayer.stop();
+            }
         }
 
         this.previousSoundtracks.clear();

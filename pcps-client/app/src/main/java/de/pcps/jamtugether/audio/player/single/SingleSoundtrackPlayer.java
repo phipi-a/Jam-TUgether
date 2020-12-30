@@ -54,6 +54,15 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     }
 
     @Override
+    protected void pause(@NonNull Soundtrack soundtrack) {
+        super.pause(soundtrack);
+        if (soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            threadMap.remove(singleSoundtrack.getUserID());
+        }
+    }
+
+    @Override
     public void stop(@NonNull Soundtrack soundtrack) {
         super.stop(soundtrack);
         if (soundtrack instanceof SingleSoundtrack) {

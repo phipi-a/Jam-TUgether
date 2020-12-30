@@ -38,7 +38,7 @@ public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
         }
     }
 
-    private void pause(@NonNull Soundtrack soundtrack) {
+    protected void pause(@NonNull Soundtrack soundtrack) {
         SoundtrackPlayingThread thread = getThread(soundtrack);
         if (thread != null) {
             thread.pause();

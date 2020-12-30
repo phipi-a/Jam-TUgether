@@ -13,6 +13,7 @@ import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 /**
  * This player is responsible for playing every single soundtrack of the app
@@ -49,6 +50,15 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
             return thread != null ? thread : createThread(soundtrack);
         }
         return null;
+    }
+
+    @Override
+    protected void pause(@NonNull Soundtrack soundtrack) {
+        super.pause(soundtrack);
+        if (soundtrack instanceof CompositeSoundtrack) {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            threadMap.remove(compositeSoundtrack.getUserIDs());
+        }
     }
 
     @Override

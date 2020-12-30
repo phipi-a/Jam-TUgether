@@ -16,8 +16,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private static final int FAST_REWIND_OFFSET = (int) -TimeUtils.ONE_SECOND;
 
     private boolean running = false;
-    private boolean paused = false;
-    private boolean stopped = false;
+    private boolean stop = false;
 
     private boolean justForwarded = false;
     private boolean justResumed = false;
@@ -55,13 +54,14 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     @Override
     public void run() {
-        while (!stopped) {
-            if (paused) {
-                continue;
-            }
+        while (!stop) {
             if (soundtrackIsFinished()) {
                 callback.onSoundtrackFinished(this);
+                // even though thread is technically being stopped by callback
+                // break is needed in order to stop immediately to avoid executing further code
+                break;
             }
+
             if (progressInMillis != lastProgressInMillis) { // in order to not play a sound more than once
                 lastProgressInMillis = progressInMillis;
 
@@ -112,16 +112,14 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void pause() {
-        paused = true;
+        stop = true;
         stopAllSounds();
         soundtrack.postState(Soundtrack.State.PAUSED);
     }
 
     public void resumeSoundtrack() {
-        lastMillis = System.currentTimeMillis();
         justResumed = true;
-        paused = false;
-        soundtrack.postState(Soundtrack.State.PLAYING);
+        play();
     }
 
     public void fastForward() {
@@ -137,7 +135,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void stopSoundtrack() {
-        stopped = true;
+        stop = true;
         stopAllSounds();
         soundtrack.postState(Soundtrack.State.STOPPED);
     }
