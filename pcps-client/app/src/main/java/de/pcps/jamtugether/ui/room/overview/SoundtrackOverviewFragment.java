@@ -25,6 +25,7 @@ import de.pcps.jamtugether.databinding.FragmentRoomOverviewBinding;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
+import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -84,7 +85,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
         final Runnable commitCallback = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
 
-        soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), soundtracks -> soundtrackOverviewViewModel.onSoundtracksChanged());
+        soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), soundtracks -> soundtrackOverviewViewModel.onNewSoundtracks(soundtracks));
 
         soundtrackOverviewViewModel.getUserIsAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {

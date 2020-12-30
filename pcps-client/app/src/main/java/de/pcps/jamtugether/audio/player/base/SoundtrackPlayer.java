@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
-public abstract class SoundtrackPlayer {
+public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
 
     public void playOrPause(@NonNull Soundtrack soundtrack) {
         if (soundtrack.isEmpty()) {
@@ -70,6 +70,7 @@ public abstract class SoundtrackPlayer {
         SoundtrackPlayingThread thread = getThread(soundtrack);
         if (thread != null) {
             thread.stopSoundtrack();
+            soundtrack.postProgressInMillis(0);
         }
     }
 

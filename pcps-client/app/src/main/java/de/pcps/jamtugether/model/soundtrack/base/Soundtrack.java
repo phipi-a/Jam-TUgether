@@ -19,11 +19,14 @@ public abstract class Soundtrack {
     @NonNull
     private final MutableLiveData<Integer> progress;
 
+    private int progressInMillis;
+
     private float volume;
 
     public Soundtrack() {
         this.state = new MutableLiveData<>(State.IDLE);
         this.progress = new MutableLiveData<>(0);
+        this.progressInMillis = 0;
         this.volume = 100f;
     }
 
@@ -56,8 +59,17 @@ public abstract class Soundtrack {
         return progress;
     }
 
-    public void postProgress(int progress) {
-        this.progress.postValue(progress);
+    public int getProgressInMillis() {
+        return progressInMillis;
+    }
+
+    public void postProgressInMillis(int progressInMillis) {
+        this.progressInMillis = progressInMillis;
+        this.progress.postValue(calculateProgress(progressInMillis));
+    }
+
+    private int calculateProgress(int millis) {
+        return (int) ((millis / (float) this.getLength()) * 100);
     }
 
     public enum State {

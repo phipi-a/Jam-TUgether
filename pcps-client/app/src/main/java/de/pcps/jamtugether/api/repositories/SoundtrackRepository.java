@@ -22,6 +22,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -49,6 +50,7 @@ public class SoundtrackRepository {
     }
 
     public void fetchSoundtracks(int currentRoomID) {
+        Timber.d("fetchSoundtracks()");
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
         if (!fetching) {

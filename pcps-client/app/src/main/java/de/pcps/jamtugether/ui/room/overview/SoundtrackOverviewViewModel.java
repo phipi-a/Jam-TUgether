@@ -20,10 +20,12 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -35,6 +37,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     @Inject
     SoundtrackRepository soundtrackRepository;
+
+    @Inject
+    SingleSoundtrackPlayer singleSoundtrackPlayer;
 
     @Inject
     SoundtrackController soundtrackController;
@@ -65,6 +70,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
 
+    @NonNull
+    private final List<SingleSoundtrack> previousSoundtracks = new ArrayList<>();
+
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
 
@@ -77,8 +85,41 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         this.userStatusChangeCallback = userStatusChangeCallback;
     }
 
-    public void onSoundtracksChanged() {
-        soundtrackController.stopPlayers();
+    public void onNewSoundtracks(@NonNull List<SingleSoundtrack> newSoundtracks) {
+        if(!previousSoundtracks.isEmpty()) {
+            // as soon as a soundtrack changes it needs to stop playing
+            // soundtracks that didn't change keep playing after refresh
+            List<SingleSoundtrack> keepPlayingList = getSameSoundtracks(newSoundtracks);
+            singleSoundtrackPlayer.stopExcept(keepPlayingList);
+        }
+
+        this.previousSoundtracks.clear();
+        this.previousSoundtracks.addAll(newSoundtracks);
+    }
+
+    /**
+     * @return a list of soundtracks that weren't updated
+     */
+    private List<SingleSoundtrack> getSameSoundtracks(@NonNull List<SingleSoundtrack> newSoundtracks) {
+        List<SingleSoundtrack> sameSoundtracks = new ArrayList<>();
+
+        for(SingleSoundtrack newSoundtrack : newSoundtracks) {
+            if(!(wasUpdated(newSoundtrack))) {
+                sameSoundtracks.add(newSoundtrack);
+            }
+        }
+        return sameSoundtracks;
+    }
+
+    private boolean wasUpdated(@NonNull SingleSoundtrack soundtrack) {
+        for(SingleSoundtrack singleSoundtrack : previousSoundtracks) {
+            if(soundtrack.getUserID() == singleSoundtrack.getUserID()) {
+                if(!(soundtrack.getSoundSequence().equals(singleSoundtrack.getSoundSequence()))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

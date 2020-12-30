@@ -33,7 +33,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack) {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack);
+            CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack, this);
             threadMap.put(compositeSoundtrack.getUserIDs(), thread);
             return thread;
         }
@@ -63,8 +63,18 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     @Override
     public void stop() {
         for(SoundtrackPlayingThread thread : threadMap.values()) {
-            thread.stopThread();
+            thread.stopSoundtrack();
         }
         threadMap.clear();
+    }
+
+    @Override
+    public void onSoundtrackFinished(@NonNull SoundtrackPlayingThread thread) {
+        thread.stopSoundtrack();
+        Soundtrack soundtrack = thread.getSoundtrack();
+        if(soundtrack instanceof CompositeSoundtrack) {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            threadMap.remove(compositeSoundtrack.getUserIDs());
+        }
     }
 }

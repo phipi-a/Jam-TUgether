@@ -16,7 +16,7 @@ public class JamTUgetherApplication extends Application {
         AppInjector.buildAppComponent(this);
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(new JamTimberTree("#-#"));
+            Timber.plant(new JamTimberTree());
         }
 
         for (Instrument instrument : Instruments.LIST) {

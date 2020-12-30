@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
@@ -18,8 +19,8 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @NonNull
     private final CompositeSoundtrack compositeSoundtrack;
 
-    public CompositeSoundtrackPlayingThread(@NonNull CompositeSoundtrack soundtrack) {
-        super(soundtrack);
+    public CompositeSoundtrackPlayingThread(@NonNull CompositeSoundtrack soundtrack, @NonNull OnSoundtrackFinishedCallback callback) {
+        super(soundtrack, callback);
         this.compositeSoundtrack = soundtrack;
     }
 
