@@ -70,4 +70,9 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
             compositeSoundtrackPlayer.stop((CompositeSoundtrack) soundtrack);
         }
     }
+
+    public void stopPlayers() {
+        singleSoundtrackPlayer.stop();
+        compositeSoundtrackPlayer.stop();
+    }
 }

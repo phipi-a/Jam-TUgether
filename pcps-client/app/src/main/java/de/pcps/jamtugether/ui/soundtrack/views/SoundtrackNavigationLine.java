@@ -18,6 +18,9 @@ public class SoundtrackNavigationLine extends View {
 
     private int progress;
 
+    @Nullable
+    private Soundtrack currentSoundtrack;
+
     public SoundtrackNavigationLine(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
@@ -27,6 +30,9 @@ public class SoundtrackNavigationLine extends View {
         super.draw(canvas);
         SoundtrackContainer container = (SoundtrackContainer) getParent();
         SoundtrackView soundtrackView = container.getSoundtrackView();
+        if(soundtrackView == null) {
+            return;
+        }
         float onePercentWidth = (soundtrackView.getWidth() - this.getWidth()) / 100.0f;
         this.setX(soundtrackView.getX() + onePercentWidth * progress);
     }
@@ -40,10 +46,22 @@ public class SoundtrackNavigationLine extends View {
     }
 
     public void onSoundtrackChanged(@NonNull Soundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        soundtrack.getProgress().observe(lifecycleOwner, this::onProgressChanged);
+        this.currentSoundtrack = soundtrack;
+        soundtrack.getProgress().observe(lifecycleOwner, integer -> {
+            // progress should only be updated if the soundtrack this progress belongs to
+            // is the current soundtrack that this line represents
+            // needed due to  the possible delay of dispatching live data updates from a background thread
+
+            if(currentSoundtrack == soundtrack) {
+                onProgressChanged(integer);
+            }
+        });
     }
 
     private void onProgressChanged(Integer progress) {
+        if(this.progress == progress) { // only update progress if needed
+            return;
+        }
         this.progress = progress;
         this.invalidate();
     }

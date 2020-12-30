@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,7 +16,7 @@ import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
 import de.pcps.jamtugether.ui.base.TabLayoutFragment;
 import de.pcps.jamtugether.ui.base.views.JamTabView;
 import de.pcps.jamtugether.ui.room.music.MusicianViewFragment;
-import de.pcps.jamtugether.ui.room.overview.RoomOverviewFragment;
+import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class RoomFragment extends TabLayoutFragment {
@@ -26,9 +27,9 @@ public class RoomFragment extends TabLayoutFragment {
 
     private String token;
 
-    private boolean admin;
+    private boolean userIsAdmin;
 
-    private RoomViewModel viewModel;
+    private RoomViewModel roomViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,10 +39,10 @@ public class RoomFragment extends TabLayoutFragment {
             this.roomID = args.getRoomID();
             this.password = args.getPassword();
             this.token = args.getToken();
-            this.admin = args.getAdmin();
+            this.userIsAdmin = args.getAdmin();
 
-            RoomViewModel.Factory viewModelFactory = new RoomViewModel.Factory(roomID, admin);
-            viewModel = new ViewModelProvider(activity, viewModelFactory).get(RoomViewModel.class);
+            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, userIsAdmin);
+            roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
         }
     }
 
@@ -50,17 +51,17 @@ public class RoomFragment extends TabLayoutFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
+        roomViewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
-                viewModel.onLeaveRoomConfirmationDialogShown();
+                UiUtils.showConfirmationDialog(activity, R.string.leave_room, R.string.leave_room_confirmation, () -> roomViewModel.onLeaveRoomConfirmationButtonClicked());
+                roomViewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
 
-        viewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
+        roomViewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
             if (navigateBack) {
                 this.navigateBack();
-                viewModel.onNavigatedBack();
+                roomViewModel.onNavigatedBack();
             }
         });
 
@@ -69,7 +70,7 @@ public class RoomFragment extends TabLayoutFragment {
 
     @Override
     protected void handleOnBackPressed() {
-        viewModel.handleBackPressed();
+        roomViewModel.handleBackPressed();
     }
 
     @NonNull
@@ -83,6 +84,7 @@ public class RoomFragment extends TabLayoutFragment {
                 return JamTabView.from(tabLayout);
             }
 
+            @StringRes
             @Override
             public int getTabTitle(int position) {
                 return position == 0 ? R.string.room_over_view : R.string.musician_view;
@@ -91,7 +93,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? RoomOverviewFragment.newInstance(roomID, password, token, admin) : MusicianViewFragment.newInstance(roomID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, token);
             }
 
             @Override

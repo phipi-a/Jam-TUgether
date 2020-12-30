@@ -13,6 +13,7 @@ import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 /**
  * This player is responsible for playing every single soundtrack of the app
@@ -22,7 +23,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
 
     @NonNull
-    protected final HashMap<List<Integer>, SoundtrackPlayingThread> threadMap = new HashMap<>();
+    private final HashMap<List<Integer>, SoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
     public CompositeSoundtrackPlayer() {
@@ -33,7 +34,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread createThread(@NonNull Soundtrack soundtrack) {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack);
+            CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack, this);
             threadMap.put(compositeSoundtrack.getUserIDs(), thread);
             return thread;
         }
@@ -52,9 +53,36 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     }
 
     @Override
+    protected void pause(@NonNull Soundtrack soundtrack) {
+        super.pause(soundtrack);
+        if (soundtrack instanceof CompositeSoundtrack) {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            threadMap.remove(compositeSoundtrack.getUserIDs());
+        }
+    }
+
+    @Override
     public void stop(@NonNull Soundtrack soundtrack) {
         super.stop(soundtrack);
         if (soundtrack instanceof CompositeSoundtrack) {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            threadMap.remove(compositeSoundtrack.getUserIDs());
+        }
+    }
+
+    @Override
+    public void stop() {
+        for(SoundtrackPlayingThread thread : threadMap.values()) {
+            thread.stopSoundtrack();
+        }
+        threadMap.clear();
+    }
+
+    @Override
+    public void onSoundtrackFinished(@NonNull SoundtrackPlayingThread thread) {
+        thread.stopSoundtrack();
+        Soundtrack soundtrack = thread.getSoundtrack();
+        if(soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getUserIDs());
         }

@@ -33,7 +33,7 @@ public class UiUtils {
         showInfoDialog(context, context.getString(title), context.getString(message));
     }
 
-    public static void showConfirmationDialog(@NonNull Context context, @NonNull String title, @NonNull String message, OnDialogPositiveButtonClickedCallback callback) {
+    public static void showConfirmationDialog(@NonNull Context context, @NonNull String title, @NonNull String message, @NonNull OnDialogPositiveButtonClickedCallback callback) {
         new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
@@ -43,7 +43,7 @@ public class UiUtils {
                 .show();
     }
 
-    public static void showConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, OnDialogPositiveButtonClickedCallback callback) {
+    public static void showConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, @NonNull OnDialogPositiveButtonClickedCallback callback) {
         showConfirmationDialog(context, context.getString(title), context.getString(message), callback);
     }
 

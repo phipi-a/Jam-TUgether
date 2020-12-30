@@ -3,6 +3,7 @@ package de.pcps.jamtugether.audio.instrument.base;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
@@ -39,6 +40,7 @@ public abstract class Instrument {
     @NonNull
     private final String serverString;
 
+    @Nullable
     protected BaseSoundPool soundPool;
 
     public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
@@ -60,7 +62,9 @@ public abstract class Instrument {
     }
 
     public int stop() {
-        soundPool.stopAllSounds();
+        if(soundPool != null) {
+            soundPool.stopAllSounds();
+        }
         return 0;
     }
 

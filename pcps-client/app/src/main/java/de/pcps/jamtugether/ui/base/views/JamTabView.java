@@ -16,6 +16,7 @@ import de.pcps.jamtugether.R;
 
 public class JamTabView extends ConstraintLayout {
 
+    @Nullable
     private TextView tabTitleTextView;
 
     public JamTabView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -33,11 +34,15 @@ public class JamTabView extends ConstraintLayout {
     }
 
     public void activate() {
-        tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryTextColor));
+        if(tabTitleTextView != null) {
+            tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryTextColor));
+        }
     }
 
     public void deactivate() {
-        tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        if(tabTitleTextView != null) {
+            tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }
     }
 
     @NonNull

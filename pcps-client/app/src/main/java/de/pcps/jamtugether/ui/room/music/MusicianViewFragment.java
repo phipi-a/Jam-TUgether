@@ -15,7 +15,7 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerFragment;
-import de.pcps.jamtugether.ui.room.music.soundtrack.SoundtrackFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
@@ -48,7 +48,7 @@ public class MusicianViewFragment extends BaseFragment {
             token = getArguments().getString(TOKEN_KEY);
 
             MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, token);
-            viewModel = new ViewModelProvider(activity, viewModelFactory).get(MusicianViewViewModel.class);
+            viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class MusicianViewFragment extends BaseFragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), SoundtrackFragment.newInstance(roomID, token), R.id.soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, token), R.id.soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {

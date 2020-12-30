@@ -26,38 +26,21 @@ public class Preferences {
         this.sharedPreferences = sharedPreferences;
     }
 
-    private boolean getBoolean(@NonNull String key, boolean defaultValue) {
-        return sharedPreferences.getBoolean(key, defaultValue);
-    }
-
-    private void setBoolean(@NonNull String key, boolean value) {
-        sharedPreferences.edit().putBoolean(key, value).apply();
-    }
-
-    @NonNull
-    private String getString(@NonNull String key, @NonNull String defaultValue) {
-        return sharedPreferences.getString(key, defaultValue);
-    }
-
-    private void setString(@NonNull String key, @NonNull String value) {
-        sharedPreferences.edit().putString(key, value).apply();
-    }
-
     public boolean userNeverChoseInstrument() {
-        return getBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, true);
+        return sharedPreferences.getBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, true);
     }
 
     public void setUserNeverChoseInstrument(boolean value) {
-        setBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, value);
+        sharedPreferences.edit().putBoolean(USER_NEVER_CHOSE_INSTRUMENT_KEY, value).apply();
     }
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
+        String preferenceValue = sharedPreferences.getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
         return Instruments.fromPreferences(preferenceValue);
     }
 
     public void setMainInstrument(@NonNull Instrument mainInstrument) {
-        setString(MAIN_INSTRUMENT_KEY, mainInstrument.getPreferenceValue());
+        sharedPreferences.edit().putString(MAIN_INSTRUMENT_KEY, mainInstrument.getPreferenceValue()).apply();
     }
 }

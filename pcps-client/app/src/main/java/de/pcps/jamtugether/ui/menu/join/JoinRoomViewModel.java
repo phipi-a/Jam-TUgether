@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -30,8 +31,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     private int roomID;
 
+    @Nullable
     private String password;
 
+    @Nullable
     private String token;
 
     @NonNull
@@ -138,10 +141,12 @@ public class JoinRoomViewModel extends ViewModel {
         return roomID;
     }
 
+    @Nullable
     public String getToken() {
         return token;
     }
 
+    @Nullable
     public String getPassword() {
         return password;
     }

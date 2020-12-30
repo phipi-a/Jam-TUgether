@@ -14,6 +14,7 @@ import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
 
 public class JamTabLayout extends TabLayout {
 
+    @Nullable
     private ViewPager2 viewPager;
 
     @NonNull
@@ -27,6 +28,9 @@ public class JamTabLayout extends TabLayout {
                     continue;
                 }
                 JamTabView tabView = (JamTabView) tab.getCustomView();
+                if(tabView == null) {
+                    continue;
+                }
                 boolean tabViewIsSelected = position == currentPosition;
                 if (tabViewIsSelected) {
                     tabView.activate();

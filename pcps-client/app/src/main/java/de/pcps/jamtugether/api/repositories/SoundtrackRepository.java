@@ -15,14 +15,15 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
-// todo add calls
 @Singleton
 public class SoundtrackRepository {
 
@@ -49,6 +50,7 @@ public class SoundtrackRepository {
     }
 
     public void fetchSoundtracks(int currentRoomID) {
+        Timber.d("fetchSoundtracks()");
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
         if (!fetching) {
@@ -64,7 +66,7 @@ public class SoundtrackRepository {
             @Override
             public void run() {
                 fetchSoundtracks();
-                //handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
+                handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
         }.run();
     }
@@ -110,7 +112,7 @@ public class SoundtrackRepository {
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(getAllSoundtracks(), CompositeSoundtrack::from);
+        return Transformations.map(getAllSoundtracks(), allSoundtracks -> CompositeSoundtrack.from(allSoundtracks, context));
     }
 
     @NonNull

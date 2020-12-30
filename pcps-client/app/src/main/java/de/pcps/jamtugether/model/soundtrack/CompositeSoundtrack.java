@@ -1,12 +1,13 @@
 package de.pcps.jamtugether.model.soundtrack;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public class CompositeSoundtrack extends Soundtrack {
 
@@ -54,17 +55,13 @@ public class CompositeSoundtrack extends Soundtrack {
     }
 
     @NonNull
-    public static CompositeSoundtrack from(@NonNull List<SingleSoundtrack> soundtracks) {
+    public static CompositeSoundtrack from(@NonNull List<SingleSoundtrack> soundtracks, @NonNull Context context) {
         // the soundtracks are being cloned so the soundtracks in the
         // composite soundtrack list are not tied to the ones shown in the UI
 
         List<SingleSoundtrack> clonedList = new ArrayList<>();
         for (SingleSoundtrack singleSoundtrack : soundtracks) {
-            try {
-                clonedList.add(singleSoundtrack.clone());
-            } catch (CloneNotSupportedException exception) {
-                Timber.e(exception);
-            }
+            clonedList.add(singleSoundtrack.clone(context));
         }
         return new CompositeSoundtrack(clonedList);
     }

@@ -4,7 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
+import timber.log.Timber;
 
 /*
  * represents a soundtrack from a UI standpoint
@@ -16,15 +17,17 @@ public abstract class Soundtrack {
     private final MutableLiveData<State> state;
 
     @NonNull
-    private final MutableLiveData<Float> volume;
-
-    @NonNull
     private final MutableLiveData<Integer> progress;
+
+    private int progressInMillis;
+
+    private float volume;
 
     public Soundtrack() {
         this.state = new MutableLiveData<>(State.IDLE);
-        this.volume = new MutableLiveData<>(100f);
         this.progress = new MutableLiveData<>(0);
+        this.progressInMillis = 0;
+        this.volume = 100f;
     }
 
     /**
@@ -43,17 +46,12 @@ public abstract class Soundtrack {
         this.state.postValue(state);
     }
 
-    @NonNull
-    public LiveData<Float> getVolume() {
+    public float getVolume() {
         return volume;
     }
 
-    public void postVolume(float volume) {
-        this.volume.postValue(volume);
-    }
-
     public void setVolume(float volume) {
-        this.volume.setValue(volume);
+        this.volume = volume;
     }
 
     @NonNull
@@ -61,8 +59,17 @@ public abstract class Soundtrack {
         return progress;
     }
 
-    public void postProgress(int progress) {
-        this.progress.postValue(progress);
+    public int getProgressInMillis() {
+        return progressInMillis;
+    }
+
+    public void postProgressInMillis(int progressInMillis) {
+        this.progressInMillis = progressInMillis;
+        this.progress.postValue(calculateProgress(progressInMillis));
+    }
+
+    private int calculateProgress(int millis) {
+        return (int) ((millis / (float) this.getLength()) * 100);
     }
 
     public enum State {
