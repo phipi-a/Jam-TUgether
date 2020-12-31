@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
-import timber.log.Timber;
-
 /*
  * represents a soundtrack from a UI standpoint
  * this can either be a single or composite soundtrack

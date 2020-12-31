@@ -78,6 +78,9 @@
             android:name="roomID"
             app:argType="integer" />
         <argument
+            android:name="userID"
+            app:argType="integer" />
+        <argument
             android:name="password"
             app:argType="string" />
         <argument

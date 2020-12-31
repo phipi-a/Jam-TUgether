@@ -22,19 +22,22 @@ import de.pcps.jamtugether.utils.NavigationUtils;
 public class MusicianViewFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String USER_ID_KEY = "user_id_key";
     private static final String TOKEN_KEY = "token_key";
 
     private int roomID;
+    private int userID;
 
     private String token;
 
     private MusicianViewViewModel viewModel;
 
     @NonNull
-    public static MusicianViewFragment newInstance(int roomID, @NonNull String token) {
+    public static MusicianViewFragment newInstance(int roomID, int userID, @NonNull String token) {
         MusicianViewFragment fragment = new MusicianViewFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
+        args.putInt(USER_ID_KEY, userID);
         args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
@@ -45,9 +48,10 @@ public class MusicianViewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             roomID = getArguments().getInt(ROOM_ID_KEY);
+            userID = getArguments().getInt(USER_ID_KEY);
             token = getArguments().getString(TOKEN_KEY);
 
-            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, token);
+            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
             viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
         }
     }
@@ -63,7 +67,7 @@ public class MusicianViewFragment extends BaseFragment {
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
             if (showFluteFragment) {
-                replaceInstrumentFragment(FluteFragment.newInstance());
+                replaceInstrumentFragment(FluteFragment.newInstance(roomID, userID, token));
                 viewModel.onFluteFragmentShown();
             }
         });
@@ -86,7 +90,7 @@ public class MusicianViewFragment extends BaseFragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, token), R.id.soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, userID, token), R.id.own_soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {

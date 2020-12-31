@@ -8,6 +8,7 @@ import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
@@ -34,4 +35,6 @@ public interface AppComponent {
     void inject(SoundtrackOverviewViewModel soundtrackOverviewViewModel);
 
     void inject(OwnSoundtrackViewModel ownSoundtrackViewModel);
+
+    void inject(FluteViewModel fluteViewModel);
 }

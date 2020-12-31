@@ -9,6 +9,7 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public abstract class SoundtrackPlayingThread extends Thread {
 
@@ -16,7 +17,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private static final int FAST_REWIND_OFFSET = (int) -TimeUtils.ONE_SECOND;
 
     private boolean running = false;
-    private boolean stop = false;
+    private boolean stopped = false;
 
     private boolean justForwarded = false;
     private boolean justResumed = false;
@@ -54,7 +55,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     @Override
     public void run() {
-        while (!stop) {
+        while (!stopped) {
             if (soundtrackIsFinished()) {
                 callback.onSoundtrackFinished(this);
                 // even though thread is technically being stopped by callback
@@ -112,7 +113,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void pause() {
-        stop = true;
+        stopped = true;
         stopAllSounds();
         soundtrack.postState(Soundtrack.State.PAUSED);
     }
@@ -135,7 +136,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void stopSoundtrack() {
-        stop = true;
+        stopped = true;
         stopAllSounds();
         soundtrack.postState(Soundtrack.State.STOPPED);
     }
@@ -152,7 +153,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     protected abstract void setVolume(float volume);
 
     /**
-     * stop sounds that end at given timestamp
+     * stop sounds that end at given timestamp or before
      */
     protected abstract void stopSounds(int millis);
 

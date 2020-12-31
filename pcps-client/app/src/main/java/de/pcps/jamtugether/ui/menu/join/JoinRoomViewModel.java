@@ -30,6 +30,7 @@ public class JoinRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
 
     private int roomID;
+    private int userID;
 
     @Nullable
     private String password;
@@ -101,6 +102,8 @@ public class JoinRoomViewModel extends ViewModel {
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 token = response.getToken();
+                // todo set userID
+
                 navigateToRegularRoom.setValue(true);
             }
 
@@ -139,6 +142,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     @Nullable

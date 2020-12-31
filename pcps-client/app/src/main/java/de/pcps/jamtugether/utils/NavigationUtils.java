@@ -33,12 +33,12 @@ public class NavigationUtils {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public static void navigateToRoomAsRegular(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRoomFragment(roomID, password, token, false));
+    public static void navigateToRoomAsRegular(@NonNull NavController nc, int roomID, int userID, @NonNull String password, @NonNull String token) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRoomFragment(roomID, userID, password, token, false));
     }
 
-    public static void navigateToRoomAsAdmin(@NonNull NavController nc, int roomID, @NonNull String password, @NonNull String token) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToRoomFragment(roomID, password, token, true));
+    public static void navigateToRoomAsAdmin(@NonNull NavController nc, int roomID, int userID, @NonNull String password, @NonNull String token) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToRoomFragment(roomID, userID, password, token, true));
     }
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {

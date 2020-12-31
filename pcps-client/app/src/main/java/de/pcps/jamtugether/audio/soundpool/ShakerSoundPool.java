@@ -18,4 +18,9 @@ public class ShakerSoundPool extends BaseSoundPool {
     public int play(int soundID, float pitch) {
         return 0;
     }
+
+    @Override
+    public float calculatePitch(int pitchPercentage) {
+        return 0;
+    }
 }
