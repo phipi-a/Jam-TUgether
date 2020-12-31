@@ -9,6 +9,7 @@ import androidx.annotation.RawRes;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
+import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 
 // todo
@@ -16,6 +17,8 @@ public class Shaker extends Instrument {
 
     @Nullable
     private static Shaker instance;
+
+    public static int SHAKER_SOUND = SoundResource.SHAKER.getResource();
 
     public Shaker() {
         super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
@@ -25,13 +28,18 @@ public class Shaker extends Instrument {
     @Override
     public int getSoundResource(int element) {
         // todo
-        return R.raw.flute_sound;
+        return SHAKER_SOUND;
     }
 
     @NonNull
     @Override
     public BaseSoundPool createSoundPool(@NonNull Context context) {
         return new ShakerSoundPool(context);
+    }
+
+    @Override
+    public boolean soundsNeedToBeStopped() {
+        return false;
     }
 
     @NonNull

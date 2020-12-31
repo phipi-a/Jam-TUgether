@@ -55,10 +55,10 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
 
     private boolean hasPermission = false;
 
-    public FluteViewModel(int userID, int roomID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public FluteViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
-        this.userID = userID;
         this.roomID = roomID;
+        this.userID = userID;
         this.callback = callback;
     }
 

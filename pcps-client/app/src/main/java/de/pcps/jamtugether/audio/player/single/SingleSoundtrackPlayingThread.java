@@ -51,6 +51,10 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
     @Override
     protected void stopSounds(int millis) {
+        Instrument instrument = soundtrack.getInstrument();
+        if(instrument == null || !instrument.soundsNeedToBeStopped()) {
+            return;
+        }
         for (Sound sound : soundtrack.getSoundSequence()) {
             if (sound.getEndTime() <= millis && streamIDsMap.containsKey(sound)) {
                 if(soundtrack.getSoundPool() != null) {

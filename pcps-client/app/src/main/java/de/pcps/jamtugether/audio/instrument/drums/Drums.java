@@ -10,6 +10,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
+import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 
 public class Drums extends Instrument {
@@ -18,16 +19,16 @@ public class Drums extends Instrument {
     private static Drums instance;
 
     @RawRes
-    private static final int SNARE = R.raw.drum_snare;
+    public static final int SNARE = SoundResource.SNARE.getResource();
 
     @RawRes
-    private static final int KICK = R.raw.drum_kick;
+    public static final int KICK = SoundResource.KICK.getResource();
 
     @RawRes
-    private static final int HAT = R.raw.drum_hat;
+    public static final int HAT = SoundResource.HAT.getResource();
 
     @RawRes
-    private static final int CYMBAL = R.raw.drum_cymbal;
+    public static final int CYMBAL = SoundResource.CYMBAL.getResource();
 
     public Drums() {
         super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
@@ -52,6 +53,11 @@ public class Drums extends Instrument {
     @Override
     public BaseSoundPool createSoundPool(@NonNull Context context) {
         return new DrumsSoundPool(context);
+    }
+
+    @Override
+    public boolean soundsNeedToBeStopped() {
+        return false;
     }
 
     public void playSnare() {

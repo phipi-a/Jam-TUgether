@@ -94,6 +94,10 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
             return false;
         }
         SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+        if(singleSoundtrack.isOwnSoundtrack()) {
+            return true;
+        }
+
         for(SingleSoundtrack keepPlaying : keepPlayingList) {
             if(singleSoundtrack.getUserID() == keepPlaying.getUserID()) {
                 return true;

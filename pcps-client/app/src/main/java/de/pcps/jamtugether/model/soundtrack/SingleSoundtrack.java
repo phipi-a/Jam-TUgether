@@ -39,6 +39,8 @@ public class SingleSoundtrack extends Soundtrack {
 
     private Instrument instrument;
 
+    private boolean isOwnSoundtrack;
+
     /**
      * The sound pool on which this soundtrack is being played
      */
@@ -59,6 +61,7 @@ public class SingleSoundtrack extends Soundtrack {
     public SingleSoundtrack(int userID, @NonNull Instrument instrument) {
         this(userID);
         this.instrument = instrument;
+        this.isOwnSoundtrack = true;
     }
 
     public void loadSounds(@NonNull Context context) {
@@ -99,6 +102,10 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence.get(0).getInstrument();
     }
 
+    public boolean isOwnSoundtrack() {
+        return isOwnSoundtrack;
+    }
+
     @NonNull
     public List<Sound> getSoundsFor(int currentTime, boolean finishSounds) {
         List<Sound> sounds = new ArrayList<>();
@@ -124,6 +131,11 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     public List<Sound> getSoundSequence() {
         return soundSequence;
+    }
+
+    @NonNull
+    public List<ServerSound> getServerSoundSequence() {
+        return serverSoundSequence;
     }
 
     @Nullable

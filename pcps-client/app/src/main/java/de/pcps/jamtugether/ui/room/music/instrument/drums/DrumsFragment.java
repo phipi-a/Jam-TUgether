@@ -11,21 +11,44 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteFragment;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
 
 public class DrumsFragment extends BaseFragment {
+
+    private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String USER_ID_KEY = "user_id_key";
+    private static final String TOKEN_KEY = "token_key";
 
     private DrumsViewModel viewModel;
 
     @NonNull
-    public static DrumsFragment newInstance() {
-        return new DrumsFragment();
+    public static DrumsFragment newInstance(int roomID, int userID, @NonNull String token) {
+        DrumsFragment fragment = new DrumsFragment();
+        Bundle args = new Bundle();
+        args.putInt(ROOM_ID_KEY, roomID);
+        args.putInt(USER_ID_KEY, userID);
+        args.putString(TOKEN_KEY, token);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(DrumsViewModel.class);
 
+        if (getArguments() != null) {
+            int roomID = getArguments().getInt(ROOM_ID_KEY);
+            int userID = getArguments().getInt(USER_ID_KEY);
+            String token = getArguments().getString(TOKEN_KEY);
+
+            MusicianViewViewModel.Factory musicianViewViewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
+            MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(getParentFragment(), musicianViewViewModelFactory).get(MusicianViewViewModel.class);
+
+            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, musicianViewViewModel);
+            viewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
+        }
     }
 
     /*public void onTouch(View view, MotionEvent motionEvent) {
@@ -41,6 +64,7 @@ public class DrumsFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentDrumsBinding binding = FragmentDrumsBinding.inflate(inflater, container, false);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
         //getView().setOnTouchListener(handleTouch);
         return binding.getRoot();

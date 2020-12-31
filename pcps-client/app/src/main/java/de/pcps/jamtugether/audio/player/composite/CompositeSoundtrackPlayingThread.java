@@ -57,6 +57,10 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @Override
     protected void stopSounds(int millis) {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
+            Instrument instrument = singleSoundtrack.getInstrument();
+            if(instrument == null || !instrument.soundsNeedToBeStopped()) {
+                continue;
+            }
             for (Sound sound : singleSoundtrack.getSoundSequence()) {
                 if (sound.getEndTime() <= millis && streamIDsMap.containsKey(sound)) {
                     if(singleSoundtrack.getSoundPool() != null) {
