@@ -4,6 +4,9 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+
     <string name="choose_main_instrument">Wähle dein Hauptinstrument</string>
     <string name="main_instrument_info">Dieses Instrument wird für dich bei Betreten eines Raumes automatisch ausgewählt. Du kannst das in den Einstellungen jederzeit ändern.</string>
     <string name="join_room_info">Raum betreten</string>

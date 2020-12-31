@@ -29,6 +29,7 @@ public class CreateRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
 
     private int roomID;
+    private int userID;
 
     @Nullable
     private String password;
@@ -73,6 +74,8 @@ public class CreateRoomViewModel extends ViewModel {
             public void onSuccess(@NonNull CreateRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 roomID = response.getRoomID();
+                // todo set userID
+
                 token = response.getToken();
                 navigateToAdminRoom.setValue(true);
             }
@@ -104,6 +107,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     public int getRoomID() {
         return roomID;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     @Nullable

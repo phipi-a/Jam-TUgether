@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.audio.instrument;
+package de.pcps.jamtugether.audio.instrument.flute;
 
 import android.content.Context;
 
@@ -10,8 +10,14 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import timber.log.Timber;
 
 public class Flute extends Instrument {
+
+    public static final float PITCH_MIN_PERCENTAGE = 0.2f;
+    public static final float PITCH_MAX_PERCENTAGE = 1f;
+    public static final float PITCH_MULTIPLIER = 3f;
+    public static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
     @Nullable
     private static Flute instance;
@@ -36,7 +42,7 @@ public class Flute extends Instrument {
     }
 
     public int play(float pitch) {
-        return soundPool.playSoundRes(FLUTE, 2);
+        return soundPool.playSoundRes(FLUTE, pitch);
     }
 
     @NonNull

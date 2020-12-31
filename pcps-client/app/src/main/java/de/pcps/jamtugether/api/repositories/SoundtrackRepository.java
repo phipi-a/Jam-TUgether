@@ -50,7 +50,6 @@ public class SoundtrackRepository {
     }
 
     public void fetchSoundtracks(int currentRoomID) {
-        Timber.d("fetchSoundtracks()");
         this.currentRoomID = currentRoomID;
         fetchSoundtracks();
         if (!fetching) {
@@ -85,7 +84,7 @@ public class SoundtrackRepository {
             String[] instruments = {"flute", "drums", "shaker"};
             String serverString = "flute";
             for (int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(Sound.PITCH_RANGE + 1);
+                int pitch = random.nextInt(80)+20;
                 int element = 0;
                 soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
             }

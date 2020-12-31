@@ -15,23 +15,45 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
+import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import timber.log.Timber;
 
 public class FluteFragment extends BaseFragment {
+
+    private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String USER_ID_KEY = "user_id_key";
+    private static final String TOKEN_KEY = "token_key";
 
     private static final int REQUEST_MICROPHONE = 1;
 
     private FluteViewModel viewModel;
 
     @NonNull
-    public static FluteFragment newInstance() {
-        return new FluteFragment();
+    public static FluteFragment newInstance(int roomID, int userID, @NonNull String token) {
+        FluteFragment fragment = new FluteFragment();
+        Bundle args = new Bundle();
+        args.putInt(ROOM_ID_KEY, roomID);
+        args.putInt(USER_ID_KEY, userID);
+        args.putString(TOKEN_KEY, token);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(FluteViewModel.class);
+
+        if (getArguments() != null) {
+            int roomID = getArguments().getInt(ROOM_ID_KEY);
+            int userID = getArguments().getInt(USER_ID_KEY);
+            String token = getArguments().getString(TOKEN_KEY);
+
+            MusicianViewViewModel.Factory musicianViewViewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
+            MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(getParentFragment(), musicianViewViewModelFactory).get(MusicianViewViewModel.class);
+
+            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, musicianViewViewModel);
+            viewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
+        }
     }
 
     @Nullable
@@ -48,7 +70,7 @@ public class FluteFragment extends BaseFragment {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
             } else {
-                viewModel.startRecording();
+                viewModel.onUserHasPermission();
             }
         }
 
@@ -59,7 +81,7 @@ public class FluteFragment extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_MICROPHONE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                viewModel.startRecording();
+                viewModel.onUserHasPermission();
             } else {
                 //TODO:Add Error Message
                 Timber.e("onRequestPermissionsResult: No microphone permission");

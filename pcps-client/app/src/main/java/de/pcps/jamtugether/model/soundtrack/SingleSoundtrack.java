@@ -11,6 +11,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.ServerSound;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
@@ -34,6 +35,10 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     private final List<Sound> soundSequence;
 
+    private final List<ServerSound> serverSoundSequence;
+
+    private Instrument instrument;
+
     /**
      * The sound pool on which this soundtrack is being played
      */
@@ -44,19 +49,35 @@ public class SingleSoundtrack extends Soundtrack {
         super();
         this.userID = userID;
         this.soundSequence = soundSequence;
+        this.serverSoundSequence = new ArrayList<>();
+    }
+
+    public SingleSoundtrack(int userID) {
+        this(userID, new ArrayList<>());
+    }
+
+    public SingleSoundtrack(int userID, @NonNull Instrument instrument) {
+        this(userID);
+        this.instrument = instrument;
     }
 
     public void loadSounds(@NonNull Context context) {
+        Instrument instrument;
         if (isEmpty()) {
-            return;
+            instrument = this.instrument;
+        } else {
+            instrument = soundSequence.get(0).getInstrument();
         }
-        Instrument instrument = soundSequence.get(0).getInstrument();
         soundPool = instrument.createSoundPool(context);
+    }
+
+    public void addSound(ServerSound serverSound) {
+        serverSoundSequence.add(serverSound);
+        soundSequence.add(serverSound);
     }
 
     @Override
     public int getLength() {
-
         if (isEmpty()) {
             return 0;
         }
@@ -73,7 +94,7 @@ public class SingleSoundtrack extends Soundtrack {
     @Nullable
     public Instrument getInstrument() {
         if (soundSequence.isEmpty()) {
-            return null;
+            return instrument;
         }
         return soundSequence.get(0).getInstrument();
     }

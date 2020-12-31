@@ -1,76 +1,122 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
-import android.media.MediaRecorder;
+import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
-import java.io.IOException;
+import javax.inject.Inject;
 
-import de.pcps.jamtugether.audio.instrument.Flute;
+import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
+import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
+import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.model.sound.ServerSound;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 
-public class FluteViewModel extends ViewModel {
+import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PERCENTAGE;
+import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
+import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
-    private static final float PITCH_MIN_PERCENTAGE = 0.2f;
-    private static final float PITCH_MAX_PERCENTAGE = 1f;
-    private static final float PITCH_MULTIPLIER = 3f;
-    private static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
+public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallback {
+
+    @Inject
+    Application application;
 
     @NonNull
     private final Flute flute = Flute.getInstance();
 
-    private int streamID;
-
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
-    @NonNull
-    private final MediaRecorder soundRecorder;
+    private FluteRecordingThread fluteRecordingThread;
+
+    private final int roomID;
+    private final int userID;
 
     @NonNull
-    private final Thread soundRecordingThread;
+    private final OnOwnSoundtrackChangedCallback callback;
 
-    public FluteViewModel() {
-        soundRecorder = new MediaRecorder();
-        soundRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        soundRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        soundRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        soundRecorder.setOutputFile("/dev/null");
-        try {
-            soundRecorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        soundRecordingThread = createThread();
+    private SingleSoundtrack ownSoundtrack;
+
+    @NonNull
+    private final MutableLiveData<Boolean> startedCreatingOwnSoundtrack = new MutableLiveData<>(false);
+
+    private boolean soundIsPlaying;
+
+    private long startedMillis;
+
+    private int currentStartTimeMillis = -1;
+    private int currentPitch = -1;
+
+    private boolean hasPermission = false;
+
+    public FluteViewModel(int userID, int roomID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        AppInjector.inject(this);
+        this.userID = userID;
+        this.roomID = roomID;
+        this.callback = callback;
     }
 
-    @NonNull
-    private Thread createThread() {
-        return new Thread() {
-            @Override
-            public void run() {
-                while (!this.isInterrupted()) {
-                    int maxAmplitude = soundRecorder.getMaxAmplitude();
-                    if (maxAmplitude != 0) {
-                        if (maxAmplitude < 10000) {
-                            streamID = flute.stop();
-                        } else {
-                            if (streamID == 0 && pitchPercentage.getValue() != null) {
-                                float pitch = pitchPercentage.getValue() * PITCH_MULTIPLIER;
-                                streamID = flute.play(pitch);
-                            }
-                        }
-                    }
-                }
+    public void onUserHasPermission() {
+        hasPermission = true;
+    }
+
+    public void onCreateOwnSoundtrackButtonClicked() {
+        boolean started = startedCreatingOwnSoundtrack.getValue();
+        if (started) {
+            stopRecording();
+            callback.onOwnSoundtrackChanged(ownSoundtrack);
+            startedCreatingOwnSoundtrack.setValue(false);
+        } else {
+            if(!hasPermission) {
+                // todo maybe add error message
+                return;
             }
-        };
+            startRecording();
+
+            ownSoundtrack = new SingleSoundtrack(userID, Flute.getInstance());
+            ownSoundtrack.loadSounds(application.getApplicationContext());
+            startedCreatingOwnSoundtrack.setValue(true);
+        }
+
     }
 
     public void startRecording() {
-        soundRecorder.start();
-        soundRecordingThread.start();
+        fluteRecordingThread = new FluteRecordingThread(this);
+        fluteRecordingThread.startRecording();
+    }
+
+    @Override
+    public void onAmplitudeChanged(int maxAmplitude) {
+        if (maxAmplitude < 10000) {
+            flute.stop();
+            if (currentStartTimeMillis != -1 && currentPitch != -1) {
+                int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                ownSoundtrack.addSound(new ServerSound(roomID, userID, Flute.getInstance(), 0, currentStartTimeMillis, endTimeMillis, currentPitch));
+                currentStartTimeMillis = -1;
+                currentPitch = -1;
+            }
+            soundIsPlaying = false;
+        } else {
+            Float pitchPercentage = this.pitchPercentage.getValue();
+            if (!soundIsPlaying && pitchPercentage != null) {
+                int streamID = flute.play(pitchPercentage * 100);
+                soundIsPlaying = streamID != 0;
+
+                if (startedCreatingOwnSoundtrack.getValue() && soundIsPlaying) {
+                    if (ownSoundtrack.isEmpty()) {
+                        startedMillis = System.currentTimeMillis();
+                    }
+                    currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                    currentPitch = (int) (pitchPercentage * 100);
+                }
+            }
+        }
     }
 
     public void onPitchChanged(float newPitch) {
@@ -83,10 +129,10 @@ public class FluteViewModel extends ViewModel {
         pitchPercentage.setValue(newPitch);
     }
 
+
     private void stopRecording() {
-        soundRecordingThread.interrupt();
-        soundRecorder.stop();
-        soundRecorder.release();
+        fluteRecordingThread.stopRecording();
+        fluteRecordingThread = null;
         flute.stop();
     }
 
@@ -95,9 +141,42 @@ public class FluteViewModel extends ViewModel {
         return pitchPercentage;
     }
 
+    @NonNull
+    public LiveData<Boolean> getStartedCreatingOwnSoundtrack() {
+        return startedCreatingOwnSoundtrack;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
-        stopRecording();
+        if(fluteRecordingThread != null) {
+            fluteRecordingThread.stopRecording();
+        }
+        flute.stop();
+    }
+
+    static class Factory implements ViewModelProvider.Factory {
+
+        private final int roomID;
+        private final int userID;
+
+        @NonNull
+        private final OnOwnSoundtrackChangedCallback callback;
+
+        public Factory(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+            this.roomID = roomID;
+            this.userID = userID;
+            this.callback = callback;
+        }
+
+        @SuppressWarnings("unchecked")
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(FluteViewModel.class)) {
+                return (T) new FluteViewModel(roomID, userID, callback);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
     }
 }

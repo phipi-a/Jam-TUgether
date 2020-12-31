@@ -3,7 +3,7 @@ package de.pcps.jamtugether.ui.room.music.instrument.drums;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import de.pcps.jamtugether.audio.instrument.Drums;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
 
 public class DrumsViewModel extends ViewModel {
 

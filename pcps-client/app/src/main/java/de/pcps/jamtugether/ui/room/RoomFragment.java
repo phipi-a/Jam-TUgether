@@ -22,6 +22,7 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class RoomFragment extends TabLayoutFragment {
 
     private int roomID;
+    private int userID;
 
     private String password;
 
@@ -37,6 +38,7 @@ public class RoomFragment extends TabLayoutFragment {
         if (getArguments() != null) {
             RoomFragmentArgs args = RoomFragmentArgs.fromBundle(getArguments());
             this.roomID = args.getRoomID();
+            this.userID = args.getUserID();
             this.password = args.getPassword();
             this.token = args.getToken();
             this.userIsAdmin = args.getAdmin();
@@ -93,7 +95,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
             }
 
             @Override

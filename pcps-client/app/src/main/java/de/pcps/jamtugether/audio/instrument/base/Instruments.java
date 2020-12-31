@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import de.pcps.jamtugether.audio.instrument.Drums;
-import de.pcps.jamtugether.audio.instrument.Flute;
-import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
+import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 
 public class Instruments {
 

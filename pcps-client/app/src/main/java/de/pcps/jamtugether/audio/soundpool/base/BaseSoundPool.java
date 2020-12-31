@@ -14,6 +14,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import timber.log.Timber;
 
 /**
  * A simple sound pool wrapper
@@ -98,6 +99,8 @@ public abstract class BaseSoundPool {
     public boolean soundIsLoaded(int soundID) {
         return loadedSoundIDs.contains(soundID);
     }
+
+    public abstract float calculatePitch(int pitchPercentage);
 
     @NonNull
     public static BaseSoundPool from(@NonNull String instrumentString, @NonNull Context context) {

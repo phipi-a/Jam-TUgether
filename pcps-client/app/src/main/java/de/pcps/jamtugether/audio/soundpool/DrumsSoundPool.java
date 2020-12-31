@@ -22,6 +22,11 @@ public class DrumsSoundPool extends BaseSoundPool {
 
     @Override
     public int play(int soundID, float pitch) {
-        return soundPool.play(soundID, volume, volume, 0, 0, 1);
+        return soundPool.play(soundID, volume, volume, 0, 0, calculatePitch((int) pitch));
+    }
+
+    @Override
+    public float calculatePitch(int pitchPercentage) {
+        return 1;
     }
 }

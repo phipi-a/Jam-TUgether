@@ -6,14 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.audio.instrument.Drums;
-import de.pcps.jamtugether.audio.instrument.Flute;
-import de.pcps.jamtugether.audio.instrument.Shaker;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
+import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
-public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback {
+public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback, OnOwnSoundtrackChangedCallback {
 
     private final int roomID;
+    private final int userID;
 
     @NonNull
     private final String token;
@@ -27,13 +29,22 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
 
-    public MusicianViewViewModel(int roomID, @NonNull String token) {
+    @NonNull
+    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>();
+
+    private final SingleSoundtrack EMPTY_SOUNDTRACK;
+
+    public MusicianViewViewModel(int roomID, int userID, @NonNull String token) {
         this.roomID = roomID;
+        this.userID = userID;
         this.token = token;
+        EMPTY_SOUNDTRACK = new SingleSoundtrack(userID);
+        ownSoundtrack.setValue(EMPTY_SOUNDTRACK);
     }
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
+        ownSoundtrack.setValue(EMPTY_SOUNDTRACK);
         if (instrument == Flute.getInstance()) {
             showFluteFragment.setValue(true);
         } else if (instrument == Drums.getInstance()) {
@@ -74,15 +85,27 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         return showShakerFragment;
     }
 
+    @NonNull
+    public LiveData<SingleSoundtrack> getOwnSoundtrack() {
+        return ownSoundtrack;
+    }
+
+    @Override
+    public void onOwnSoundtrackChanged(@NonNull SingleSoundtrack ownSoundtrack) {
+        this.ownSoundtrack.setValue(ownSoundtrack);
+    }
+
     public static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;
+        private final int userID;
 
         @NonNull
         private final String token;
 
-        public Factory(int roomID, @NonNull String token) {
+        public Factory(int roomID, int userID, @NonNull String token) {
             this.roomID = roomID;
+            this.userID = userID;
             this.token = token;
         }
 
@@ -91,7 +114,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(MusicianViewViewModel.class)) {
-                return (T) new MusicianViewViewModel(roomID, token);
+                return (T) new MusicianViewViewModel(roomID, userID, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +24,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
+import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -43,6 +43,9 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     private final int roomID;
 
     @NonNull
+    private final MusicianViewViewModel musicianViewViewModel;
+
+    @NonNull
     private final Instrument.OnChangeCallback onChangeCallback;
 
     @Nullable
@@ -57,29 +60,16 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
-    @NonNull
-    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>();
-
-    public OwnSoundtrackViewModel(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
+    public OwnSoundtrackViewModel(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
         this.roomID = roomID;
-        this.onChangeCallback = onChangeCallback;
+        this.musicianViewViewModel = musicianViewViewModel;
+        this.onChangeCallback = musicianViewViewModel;
 
         Instrument mainInstrument = preferences.getMainInstrument();
         onChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
-
-        onSoundtrackCreated(generateTestOwnSoundtrack());
-    }
-
-    public void onSoundtrackCreated(@NonNull SingleSoundtrack ownSoundtrack) {
-        this.ownSoundtrack.setValue(ownSoundtrack);
-    }
-
-    @NonNull
-    private SingleSoundtrack generateTestOwnSoundtrack() {
-        return new SingleSoundtrack(0, new ArrayList<>());
     }
 
     @Override
@@ -147,7 +137,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
 
     @NonNull
     public LiveData<SingleSoundtrack> getOwnSoundtrack() {
-        return ownSoundtrack;
+        return musicianViewViewModel.getOwnSoundtrack();
     }
 
     @NonNull
@@ -160,11 +150,11 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         private final int roomID;
 
         @NonNull
-        private final Instrument.OnChangeCallback onChangeCallback;
+        private final MusicianViewViewModel musicianViewViewModel;
 
-        public Factory(int roomID, @NonNull Instrument.OnChangeCallback onChangeCallback) {
+        public Factory(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
             this.roomID = roomID;
-            this.onChangeCallback = onChangeCallback;
+            this.musicianViewViewModel = musicianViewViewModel;
         }
 
         @SuppressWarnings("unchecked")
@@ -172,7 +162,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(OwnSoundtrackViewModel.class)) {
-                return (T) new OwnSoundtrackViewModel(roomID, onChangeCallback);
+                return (T) new OwnSoundtrackViewModel(roomID, musicianViewViewModel);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

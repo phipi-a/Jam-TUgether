@@ -61,11 +61,10 @@ public abstract class Instrument {
         soundPool = createSoundPool(context);
     }
 
-    public int stop() {
+    public void stop() {
         if(soundPool != null) {
             soundPool.stopAllSounds();
         }
-        return 0;
     }
 
     public int getOrdinal() {
