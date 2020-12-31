@@ -12,6 +12,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
 import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import timber.log.Timber;
 
 public class Drums extends Instrument {
 

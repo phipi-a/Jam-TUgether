@@ -11,7 +11,7 @@ public enum SoundResource {
     SNARE(R.raw.drum_snare),
     KICK(R.raw.drum_kick),
     HAT(R.raw.drum_hat),
-    CYMBAL(R.raw.drum_kick),
+    CYMBAL(R.raw.drum_cymbal),
 
     SHAKER(R.raw.flute_sound); // todo
 
