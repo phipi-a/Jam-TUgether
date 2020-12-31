@@ -13,21 +13,34 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/create_own_soundtrack_button"
+        <LinearLayout
+            android:id="@+id/control_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.onCreateOwnSoundtrackButtonClicked()}"
-            android:text="@{viewModel.getStartedCreatingOwnSoundtrack() ? @string/stop : @string/start}"
-            android:textColor="@color/primaryTextColor"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.onCreateOwnSoundtrackButtonClicked()}"
+                android:src="@{viewModel.getStartedCreatingOwnSoundtrack() ? @drawable/ic_stop : @drawable/ic_play}"
+                app:tint="@color/iconColor" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@{viewModel.getTimerText()}"
+                android:textColor="@color/primaryTextColor" />
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -36,7 +49,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_own_soundtrack_button">
+            app:layout_constraintTop_toBottomOf="@id/control_layout">
 
             <ImageButton
                 android:id="@+id/snare_button"

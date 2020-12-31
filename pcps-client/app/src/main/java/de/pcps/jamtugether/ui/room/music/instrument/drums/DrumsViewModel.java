@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,9 +16,12 @@ import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.sound.ServerSound;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
+import de.pcps.jamtugether.utils.TimeUtils;
 
-public class DrumsViewModel extends ViewModel {
+public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback {
 
     @Inject
     Application application;
@@ -36,6 +40,12 @@ public class DrumsViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> startedCreatingOwnSoundtrack = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Long> timerMillis = new MutableLiveData<>();
+
+    @NonNull
+    private final JamTimer timer = new JamTimer(this, Soundtrack.MAX_TIME);
+
     private long startedMillis;
 
     public DrumsViewModel(int userID, int roomID, @NonNull OnOwnSoundtrackChangedCallback callback) {
@@ -48,9 +58,9 @@ public class DrumsViewModel extends ViewModel {
     public void onCreateOwnSoundtrackButtonClicked() {
         boolean started = startedCreatingOwnSoundtrack.getValue();
         if(started) {
-            callback.onOwnSoundtrackChanged(ownSoundtrack);
-            startedCreatingOwnSoundtrack.setValue(false);
+            onFinishSoundtrack();
         } else {
+            timerMillis.setValue(-1L);
             ownSoundtrack = new SingleSoundtrack(userID, Drums.getInstance());
             ownSoundtrack.loadSounds(application.getApplicationContext());
             startedCreatingOwnSoundtrack.setValue(true);
@@ -83,6 +93,7 @@ public class DrumsViewModel extends ViewModel {
         }
         if(ownSoundtrack.isEmpty()) {
             startedMillis = System.currentTimeMillis();
+            timer.start();
         }
         int soundDuration = soundResource.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
@@ -90,9 +101,35 @@ public class DrumsViewModel extends ViewModel {
         ownSoundtrack.addSound(new ServerSound(roomID, userID, Drums.getInstance(), element, startTimeMillis, endTimeMillis, 50)); // todo pitch
     }
 
+    @Override
+    public void onTicked(long millis) {
+        timerMillis.setValue(millis);
+    }
+
+    @Override
+    public void onFinished() {
+        onFinishSoundtrack();
+    }
+
+    private void onFinishSoundtrack() {
+        timer.stop();
+        callback.onOwnSoundtrackChanged(ownSoundtrack);
+        startedCreatingOwnSoundtrack.setValue(false);
+    }
+
     @NonNull
     public LiveData<Boolean> getStartedCreatingOwnSoundtrack() {
         return startedCreatingOwnSoundtrack;
+    }
+
+    @NonNull
+    public LiveData<String> getTimerText() {
+        return Transformations.map(timerMillis, millis -> {
+            if (millis == -1L) {
+                return "";
+            }
+            return TimeUtils.formatTimerSecondMinutes(millis);
+        });
     }
 
     @Override
