@@ -3,8 +3,11 @@ package de.pcps.jamtugether.ui.room.music.instrument.drums;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +24,7 @@ import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback {
+public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback, LifecycleObserver {
 
     @Inject
     Application application;
@@ -57,7 +60,7 @@ public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback
 
     public void onCreateOwnSoundtrackButtonClicked() {
         boolean started = startedCreatingOwnSoundtrack.getValue();
-        if(started) {
+        if (started) {
             onFinishSoundtrack();
         } else {
             timerMillis.setValue(-1L);
@@ -65,6 +68,11 @@ public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback
             ownSoundtrack.loadSounds(application.getApplicationContext());
             startedCreatingOwnSoundtrack.setValue(true);
         }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private void onPause() {
+        onFinishSoundtrack();
     }
 
     public void onSnareClicked() {
@@ -88,10 +96,10 @@ public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback
     }
 
     private void onElementPlayed(int element, SoundResource soundResource) {
-        if(!startedCreatingOwnSoundtrack.getValue()) {
+        if (!startedCreatingOwnSoundtrack.getValue()) {
             return;
         }
-        if(ownSoundtrack.isEmpty()) {
+        if (ownSoundtrack.isEmpty()) {
             startedMillis = System.currentTimeMillis();
             timer.start();
         }

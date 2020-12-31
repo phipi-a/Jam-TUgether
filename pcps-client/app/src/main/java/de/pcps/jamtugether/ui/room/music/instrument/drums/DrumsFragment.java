@@ -48,6 +48,8 @@ public class DrumsFragment extends BaseFragment {
 
             DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, musicianViewViewModel);
             viewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
+
+            getLifecycle().addObserver(viewModel);
         }
     }
 

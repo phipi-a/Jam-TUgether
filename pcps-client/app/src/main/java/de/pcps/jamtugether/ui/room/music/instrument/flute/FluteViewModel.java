@@ -100,6 +100,7 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
         fragmentFocused = false;
+        onFinishOwnSoundtrack();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
