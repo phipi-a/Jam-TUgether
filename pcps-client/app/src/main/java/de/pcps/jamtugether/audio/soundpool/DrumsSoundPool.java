@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 
 public class DrumsSoundPool extends BaseSoundPool {
@@ -17,7 +18,7 @@ public class DrumsSoundPool extends BaseSoundPool {
     private static final int SOUND_POOL_MAX_STREAMS = 100;
 
     public DrumsSoundPool(@NonNull Context context) {
-        super(context, SOUND_POOL_MAX_STREAMS, R.raw.drum_snare, R.raw.drum_kick, R.raw.drum_hat, R.raw.drum_cymbal);
+        super(context, SOUND_POOL_MAX_STREAMS, Drums.SNARE, Drums.KICK, Drums.KICK, Drums.CYMBAL);
     }
 
     @Override

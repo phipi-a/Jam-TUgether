@@ -91,6 +91,13 @@ public abstract class Instrument {
         return serverString;
     }
 
+    /**
+     * indicates whether the individual sounds of this instrument
+     * need to be stopped manually
+     * @return
+     */
+    public abstract boolean soundsNeedToBeStopped();
+
     public interface ClickListener {
         void onInstrumentClicked(@NonNull Instrument instrument);
     }

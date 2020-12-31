@@ -74,7 +74,7 @@ public class MusicianViewFragment extends BaseFragment {
 
         viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
             if (showDrumsFragment) {
-                replaceInstrumentFragment(DrumsFragment.newInstance());
+                replaceInstrumentFragment(DrumsFragment.newInstance(roomID, userID, token));
                 viewModel.onDrumsFragmentShown();
             }
         });

@@ -12,7 +12,7 @@ import timber.log.Timber;
 public class FluteSoundPool extends BaseSoundPool {
 
     public FluteSoundPool(@NonNull Context context) {
-        super(context, 1, R.raw.flute_sound);
+        super(context, 1, Flute.FLUTE_SOUND);
     }
 
     @Override

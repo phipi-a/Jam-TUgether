@@ -9,8 +9,8 @@ import androidx.annotation.RawRes;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
+import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
-import timber.log.Timber;
 
 public class Flute extends Instrument {
 
@@ -19,11 +19,11 @@ public class Flute extends Instrument {
     public static final float PITCH_MULTIPLIER = 3f;
     public static final float PITCH_DEFAULT_PERCENTAGE = 0.3f;
 
+    @RawRes
+    public static int FLUTE_SOUND = SoundResource.FLUTE.getResource();
+
     @Nullable
     private static Flute instance;
-
-    @RawRes
-    private static final int FLUTE = R.raw.flute_sound;
 
     public Flute() {
         super(0, R.string.instrument_flute, R.string.play_flute_help, "flute", "flute");
@@ -32,7 +32,7 @@ public class Flute extends Instrument {
     @RawRes
     @Override
     public int getSoundResource(int element) {
-        return FLUTE;
+        return FLUTE_SOUND;
     }
 
     @NonNull
@@ -41,8 +41,13 @@ public class Flute extends Instrument {
         return new FluteSoundPool(context);
     }
 
+    @Override
+    public boolean soundsNeedToBeStopped() {
+        return true;
+    }
+
     public int play(float pitch) {
-        return soundPool.playSoundRes(FLUTE, pitch);
+        return soundPool.playSoundRes(FLUTE_SOUND, pitch);
     }
 
     @NonNull
