@@ -150,6 +150,10 @@ public abstract class SoundtrackPlayingThread extends Thread {
         soundtrack.postProgressInMillis(progressInMillis);
     }
 
+    public boolean isPlaying() {
+        return soundtrack.getState().getValue() == Soundtrack.State.PLAYING;
+    }
+
     protected abstract void setVolume(float volume);
 
     /**

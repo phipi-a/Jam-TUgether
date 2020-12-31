@@ -3,8 +3,11 @@ package de.pcps.jamtugether.ui.room.music.instrument.flute;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +17,9 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
+import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
+import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
+import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayingThread;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.sound.ServerSound;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -27,10 +33,16 @@ import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PER
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
-public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallback, JamTimer.OnTickCallback {
+public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallback, JamTimer.OnTickCallback, LifecycleObserver {
 
     @Inject
     Application application;
+
+    @Inject
+    SingleSoundtrackPlayer singleSoundtrackPlayer;
+
+    @Inject
+    CompositeSoundtrackPlayer compositeSoundtrackPlayer;
 
     @NonNull
     private final Flute flute = Flute.getInstance();
@@ -56,6 +68,8 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
 
     @NonNull
     private final JamTimer timer = new JamTimer(this, Soundtrack.MAX_TIME);
+
+    private boolean fragmentFocused;
 
     private boolean soundIsPlaying;
 
@@ -83,6 +97,16 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private void onPause() {
+        fragmentFocused = false;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private void onResume() {
+        fragmentFocused = true;
+    }
+
     public void startRecording() {
         fluteRecordingThread = new FluteRecordingThread(this);
         fluteRecordingThread.startRecording();
@@ -90,8 +114,13 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
 
     @Override
     public void onAmplitudeChanged(int maxAmplitude) {
-        Timber.d("onAmplitudeChanged()");
-        // todo if player is playing, return
+        if(!fragmentFocused) {
+            return;
+        }
+        // ignore recorder when soundtracks are playing in order to avoid sound playing issues
+        if(singleSoundtrackPlayer.isPlaying() || compositeSoundtrackPlayer.isPlaying()) {
+            return;
+        }
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
@@ -102,10 +131,8 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
 
                 if (startedCreatingOwnSoundtrack.getValue() && soundIsPlaying) {
                     if (ownSoundtrack.isEmpty()) {
-                        Timber.d("ownSoundtrack empty");
                         startedMillis = System.currentTimeMillis();
                         timer.start();
-                        Timber.d("timer started");
                     }
                     currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     currentPitch = (int) (pitchPercentage * 100);

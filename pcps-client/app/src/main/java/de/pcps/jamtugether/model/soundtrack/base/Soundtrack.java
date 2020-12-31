@@ -13,6 +13,7 @@ import de.pcps.jamtugether.utils.TimeUtils;
 public abstract class Soundtrack {
 
     public static final long MAX_TIME = TimeUtils.FIVE_MINUTES;
+
     @NonNull
     private final MutableLiveData<State> state;
 

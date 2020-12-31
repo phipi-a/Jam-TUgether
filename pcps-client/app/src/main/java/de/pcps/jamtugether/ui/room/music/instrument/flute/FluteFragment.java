@@ -53,6 +53,8 @@ public class FluteFragment extends BaseFragment {
 
             FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, musicianViewViewModel);
             viewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
+
+            this.getLifecycle().addObserver(viewModel);
         }
     }
 

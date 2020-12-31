@@ -83,6 +83,8 @@ public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
         }
     }
 
+    public abstract boolean isPlaying();
+
     public abstract void stop();
 
     @Nullable
