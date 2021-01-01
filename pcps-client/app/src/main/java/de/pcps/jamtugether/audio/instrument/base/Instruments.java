@@ -22,7 +22,7 @@ public class Instruments {
     public static final Shaker SHAKER = Shaker.getInstance();
 
     @NonNull
-    private static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER};
+    public static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER};
 
     @NonNull
     public static final List<Instrument> LIST = Arrays.asList(ARRAY);

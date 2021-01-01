@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +28,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
+    @Nullable
     private FluteRecordingThread fluteRecordingThread;
 
     private boolean fragmentFocused;
@@ -44,14 +46,16 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     public void finishSoundtrack() {
         finishSound();
         timer.stop();
-        callback.onOwnSoundtrackChanged(ownSoundtrack);
+        if(ownSoundtrack != null) {
+            callback.onOwnSoundtrackChanged(ownSoundtrack);
+        }
         startedSoundtrackCreation.setValue(false);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
         fragmentFocused = false;
-        if (startedSoundtrackCreation.getValue()) {
+        if (startedSoundtrackCreation()) {
             finishSoundtrack();
         }
     }
@@ -83,7 +87,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
                 int streamID = flute.play(pitchPercentage * 100);
                 soundIsPlaying = streamID != 0;
 
-                if (startedSoundtrackCreation.getValue() && soundIsPlaying) {
+                if (startedSoundtrackCreation() && soundIsPlaying) {
                     currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     currentPitch = (int) (pitchPercentage * 100);
                 }
@@ -95,7 +99,9 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         flute.stop();
         if (currentStartTimeMillis != -1 && currentPitch != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-            ownSoundtrack.addSound(new ServerSound(roomID, userID, Flute.getInstance(), 0, currentStartTimeMillis, endTimeMillis, currentPitch));
+            if(ownSoundtrack != null) {
+                ownSoundtrack.addSound(new ServerSound(roomID, userID, Flute.getInstance(), 0, currentStartTimeMillis, endTimeMillis, currentPitch));
+            }
             currentStartTimeMillis = -1;
             currentPitch = -1;
         }

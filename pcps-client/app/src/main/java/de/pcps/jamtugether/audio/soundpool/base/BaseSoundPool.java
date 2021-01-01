@@ -7,14 +7,11 @@ import android.media.SoundPool;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import timber.log.Timber;
 
 /**
  * A simple sound pool wrapper
@@ -50,7 +47,7 @@ public abstract class BaseSoundPool {
                 .build();
 
         this.loadedSoundIDs = new ArrayList<>();
-        this.streamIDs = Collections.synchronizedList(new ArrayList<>());
+        this.streamIDs = new ArrayList<>();
         this.soundResMap = new HashMap<>();
 
         for (Integer soundResID : soundResIDs) {
@@ -89,10 +86,8 @@ public abstract class BaseSoundPool {
     }
 
     public void stopAllSounds() {
-        synchronized(streamIDs) {
-            for (int streamID : streamIDs) {
-                soundPool.stop(streamID);
-            }
+        for (int streamID : streamIDs) {
+            soundPool.stop(streamID);
         }
     }
 

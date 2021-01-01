@@ -174,7 +174,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onSoundtrackDeletionConfirmButtonClicked() {
-        deleteSoundtrack(soundtrackToBeDeleted);
+        if(soundtrackToBeDeleted != null) {
+            deleteSoundtrack(soundtrackToBeDeleted);
+        }
     }
 
     public void onRoomDeletionConfirmButtonClicked() {

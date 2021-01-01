@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
 
@@ -33,7 +32,6 @@ public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
     }
 
     private void play(@NonNull Soundtrack soundtrack) {
-        Timber.d("play()");
         SoundtrackPlayingThread thread = getThread(soundtrack);
         if (thread != null) {
             thread.play();

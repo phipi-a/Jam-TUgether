@@ -48,7 +48,14 @@ public class OwnSoundtrackFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
 
             Fragment musicianFragment = getParentFragment();
+            if(musicianFragment == null) {
+                return;
+            }
+
             Fragment roomFragment = musicianFragment.getParentFragment();
+            if(roomFragment == null) {
+                return;
+            }
 
             CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID);
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
@@ -72,7 +79,12 @@ public class OwnSoundtrackFragment extends BaseFragment {
 
         ownSoundtrackViewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if (showHelpDialog) {
-                UiUtils.showInfoDialog(activity, ownSoundtrackViewModel.getHelpDialogTitle(), ownSoundtrackViewModel.getHelpDialogMessage());
+                String helpDialogTitle = ownSoundtrackViewModel.getHelpDialogTitle();
+                String helpDialogMessage = ownSoundtrackViewModel.getHelpDialogMessage();
+                if(helpDialogTitle == null || helpDialogMessage == null) {
+                    return;
+                }
+                UiUtils.showInfoDialog(activity, helpDialogTitle, helpDialogMessage);
                 ownSoundtrackViewModel.onHelpDialogShown();
             }
         });

@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room.music.instrument;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -66,13 +67,14 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             countDownTimerMillis.setValue(-1L);
             startedMillis = System.currentTimeMillis();
             timer.start();
-            if(playAlongsideCompositeSoundtrack) {
+            if(playWithCompositeSoundtrack) {
                 compositeSoundtrackPlayer.stop(compositeSoundtrack);
                 compositeSoundtrackPlayer.playOrPause(compositeSoundtrack);
             }
         }
     };
 
+    @NonNull
     protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, countDownTimerCallback);
 
     private final BaseJamTimer.OnTickCallback timerCallback = new BaseJamTimer.OnTickCallback() {
@@ -87,13 +89,16 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         }
     };
 
+    @NonNull
     protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, timerCallback);
 
+    @Nullable
     private CompositeSoundtrack compositeSoundtrack;
 
+    @Nullable
     protected SingleSoundtrack ownSoundtrack;
 
-    private boolean playAlongsideCompositeSoundtrack;
+    private boolean playWithCompositeSoundtrack;
 
     protected long startedMillis;
 
@@ -109,13 +114,12 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         this.compositeSoundtrack = compositeSoundtrack;
     }
 
-    public void onCompositeSoundtrackCheckBoxChecked(boolean checked) {
-        this.playAlongsideCompositeSoundtrack = checked;
+    public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
+        this.playWithCompositeSoundtrack = checked;
     }
 
     public void onCreateSoundtrackButtonClicked() {
-        boolean started = startedSoundtrackCreation.getValue();
-        if (started) {
+        if (startedSoundtrackCreation()) {
             if(countDownTimer.isStopped()) {
                 finishSoundtrack();
             } else {
@@ -133,6 +137,11 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     }
 
     public abstract void finishSoundtrack();
+
+    protected boolean startedSoundtrackCreation() {
+        Boolean started = startedSoundtrackCreation.getValue();
+        return started != null && started;
+    }
 
     @NonNull
     public LiveData<Boolean> getStartedSoundtrackCreation() {

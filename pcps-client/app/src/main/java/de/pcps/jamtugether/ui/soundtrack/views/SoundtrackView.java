@@ -20,14 +20,12 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public class SoundtrackView extends View {
 
     @Nullable
-    private SingleSoundtrack singleSoundtrack;
-
-    @Nullable
-    private CompositeSoundtrack compositeSoundtrack;
+    private Soundtrack soundtrack;
 
     @NonNull
     private final Paint paint = new Paint();
@@ -38,30 +36,30 @@ public class SoundtrackView extends View {
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        singleSoundtrack.observe(lifecycleOwner, this::onSingleSoundtrackChanged);
+        singleSoundtrack.observe(lifecycleOwner, this::onSoundtrackChanged);
     }
 
     public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        compositeSoundtrack.observe(lifecycleOwner, this::onCompositeSoundtrackChanged);
+        compositeSoundtrack.observe(lifecycleOwner, this::onSoundtrackChanged);
     }
 
-    public void onSingleSoundtrackChanged(@NonNull SingleSoundtrack singleSoundtrack) {
-        this.singleSoundtrack = singleSoundtrack;
-        this.invalidate();
-    }
-
-    private void onCompositeSoundtrackChanged(@NonNull CompositeSoundtrack compositeSoundtrack) {
-        this.compositeSoundtrack = compositeSoundtrack;
+    public void onSoundtrackChanged(@NonNull Soundtrack soundtrack) {
+        this.soundtrack = soundtrack;
         this.invalidate();
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        if (singleSoundtrack != null) {
+        if(soundtrack == null) {
+            return;
+        }
+        if (soundtrack instanceof SingleSoundtrack) {
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
             drawSingleSoundtrack(canvas, singleSoundtrack, false);
-        } else if (compositeSoundtrack != null) {
-            drawCompositeSoundtrack(canvas);
+        } else {
+            CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
+            drawCompositeSoundtrack(canvas, compositeSoundtrack);
         }
     }
 
@@ -123,7 +121,7 @@ public class SoundtrackView extends View {
         }
     }
 
-    private void drawCompositeSoundtrack(@NonNull Canvas canvas) {
+    private void drawCompositeSoundtrack(@NonNull Canvas canvas, @NonNull CompositeSoundtrack compositeSoundtrack) {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             drawSingleSoundtrack(canvas, singleSoundtrack, true);
         }

@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:buttonTint="@color/iconColor"
-            android:onClick="@{() -> viewModel.onCompositeSoundtrackCheckBoxChecked(compositeSoundtrackCheckBox.isChecked())}"
+            android:onClick="@{() -> viewModel.onPlayWithCompositeSoundtrackClicked(compositeSoundtrackCheckBox.isChecked())}"
             android:text="@string/play_with_composite_soundtrack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

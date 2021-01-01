@@ -1,11 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import timber.log.Timber;
 
 public abstract class InstrumentFragment extends BaseFragment {
 
@@ -38,7 +32,13 @@ public abstract class InstrumentFragment extends BaseFragment {
             String token = getArguments().getString(TOKEN_KEY);
 
             Fragment musicianFragment = getParentFragment();
+            if(musicianFragment == null) {
+                return;
+            }
             Fragment roomFragment = musicianFragment.getParentFragment();
+            if(roomFragment == null) {
+                return;
+            }
 
             MusicianViewViewModel.Factory musicianViewViewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
             musicianViewViewModel = new ViewModelProvider(musicianFragment, musicianViewViewModelFactory).get(MusicianViewViewModel.class);
