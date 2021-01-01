@@ -13,20 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
-import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 import timber.log.Timber;
 
-public class FluteFragment extends BaseFragment {
-
-    private static final String ROOM_ID_KEY = "room_id_key";
-    private static final String USER_ID_KEY = "user_id_key";
-    private static final String TOKEN_KEY = "token_key";
+public class FluteFragment extends InstrumentFragment {
 
     private static final int REQUEST_MICROPHONE = 1;
-
-    private FluteViewModel viewModel;
 
     @NonNull
     public static FluteFragment newInstance(int roomID, int userID, @NonNull String token) {
@@ -43,16 +36,10 @@ public class FluteFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            int roomID = getArguments().getInt(ROOM_ID_KEY);
-            int userID = getArguments().getInt(USER_ID_KEY);
-            String token = getArguments().getString(TOKEN_KEY);
-
-            MusicianViewViewModel.Factory musicianViewViewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
-            MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(getParentFragment(), musicianViewViewModelFactory).get(MusicianViewViewModel.class);
-
+        if(getArguments() != null) {
             FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, musicianViewViewModel);
-            viewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
+            instrumentViewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
+            getLifecycle().addObserver(instrumentViewModel);
         }
     }
 
@@ -60,17 +47,21 @@ public class FluteFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setViewModel(viewModel);
+        FluteViewModel fluteViewModel = (FluteViewModel) instrumentViewModel;
+        binding.setViewModel(fluteViewModel);
+        binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
+        binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
+
+        observeCompositeSoundtrack();
 
         ClipDrawable clipDrawable = (ClipDrawable) binding.ivFluteFill.getDrawable();
-        viewModel.getPitchPercentage().observe(getViewLifecycleOwner(), percentage -> clipDrawable.setLevel((int) (10000 * percentage)));
+        fluteViewModel.getPitchPercentage().observe(getViewLifecycleOwner(), percentage -> clipDrawable.setLevel((int) (10000 * percentage)));
 
         if (savedInstanceState == null) {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
             } else {
-                viewModel.onUserHasPermission();
+                fluteViewModel.startRecording();
             }
         }
 
@@ -81,7 +72,8 @@ public class FluteFragment extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_MICROPHONE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                viewModel.onUserHasPermission();
+                FluteViewModel fluteViewModel = (FluteViewModel) instrumentViewModel;
+                fluteViewModel.startRecording();
             } else {
                 //TODO:Add Error Message
                 Timber.e("onRequestPermissionsResult: No microphone permission");

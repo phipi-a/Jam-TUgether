@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.List;
 
-import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -148,6 +147,10 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private void setProgressInMillis(int progressInMillis) {
         this.progressInMillis = progressInMillis;
         soundtrack.postProgressInMillis(progressInMillis);
+    }
+
+    public boolean isPlaying() {
+        return soundtrack.getState().getValue() == Soundtrack.State.PLAYING;
     }
 
     protected abstract void setVolume(float volume);

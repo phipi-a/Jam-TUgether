@@ -13,7 +13,6 @@ import de.pcps.jamtugether.ui.base.views.JamTabLayout;
 
 public abstract class TabLayoutFragment extends BaseFragment {
 
-    @Nullable
     protected JamTabLayout tabLayout;
 
     @Nullable

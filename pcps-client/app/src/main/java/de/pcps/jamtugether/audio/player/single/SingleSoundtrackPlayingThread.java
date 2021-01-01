@@ -12,7 +12,6 @@ import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import timber.log.Timber;
 
 public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
 
@@ -58,7 +57,10 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
         for (Sound sound : soundtrack.getSoundSequence()) {
             if (sound.getEndTime() <= millis && streamIDsMap.containsKey(sound)) {
                 if(soundtrack.getSoundPool() != null) {
-                    soundtrack.getSoundPool().stopSound(streamIDsMap.get(sound));
+                    Integer streamID = streamIDsMap.get(sound);
+                    if(streamID != null) {
+                        soundtrack.getSoundPool().stopSound(streamID);
+                    }
                 }
             }
         }

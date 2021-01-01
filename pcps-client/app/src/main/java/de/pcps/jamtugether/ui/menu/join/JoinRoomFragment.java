@@ -44,7 +44,12 @@ public class JoinRoomFragment extends BaseFragment {
 
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if (navigateToRegularRoom) {
-                NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), viewModel.getToken(), viewModel.getPassword());
+                String password = viewModel.getPassword();
+                String token = viewModel.getToken();
+                if(password == null || token == null) {
+                    return;
+                }
+                NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), password, token);
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }

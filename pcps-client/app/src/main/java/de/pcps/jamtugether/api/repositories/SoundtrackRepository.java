@@ -10,7 +10,6 @@ import androidx.lifecycle.Transformations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,11 +17,11 @@ import javax.inject.Singleton;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
+import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -76,19 +75,10 @@ public class SoundtrackRepository {
 
     @NonNull
     private List<SingleSoundtrack> generateTestSoundtracks() {
-        Random random = new Random();
         List<SingleSoundtrack> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            List<Sound> soundSequence = new ArrayList<>();
-            int soundAmount = 10; // random.nextInt(30)+10;
-            String[] instruments = {"flute", "drums", "shaker"};
-            String serverString = "flute";
-            for (int j = 0; j < soundAmount; j++) {
-                int pitch = random.nextInt(80)+20;
-                int element = 0;
-                soundSequence.add(new Sound(serverString, element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
-            }
-            SingleSoundtrack singleSoundtrack = new SingleSoundtrack(i, soundSequence);
+            Instrument instrument = i % 2 == 0 ? Flute.getInstance() : Drums.getInstance();
+            SingleSoundtrack singleSoundtrack = instrument.generateSoundtrack(i);
             singleSoundtrack.loadSounds(context);
             list.add(singleSoundtrack);
         }

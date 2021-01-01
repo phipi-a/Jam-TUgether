@@ -1,59 +1,30 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import javax.inject.Inject;
-
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.SoundResource;
-import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.sound.ServerSound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
+import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
-public class DrumsViewModel extends ViewModel {
-
-    @Inject
-    Application application;
-
-    private final int roomID;
-    private final int userID;
+public class DrumsViewModel extends InstrumentViewModel {
 
     @NonNull
-    private final OnOwnSoundtrackChangedCallback callback;
+    private static final Drums drums = Drums.getInstance();
 
-    @NonNull
-    private final Drums drums = Drums.getInstance();
-
-    private SingleSoundtrack ownSoundtrack;
-
-    @NonNull
-    private final MutableLiveData<Boolean> startedCreatingOwnSoundtrack = new MutableLiveData<>(false);
-
-    private long startedMillis;
-
-    public DrumsViewModel(int userID, int roomID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        AppInjector.inject(this);
-        this.userID = userID;
-        this.roomID = roomID;
-        this.callback = callback;
+    public DrumsViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, roomID, userID, callback);
     }
 
-    public void onCreateOwnSoundtrackButtonClicked() {
-        boolean started = startedCreatingOwnSoundtrack.getValue();
-        if(started) {
-            callback.onOwnSoundtrackChanged(ownSoundtrack);
-            startedCreatingOwnSoundtrack.setValue(false);
-        } else {
-            ownSoundtrack = new SingleSoundtrack(userID, Drums.getInstance());
-            ownSoundtrack.loadSounds(application.getApplicationContext());
-            startedCreatingOwnSoundtrack.setValue(true);
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private void onPause() {
+        if(startedSoundtrackCreation()) {
+            finishSoundtrack();
         }
     }
 
@@ -78,21 +49,15 @@ public class DrumsViewModel extends ViewModel {
     }
 
     private void onElementPlayed(int element, SoundResource soundResource) {
-        if(!startedCreatingOwnSoundtrack.getValue()) {
+        if (!timer.isRunning()) {
             return;
-        }
-        if(ownSoundtrack.isEmpty()) {
-            startedMillis = System.currentTimeMillis();
         }
         int soundDuration = soundResource.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
-        ownSoundtrack.addSound(new ServerSound(roomID, userID, Drums.getInstance(), element, startTimeMillis, endTimeMillis, 50)); // todo pitch
-    }
-
-    @NonNull
-    public LiveData<Boolean> getStartedCreatingOwnSoundtrack() {
-        return startedCreatingOwnSoundtrack;
+        if(ownSoundtrack != null) {
+            ownSoundtrack.addSound(new ServerSound(roomID, userID, Drums.getInstance(), element, startTimeMillis, endTimeMillis, 50)); // todo pitch
+        }
     }
 
     @Override

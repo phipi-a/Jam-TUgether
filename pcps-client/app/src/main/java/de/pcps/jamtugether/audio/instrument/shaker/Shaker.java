@@ -11,6 +11,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
 import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 // todo
 public class Shaker extends Instrument {
@@ -40,6 +41,18 @@ public class Shaker extends Instrument {
     @Override
     public boolean soundsNeedToBeStopped() {
         return false;
+    }
+
+    @Override
+    public boolean soundsNeedToBeResumed() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public SingleSoundtrack generateSoundtrack(int userID) {
+        // todo
+        return null;
     }
 
     @NonNull

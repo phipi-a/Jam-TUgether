@@ -13,18 +13,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/create_own_soundtrack_button"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/own_soundtrack_controls_layout"
+            layout="@layout/view_own_soundtrack_controls"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:gravity="center"
-            android:onClick="@{() -> viewModel.onCreateOwnSoundtrackButtonClicked()}"
-            android:text="@{viewModel.getStartedCreatingOwnSoundtrack() ? @string/stop : @string/start}"
-            android:textColor="@color/primaryTextColor"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,12 +34,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_own_soundtrack_button">
+            app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout">
 
             <ImageButton
                 android:id="@+id/snare_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:onClick="@{() -> viewModel.onSnareClicked()}"
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +48,8 @@
 
             <ImageButton
                 android:id="@+id/kick_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginStart="50dp"
                 android:onClick="@{() -> viewModel.onKickClicked()}"
                 android:scaleType="fitStart"
@@ -61,8 +59,8 @@
 
             <ImageButton
                 android:id="@+id/hat_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="50dp"
                 android:onClick="@{() -> viewModel.onHatClicked()}"
                 android:scaleType="fitStart"
@@ -72,8 +70,8 @@
 
             <ImageButton
                 android:id="@+id/cymbal_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="50dp"
                 android:onClick="@{() -> viewModel.onCymbalClicked()}"

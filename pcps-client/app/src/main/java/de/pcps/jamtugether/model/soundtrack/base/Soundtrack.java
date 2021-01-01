@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import de.pcps.jamtugether.utils.TimeUtils;
+
 /*
  * represents a soundtrack from a UI standpoint
  * this can either be a single or composite soundtrack
  */
 public abstract class Soundtrack {
+
+    public static final long MAX_TIME = TimeUtils.FIVE_MINUTES;
 
     @NonNull
     private final MutableLiveData<State> state;

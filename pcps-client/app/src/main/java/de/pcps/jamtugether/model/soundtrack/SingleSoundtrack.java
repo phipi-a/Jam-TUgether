@@ -114,7 +114,10 @@ public class SingleSoundtrack extends Soundtrack {
             if (sound.getStartTime() == currentTime) {
                 sounds.add(sound);
             }
-            if (finishSounds) {
+            Instrument instrument = getInstrument();
+            boolean soundNeedsToBeResumed = instrument != null && instrument.soundsNeedToBeResumed();
+
+            if (finishSounds && soundNeedsToBeResumed) {
                 // finish sounds that were interrupted because of pause or that were jumped to because of forwarding
                 if (sound.getStartTime() < currentTime && currentTime < sound.getEndTime()) {
                     sounds.add(sound);

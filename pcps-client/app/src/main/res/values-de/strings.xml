@@ -36,6 +36,8 @@
     <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
     <string name="play_shaker_help">Schüttel dein Handy.</string>
 
+    <string name="play_with_composite_soundtrack">mit Tonspur</string>
+
     <string name="room_format">Raum %d</string>
 
     <string name="leave_room">Raum verlassen</string>

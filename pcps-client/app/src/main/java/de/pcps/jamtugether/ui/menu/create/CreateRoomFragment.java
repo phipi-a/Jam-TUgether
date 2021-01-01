@@ -43,7 +43,12 @@ public class CreateRoomFragment extends BaseFragment {
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if (navigateToJamRoom) {
-                NavigationUtils.navigateToRoomAsAdmin(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), viewModel.getPassword(), viewModel.getToken());
+                String password = viewModel.getPassword();
+                String token = viewModel.getToken();
+                if(password == null || token == null) {
+                    return;
+                }
+                NavigationUtils.navigateToRoomAsAdmin(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), password, token);
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();
             }

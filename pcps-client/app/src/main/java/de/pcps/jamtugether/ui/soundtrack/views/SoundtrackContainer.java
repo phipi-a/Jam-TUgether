@@ -36,7 +36,7 @@ public class SoundtrackContainer extends ConstraintLayout {
         if(soundtrackView == null || line == null) {
             return;
         }
-        soundtrackView.onSingleSoundtrackChanged(soundtrack);
+        soundtrackView.onSoundtrackChanged(soundtrack);
         line.onSoundtrackChanged(soundtrack, lifecycleOwner);
     }
 

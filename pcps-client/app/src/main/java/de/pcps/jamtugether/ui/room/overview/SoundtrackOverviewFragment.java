@@ -62,6 +62,9 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
             Fragment roomFragment = getParentFragment();
+            if(roomFragment == null) {
+                return;
+            }
 
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID)).get(CompositeSoundtrackViewModel.class);
 

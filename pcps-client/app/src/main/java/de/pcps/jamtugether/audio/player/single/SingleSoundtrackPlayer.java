@@ -14,7 +14,6 @@ import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 /**
  * This player is responsible for playing every single soundtrack of the app
@@ -27,8 +26,7 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     private final HashMap<Integer, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
-    public SingleSoundtrackPlayer() {
-    }
+    public SingleSoundtrackPlayer() { }
 
     @Nullable
     @Override
@@ -51,6 +49,16 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
             return thread != null ? thread : createThread(soundtrack);
         }
         return null;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        for(SingleSoundtrackPlayingThread thread : threadMap.values()) {
+            if(thread.isPlaying()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -78,6 +86,9 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         List<Integer> toBeRemoved = new ArrayList<>();
         for (Integer key : threadMap.keySet()) {
             SingleSoundtrackPlayingThread thread = threadMap.get(key);
+            if(thread == null) {
+                continue;
+            }
             if(!keepPlaying(thread, keepPlayingList)) {
                 thread.stopSoundtrack();
                 toBeRemoved.add(key);
