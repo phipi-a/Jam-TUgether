@@ -56,7 +56,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
         if(ownSoundtrack != null) {
-            ownSoundtrack.addSound(new ServerSound(roomID, userID, Drums.getInstance(), element, startTimeMillis, endTimeMillis, 50)); // todo pitch
+            ownSoundtrack.addSound(new ServerSound(roomID, userID, Drums.getInstance(), element, startTimeMillis, endTimeMillis, -1));
         }
     }
 

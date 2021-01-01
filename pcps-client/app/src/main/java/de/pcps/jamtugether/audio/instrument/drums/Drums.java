@@ -79,8 +79,8 @@ public class Drums extends Instrument {
         Random random = new Random();
         List<Sound> soundSequence = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
-            int element = random.nextInt(3);
-            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), 50));
+            int element = random.nextInt(4);
+            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
         }
         return new SingleSoundtrack(userID, soundSequence);
     }

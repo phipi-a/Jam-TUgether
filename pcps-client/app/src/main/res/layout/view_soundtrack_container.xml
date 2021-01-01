@@ -16,7 +16,7 @@
 
     <de.pcps.jamtugether.ui.soundtrack.views.SoundtrackNavigationLine
         android:id="@+id/soundtrack_navigation_line"
-        android:layout_width="@dimen/soundtrack_navigation_line_width"
+        android:layout_width="@dimen/soundtrack_view_navigation_line_width"
         android:layout_height="0dp"
         android:background="@color/soundtrackNavigationLineColor"
         app:layout_constraintBottom_toBottomOf="parent"

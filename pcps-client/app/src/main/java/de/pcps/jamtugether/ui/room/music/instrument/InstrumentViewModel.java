@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
@@ -29,6 +31,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     @Inject
     protected Application application;
+
+    @Inject
+    protected SoundtrackRepository soundtrackRepository;
 
     @Inject
     protected CompositeSoundtrackPlayer compositeSoundtrackPlayer;
@@ -98,6 +103,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @Nullable
     protected SingleSoundtrack ownSoundtrack;
 
+    @NonNull
+    private final MutableLiveData<Boolean> uploadPossible = new MutableLiveData<>(false);
+
     private boolean playWithCompositeSoundtrack;
 
     protected long startedMillis;
@@ -137,7 +145,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         }
     }
 
-    private void publishOwnSoundtrack() {
+    public void onUploadButtonClicked() {
         if(ownSoundtrack == null) {
             return;
         }
@@ -150,7 +158,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if(ownSoundtrack != null) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
+            this.uploadPossible.setValue(true);
         }
+        // todo check if upload possible has to be false
         startedSoundtrackCreation.setValue(false);
     }
 
@@ -182,5 +192,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             }
             return TimeUtils.formatTimerSecondsSimple(millis);
         });
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUploadPossible() {
+        return uploadPossible;
     }
 }
