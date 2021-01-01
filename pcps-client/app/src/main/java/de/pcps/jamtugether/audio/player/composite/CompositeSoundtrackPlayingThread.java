@@ -13,7 +13,6 @@ import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import timber.log.Timber;
 
 public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
 

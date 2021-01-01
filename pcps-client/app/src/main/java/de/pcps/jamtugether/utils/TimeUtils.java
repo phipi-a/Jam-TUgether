@@ -12,6 +12,7 @@ public class TimeUtils {
 
     public static final long ONE_HOUR = ONE_MINUTE * 60;
 
+    private static final String TIME_FORMAT_SECONDS_SIMPLE = "%d";
     private static final String TIME_FORMAT_SECONDS_MINUTES = "%02d:%02d";
 
     public static String formatTimerSecondMinutes(long millis) {
@@ -20,4 +21,10 @@ public class TimeUtils {
 
         return String.format(Locale.getDefault(), TIME_FORMAT_SECONDS_MINUTES, minutes, seconds);
     }
+
+    public static String formatTimerSecondsSimple(long millis) {
+        int seconds = (int) ((millis / ONE_SECOND) % 60);
+        return String.format(Locale.getDefault(), TIME_FORMAT_SECONDS_SIMPLE, seconds);
+    }
+
 }

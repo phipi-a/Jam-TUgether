@@ -12,6 +12,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
 import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import timber.log.Timber;
 
 public class Drums extends Instrument {
@@ -59,6 +60,12 @@ public class Drums extends Instrument {
     @Override
     public boolean soundsNeedToBeStopped() {
         return false;
+    }
+
+    @NonNull
+    @Override
+    public SingleSoundtrack generateSoundtrack(int userID) {
+        return null;
     }
 
     public void playSnare() {

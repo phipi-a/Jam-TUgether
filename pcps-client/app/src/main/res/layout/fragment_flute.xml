@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage, ContentDescription">
 
     <data>
 
@@ -15,32 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/control_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:onClick="@{() -> viewModel.onCreateOwnSoundtrackButtonClicked()}"
-                android:src="@{viewModel.getStartedCreatingOwnSoundtrack() ? @drawable/ic_stop : @drawable/ic_play}"
-                app:tint="@color/iconColor" />
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:gravity="center"
-                android:text="@{viewModel.getTimerText()}"
-                android:textColor="@color/primaryTextColor" />
-        </LinearLayout>
+        <include
+            android:id="@+id/own_soundtrack_controls_layout"
+            layout="@layout/view_own_soundtrack_controls" />
 
         <ImageView
             android:id="@+id/iv_flute"
@@ -53,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/control_layout"
+            app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout"
             app:touchListener="@{viewModel}" />
 
         <ImageView

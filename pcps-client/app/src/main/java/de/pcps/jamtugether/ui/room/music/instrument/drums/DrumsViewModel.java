@@ -1,78 +1,31 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import javax.inject.Inject;
-
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.SoundResource;
-import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.sound.ServerSound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
-import de.pcps.jamtugether.utils.TimeUtils;
+import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
-public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback, LifecycleObserver {
-
-    @Inject
-    Application application;
-
-    private final int roomID;
-    private final int userID;
+public class DrumsViewModel extends InstrumentViewModel {
 
     @NonNull
-    private final OnOwnSoundtrackChangedCallback callback;
+    private static final Drums drums = Drums.getInstance();
 
-    @NonNull
-    private final Drums drums = Drums.getInstance();
-
-    private SingleSoundtrack ownSoundtrack;
-
-    @NonNull
-    private final MutableLiveData<Boolean> startedCreatingOwnSoundtrack = new MutableLiveData<>(false);
-
-    @NonNull
-    private final MutableLiveData<Long> timerMillis = new MutableLiveData<>();
-
-    @NonNull
-    private final JamTimer timer = new JamTimer(this, Soundtrack.MAX_TIME);
-
-    private long startedMillis;
-
-    public DrumsViewModel(int userID, int roomID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        AppInjector.inject(this);
-        this.userID = userID;
-        this.roomID = roomID;
-        this.callback = callback;
-    }
-
-    public void onCreateOwnSoundtrackButtonClicked() {
-        boolean started = startedCreatingOwnSoundtrack.getValue();
-        if (started) {
-            onFinishSoundtrack();
-        } else {
-            timerMillis.setValue(-1L);
-            ownSoundtrack = new SingleSoundtrack(userID, Drums.getInstance());
-            ownSoundtrack.loadSounds(application.getApplicationContext());
-            startedCreatingOwnSoundtrack.setValue(true);
-        }
+    public DrumsViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, roomID, userID, callback);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
-        onFinishSoundtrack();
+        if(startedSoundtrackCreation.getValue()) {
+            finishSoundtrack();
+        }
     }
 
     public void onSnareClicked() {
@@ -96,12 +49,8 @@ public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback
     }
 
     private void onElementPlayed(int element, SoundResource soundResource) {
-        if (!startedCreatingOwnSoundtrack.getValue()) {
+        if (!timer.isRunning()) {
             return;
-        }
-        if (ownSoundtrack.isEmpty()) {
-            startedMillis = System.currentTimeMillis();
-            timer.start();
         }
         int soundDuration = soundResource.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
@@ -110,40 +59,16 @@ public class DrumsViewModel extends ViewModel implements JamTimer.OnTickCallback
     }
 
     @Override
-    public void onTicked(long millis) {
-        timerMillis.setValue(millis);
-    }
-
-    @Override
-    public void onFinished() {
-        onFinishSoundtrack();
-    }
-
-    private void onFinishSoundtrack() {
-        timer.stop();
-        callback.onOwnSoundtrackChanged(ownSoundtrack);
-        startedCreatingOwnSoundtrack.setValue(false);
-    }
-
-    @NonNull
-    public LiveData<Boolean> getStartedCreatingOwnSoundtrack() {
-        return startedCreatingOwnSoundtrack;
-    }
-
-    @NonNull
-    public LiveData<String> getTimerText() {
-        return Transformations.map(timerMillis, millis -> {
-            if (millis == -1L) {
-                return "";
-            }
-            return TimeUtils.formatTimerSecondMinutes(millis);
-        });
-    }
-
-    @Override
     protected void onCleared() {
         super.onCleared();
         drums.stop();
+    }
+
+    @Override
+    public void finishSoundtrack() {
+        timer.stop();
+        callback.onOwnSoundtrackChanged(ownSoundtrack);
+        startedSoundtrackCreation.setValue(false);
     }
 
     static class Factory implements ViewModelProvider.Factory {

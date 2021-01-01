@@ -1,106 +1,59 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import javax.inject.Inject;
 
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
-import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
-import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
-import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayingThread;
-import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.sound.ServerSound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
-import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
+import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PERCENTAGE;
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
-public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallback, JamTimer.OnTickCallback, LifecycleObserver {
-
-    @Inject
-    Application application;
-
-    @Inject
-    SingleSoundtrackPlayer singleSoundtrackPlayer;
-
-    @Inject
-    CompositeSoundtrackPlayer compositeSoundtrackPlayer;
+public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeChangedCallback {
 
     @NonNull
-    private final Flute flute = Flute.getInstance();
+    private static final Flute flute = Flute.getInstance();
 
     @NonNull
     private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     private FluteRecordingThread fluteRecordingThread;
 
-    private final int roomID;
-    private final int userID;
-
-    @NonNull
-    private final OnOwnSoundtrackChangedCallback callback;
-
-    private SingleSoundtrack ownSoundtrack;
-
-    @NonNull
-    private final MutableLiveData<Boolean> startedCreatingOwnSoundtrack = new MutableLiveData<>(false);
-
-    @NonNull
-    private final MutableLiveData<Long> timerMillis = new MutableLiveData<>();
-
-    @NonNull
-    private final JamTimer timer = new JamTimer(this, Soundtrack.MAX_TIME);
-
     private boolean fragmentFocused;
 
     private boolean soundIsPlaying;
-
-    private long startedMillis;
 
     private int currentStartTimeMillis = -1;
     private int currentPitch = -1;
 
     public FluteViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        AppInjector.inject(this);
-        this.roomID = roomID;
-        this.userID = userID;
-        this.callback = callback;
+        super(flute, roomID, userID, callback);
     }
 
-    public void onCreateOwnSoundtrackButtonClicked() {
-        boolean started = startedCreatingOwnSoundtrack.getValue();
-        if (started) {
-            onFinishOwnSoundtrack();
-        } else {
-            timerMillis.setValue(-1L);
-            ownSoundtrack = new SingleSoundtrack(userID, Flute.getInstance());
-            ownSoundtrack.loadSounds(application.getApplicationContext());
-            startedCreatingOwnSoundtrack.setValue(true);
-        }
+    @Override
+    public void finishSoundtrack() {
+        finishSound();
+        timer.stop();
+        callback.onOwnSoundtrackChanged(ownSoundtrack);
+        startedSoundtrackCreation.setValue(false);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
         fragmentFocused = false;
-        onFinishOwnSoundtrack();
+        if (startedSoundtrackCreation.getValue()) {
+            finishSoundtrack();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -115,11 +68,11 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
 
     @Override
     public void onAmplitudeChanged(int maxAmplitude) {
-        if(!fragmentFocused) {
+        if (!fragmentFocused) {
             return;
         }
         // ignore recorder when soundtracks are playing in order to avoid sound playing issues
-        if(singleSoundtrackPlayer.isPlaying() || compositeSoundtrackPlayer.isPlaying()) {
+        if (singleSoundtrackPlayer.isPlaying() || compositeSoundtrackPlayer.isPlaying()) {
             return;
         }
         if (maxAmplitude < 10000) {
@@ -130,26 +83,12 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
                 int streamID = flute.play(pitchPercentage * 100);
                 soundIsPlaying = streamID != 0;
 
-                if (startedCreatingOwnSoundtrack.getValue() && soundIsPlaying) {
-                    if (ownSoundtrack.isEmpty()) {
-                        startedMillis = System.currentTimeMillis();
-                        timer.start();
-                    }
+                if (startedSoundtrackCreation.getValue() && soundIsPlaying) {
                     currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     currentPitch = (int) (pitchPercentage * 100);
                 }
             }
         }
-    }
-
-    @Override
-    public void onTicked(long millis) {
-        timerMillis.postValue(millis);
-    }
-
-    @Override
-    public void onFinished() {
-        onFinishOwnSoundtrack();
     }
 
     private void finishSound() {
@@ -161,13 +100,6 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
             currentPitch = -1;
         }
         soundIsPlaying = false;
-    }
-
-    private void onFinishOwnSoundtrack() {
-        finishSound();
-        timer.stop();
-        callback.onOwnSoundtrackChanged(ownSoundtrack);
-        startedCreatingOwnSoundtrack.setValue(false);
     }
 
     public void onPitchChanged(float newPitch) {
@@ -192,21 +124,6 @@ public class FluteViewModel extends ViewModel implements OnAmplitudeChangedCallb
     @NonNull
     public LiveData<Float> getPitchPercentage() {
         return pitchPercentage;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getStartedCreatingOwnSoundtrack() {
-        return startedCreatingOwnSoundtrack;
-    }
-
-    @NonNull
-    public LiveData<String> getTimerText() {
-        return Transformations.map(timerMillis, millis -> {
-            if (millis == -1L) {
-                return "";
-            }
-            return TimeUtils.formatTimerSecondMinutes(millis);
-        });
     }
 
     @Override

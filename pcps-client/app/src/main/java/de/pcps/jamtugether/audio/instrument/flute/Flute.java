@@ -11,6 +11,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
 import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class Flute extends Instrument {
 
@@ -44,6 +45,12 @@ public class Flute extends Instrument {
     @Override
     public boolean soundsNeedToBeStopped() {
         return true;
+    }
+
+    @NonNull
+    @Override
+    public SingleSoundtrack generateSoundtrack(int userID) {
+        return null;
     }
 
     public int play(float pitch) {
