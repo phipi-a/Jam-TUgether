@@ -35,5 +35,10 @@
     <dimen name="soundtrack_item_clear_button_width">20dp</dimen>
     <dimen name="soundtrack_last_item_bottom">10dp</dimen>
 
-    <dimen name="soundtrack_navigation_line_width">1dp</dimen>
+    <dimen name="soundtrack_view_navigation_line_width">1dp</dimen>
+
+    <dimen name="soundtrack_view_drums_snare_height">4dp</dimen>
+    <dimen name="soundtrack_view_drums_kick_height">5dp</dimen>
+    <dimen name="soundtrack_view_drums_hat_height">2dp</dimen>
+    <dimen name="soundtrack_view_drums_cymbal_height">3dp</dimen>
 </resources>
