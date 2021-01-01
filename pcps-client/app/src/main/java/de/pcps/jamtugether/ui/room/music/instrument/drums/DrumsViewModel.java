@@ -66,15 +66,6 @@ public class DrumsViewModel extends InstrumentViewModel {
         drums.stop();
     }
 
-    @Override
-    public void finishSoundtrack() {
-        timer.stop();
-        if(ownSoundtrack != null) {
-            callback.onOwnSoundtrackChanged(ownSoundtrack);
-        }
-        startedSoundtrackCreation.setValue(false);
-    }
-
     static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;

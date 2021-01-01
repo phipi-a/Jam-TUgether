@@ -15,7 +15,7 @@ public class Sound {
     @NonNull
     private final String instrument;
 
-    private final int element;
+    private final int element; // todo tell server group
 
     private final int startTime;
     private final int endTime;

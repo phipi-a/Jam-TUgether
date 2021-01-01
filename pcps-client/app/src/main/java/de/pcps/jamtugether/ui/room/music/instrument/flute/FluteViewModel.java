@@ -45,11 +45,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     @Override
     public void finishSoundtrack() {
         finishSound();
-        timer.stop();
-        if(ownSoundtrack != null) {
-            callback.onOwnSoundtrackChanged(ownSoundtrack);
-        }
-        startedSoundtrackCreation.setValue(false);
+        super.finishSoundtrack();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

@@ -6,13 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.soundpool.DrumsSoundPool;
 import de.pcps.jamtugether.audio.SoundResource;
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.utils.TimeUtils;
 import timber.log.Timber;
 
 public class Drums extends Instrument {
@@ -62,10 +68,21 @@ public class Drums extends Instrument {
         return false;
     }
 
+    @Override
+    public boolean soundsNeedToBeResumed() {
+        return false;
+    }
+
     @NonNull
     @Override
     public SingleSoundtrack generateSoundtrack(int userID) {
-        return null;
+        Random random = new Random();
+        List<Sound> soundSequence = new ArrayList<>();
+        for (int j = 0; j < 10; j++) {
+            int element = random.nextInt(3);
+            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), 50));
+        }
+        return new SingleSoundtrack(userID, soundSequence);
     }
 
     public void playSnare() {

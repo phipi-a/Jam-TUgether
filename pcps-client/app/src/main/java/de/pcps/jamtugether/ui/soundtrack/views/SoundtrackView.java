@@ -51,7 +51,7 @@ public class SoundtrackView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        if(soundtrack == null) {
+        if (soundtrack == null) {
             return;
         }
         if (soundtrack instanceof SingleSoundtrack) {

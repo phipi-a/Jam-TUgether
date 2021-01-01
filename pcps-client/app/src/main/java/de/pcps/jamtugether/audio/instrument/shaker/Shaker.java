@@ -43,6 +43,11 @@ public class Shaker extends Instrument {
         return false;
     }
 
+    @Override
+    public boolean soundsNeedToBeResumed() {
+        return false;
+    }
+
     @NonNull
     @Override
     public SingleSoundtrack generateSoundtrack(int userID) {

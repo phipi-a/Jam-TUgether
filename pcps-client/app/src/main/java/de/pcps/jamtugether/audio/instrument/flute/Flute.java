@@ -53,6 +53,11 @@ public class Flute extends Instrument {
         return true;
     }
 
+    @Override
+    public boolean soundsNeedToBeResumed() {
+        return true;
+    }
+
     @NonNull
     @Override
     public SingleSoundtrack generateSoundtrack(int userID) {

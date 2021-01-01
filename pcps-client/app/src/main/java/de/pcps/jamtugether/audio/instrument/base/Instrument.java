@@ -98,6 +98,8 @@ public abstract class Instrument {
      */
     public abstract boolean soundsNeedToBeStopped();
 
+    public abstract boolean soundsNeedToBeResumed();
+
     // todo remove later
     @NonNull
     public abstract SingleSoundtrack generateSoundtrack(int userID);

@@ -129,14 +129,30 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             }
         } else {
             timerMillis.setValue(-1L);
-            ownSoundtrack = new SingleSoundtrack(userID, instrument);
+            // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
+            ownSoundtrack = new SingleSoundtrack(-1, instrument);
             ownSoundtrack.loadSounds(application.getApplicationContext());
             startedSoundtrackCreation.setValue(true);
             countDownTimer.start();
         }
     }
 
-    public abstract void finishSoundtrack();
+    private void publishOwnSoundtrack() {
+        if(ownSoundtrack == null) {
+            return;
+        }
+        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, ownSoundtrack.getSoundSequence());
+        // todo publish
+    }
+
+    protected void finishSoundtrack() {
+        timer.stop();
+        if(ownSoundtrack != null) {
+            singleSoundtrackPlayer.stop(ownSoundtrack);
+            callback.onOwnSoundtrackChanged(ownSoundtrack);
+        }
+        startedSoundtrackCreation.setValue(false);
+    }
 
     protected boolean startedSoundtrackCreation() {
         Boolean started = startedSoundtrackCreation.getValue();
