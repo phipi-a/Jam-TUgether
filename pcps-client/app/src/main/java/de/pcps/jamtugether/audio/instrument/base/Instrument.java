@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public abstract class Instrument {
 

@@ -17,7 +17,15 @@
 
         <include
             android:id="@+id/own_soundtrack_controls_layout"
-            layout="@layout/view_own_soundtrack_controls" />
+            layout="@layout/view_own_soundtrack_controls"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/soundtrack_item_margin_start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_flute"
