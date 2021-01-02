@@ -1,12 +1,11 @@
-package de.pcps.jamtugether.audio.soundpool;
+package de.pcps.jamtugether.audio.sound.pool;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 // todo
 public class ShakerSoundPool extends BaseSoundPool {

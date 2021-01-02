@@ -3,10 +3,9 @@ package de.pcps.jamtugether.audio.player.base;
 import androidx.annotation.NonNull;
 
 import java.util.HashMap;
-import java.util.List;
 
+import de.pcps.jamtugether.audio.sound.OnSoundWithIDPlayedCallback;
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 
@@ -67,18 +66,15 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
                 stopSounds(progressInMillis);
 
-                List<SoundWithStreamID> soundsWithStreamIDs = play(progressInMillis, justResumed || justForwarded);
-
-                for (SoundWithStreamID soundWithStreamID : soundsWithStreamIDs) {
+                play(progressInMillis, justResumed || justForwarded, soundWithStreamID -> {
                     streamIDsMap.put(soundWithStreamID.getSound(), soundWithStreamID.getStreamID());
-                }
-
-                if (justResumed) {
-                    justResumed = false;
-                }
-                if (justForwarded) {
-                    justForwarded = false;
-                }
+                    if (justResumed) {
+                        justResumed = false;
+                    }
+                    if (justForwarded) {
+                        justForwarded = false;
+                    }
+                });
             }
 
             long millis = System.currentTimeMillis();
@@ -96,13 +92,12 @@ public abstract class SoundtrackPlayingThread extends Thread {
      * @param finishSounds indicates whether sounds have to be finished after having been interrupted by pause
      *                     or fastRewind/fastForward
      */
-    @NonNull
-    public abstract List<SoundWithStreamID> play(int millis, boolean finishSounds);
+    public abstract void play(int millis, boolean finishSounds, @NonNull OnSoundWithIDPlayedCallback callback);
 
     public void play() {
         lastMillis = System.currentTimeMillis();
         if (!running) {
-            if(soundtrackIsFinished()) {
+            if (soundtrackIsFinished()) {
                 setProgressInMillis(0);
             }
             super.start();

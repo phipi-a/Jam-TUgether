@@ -1,10 +1,11 @@
-package de.pcps.jamtugether.audio.soundpool.base;
+package de.pcps.jamtugether.audio.sound.pool.base;
 
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,9 @@ import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
+import de.pcps.jamtugether.audio.sound.PlaySoundThread;
+import de.pcps.jamtugether.audio.sound.StopSoundThread;
 
 /**
  * A simple sound pool wrapper
@@ -59,21 +63,28 @@ public abstract class BaseSoundPool {
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loadedSoundIDs.add(sampleId));
     }
 
-    protected abstract int play(int soundID, float pitch);
+    public abstract int play(int soundID, float pitch);
 
-    public int playSoundRes(int soundResID, float pitch) {
+    public void playSoundRes(int soundResID, float pitch, @Nullable OnSoundPlayedCallback callback) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
-            return 0;
+            return;
         }
         if (soundIsLoaded(soundID)) {
-            int streamID = play(soundID, pitch);
-            if (!streamIDs.contains(streamID) && streamID != 0) {
-                streamIDs.add(streamID);
-            }
-            return streamID;
+
+            new PlaySoundThread(this, soundID, pitch, streamID -> {
+                if (!streamIDs.contains(streamID) && streamID != 0) {
+                    streamIDs.add(streamID);
+                }
+                if (callback != null) {
+                    callback.onSoundPlayed(streamID);
+                }
+            }).playSound();
         }
-        return 0;
+    }
+
+    public void playSoundRes(int soundResID, float pitch) {
+        playSoundRes(soundResID, pitch, null);
     }
 
     public void setVolume(float volume) {
@@ -82,15 +93,17 @@ public abstract class BaseSoundPool {
 
     public void stopSound(int streamID) {
         if (streamIDs.contains(streamID)) {
-            soundPool.stop(streamID);
+            new StopSoundThread(soundPool, streamID).stopSound();
+            streamIDs.remove(Integer.valueOf(streamID));
         }
     }
 
     public void stopAllSounds() {
-        synchronized(streamIDs) {
+        synchronized (streamIDs) {
             for (int streamID : streamIDs) {
-                soundPool.stop(streamID);
+                new StopSoundThread(soundPool, streamID).stopSound();
             }
+            streamIDs.clear();
         }
     }
 

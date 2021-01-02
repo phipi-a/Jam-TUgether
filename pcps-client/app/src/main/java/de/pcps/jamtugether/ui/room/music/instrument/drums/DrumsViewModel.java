@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
-import de.pcps.jamtugether.audio.SoundResource;
+import de.pcps.jamtugether.audio.sound.SoundResource;
 import de.pcps.jamtugether.model.sound.ServerSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;

@@ -1,13 +1,11 @@
-package de.pcps.jamtugether.audio.soundpool;
+package de.pcps.jamtugether.audio.sound.pool;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
-import timber.log.Timber;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 public class DrumsSoundPool extends BaseSoundPool {
 
