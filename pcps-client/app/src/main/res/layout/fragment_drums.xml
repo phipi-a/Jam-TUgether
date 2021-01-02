@@ -43,9 +43,10 @@
                 android:layout_marginStart="25dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> viewModel.onHatClicked()}"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
+                app:element="@{2}"
+                app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_hat" />
 
             <ImageButton
@@ -58,6 +59,8 @@
                 android:onClick="@{() -> viewModel.onKickClicked()}"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
+                app:element="@{1}"
+                app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_kick" />
 
             <ImageButton
@@ -70,6 +73,8 @@
                 android:onClick="@{() -> viewModel.onSnareClicked()}"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
+                app:element="@{0}"
+                app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_snare" />
 
             <ImageButton
@@ -83,6 +88,8 @@
                 android:onClick="@{() -> viewModel.onCymbalClicked()}"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
+                app:element="@{3}"
+                app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_cymbal" />
         </LinearLayout>
 

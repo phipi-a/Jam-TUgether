@@ -156,17 +156,17 @@ public class SoundtrackView extends View {
             switch (sound.getElement()) {
                 case 0:
                     heightPercentage = 50;
-                    millis = 200;
+                    millis = 125;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_snare_height);
                     break;
                 case 1:
                     heightPercentage = 30;
-                    millis = 150;
+                    millis = 100;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_kick_height);
                     break;
                 case 2:
                     heightPercentage = 70;
-                    millis = 100;
+                    millis = 75;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_hat_height);
                     break;
                 default:
