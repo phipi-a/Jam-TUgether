@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -155,7 +154,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     protected void finishSoundtrack() {
         timer.stop();
-        if(ownSoundtrack != null) {
+        if(ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             this.uploadPossible.setValue(true);
