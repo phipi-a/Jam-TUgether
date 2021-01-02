@@ -56,7 +56,13 @@ async function updateRoom (roomID) {
  */
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
-    // check password, limit to n characters
+    // Check if the number of rooms is below limit (limit: 10)
+    const numberOfRooms = await RoomSchema.countDocuments().exec()
+    if (numberOfRooms < 10) {
+      res.status(500).send('Couldn\'t create room, number of rooms is limited!')
+    }
+
+    // Check password, limit to n characters
     checkPwdLen(req.body.password, res)
 
     // Create salt and hash password
@@ -65,7 +71,6 @@ roomRoute.post('/create-room', async (req, res, next) => {
 
     // Generate roomID
     let newRoomID = 0
-    const numberOfRooms = await RoomSchema.countDocuments().exec()
     console.log('numberofrooms = ' + numberOfRooms)
     if (numberOfRooms === 0) {
       newRoomID = 1
