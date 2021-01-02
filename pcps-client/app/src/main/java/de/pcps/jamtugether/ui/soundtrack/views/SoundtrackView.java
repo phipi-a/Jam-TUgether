@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.audio.sound.SoundResource;
+import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;

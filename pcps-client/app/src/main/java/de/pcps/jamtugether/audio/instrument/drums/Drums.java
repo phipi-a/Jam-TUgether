@@ -14,7 +14,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
-import de.pcps.jamtugether.audio.sound.SoundResource;
+import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;

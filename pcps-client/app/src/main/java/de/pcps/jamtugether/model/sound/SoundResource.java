@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.audio.sound;
+package de.pcps.jamtugether.model.sound;
 
 import androidx.annotation.RawRes;
 
