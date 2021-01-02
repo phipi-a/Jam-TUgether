@@ -160,7 +160,6 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             this.uploadPossible.setValue(true);
         }
-        // todo check if upload possible has to be false
         startedSoundtrackCreation.setValue(false);
     }
 
