@@ -2,12 +2,10 @@ package de.pcps.jamtugether.audio.player.composite;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.OnSoundWithIDPlayedCallback;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -24,10 +22,8 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
         this.compositeSoundtrack = soundtrack;
     }
 
-    @NonNull
     @Override
-    public List<SoundWithStreamID> play(int millis, boolean finishSounds) {
-        List<SoundWithStreamID> soundsWithStreamIDs = new ArrayList<>();
+    public void play(int millis, boolean finishSounds, @NonNull OnSoundWithIDPlayedCallback callback) {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
             for (Sound sound : singleSoundtrack.getSoundsFor(millis, finishSounds)) {
                 Instrument instrument = singleSoundtrack.getInstrument();
@@ -36,11 +32,11 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
                     continue;
                 }
                 int soundRes = instrument.getSoundResource(sound.getElement());
-                int streamID = soundPool.playSoundRes(soundRes, sound.getPitch());
-                soundsWithStreamIDs.add(new SoundWithStreamID(sound, streamID));
+                soundPool.playSoundRes(soundRes, sound.getPitch(), streamID -> {
+                    callback.onSoundPlayed(new SoundWithStreamID(sound, streamID));
+                });
             }
         }
-        return soundsWithStreamIDs;
     }
 
     @Override

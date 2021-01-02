@@ -8,7 +8,7 @@ import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public abstract class Instrument {

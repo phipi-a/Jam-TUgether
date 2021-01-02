@@ -8,9 +8,9 @@ import androidx.annotation.RawRes;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.soundpool.ShakerSoundPool;
-import de.pcps.jamtugether.audio.SoundResource;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.ShakerSoundPool;
+import de.pcps.jamtugether.audio.sound.SoundResource;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 // todo

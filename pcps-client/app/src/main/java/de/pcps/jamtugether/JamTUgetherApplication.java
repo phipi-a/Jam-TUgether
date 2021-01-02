@@ -4,7 +4,7 @@ import android.app.Application;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.audio.SoundResource;
+import de.pcps.jamtugether.audio.sound.SoundResource;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.log.JamTimberTree;
 import de.pcps.jamtugether.utils.SoundUtils;

@@ -76,7 +76,7 @@ public class SoundtrackRepository {
     @NonNull
     private List<SingleSoundtrack> generateTestSoundtracks() {
         List<SingleSoundtrack> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             Instrument instrument = i % 2 == 0 ? Flute.getInstance() : Drums.getInstance();
             SingleSoundtrack singleSoundtrack = instrument.generateSoundtrack(i);
             singleSoundtrack.loadSounds(context);

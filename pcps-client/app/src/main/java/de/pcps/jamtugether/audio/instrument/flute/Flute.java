@@ -12,9 +12,10 @@ import java.util.Random;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.soundpool.FluteSoundPool;
-import de.pcps.jamtugether.audio.SoundResource;
-import de.pcps.jamtugether.audio.soundpool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
+import de.pcps.jamtugether.audio.sound.pool.FluteSoundPool;
+import de.pcps.jamtugether.audio.sound.SoundResource;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
@@ -62,20 +63,19 @@ public class Flute extends Instrument {
     @Override
     public SingleSoundtrack generateSoundtrack(int userID) {
         Random random = new Random();
-        int soundAmount = 10;
         List<Sound> soundSequence = new ArrayList<>();
-        for (int j = 0; j < soundAmount; j++) {
-            int pitch = random.nextInt(80)+20;
+        for (int j = 0; j < 20; j++) {
+            int pitch = random.nextInt(80) + 20;
             soundSequence.add(new Sound(getServerString(), 0, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
         }
         return new SingleSoundtrack(userID, soundSequence);
     }
 
-    public int play(float pitch) {
-        if(soundPool != null) {
-            return soundPool.playSoundRes(FLUTE_SOUND, pitch);
+    public void play(float pitch, @NonNull OnSoundPlayedCallback callback) {
+        if (soundPool != null) {
+            soundPool.playSoundRes(FLUTE_SOUND, pitch, callback);
         }
-        return 0;
+        callback.onSoundPlayed(0);
     }
 
     @NonNull

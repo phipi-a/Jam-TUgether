@@ -16,7 +16,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public class SoundtrackNavigationLine extends View {
 
-    private int progress;
+    private float progress;
 
     @Nullable
     private Soundtrack currentSoundtrack;
@@ -58,7 +58,7 @@ public class SoundtrackNavigationLine extends View {
         });
     }
 
-    private void onProgressChanged(Integer progress) {
+    private void onProgressChanged(Float progress) {
         if(this.progress == progress) { // only update progress if needed
             return;
         }
