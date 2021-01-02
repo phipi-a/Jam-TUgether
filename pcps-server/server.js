@@ -17,8 +17,6 @@ const db = mongoose.connection
 db.on('error', err => {
   console.error.bind(console, 'connection error:' + err)
 })
-// Include RoomSchema
-const RoomSchema = require('./model/room.model')
 
 // Express setup
 const app = express()
@@ -36,7 +34,7 @@ const swaggerOptions = {
   // In which files the documentation comments are
   apis: ['server.js', 'routes/room.route.js'],
   // Define endpoint in documentation (doesn't work in swagger-ui-express 4.1.5)
-  servers: [{ url: '/api', description: 'The API server' }]
+  servers: [{ url: '/api', description: 'The API server'}]
 }
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions)
@@ -52,20 +50,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const server = app.listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
-
-// every 10 minutes go through rooms, if nothing happend in room after 30 minutes delete room
-// recursive function (instead of setInterval()), less error-prone
-const deleteUnusedRooms = async function () {
-  console.log('Checking for unused rooms...')
-  // cast current Date - 30 minutes (1800000 ms) to Date
-  const time = new Date(Date.now() - 1800000)
-  // delete all rooms that haven't been updated in the last 30 minutes
-  const room = await RoomSchema.deleteMany({ updated: { $lte: time } })
-
-  // run delteUnusedRooms every 10 minutes (600000s)
-  setTimeout(deleteUnusedRooms, 600000)
-}
-deleteUnusedRooms()
 
 // Handle 404s (has to be at the bottom of the code)
 app.use((req, res, next) => {
