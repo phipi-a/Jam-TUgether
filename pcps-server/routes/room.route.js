@@ -3,6 +3,8 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
+const { receiveTrack, sendTracks } = require('../js/room.js')
+const { fillRoom} = require('../js/prepareRoom.js')
 
 const app = express()
 
@@ -15,7 +17,7 @@ const { exists } = require('../model/room.model')
 
 // Create room function
 async function createRoom (roomID, password, object) {
-  await RoomSchema.create({ roomID: roomID, password: password, adminBytes: 'non-existing' }, (error, data, next) => {
+  await RoomSchema.create(fillRoom(roomID, password), (error, data, next) => {
     if (error) {
       return next(error)
     }
@@ -94,7 +96,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
     // sleep for 0.1 milisecond
     await new Promise(resolve => setTimeout(resolve, 0.1))
     const token = await createToken('Admin', newRoomID)
-    res.status(201).send(createJSON(newRoomID.toString(), token))
+    const userID = 1
+    res.status(201).send(createJSON(newRoomID.toString(), token, userID.toString()))
   } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
@@ -198,7 +201,6 @@ roomRoute.post('/login', async (req, res) => {
   try {
     // Search room with roomID in database
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
-    console.log(req.body.roomID, room)
 
     if (!room) {
       return res.status(401).send('No room with matching roomId found')
@@ -207,7 +209,13 @@ roomRoute.post('/login', async (req, res) => {
     if (await bcrypt.compare(req.body.password, room.password)) {
       await updateRoom(req.body.roomID)
       const token = await createToken('User', req.body.roomID)
-      res.status(201).send(createJSON(req.body.roomID.toString(), token))
+      // update number of user
+      const userID = room.numberOfUser + 1
+      const update = { numberOfUser: userID }
+      await room.updateOne(update)
+      // create default sound for new user
+      await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
+      res.status(201).send(createJSON(req.body.roomID.toString(), token, userID.toString()))
     } else {
       res.status(401).send('Wrong Password.')
     }
@@ -239,15 +247,45 @@ roomRoute.post('/login', async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.get('/room/{id}', async (req, res) => {
+roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(500).send('Room does not exist!')
   } else {
     await updateRoom(req.params.id)
-    res.status(200).send(room.track)
+    sendTracks(req, res)
   }
 })
+
+/**
+ * @openapi
+ * /api/room/:id:
+ *   post:
+ *     summary: Returns success if saved sent track
+ *     description: Saves incoming tracks
+ *     parameters:
+ *       - roomID: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: success
+ *       500:
+ *         description: Failure
+ */
+roomRoute.post('/room/:id', verify, async (req, res) => {
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  if (room == null) {
+    res.status(500).send('Room does not exist!')
+  } else {
+    await updateRoom(req.params.id)
+    receiveTrack(req, res)
+  }
+})
+
 /**
  * @openapi
  * /api/test:
@@ -269,7 +307,7 @@ roomRoute.get('/room/{id}', async (req, res) => {
  *         description: Forbidden (invalid token)
  */
 roomRoute.post('/test', verify, async (req, res) => {
-  res.status(200).send('blub')
+  receiveTrack(req, res)
 })
 
 roomRoute.post('/test2', async (req, res) => {
