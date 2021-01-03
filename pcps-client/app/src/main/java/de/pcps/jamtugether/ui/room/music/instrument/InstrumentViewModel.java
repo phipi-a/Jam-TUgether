@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
@@ -25,6 +27,7 @@ import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public abstract class InstrumentViewModel extends ViewModel implements LifecycleObserver {
 
@@ -43,7 +46,11 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     private final Instrument instrument;
 
-    protected final int userID;
+    private final int roomID;
+    private final int userID;
+
+    @NonNull
+    private final String token;
 
     @NonNull
     protected final OnOwnSoundtrackChangedCallback callback;
@@ -70,7 +77,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             countDownTimerMillis.setValue(-1L);
             startedMillis = System.currentTimeMillis();
             timer.start();
-            if(playWithCompositeSoundtrack) {
+            if (playWithCompositeSoundtrack) {
                 compositeSoundtrackPlayer.stop(compositeSoundtrack);
                 compositeSoundtrackPlayer.play(compositeSoundtrack);
             }
@@ -104,14 +111,19 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     private final MutableLiveData<Boolean> uploadPossible = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+
     private boolean playWithCompositeSoundtrack;
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
+        this.roomID = roomID;
         this.userID = userID;
+        this.token = token;
         this.callback = callback;
     }
 
@@ -125,7 +137,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     public void onCreateSoundtrackButtonClicked() {
         if (startedSoundtrackCreation()) {
-            if(countDownTimer.isStopped()) {
+            if (countDownTimer.isStopped()) {
                 finishSoundtrack();
             } else {
                 countDownTimer.stop();
@@ -143,16 +155,26 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     }
 
     public void onUploadButtonClicked() {
-        if(ownSoundtrack == null) {
+        if (ownSoundtrack == null) {
             return;
         }
-        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
-        // todo publish
+        SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
+        soundtrackRepository.uploadSoundtrack(token, roomID, toBePublished, new JamCallback<String>() {
+            @Override
+            public void onSuccess(@NonNull String response) {
+                Timber.d("onSuccess() | %s", response);
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
     }
 
     protected void finishSoundtrack() {
         timer.stop();
-        if(ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
+        if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             this.uploadPossible.setValue(true);
@@ -163,6 +185,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     protected boolean startedSoundtrackCreation() {
         Boolean started = startedSoundtrackCreation.getValue();
         return started != null && started;
+    }
+
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
     }
 
     @NonNull
@@ -193,5 +219,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     public LiveData<Boolean> getUploadPossible() {
         return uploadPossible;
+    }
+
+    @NonNull
+    public LiveData<Error> getNetworkError() {
+        return networkError;
     }
 }

@@ -36,7 +36,7 @@ public class FluteFragment extends InstrumentFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(userID, musicianViewViewModel);
+            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, token, musicianViewViewModel);
             instrumentViewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
         }
@@ -45,14 +45,13 @@ public class FluteFragment extends InstrumentFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
         FluteViewModel fluteViewModel = (FluteViewModel) instrumentViewModel;
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(fluteViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
-
-        observeCompositeSoundtrack();
 
         if (savedInstanceState == null) {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {

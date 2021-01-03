@@ -25,6 +25,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 import de.pcps.jamtugether.utils.UiUtils;
+import timber.log.Timber;
 
 public class SoundtrackView extends View {
 
@@ -147,12 +148,14 @@ public class SoundtrackView extends View {
     }
 
     private void drawDrumsSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
+        Timber.d("drawDrumsSoundtrack");
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
         float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float height;
             long millis;
             int heightPercentage = sound.getPitch();
+            Timber.d("heightPercentage: %d", heightPercentage);
             switch (sound.getPitch()) {
                 case Drums.SNARE_PITCH:
                     millis = 125;

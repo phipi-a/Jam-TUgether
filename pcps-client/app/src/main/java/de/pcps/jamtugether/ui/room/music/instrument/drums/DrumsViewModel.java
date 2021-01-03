@@ -17,8 +17,8 @@ public class DrumsViewModel extends InstrumentViewModel {
     @NonNull
     private static final Drums drums = Drums.getInstance();
 
-    public DrumsViewModel(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(drums, userID, callback);
+    public DrumsViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, roomID, userID, token, callback);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -56,7 +56,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
         if(ownSoundtrack != null) {
-            ownSoundtrack.addSound(new Sound(pitch, startTimeMillis, endTimeMillis));
+            ownSoundtrack.addSound(new Sound(endTimeMillis, startTimeMillis, pitch));
         }
     }
 
@@ -68,13 +68,19 @@ public class DrumsViewModel extends InstrumentViewModel {
 
     static class Factory implements ViewModelProvider.Factory {
 
+        private final int roomID;
         private final int userID;
+
+        @NonNull
+        private final String token;
 
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+            this.roomID = roomID;
             this.userID = userID;
+            this.token = token;
             this.callback = callback;
         }
 
@@ -83,7 +89,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DrumsViewModel.class)) {
-                return (T) new DrumsViewModel(userID, callback);
+                return (T) new DrumsViewModel(roomID, userID, token, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

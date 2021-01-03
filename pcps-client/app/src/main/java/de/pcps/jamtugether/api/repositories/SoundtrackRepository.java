@@ -33,6 +33,7 @@ public class SoundtrackRepository {
     private final Context context;
 
     private int currentRoomID;
+
     private String currentToken;
 
     private boolean fetching;
@@ -51,6 +52,11 @@ public class SoundtrackRepository {
 
     private void getComposition(@NonNull String token, int roomID, @NonNull JamCallback<Composition> callback) {
         Call<Composition> call = soundtrackService.getComposition(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
+    }
+
+    public void uploadSoundtrack(@NonNull String token, int roomID, @NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<String> callback) {
+        Call<String> call = soundtrackService.uploadSoundtrack(token, roomID, soundtrack);
         call.enqueue(callback);
     }
 
@@ -86,7 +92,9 @@ public class SoundtrackRepository {
 
             @Override
             public void onError(@NonNull Error error) {
-                networkError.setValue(error);
+                Timber.d("error: %s", error.getMessage());
+                // todo only show message fetching was requested or if tracks are being fetched for first time
+                //networkError.setValue(error);
             }
         });
     }
