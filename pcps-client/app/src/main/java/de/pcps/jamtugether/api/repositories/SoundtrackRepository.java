@@ -18,6 +18,7 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -77,7 +78,7 @@ public class SoundtrackRepository {
     private List<SingleSoundtrack> generateTestSoundtracks() {
         List<SingleSoundtrack> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Instrument instrument = i % 2 == 0 ? Flute.getInstance() : Drums.getInstance();
+            Instrument instrument = Instruments.ARRAY[i % 3];
             SingleSoundtrack singleSoundtrack = instrument.generateSoundtrack(i);
             singleSoundtrack.loadSounds(context);
             list.add(singleSoundtrack);
