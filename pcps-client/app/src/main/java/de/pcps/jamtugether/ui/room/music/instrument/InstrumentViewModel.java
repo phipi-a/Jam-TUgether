@@ -43,7 +43,6 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     private final Instrument instrument;
 
-    protected final int roomID;
     protected final int userID;
 
     @NonNull
@@ -109,10 +108,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
-        this.roomID = roomID;
         this.userID = userID;
         this.callback = callback;
     }

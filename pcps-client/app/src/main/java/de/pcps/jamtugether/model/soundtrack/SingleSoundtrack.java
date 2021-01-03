@@ -52,8 +52,8 @@ public class SingleSoundtrack extends Soundtrack {
     }
 
     // just used for empty soundtrack, this is never sent to server
-    public SingleSoundtrack(int userID) {
-        this(userID, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
+    public SingleSoundtrack() {
+        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
     }
 
     // own soundtrack object

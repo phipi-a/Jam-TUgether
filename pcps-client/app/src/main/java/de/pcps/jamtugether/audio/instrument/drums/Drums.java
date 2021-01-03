@@ -90,25 +90,25 @@ public class Drums extends Instrument {
     }
 
     public void playSnare() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(SNARE, 1);
         }
     }
 
     public void playKick() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(KICK, 1);
         }
     }
 
     public void playHat() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(HAT, 1);
         }
     }
 
     public void playCymbal() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(CYMBAL, 1);
         }
     }

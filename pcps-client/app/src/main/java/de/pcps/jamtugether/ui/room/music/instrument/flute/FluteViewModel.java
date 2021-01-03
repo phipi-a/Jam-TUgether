@@ -38,8 +38,8 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     private int currentStartTimeMillis = -1;
     private int currentPitch = -1;
 
-    public FluteViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(flute, roomID, userID, callback);
+    public FluteViewModel(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(flute, userID, callback);
     }
 
     @Override
@@ -137,14 +137,12 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
         private final int userID;
 
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
+        public Factory(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
             this.userID = userID;
             this.callback = callback;
         }
@@ -154,7 +152,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(FluteViewModel.class)) {
-                return (T) new FluteViewModel(roomID, userID, callback);
+                return (T) new FluteViewModel(userID, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

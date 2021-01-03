@@ -63,7 +63,7 @@ public abstract class Instrument {
     }
 
     public void stop() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.stopAllSounds();
         }
     }

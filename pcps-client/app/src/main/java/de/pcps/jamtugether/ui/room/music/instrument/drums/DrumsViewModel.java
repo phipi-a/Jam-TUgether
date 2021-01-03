@@ -17,8 +17,8 @@ public class DrumsViewModel extends InstrumentViewModel {
     @NonNull
     private static final Drums drums = Drums.getInstance();
 
-    public DrumsViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(drums, roomID, userID, callback);
+    public DrumsViewModel(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, userID, callback);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -68,14 +68,12 @@ public class DrumsViewModel extends InstrumentViewModel {
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
         private final int userID;
 
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
+        public Factory(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
             this.userID = userID;
             this.callback = callback;
         }
@@ -85,7 +83,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DrumsViewModel.class)) {
-                return (T) new DrumsViewModel(roomID, userID, callback);
+                return (T) new DrumsViewModel(userID, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

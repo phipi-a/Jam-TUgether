@@ -51,8 +51,7 @@ public class MusicianViewFragment extends BaseFragment {
             userID = getArguments().getInt(USER_ID_KEY);
             token = getArguments().getString(TOKEN_KEY);
 
-            MusicianViewViewModel.Factory viewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
-            viewModel = new ViewModelProvider(this, viewModelFactory).get(MusicianViewViewModel.class);
+            viewModel = new ViewModelProvider(this).get(MusicianViewViewModel.class);
         }
     }
 
@@ -81,7 +80,7 @@ public class MusicianViewFragment extends BaseFragment {
 
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
             if (showShakerFragment) {
-                replaceInstrumentFragment(ShakerFragment.newInstance());
+                replaceInstrumentFragment(ShakerFragment.newInstance(roomID, userID, token));
                 viewModel.onShakerFragmentShown();
             }
         });
@@ -90,7 +89,7 @@ public class MusicianViewFragment extends BaseFragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, userID, token), R.id.own_soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID), R.id.own_soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {
