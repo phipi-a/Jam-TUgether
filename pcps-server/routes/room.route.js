@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
 const { receiveTrack, sendTracks } = require('../js/room.js')
-const { fillRoom } = require('../js/prepareRoom.js')
+const { fillRoom} = require('../js/prepareRoom.js')
 
 const app = express()
 
@@ -208,6 +208,8 @@ roomRoute.post('/login', async (req, res) => {
       const userID = room.numberOfUser + 1
       const update = { numberOfUser: userID }
       await room.updateOne(update)
+      // create default sound for new user
+      await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
       res.status(201).send(createJSON(req.body.roomID.toString(), token, userID.toString()))
     } else {
       res.status(401).send('Wrong Password.')
@@ -278,8 +280,6 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
     receiveTrack(req, res)
   }
 })
-
-
 
 /**
  * @openapi

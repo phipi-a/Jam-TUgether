@@ -1,3 +1,4 @@
+// creates default JSON for new Room
 exports.fillRoom = function (roomID, password) {
   const jsonRoom = {
     roomID: roomID,

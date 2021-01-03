@@ -25,7 +25,7 @@ Content-Type: application/json
 ###
 POST  http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImY3YmUxYjVjNWM5MmJkZTQwODI2Iiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NjMwODg0LCJleHAiOjE2MDk2MzI2ODR9.SxOaS4LHiWWNqtswYgWRaqYMo7pYwT_aTgHcmYOOJNY '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjY1MjVkM2FiMWM2NzA1N2ViZmIxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NjcxODIxLCJleHAiOjE2MDk2NzM2MjF9.QAVyGnXg5x50hxq5O9tboWf0azwMFum5CUqiawqdOxE '
 
 {
   "roomID" : "1",
