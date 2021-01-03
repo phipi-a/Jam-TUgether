@@ -6,12 +6,8 @@ const roomSchema = new Schema({
   password: String,
   updated: { type: Date, default: Date.now },
   adminBytes: String,
-  track: {
-      
-    // richtiges Format einfügen
-    spur_eins: String,
-    spur_zwei: String
-  }
+  numberOfUser: Number,
+  soundtracks: [{ userID: Number, soundseq: [{ instrument: String, starttime: Number, pitch: Number }], volume: Number }]
 }, {
   collection: 'rooms'
 })
