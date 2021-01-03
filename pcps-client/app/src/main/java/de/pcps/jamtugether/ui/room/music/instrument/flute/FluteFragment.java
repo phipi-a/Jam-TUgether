@@ -36,7 +36,7 @@ public class FluteFragment extends InstrumentFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, musicianViewViewModel);
+            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(userID, musicianViewViewModel);
             instrumentViewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
         }

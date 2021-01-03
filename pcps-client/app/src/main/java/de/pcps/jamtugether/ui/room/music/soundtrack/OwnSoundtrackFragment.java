@@ -20,20 +20,16 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class OwnSoundtrackFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
-    private static final String USER_ID_KEY = "user_id_key";
-    private static final String TOKEN_KEY = "token_key";
 
     private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     private OwnSoundtrackViewModel ownSoundtrackViewModel;
 
     @NonNull
-    public static OwnSoundtrackFragment newInstance(int roomID, int userID, @NonNull String token) {
+    public static OwnSoundtrackFragment newInstance(int roomID) {
         OwnSoundtrackFragment fragment = new OwnSoundtrackFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
-        args.putInt(USER_ID_KEY, userID);
-        args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,8 +39,6 @@ public class OwnSoundtrackFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
-            int userID = getArguments().getInt(USER_ID_KEY);
-            String token = getArguments().getString(TOKEN_KEY);
 
             Fragment musicianFragment = getParentFragment();
             if(musicianFragment == null) {
@@ -58,7 +52,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
 
             CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID);
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
-            MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(musicianFragment, new MusicianViewViewModel.Factory(roomID, userID, token)).get(MusicianViewViewModel.class);
+            MusicianViewViewModel musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
             OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(roomID, musicianViewViewModel);
             ownSoundtrackViewModel = new ViewModelProvider(this, ownSoundtrackViewModelFactory).get(OwnSoundtrackViewModel.class);
         }

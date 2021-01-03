@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.model.sound.ServerSound;
+import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
@@ -33,8 +33,8 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     @NonNull
     private final MutableLiveData<Float> shakeIntensity = new MutableLiveData<>(0f);
 
-    public ShakerViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(shaker, roomID, userID, callback);
+    public ShakerViewModel(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(shaker, userID, callback);
         this.vibrator = (Vibrator) application.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -89,7 +89,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
         if (ownSoundtrack != null) {
-            ownSoundtrack.addSound(new ServerSound(roomID, userID, Shaker.getInstance(), 0, startTimeMillis, endTimeMillis, -1));
+            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, -1));
         }
     }
 
@@ -106,14 +106,12 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
         private final int userID;
 
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
+        public Factory(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
             this.userID = userID;
             this.callback = callback;
         }
@@ -123,7 +121,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ShakerViewModel.class)) {
-                return (T) new ShakerViewModel(roomID, userID, callback);
+                return (T) new ShakerViewModel(userID, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

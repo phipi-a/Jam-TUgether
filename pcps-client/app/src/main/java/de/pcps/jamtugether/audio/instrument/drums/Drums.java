@@ -27,15 +27,19 @@ public class Drums extends Instrument {
 
     @RawRes
     public static final int SNARE = SoundResource.SNARE.getResource();
+    public static final int SNARE_PITCH = 50;
 
     @RawRes
     public static final int KICK = SoundResource.KICK.getResource();
+    public static final int KICK_PITCH = 30;
 
     @RawRes
     public static final int HAT = SoundResource.HAT.getResource();
+    public static final int HAT_PITCH = 70;
 
     @RawRes
     public static final int CYMBAL = SoundResource.CYMBAL.getResource();
+    public static final int CYMBAL_PITCH = 90;
 
     public Drums() {
         super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
@@ -43,13 +47,13 @@ public class Drums extends Instrument {
 
     @RawRes
     @Override
-    public int getSoundResource(int element) {
-        switch (element) {
-            case 0:
+    public int getSoundResource(int pitch) {
+        switch (pitch) {
+            case SNARE_PITCH:
                 return SNARE;
-            case 1:
+            case KICK_PITCH:
                 return KICK;
-            case 2:
+            case HAT_PITCH:
                 return HAT;
             default:
                 return CYMBAL;
@@ -78,32 +82,33 @@ public class Drums extends Instrument {
         Random random = new Random();
         List<Sound> soundSequence = new ArrayList<>();
         for (int j = 0; j < 20; j++) {
-            int element = random.nextInt(4);
-            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
+            int[] array = {Drums.SNARE_PITCH, Drums.KICK_PITCH, Drums.HAT_PITCH, Drums.CYMBAL_PITCH};
+            int pitch = array[random.nextInt(array.length)];
+            soundSequence.add(new Sound((int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
         }
-        return new SingleSoundtrack(userID, soundSequence);
+        return new SingleSoundtrack(userID, getServerString(), soundSequence);
     }
 
     public void playSnare() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(SNARE, 1);
         }
     }
 
     public void playKick() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(KICK, 1);
         }
     }
 
     public void playHat() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(HAT, 1);
         }
     }
 
     public void playCymbal() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(CYMBAL, 1);
         }
     }

@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,7 +43,6 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     private final Instrument instrument;
 
-    protected final int roomID;
     protected final int userID;
 
     @NonNull
@@ -110,10 +108,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
-        this.roomID = roomID;
         this.userID = userID;
         this.callback = callback;
     }
@@ -138,7 +135,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         } else {
             timerMillis.setValue(-1L);
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, instrument);
+            ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString());
             ownSoundtrack.loadSounds(application.getApplicationContext());
             startedSoundtrackCreation.setValue(true);
             countDownTimer.start();
@@ -149,7 +146,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if(ownSoundtrack == null) {
             return;
         }
-        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, ownSoundtrack.getSoundSequence());
+        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
         // todo publish
     }
 

@@ -8,7 +8,6 @@ import androidx.annotation.RawRes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -55,13 +54,11 @@ public class Shaker extends Instrument {
     @NonNull
     @Override
     public SingleSoundtrack generateSoundtrack(int userID) {
-        Random random = new Random();
         List<Sound> soundSequence = new ArrayList<>();
         for (int j = 0; j < 20; j++) {
-            int element = random.nextInt(4);
-            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
+            soundSequence.add(new Sound((int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
         }
-        return new SingleSoundtrack(userID, soundSequence);
+        return new SingleSoundtrack(userID, getServerString(), soundSequence);
     }
 
     public void play() {

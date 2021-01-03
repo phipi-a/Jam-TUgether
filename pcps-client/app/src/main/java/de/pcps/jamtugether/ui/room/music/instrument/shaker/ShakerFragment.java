@@ -3,20 +3,15 @@ package de.pcps.jamtugether.ui.room.music.instrument.shaker;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 
@@ -42,7 +37,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, musicianViewViewModel);
+            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(userID, musicianViewViewModel);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
 

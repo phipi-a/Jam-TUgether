@@ -15,8 +15,8 @@ public abstract class InstrumentFragment extends BaseFragment {
     protected static final String USER_ID_KEY = "user_id_key";
     protected static final String TOKEN_KEY = "token_key";
 
-    protected int roomID;
     protected int userID;
+    protected String token;
 
     protected MusicianViewViewModel musicianViewViewModel;
     protected InstrumentViewModel instrumentViewModel;
@@ -27,9 +27,9 @@ public abstract class InstrumentFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            roomID = getArguments().getInt(ROOM_ID_KEY);
+            int roomID = getArguments().getInt(ROOM_ID_KEY);
             userID = getArguments().getInt(USER_ID_KEY);
-            String token = getArguments().getString(TOKEN_KEY);
+            token = getArguments().getString(TOKEN_KEY);
 
             Fragment musicianFragment = getParentFragment();
             if(musicianFragment == null) {
@@ -40,8 +40,7 @@ public abstract class InstrumentFragment extends BaseFragment {
                 return;
             }
 
-            MusicianViewViewModel.Factory musicianViewViewModelFactory = new MusicianViewViewModel.Factory(roomID, userID, token);
-            musicianViewViewModel = new ViewModelProvider(musicianFragment, musicianViewViewModelFactory).get(MusicianViewViewModel.class);
+            musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
             CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID);
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
