@@ -7,7 +7,7 @@ const roomSchema = new Schema({
   updated: { type: Date, default: Date.now },
   adminBytes: String,
   numberOfUser: Number,
-  soundtracks: [{ userID: Number, soundseq: [{ instrument: String, starttime: Number, pitch: Number }], volume: Number }]
+  soundtracks: [{ userID: Number, instrument: String, soundSequence: [{ starttime: Number, endtime: Number, pitch: Number }] }]
 }, {
   collection: 'rooms'
 })

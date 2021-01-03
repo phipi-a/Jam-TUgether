@@ -25,13 +25,9 @@ Content-Type: application/json
 ###
 POST  http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjY1MjVkM2FiMWM2NzA1N2ViZmIxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NjcxODIxLCJleHAiOjE2MDk2NzM2MjF9.QAVyGnXg5x50hxq5O9tboWf0azwMFum5CUqiawqdOxE '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijg0ZDliZjA5NmRjZWJhYzkyNjM0Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5Njk1Mzg2LCJleHAiOjE2MDk2OTcxODZ9.3byBoxJny7eAxfBhcGeU_MUntUne9aV6zT0QtHaqAuA '
 
 {
-  "roomID" : "1",
-  "userID" : "2", 
-  "instrument" : "guitar",
-  "starttime" : "2",
-  "pitch" : "1"
+  "soundtracks": [{"userID" : "1", "instrument" : "instrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
 }
-###
+### 

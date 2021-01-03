@@ -282,7 +282,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
     res.status(500).send('Room does not exist!')
   } else {
     await updateRoom(req.params.id)
-    receiveTrack(req, res)
+    receiveTrack(req, res, req.params.id, room)
   }
 })
 
