@@ -64,7 +64,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         }
         if (value >= 0.5) {
             value=value*value;
-            onShakeMovement(value);//TODO volume = value
+            onShakeMovement(value);
         }
     }
 
@@ -99,7 +99,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     public void onShakeMovement(float intensity) {
-        shaker.play();
+        shaker.play();//TODO volume = value
         onSoundPlayed();
         shakeIntensity.setValue(intensity);
     }
