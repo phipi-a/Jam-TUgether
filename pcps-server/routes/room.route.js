@@ -240,7 +240,7 @@ roomRoute.post('/login', async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.get('/room/:id', async (req, res) => {
+roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(500).send('Room does not exist!')
@@ -269,7 +269,7 @@ roomRoute.get('/room/:id', async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.post('/room/:id', async (req, res) => {
+roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(500).send('Room does not exist!')

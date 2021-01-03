@@ -23,13 +23,13 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3000/api/room/1
+POST  http://localhost:3000/api/room/1
 Content-Type: application/json
 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImY3YmUxYjVjNWM5MmJkZTQwODI2Iiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NjMwODg0LCJleHAiOjE2MDk2MzI2ODR9.SxOaS4LHiWWNqtswYgWRaqYMo7pYwT_aTgHcmYOOJNY '
 
 {
   "roomID" : "1",
-  "userID" : "1", 
+  "userID" : "2", 
   "instrument" : "guitar",
   "starttime" : "2",
   "pitch" : "1"
