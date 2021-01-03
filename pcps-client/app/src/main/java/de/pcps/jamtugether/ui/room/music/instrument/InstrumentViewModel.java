@@ -73,7 +73,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             timer.start();
             if(playWithCompositeSoundtrack) {
                 compositeSoundtrackPlayer.stop(compositeSoundtrack);
-                compositeSoundtrackPlayer.playOrPause(compositeSoundtrack);
+                compositeSoundtrackPlayer.play(compositeSoundtrack);
             }
         }
     };

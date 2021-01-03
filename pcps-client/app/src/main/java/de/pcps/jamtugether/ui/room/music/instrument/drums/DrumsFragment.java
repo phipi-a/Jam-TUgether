@@ -28,21 +28,12 @@ public class DrumsFragment extends InstrumentFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, musicianViewViewModel);
             instrumentViewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
         }
     }
-
-    /*public void onTouch(View view, MotionEvent motionEvent) {
-
-        ClipData data = ClipData.newPlainText("", "");
-        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-        view.startDrag(data, shadowBuilder, null, 0);
-
-        viewModel = new ViewModelProvider(this).get(DrumsViewModel.class);
-    }*/
 
     @Nullable
     @Override
@@ -54,32 +45,6 @@ public class DrumsFragment extends InstrumentFragment {
 
         observeCompositeSoundtrack();
 
-        //getView().setOnTouchListener(handleTouch);
-
         return binding.getRoot();
-
     }
-    /*private View.OnTouchListener handleTouch = new View.OnTouchListener() {
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    Log.i("TAG", "touched down");
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    Log.i("TAG", "moving: (" + x + ", " + y + ")");
-                    break;
-                case MotionEvent.ACTION_UP:
-                    Log.i("TAG", "touched up");
-                    break;
-            }
-
-            return true;
-        }
-    };*/
 }

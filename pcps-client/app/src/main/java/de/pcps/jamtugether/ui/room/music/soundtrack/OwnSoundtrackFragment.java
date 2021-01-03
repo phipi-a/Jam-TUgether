@@ -15,7 +15,6 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
-import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class OwnSoundtrackFragment extends BaseFragment {
@@ -71,11 +70,9 @@ public class OwnSoundtrackFragment extends BaseFragment {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(ownSoundtrackViewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout.soundtrackControlsLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
-        ((SoundtrackContainer) binding.compositeSoundtrackLayout.soundtrackContainer).observeCompositeSoundtrack(compositeSoundtrackViewModel.getCompositeSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 
-        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout.soundtrackControlsLayout, ownSoundtrackViewModel.getOwnSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
-        ((SoundtrackContainer) binding.ownSoundtrackLayout.soundtrackContainer).observeSingleSoundtrack(ownSoundtrackViewModel.getOwnSoundtrack(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout, ownSoundtrackViewModel.getOwnSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 
         ownSoundtrackViewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if (showHelpDialog) {

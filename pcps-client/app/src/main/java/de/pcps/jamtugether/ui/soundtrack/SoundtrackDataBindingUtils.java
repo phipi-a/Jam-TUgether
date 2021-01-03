@@ -7,10 +7,13 @@ import androidx.lifecycle.LiveData;
 
 import com.google.android.material.slider.Slider;
 
+import de.pcps.jamtugether.databinding.ViewSoundtrackBinding;
 import de.pcps.jamtugether.databinding.ViewSoundtrackControlsBinding;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
+import timber.log.Timber;
 
 public class SoundtrackDataBindingUtils {
 
@@ -19,19 +22,27 @@ public class SoundtrackDataBindingUtils {
         slider.addOnChangeListener(sliderOnChangeListener);
     }
 
-    public static void bindSingleSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+    public static void bindSingleSoundtrack(@NonNull ViewSoundtrackBinding binding, @NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+        ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
+        SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
+
         singleSoundtrack.observe(lifecycleOwner, soundtrack -> {
-            binding.setSoundtrack(soundtrack);
-            binding.setOnChangeListener(onChangeCallback);
-            binding.setLifecycleOwner(lifecycleOwner);
+            controlsBinding.setSoundtrack(soundtrack);
+            controlsBinding.setOnChangeListener(onChangeCallback);
+            controlsBinding.setLifecycleOwner(lifecycleOwner);
         });
+        soundtrackContainer.observeSingleSoundtrack(singleSoundtrack, lifecycleOwner);
     }
 
-    public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackControlsBinding binding, @NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+    public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackBinding binding, @NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+        ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
+        SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
+
         compositeSoundtrack.observe(lifecycleOwner, soundtrack -> {
-            binding.setSoundtrack(soundtrack);
-            binding.setOnChangeListener(onChangeCallback);
-            binding.setLifecycleOwner(lifecycleOwner);
+            controlsBinding.setSoundtrack(soundtrack);
+            controlsBinding.setOnChangeListener(onChangeCallback);
+            controlsBinding.setLifecycleOwner(lifecycleOwner);
         });
+        soundtrackContainer.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);
     }
 }
