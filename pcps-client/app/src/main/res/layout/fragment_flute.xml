@@ -44,6 +44,7 @@
             android:id="@+id/iv_flute_fill"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
+            app:pitchPercentage="@{viewModel.getPitchPercentage()}"
             android:layout_gravity="end"
             android:adjustViewBounds="true"
             android:scaleType="fitStart"

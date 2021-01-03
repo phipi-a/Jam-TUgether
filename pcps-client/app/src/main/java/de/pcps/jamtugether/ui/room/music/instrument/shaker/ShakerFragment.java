@@ -24,6 +24,7 @@ public class ShakerFragment extends InstrumentFragment {
 
     private SensorManager mSensorManager;
     private Sensor accelerometerSensor;
+
     private ShakerViewModel shakerViewModel;
 
     @NonNull
@@ -44,6 +45,14 @@ public class ShakerFragment extends InstrumentFragment {
             ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, musicianViewViewModel);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
+
+            // Get sensor manager
+            mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
+
+            // Get the default sensor of specified type
+            accelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+            mSensorManager.registerListener(shakerViewModel, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         }
     }
 
@@ -52,31 +61,13 @@ public class ShakerFragment extends InstrumentFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentShakerBinding binding = FragmentShakerBinding.inflate(inflater, container, false);
         shakerViewModel = (ShakerViewModel) instrumentViewModel;
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(shakerViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
 
         observeCompositeSoundtrack();
 
-        // Get sensor manager
-        mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
-        // Get the default sensor of specified type
-        accelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(shakerViewModel, accelerometerSensor,
-                SensorManager.SENSOR_DELAY_GAME);
-        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        shakerViewModel.getShakeIntensity().observe(getViewLifecycleOwner(), intensity -> {
-            if (intensity > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    v.vibrate(VibrationEffect.createOneShot((int) (50 * intensity), VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-                    //deprecated in API 26
-                    v.vibrate(50);
-                }
-                shakerViewModel.shakeIntensityReset();
-                binding.ivShaker.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake));
-            }
-        });
         return binding.getRoot();
     }
 

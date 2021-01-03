@@ -12,7 +12,6 @@ import java.util.Random;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
 import de.pcps.jamtugether.audio.sound.pool.ShakerSoundPool;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
@@ -20,7 +19,6 @@ import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-// todo
 public class Shaker extends Instrument {
 
     @Nullable
@@ -66,16 +64,17 @@ public class Shaker extends Instrument {
         return new SingleSoundtrack(userID, soundSequence);
     }
 
+    public void play() {
+        if (soundPool != null) {
+            soundPool.playSoundRes(SHAKER_SOUND, 1);
+        }
+    }
+
     @NonNull
     public static Shaker getInstance() {
         if (instance == null) {
             instance = new Shaker();
         }
         return instance;
-    }
-    public void play() {
-        if (soundPool != null) {
-            soundPool.playSoundRes(SHAKER_SOUND, 1);
-        }
     }
 }

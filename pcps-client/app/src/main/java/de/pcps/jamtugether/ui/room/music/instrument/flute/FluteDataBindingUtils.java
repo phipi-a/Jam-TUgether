@@ -1,7 +1,9 @@
 package de.pcps.jamtugether.ui.room.music.instrument.flute;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ClipDrawable;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
@@ -19,5 +21,11 @@ public class FluteDataBindingUtils {
             viewModel.onPitchChanged(soundPitchPercentage);
             return true;
         });
+    }
+
+    @BindingAdapter("pitchPercentage")
+    public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, float pitchPercentage) {
+        ClipDrawable clipDrawable = (ClipDrawable) fluteFillImageView.getDrawable();
+        clipDrawable.setLevel((int) (10000 * pitchPercentage));
     }
 }
