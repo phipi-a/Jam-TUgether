@@ -81,7 +81,7 @@ public class MusicianViewFragment extends BaseFragment {
 
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
             if (showShakerFragment) {
-                replaceInstrumentFragment(ShakerFragment.newInstance());
+                replaceInstrumentFragment(ShakerFragment.newInstance(roomID, userID, token));
                 viewModel.onShakerFragmentShown();
             }
         });
