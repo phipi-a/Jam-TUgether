@@ -137,7 +137,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         } else {
             timerMillis.setValue(-1L);
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, instrument);
+            ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString());
             ownSoundtrack.loadSounds(application.getApplicationContext());
             startedSoundtrackCreation.setValue(true);
             countDownTimer.start();
@@ -148,7 +148,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if(ownSoundtrack == null) {
             return;
         }
-        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, ownSoundtrack.getSoundSequence());
+        SingleSoundtrack publishOwnSoundtrack = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
         // todo publish
     }
 

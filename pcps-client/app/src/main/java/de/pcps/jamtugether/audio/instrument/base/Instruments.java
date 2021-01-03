@@ -28,7 +28,7 @@ public class Instruments {
     public static final List<Instrument> LIST = Arrays.asList(ARRAY);
 
     @NonNull
-    public static final Instrument FALLBACK = FLUTE;
+    public static final Instrument FALLBACK = FLUTE; // todo maybe replace fallback with error
 
     @NonNull
     private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();

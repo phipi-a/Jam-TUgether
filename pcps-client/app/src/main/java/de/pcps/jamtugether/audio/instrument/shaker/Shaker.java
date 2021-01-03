@@ -27,7 +27,7 @@ public class Shaker extends Instrument {
 
     @RawRes
     @Override
-    public int getSoundResource(int element) {
+    public int getSoundResource(int pitch) {
         // todo
         return SHAKER_SOUND;
     }

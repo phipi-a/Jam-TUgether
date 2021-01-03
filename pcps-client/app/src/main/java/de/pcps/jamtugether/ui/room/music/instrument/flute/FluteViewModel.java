@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
-import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
-import de.pcps.jamtugether.model.sound.ServerSound;
+import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -98,7 +97,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         if (currentStartTimeMillis != -1 && currentPitch != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if(ownSoundtrack != null) {
-                ownSoundtrack.addSound(new ServerSound(roomID, userID, Flute.getInstance(), 0, currentStartTimeMillis, endTimeMillis, currentPitch));
+                ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
             }
             currentStartTimeMillis = -1;
             currentPitch = -1;

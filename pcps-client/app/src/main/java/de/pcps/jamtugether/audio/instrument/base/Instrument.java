@@ -53,7 +53,7 @@ public abstract class Instrument {
     }
 
     @RawRes
-    public abstract int getSoundResource(int element);
+    public abstract int getSoundResource(int pitch);
 
     @NonNull
     public abstract BaseSoundPool createSoundPool(@NonNull Context context);
