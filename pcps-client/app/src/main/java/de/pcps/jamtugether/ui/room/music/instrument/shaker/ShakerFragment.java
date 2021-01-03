@@ -10,11 +10,13 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 
@@ -72,6 +74,7 @@ public class ShakerFragment extends InstrumentFragment {
                     v.vibrate(50);
                 }
                 shakerViewModel.shakeIntensityReset();
+                binding.ivShaker.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake));
             }
         });
         return binding.getRoot();
