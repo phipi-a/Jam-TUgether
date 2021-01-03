@@ -60,8 +60,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
   try {
     // Check if the number of rooms is below limit (limit: 10)
     const numberOfRooms = await RoomSchema.countDocuments().exec()
-    if (numberOfRooms < 10) {
-      res.status(500).send('Couldn\'t create room, number of rooms is limited!')
+    if ((Number(numberOfRooms) + 1) > 10) {
+      throw new Error('Limit for number of rooms is reached')
     }
 
     // Check password, limit to n characters
