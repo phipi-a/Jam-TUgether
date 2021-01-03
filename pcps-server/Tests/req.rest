@@ -1,6 +1,6 @@
 DELETE  http://localhost:3000/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjMyMTI0NzAyNzVjOWY2NmM1ZTBlIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5MDUzMDI1LCJleHAiOjE2MDkwNTQ4MjV9.bqe8_OZnAXKT6ujr9fBz8xNLLgJ518GOn6XLhQSr7yA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjIyYWVlZDZmMzIyNDgxZjJjMzJlIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5Njk4NDM2LCJleHAiOjE2MDk3MDAyMzZ9.9qe8sJKRokKCv_ahaNWpaXIcc01ui3rqfGMYAJy60M8 '
 
 {
   "roomID" : "1",
@@ -25,9 +25,19 @@ Content-Type: application/json
 ###
 POST  http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijg0ZDliZjA5NmRjZWJhYzkyNjM0Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5Njk1Mzg2LCJleHAiOjE2MDk2OTcxODZ9.3byBoxJny7eAxfBhcGeU_MUntUne9aV6zT0QtHaqAuA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjVmNDhjNzNkYzMxNWRmYWJkODMxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzA5ODcwLCJleHAiOjE2MDk3MTE2NzB9.PXX5XXL0T50rWtVPVQGpLORnDusw9pVcrnQ0M63pcK0 '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "instrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
+}
+### 
+DELETE   http://localhost:3000/api/room/1
+Content-Type: application/json
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjVmNDhjNzNkYzMxNWRmYWJkODMxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzA5ODcwLCJleHAiOjE2MDk3MTE2NzB9.PXX5XXL0T50rWtVPVQGpLORnDusw9pVcrnQ0M63pcK0 '
+
+{
+  "userID" : "1",
+  "instrument" : "instrument123",
+  "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]
 }
 ### 

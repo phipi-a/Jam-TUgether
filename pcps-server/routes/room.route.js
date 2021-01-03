@@ -3,7 +3,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
-const { receiveTrack, sendTracks } = require('../js/room.js')
+const { receiveTrack, sendTracks, deleteTracks } = require('../js/room.js')
 const { fillRoom} = require('../js/prepareRoom.js')
 
 const app = express()
@@ -106,7 +106,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 /**
  * @openapi
  * /api/delete-room:
- *   post:
+ *   delete:
  *     summary: Delete existing room.
  *     parameters:
  *       - in: body
@@ -278,6 +278,16 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
   } else {
     await updateRoom(req.params.id)
     receiveTrack(req, res, req.params.id, room)
+  }
+})
+
+roomRoute.delete('/room/:id', verify, async (req, res) => {
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  if (room == null) {
+    res.status(500).send('Room does not exist!')
+  } else {
+    await updateRoom(req.params.id)
+    deleteTracks(req, res, req.params.id)
   }
 })
 
