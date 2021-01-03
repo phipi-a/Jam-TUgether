@@ -13,7 +13,7 @@ public enum SoundResource {
     HAT(R.raw.drum_hat),
     CYMBAL(R.raw.drum_cymbal),
 
-    SHAKER(R.raw.flute_sound); // todo
+    SHAKER(R.raw.shaker_sound);
 
     @RawRes
     private final int resource;
