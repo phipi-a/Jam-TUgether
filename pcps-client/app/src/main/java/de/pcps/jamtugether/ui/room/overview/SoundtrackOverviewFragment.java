@@ -64,9 +64,10 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 return;
             }
 
-            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID)).get(CompositeSoundtrackViewModel.class);
+            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID, token)).get(CompositeSoundtrackViewModel.class);
 
             RoomViewModel roomViewModel = new ViewModelProvider(roomFragment, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
+
             SoundtrackOverviewViewModel.Factory soundtrackOverviewViewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token, admin, roomViewModel);
             soundtrackOverviewViewModel = new ViewModelProvider(this, soundtrackOverviewViewModelFactory).get(SoundtrackOverviewViewModel.class);
         }

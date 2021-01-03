@@ -38,31 +38,32 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     private final List<Sound> soundSequence;
 
-    private final boolean isOwnSoundtrack;
+    private transient final boolean isOwnSoundtrack;
 
     @Nullable
-    private BaseSoundPool soundPool;
+    private transient BaseSoundPool soundPool;
 
-    public SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
+    public SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence) {
+        this(userID, instrument, soundSequence, false);
+    }
+
+    // empty soundtrack (never sent to server)
+    public SingleSoundtrack() {
+        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
+    }
+
+    // own soundtrack object (starts with empty array list)
+    public SingleSoundtrack(int userID, @NonNull String instrument) {
+        this(userID, instrument, new ArrayList<>(), true);
+    }
+
+    // soundtrack from server
+    private SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
         super();
         this.userID = userID;
         this.instrument = instrument;
         this.soundSequence = soundSequence;
         this.isOwnSoundtrack = isOwnSoundtrack;
-    }
-
-    // just used for empty soundtrack, this is never sent to server
-    public SingleSoundtrack() {
-        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
-    }
-
-    // own soundtrack object
-    public SingleSoundtrack(int userID, @NonNull String instrument) {
-        this(userID, instrument, new ArrayList<>(), true);
-    }
-
-    public SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence) {
-        this(userID, instrument, soundSequence, false);
     }
 
     public void loadSounds(@NonNull Context context) {

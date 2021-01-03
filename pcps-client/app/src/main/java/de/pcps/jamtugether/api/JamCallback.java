@@ -13,9 +13,9 @@ public abstract class JamCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        if(response.isSuccessful()) {
+        if (response.isSuccessful()) {
             T body = response.body();
-            if(body == null) {
+            if (body == null) {
                 onError(new GenericError());
             } else {
                 onSuccess(body);

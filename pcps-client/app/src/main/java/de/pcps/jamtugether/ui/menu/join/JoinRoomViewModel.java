@@ -101,8 +101,9 @@ public class JoinRoomViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
+
+                userID = response.getUserID();
                 token = response.getToken();
-                // todo set userID
 
                 navigateToRegularRoom.setValue(true);
             }

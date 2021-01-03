@@ -6,17 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.sound.pool.ShakerSoundPool;
-import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.TimeUtils;
 
 public class Shaker extends Instrument {
 
@@ -49,16 +43,6 @@ public class Shaker extends Instrument {
     @Override
     public boolean soundsNeedToBeResumed() {
         return false;
-    }
-
-    @NonNull
-    @Override
-    public SingleSoundtrack generateSoundtrack(int userID) {
-        List<Sound> soundSequence = new ArrayList<>();
-        for (int j = 0; j < 20; j++) {
-            soundSequence.add(new Sound((int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
-        }
-        return new SingleSoundtrack(userID, getServerString(), soundSequence);
     }
 
     public void play() {
