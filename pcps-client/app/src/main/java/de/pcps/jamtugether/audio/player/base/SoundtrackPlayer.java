@@ -31,7 +31,7 @@ public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
         }
     }
 
-    private void play(@NonNull Soundtrack soundtrack) {
+    public void play(@NonNull Soundtrack soundtrack) {
         SoundtrackPlayingThread thread = getThread(soundtrack);
         if (thread != null) {
             thread.play();

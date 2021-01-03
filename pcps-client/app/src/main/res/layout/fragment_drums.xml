@@ -13,36 +13,36 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <include
             android:id="@+id/own_soundtrack_controls_layout"
             layout="@layout/view_own_soundtrack_controls"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="@dimen/soundtrack_item_margin_start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <de.pcps.jamtugether.ui.room.music.instrument.drums.view.DrumsView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
+            android:paddingBottom="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout">
 
             <ImageButton
                 android:id="@+id/hat_button"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/drums_element_width_default"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_button_border"
+                android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
                 app:element="@{2}"
@@ -51,12 +51,10 @@
 
             <ImageButton
                 android:id="@+id/kick_button"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/drums_element_width_default"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:onClick="@{() -> viewModel.onKickClicked()}"
+                android:background="@drawable/bg_button_border"
+                android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
                 app:element="@{1}"
@@ -65,12 +63,10 @@
 
             <ImageButton
                 android:id="@+id/snare_button"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/drums_element_width_default"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:onClick="@{() -> viewModel.onSnareClicked()}"
+                android:background="@drawable/bg_button_border"
+                android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
                 app:element="@{0}"
@@ -79,19 +75,16 @@
 
             <ImageButton
                 android:id="@+id/cymbal_button"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/drums_element_width_default"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:onClick="@{() -> viewModel.onCymbalClicked()}"
+                android:background="@drawable/bg_button_border"
+                android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
                 app:element="@{3}"
                 app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_cymbal" />
-        </LinearLayout>
+        </de.pcps.jamtugether.ui.room.music.instrument.drums.view.DrumsView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

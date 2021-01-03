@@ -16,7 +16,6 @@ import de.pcps.jamtugether.utils.UiUtils;
 
 public class SoundtrackControlsView extends ConstraintLayout {
 
-    @Nullable
     private Slider volumeSlider;
 
     @NonNull
@@ -37,9 +36,6 @@ public class SoundtrackControlsView extends ConstraintLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
 
-        if(volumeSlider == null) {
-            return;
-        }
         // all values necessary for calculating the available width of the volume slider
         int muteIconWidth = UiUtils.getPixels(getContext(), R.dimen.soundtrack_mute_icon_width);
         int volumeSliderMarginStart = UiUtils.getPixels(getContext(), R.dimen.soundtrack_volume_slider_margin_start);
