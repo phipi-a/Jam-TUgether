@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -71,6 +73,9 @@ public class SoundtrackRepository {
 
             @Override
             public void run() {
+                if(currentToken == null || currentRoomID == -1) {
+                    return;
+                }
                 fetchSoundtracks();
                 handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
@@ -81,14 +86,28 @@ public class SoundtrackRepository {
         getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                allSoundtracks.setValue(response.getSoundtracks());
+                Timber.d("onSuccess()");
+                List<SingleSoundtrack> newSoundtracks = new ArrayList<>();
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    if (soundtrack != null) {
+                        soundtrack.loadSounds(context);
+                        newSoundtracks.add(soundtrack);
+                    }
+                }
+                allSoundtracks.setValue(newSoundtracks);
             }
 
             @Override
             public void onError(@NonNull Error error) {
+                Timber.d("onError()");
                 networkError.setValue(error);
             }
         });
+    }
+
+    public void onUserLeftRoom() {
+        currentToken = null;
+        currentRoomID = -1;
     }
 
     // updates soundtracks locally so the change can be visible immediately
