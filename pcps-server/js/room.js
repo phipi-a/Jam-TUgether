@@ -22,7 +22,6 @@ exports.sendTracks = async function (req, res) {
 exports.deleteTracks = async function (req, res, roomID) {
   const query = { roomID: roomID }
   
-  //Not beautiful but couldnt figure it out otherwise
   const soundTracks = await RoomSchema.find(query, {_id: 0, soundtracks: 1})
   const s = soundTracks[0].soundtracks;
 
@@ -40,5 +39,5 @@ exports.deleteTracks = async function (req, res, roomID) {
 
   await RoomSchema.updateMany(query, updateDocument)
 
-  res.status(200).send('success!')
+  res.status(200).json({ description: 'track deleted'})
 }
