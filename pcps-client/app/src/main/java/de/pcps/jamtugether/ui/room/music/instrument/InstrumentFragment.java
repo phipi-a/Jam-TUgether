@@ -42,7 +42,7 @@ public abstract class InstrumentFragment extends BaseFragment {
 
             musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
-            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID);
+            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID, token);
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
         }
     }

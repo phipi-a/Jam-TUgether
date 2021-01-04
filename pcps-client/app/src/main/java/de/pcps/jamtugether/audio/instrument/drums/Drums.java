@@ -6,19 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.TimeUtils;
 
 public class Drums extends Instrument {
 
@@ -74,19 +67,6 @@ public class Drums extends Instrument {
     @Override
     public boolean soundsNeedToBeResumed() {
         return false;
-    }
-
-    @NonNull
-    @Override
-    public SingleSoundtrack generateSoundtrack(int userID) {
-        Random random = new Random();
-        List<Sound> soundSequence = new ArrayList<>();
-        for (int j = 0; j < 20; j++) {
-            int[] array = {Drums.SNARE_PITCH, Drums.KICK_PITCH, Drums.HAT_PITCH, Drums.CYMBAL_PITCH};
-            int pitch = array[random.nextInt(array.length)];
-            soundSequence.add(new Sound((int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), pitch));
-        }
-        return new SingleSoundtrack(userID, getServerString(), soundSequence);
     }
 
     public void playSnare() {

@@ -23,10 +23,10 @@ public class CompositeSoundtrackViewModel extends ViewModel {
     @NonNull
     private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
-    public CompositeSoundtrackViewModel(int roomID) {
+    public CompositeSoundtrackViewModel(int roomID, @NonNull String token) {
         AppInjector.inject(this);
 
-        soundtrackRepository.fetchSoundtracks(roomID);
+        soundtrackRepository.fetchSoundtracks(roomID, token);
         compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
     }
 
@@ -39,8 +39,12 @@ public class CompositeSoundtrackViewModel extends ViewModel {
 
         private final int roomID;
 
-        public Factory(int roomID) {
+        @NonNull
+        private final String token;
+
+        public Factory(int roomID, @NonNull String token) {
             this.roomID = roomID;
+            this.token = token;
         }
 
         @SuppressWarnings("unchecked")
@@ -48,7 +52,7 @@ public class CompositeSoundtrackViewModel extends ViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(CompositeSoundtrackViewModel.class)) {
-                return (T) new CompositeSoundtrackViewModel(roomID);
+                return (T) new CompositeSoundtrackViewModel(roomID, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

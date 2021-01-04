@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
 
@@ -15,6 +16,9 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     @Inject
     SoundtrackController soundtrackController;
+
+    @Inject
+    SoundtrackRepository soundtrackRepository;
 
     private final int roomID;
 
@@ -47,6 +51,7 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     public void onLeaveRoomConfirmationButtonClicked() {
         navigateBack.setValue(true);
+        soundtrackRepository.onUserLeftRoom();
         onUserLeft();
     }
 

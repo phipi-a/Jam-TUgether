@@ -15,14 +15,15 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
+import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.audio.instrument.drums.Drums;
-import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import retrofit2.Call;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -34,6 +35,7 @@ public class SoundtrackRepository {
     private final Context context;
 
     private int currentRoomID;
+    private String currentToken;
 
     private boolean fetching;
 
@@ -49,8 +51,15 @@ public class SoundtrackRepository {
         this.context = context;
     }
 
-    public void fetchSoundtracks(int currentRoomID) {
+    private void getComposition(@NonNull String token, int roomID, @NonNull JamCallback<Composition> callback) {
+        Call<Composition> call = soundtrackService.getComposition(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
+    }
+
+    public void fetchSoundtracks(int currentRoomID, @NonNull String currentToken) {
         this.currentRoomID = currentRoomID;
+        this.currentToken = currentToken;
+
         fetchSoundtracks();
         if (!fetching) {
             startFetchingSoundtracks();
@@ -64,6 +73,9 @@ public class SoundtrackRepository {
 
             @Override
             public void run() {
+                if(currentToken == null || currentRoomID == -1) {
+                    return;
+                }
                 fetchSoundtracks();
                 handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
@@ -71,19 +83,31 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks() {
-        allSoundtracks.setValue(generateTestSoundtracks());
+        getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
+            @Override
+            public void onSuccess(@NonNull Composition response) {
+                Timber.d("onSuccess()");
+                List<SingleSoundtrack> newSoundtracks = new ArrayList<>();
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    if (soundtrack != null) {
+                        soundtrack.loadSounds(context);
+                        newSoundtracks.add(soundtrack);
+                    }
+                }
+                allSoundtracks.setValue(newSoundtracks);
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                Timber.d("onError()");
+                networkError.setValue(error);
+            }
+        });
     }
 
-    @NonNull
-    private List<SingleSoundtrack> generateTestSoundtracks() {
-        List<SingleSoundtrack> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Instrument instrument = Instruments.ARRAY[i % 3];
-            SingleSoundtrack singleSoundtrack = instrument.generateSoundtrack(i);
-            singleSoundtrack.loadSounds(context);
-            list.add(singleSoundtrack);
-        }
-        return list;
+    public void onUserLeftRoom() {
+        currentToken = null;
+        currentRoomID = -1;
     }
 
     // updates soundtracks locally so the change can be visible immediately
