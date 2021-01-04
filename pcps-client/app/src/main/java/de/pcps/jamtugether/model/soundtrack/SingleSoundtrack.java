@@ -49,7 +49,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     // empty soundtrack (never sent to server)
     public SingleSoundtrack() {
-        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
+        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>());
     }
 
     // own soundtrack object (starts with empty array list)

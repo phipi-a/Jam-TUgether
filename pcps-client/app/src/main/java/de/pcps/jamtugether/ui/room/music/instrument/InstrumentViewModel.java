@@ -10,11 +10,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
@@ -159,9 +163,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             return;
         }
         SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
-        soundtrackRepository.uploadSoundtrack(token, roomID, toBePublished, new JamCallback<String>() {
+        List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
+        soundtrackRepository.uploadSoundtracks(token, roomID, soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
-            public void onSuccess(@NonNull String response) {
+            public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 Timber.d("onSuccess() | %s", response);
             }
 

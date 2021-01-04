@@ -23,7 +23,6 @@ import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
@@ -56,12 +55,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final String token;
 
     @NonNull
-    private final UserStatusChangeCallback userStatusChangeCallback;
-
-    @NonNull
-    private final MutableLiveData<Boolean> userIsAdmin;
-
-    @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     @NonNull
@@ -79,13 +72,11 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean userIsAdmin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.password = password;
         this.token = token;
-        this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
-        this.userStatusChangeCallback = userStatusChangeCallback;
     }
 
     public void onNewSoundtracks(@NonNull List<SingleSoundtrack> newSoundtracks) {
@@ -214,11 +205,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Boolean> getUserIsAdmin() {
-        return userIsAdmin;
-    }
-
-    @NonNull
     public LiveData<Boolean> getShowSoundtrackDeletionConfirmDialog() {
         return showSoundtrackDeletionConfirmDialog;
     }
@@ -258,17 +244,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         @NonNull
         private final String token;
 
-        private final boolean admin;
-
-        @NonNull
-        private final UserStatusChangeCallback userStatusChangeCallback;
-
-        public Factory(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+        public Factory(int roomID, @NonNull String password, @NonNull String token) {
             this.roomID = roomID;
             this.password = password;
             this.token = token;
-            this.admin = admin;
-            this.userStatusChangeCallback = userStatusChangeCallback;
         }
 
         @SuppressWarnings("unchecked")
@@ -276,7 +255,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(SoundtrackOverviewViewModel.class)) {
-                return (T) new SoundtrackOverviewViewModel(roomID, password, token, admin, userStatusChangeCallback);
+                return (T) new SoundtrackOverviewViewModel(roomID, password, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

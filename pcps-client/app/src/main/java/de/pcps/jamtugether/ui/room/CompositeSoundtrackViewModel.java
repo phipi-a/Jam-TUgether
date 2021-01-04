@@ -26,7 +26,7 @@ public class CompositeSoundtrackViewModel extends ViewModel {
     public CompositeSoundtrackViewModel(int roomID, @NonNull String token) {
         AppInjector.inject(this);
 
-        soundtrackRepository.fetchSoundtracks(roomID, token);
+        soundtrackRepository.fetchSoundtracks(roomID, token, false);
         compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
     }
 

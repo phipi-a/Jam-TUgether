@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +18,9 @@ import javax.inject.Singleton;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
+import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
+import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -34,15 +38,22 @@ public class SoundtrackRepository {
 
     private int currentRoomID;
 
+    @Nullable
     private String currentToken;
 
-    private boolean fetching;
+    @NonNull
+    private final Handler handler = new Handler();
+
+    @Nullable
+    private Runnable soundtrackFetchingRunnable;
 
     @NonNull
     private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+
+    private boolean networkErrorOfCurrentRoomShown;
 
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull Context context) {
@@ -55,51 +66,76 @@ public class SoundtrackRepository {
         call.enqueue(callback);
     }
 
-    public void uploadSoundtrack(@NonNull String token, int roomID, @NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<String> callback) {
-        Call<String> call = soundtrackService.uploadSoundtrack(token, roomID, soundtrack);
+    public void uploadSoundtracks(@NonNull String token, int roomID, @NonNull List<SingleSoundtrack> soundtracks, @NonNull JamCallback<UploadSoundtracksResponse> callback) {
+        UploadSoundtracksBody body = new UploadSoundtracksBody(soundtracks);
+        Call<UploadSoundtracksResponse> call = soundtrackService.uploadSoundtracks(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
         call.enqueue(callback);
     }
 
-    public void fetchSoundtracks(int currentRoomID, @NonNull String currentToken) {
+    public void fetchSoundtracks(int currentRoomID, @NonNull String currentToken, boolean requestedFromUser) {
         this.currentRoomID = currentRoomID;
         this.currentToken = currentToken;
 
-        fetchSoundtracks();
-        if (!fetching) {
-            startFetchingSoundtracks();
-            fetching = true;
+        fetchSoundtracks(requestedFromUser);
+
+        if (!requestedFromUser) {
+            if (soundtrackFetchingRunnable == null) {
+                startFetchingSoundtracks();
+            }
         }
     }
 
     private void startFetchingSoundtracks() {
-        Handler handler = new Handler();
-        new Runnable() {
+        soundtrackFetchingRunnable = new Runnable() {
 
             @Override
             public void run() {
-                fetchSoundtracks();
+                if (currentToken == null || currentRoomID == -1) {
+                    return;
+                }
+                fetchSoundtracks(false);
                 handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
-        }.run();
+        };
+        soundtrackFetchingRunnable.run();
     }
 
-    private void fetchSoundtracks() {
+    private void fetchSoundtracks(boolean requestedFromUser) {
         getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                allSoundtracks.setValue(response.getSoundtracks());
+                List<SingleSoundtrack> newSoundtracks = new ArrayList<>();
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    if (soundtrack != null) {
+                        soundtrack.loadSounds(context);
+                        newSoundtracks.add(soundtrack);
+                        Timber.d("soundtrack: %s", soundtrack.toString());
+                    }
+                }
+                allSoundtracks.setValue(newSoundtracks);
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                Timber.d("error: %s", error.getMessage());
-                // todo only show message fetching was requested or if tracks are being fetched for first time
-                //networkError.setValue(error);
+                if (!networkErrorOfCurrentRoomShown || requestedFromUser) {
+                    networkError.setValue(error);
+                    networkErrorOfCurrentRoomShown = true;
+                }
             }
         });
     }
 
-    // updates soundtracks locally so the change can be visible immediately
+    public void onUserLeftRoom() {
+        if (soundtrackFetchingRunnable != null) {
+            handler.removeCallbacks(soundtrackFetchingRunnable);
+            soundtrackFetchingRunnable = null;
+        }
+        currentToken = null;
+        currentRoomID = -1;
+        networkErrorOfCurrentRoomShown = false;
+    }
+
+    // updates soundtracks locally so that the change can be visible immediately
     public void updateAllSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
     }
