@@ -11,7 +11,7 @@ exports.receiveTrack = async function (req, res, roomID) {
     }
   }
   await RoomSchema.updateMany(query, updateDocument)
-  res.send('success!')
+  res.status(200).json({ description: 'success!' })
 }
 
 exports.sendTracks = async function (req, res, room) {
