@@ -14,7 +14,6 @@ exports.receiveTrack = async function (req, res, roomID) {
   res.send('success!')
 }
 
-exports.sendTracks = async function (req, res) {
-  const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
-  res.status(200).json({ roomID: req.body.roomID, soundtracks: room.soundtracks })
+exports.sendTracks = async function (req, res, room) {
+  res.status(200).json({ roomID: room.roomID, soundtracks: room.soundtracks })
 }
