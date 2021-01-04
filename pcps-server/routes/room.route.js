@@ -54,6 +54,8 @@ async function updateRoom (roomID) {
  *     responses:
  *       201:
  *         description: roomID + JWToken
+ *       503:
+ *         description: Limit for number of rooms reached
  *       500:
  *         description: Failure
  */
