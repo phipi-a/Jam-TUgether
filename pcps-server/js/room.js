@@ -31,7 +31,6 @@ exports.deleteTracks = async function (req, res, roomID) {
       element.soundSequence = []
     }
   });
-  //console.log(s)
 
   const updateDocument = {
     $set: {
@@ -41,5 +40,5 @@ exports.deleteTracks = async function (req, res, roomID) {
 
   await RoomSchema.updateMany(query, updateDocument)
 
-  res.send('success')
+  res.status(200).send('success!')
 }

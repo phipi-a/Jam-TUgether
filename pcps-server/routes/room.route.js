@@ -281,7 +281,26 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
   }
 })
 
-roomRoute.delete('/room/:id', verify, async (req, res) => {
+/**
+ * @openapi
+ * /api/room/:id:
+ *   delete:
+ *     summary: Returns success if specified track has been deleted
+ *     description: Deletes specified track
+ *     parameters:
+ *       - roomID: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: success
+ *       500:
+ *         description: Failure
+ */
+roomRoute.delete('/room/:id', verify, verifyAdmin,  async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(500).send('Room does not exist!')
