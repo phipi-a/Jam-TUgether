@@ -48,11 +48,15 @@ public class SoundtrackRepository {
     private Runnable soundtrackFetchingRunnable;
 
     @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(new ArrayList<>());
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showCompositionIsLoading = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
+
+    private boolean loadingCompositionOfCurrentRoomShown;
     private boolean networkErrorOfCurrentRoomShown;
 
     @Inject
@@ -101,9 +105,14 @@ public class SoundtrackRepository {
     }
 
     private void fetchSoundtracks(boolean requestedFromUser) {
+        if(!loadingCompositionOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
+            showCompositionIsLoading.setValue(true);
+            loadingCompositionOfCurrentRoomShown = true;
+        }
         getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
+                showCompositionIsLoading.setValue(false);
                 List<SingleSoundtrack> newSoundtracks = new ArrayList<>();
                 for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
                     if (soundtrack != null) {
@@ -117,8 +126,9 @@ public class SoundtrackRepository {
 
             @Override
             public void onError(@NonNull Error error) {
-                if (!networkErrorOfCurrentRoomShown || requestedFromUser) {
-                    networkError.setValue(error);
+                showCompositionIsLoading.setValue(false);
+                if (!networkErrorOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
+                    compositionNetworkError.setValue(error);
                     networkErrorOfCurrentRoomShown = true;
                 }
             }
@@ -132,6 +142,7 @@ public class SoundtrackRepository {
         }
         currentToken = null;
         currentRoomID = -1;
+        loadingCompositionOfCurrentRoomShown = false;
         networkErrorOfCurrentRoomShown = false;
     }
 
@@ -140,8 +151,8 @@ public class SoundtrackRepository {
         allSoundtracks.setValue(soundtracks);
     }
 
-    public void onNetworkErrorShown() {
-        networkError.setValue(null);
+    public void onCompositionNetworkErrorShown() {
+        compositionNetworkError.setValue(null);
     }
 
     @NonNull
@@ -155,7 +166,12 @@ public class SoundtrackRepository {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Boolean> getShowCompositionIsLoading() {
+        return showCompositionIsLoading;
+    }
+
+    @NonNull
+    public LiveData<Error> getCompositionNetworkError() {
+        return compositionNetworkError;
     }
 }

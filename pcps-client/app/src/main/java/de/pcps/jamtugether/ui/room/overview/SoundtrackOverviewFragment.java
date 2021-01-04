@@ -28,9 +28,12 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class SoundtrackOverviewFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
+    private static final String USER_KEY = "user_key";
     private static final String PASSWORD_KEY = "password_key";
     private static final String TOKEN_KEY = "token_key";
     private static final String ADMIN_KEY = "admin_key";
+
+    private int userID;
 
     private RoomViewModel roomViewModel;
 
@@ -39,11 +42,12 @@ public class SoundtrackOverviewFragment extends BaseFragment {
     private SoundtrackOverviewViewModel soundtrackOverviewViewModel;
 
     @NonNull
-    public static SoundtrackOverviewFragment newInstance(int roomID, @NonNull String password, @NonNull String token, boolean admin) {
+    public static SoundtrackOverviewFragment newInstance(int roomID, int userID, @NonNull String password, @NonNull String token, boolean admin) {
         SoundtrackOverviewFragment fragment = new SoundtrackOverviewFragment();
         Bundle args = new Bundle();
 
         args.putInt(ROOM_ID_KEY, roomID);
+        args.putInt(USER_KEY, userID);
         args.putString(PASSWORD_KEY, password);
         args.putString(TOKEN_KEY, token);
         args.putBoolean(ADMIN_KEY, admin);
@@ -57,6 +61,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
+            userID = getArguments().getInt(USER_KEY);
             String password = getArguments().getString(PASSWORD_KEY);
             String token = getArguments().getString(TOKEN_KEY);
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
@@ -96,7 +101,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             } else {
-                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
+                RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(userID, soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), soundtrackOverviewViewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
             }
