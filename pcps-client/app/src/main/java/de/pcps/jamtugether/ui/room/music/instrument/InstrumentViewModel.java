@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -116,6 +118,9 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     private final MutableLiveData<Boolean> uploadPossible = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
+
+    @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
 
     private boolean playWithCompositeSoundtrack;
@@ -162,16 +167,28 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if (ownSoundtrack == null) {
             return;
         }
+
+        uploadPossible.setValue(false);
+
         SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
+
+        // add to local list
+        List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
+        allSoundtracks.add(toBePublished);
+        soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+
+        progressBarVisibility.setValue(View.VISIBLE);
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
         soundtrackRepository.uploadSoundtracks(token, roomID, soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
+                progressBarVisibility.setValue(View.INVISIBLE);
                 Timber.d("onSuccess() | %s", response);
             }
 
             @Override
             public void onError(@NonNull Error error) {
+                progressBarVisibility.setValue(View.INVISIBLE);
                 networkError.setValue(error);
             }
         });
@@ -224,6 +241,11 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @NonNull
     public LiveData<Boolean> getUploadPossible() {
         return uploadPossible;
+    }
+
+    @NonNull
+    public LiveData<Integer> getProgressBarVisibility() {
+        return progressBarVisibility;
     }
 
     @NonNull

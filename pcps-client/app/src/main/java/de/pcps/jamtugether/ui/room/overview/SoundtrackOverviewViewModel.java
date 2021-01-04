@@ -1,11 +1,14 @@
 package de.pcps.jamtugether.ui.room.overview;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -175,7 +178,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onSoundtrackRepositoryNetworkErrorShown() {
-        soundtrackRepository.onNetworkErrorShown();
+        soundtrackRepository.onCompositionNetworkErrorShown();
     }
 
     public void onNetworkErrorShown() {
@@ -225,8 +228,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
+    public LiveData<Integer> getProgressBarVisibility() {
+        return Transformations.map(soundtrackRepository.getShowCompositionIsLoading(), showLoading -> showLoading ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @NonNull
     public LiveData<Error> getSoundtrackRepositoryNetworkError() {
-        return soundtrackRepository.getNetworkError();
+        return soundtrackRepository.getCompositionNetworkError();
     }
 
     @NonNull

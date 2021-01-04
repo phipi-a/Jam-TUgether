@@ -98,7 +98,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     }
 
     public void onSoundtrackRepositoryNetworkErrorShown() {
-        soundtrackRepository.onNetworkErrorShown();
+        soundtrackRepository.onCompositionNetworkErrorShown();
     }
 
     @NonNull
@@ -142,7 +142,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
 
     @NonNull
     public LiveData<Error> getSoundtrackRepositoryNetworkError() {
-        return soundtrackRepository.getNetworkError();
+        return soundtrackRepository.getCompositionNetworkError();
     }
 
     static class Factory implements ViewModelProvider.Factory {

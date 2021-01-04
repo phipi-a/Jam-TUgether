@@ -95,7 +95,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, userID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
             }
 
             @Override
