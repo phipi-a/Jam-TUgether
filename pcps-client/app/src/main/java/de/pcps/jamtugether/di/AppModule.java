@@ -58,7 +58,7 @@ public class AppModule {
 
         return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create().asLenient()) // todo remove after response of soundtrack is fixed
                 .client(client)
                 .build();
     }

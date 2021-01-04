@@ -33,8 +33,8 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     @NonNull
     private final MutableLiveData<Float> shakeIntensity = new MutableLiveData<>(0f);
 
-    public ShakerViewModel(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(shaker, userID, callback);
+    public ShakerViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(shaker, roomID, userID, token, callback);
         this.vibrator = (Vibrator) application.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -106,13 +106,19 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
 
     static class Factory implements ViewModelProvider.Factory {
 
+        private final int roomID;
         private final int userID;
+
+        @NonNull
+        private final String token;
 
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+            this.roomID = roomID;
             this.userID = userID;
+            this.token = token;
             this.callback = callback;
         }
 
@@ -121,7 +127,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ShakerViewModel.class)) {
-                return (T) new ShakerViewModel(userID, callback);
+                return (T) new ShakerViewModel(roomID, userID, token, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

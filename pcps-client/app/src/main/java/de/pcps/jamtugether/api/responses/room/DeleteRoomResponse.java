@@ -2,17 +2,11 @@ package de.pcps.jamtugether.api.responses.room;
 
 import androidx.annotation.NonNull;
 
-public class DeleteRoomResponse {
+import de.pcps.jamtugether.api.responses.base.SimpleResponse;
 
-    @NonNull
-    private final String description;
+public class DeleteRoomResponse extends SimpleResponse {
 
     public DeleteRoomResponse(@NonNull String description) {
-        this.description = description;
-    }
-
-    @NonNull
-    public String getDescription() {
-        return description;
+        super(description);
     }
 }

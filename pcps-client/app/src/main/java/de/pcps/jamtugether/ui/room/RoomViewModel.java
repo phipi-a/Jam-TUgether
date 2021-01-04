@@ -8,21 +8,26 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
 
-public class RoomViewModel extends ViewModel implements UserStatusChangeCallback {
+public class RoomViewModel extends ViewModel {
 
     @Inject
     SoundtrackController soundtrackController;
+
+    @Inject
+    RoomRepository roomRepository;
 
     @Inject
     SoundtrackRepository soundtrackRepository;
 
     private final int roomID;
 
-    private boolean userIsAdmin;
+    @NonNull
+    private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
 
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
@@ -32,17 +37,13 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     public RoomViewModel(int roomID, boolean userIsAdmin) {
         AppInjector.inject(this);
+        // todo start fetching admin info
         this.roomID = roomID;
-        this.userIsAdmin = userIsAdmin;
+        this.userIsAdmin.setValue(userIsAdmin);
     }
 
     public void handleBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
-    }
-
-    @Override
-    public void onUserStatusChanged(boolean admin) {
-        this.userIsAdmin = admin;
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -57,12 +58,22 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        // todo tell sever
-        //  add admin info
+        if(userIsAdmin.getValue()) {
+           onAdminLeft();
+        }
+    }
+
+    private void onAdminLeft() {
+        // todo tell server
     }
 
     public void onNavigatedBack() {
         this.navigateBack.setValue(false);
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUserIsAdmin() {
+        return userIsAdmin;
     }
 
     @NonNull
