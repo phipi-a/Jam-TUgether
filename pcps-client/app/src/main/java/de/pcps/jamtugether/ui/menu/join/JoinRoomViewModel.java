@@ -114,15 +114,17 @@ public class JoinRoomViewModel extends ViewModel {
 
                 Context context = application.getApplicationContext();
 
+                String roomOrPasswordInvalidMessage = context.getString(R.string.room_or_password_invalid_message);
+
                 if (error instanceof UnauthorizedAccessError) {
-                    roomInputError.setValue(context.getString(error.getMessage()));
-                    passwordInputError.setValue(context.getString(error.getMessage()));
+                    roomInputError.setValue(roomOrPasswordInvalidMessage);
+                    passwordInputError.setValue(roomOrPasswordInvalidMessage);
                     return;
                 }
 
                 if (error instanceof PasswordTooLargeError) {
-                    roomInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
-                    passwordInputError.setValue(context.getString(R.string.unauthorized_access_error_message));
+                    roomInputError.setValue(roomOrPasswordInvalidMessage);
+                    passwordInputError.setValue(roomOrPasswordInvalidMessage);
                     return;
                 }
                 roomInputError.setValue(null);
