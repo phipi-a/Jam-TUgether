@@ -30,7 +30,6 @@ exports.createToken = async function (permission, roomID) {
 
 function decodeToken (token) {
   const decoded = jwt.decode(token, { json: true })
-  console.log(decoded)
   return decoded
 }
 
@@ -48,7 +47,7 @@ exports.verifyAdmin = async function (req, res, next) {
   if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
     const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
-    return res.status(408).send('Old Admin new Token: ' + token)
+    return res.status(408).send('Old Admin, new Token: ' + token)
   }
   next()
 }
@@ -68,4 +67,11 @@ exports.verify = function (req, res, next) {
     req.id = id
     next()
   })
+}
+exports.whoAmI = async function (req, res, room) {
+  const decoded = decodeToken(getToken(req, res))
+  if (decoded.rndmPayload === room.adminBytes) {
+    return 'Admin'
+  }
+  return 'Not Admin'
 }
