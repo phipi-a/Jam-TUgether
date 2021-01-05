@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 const RoomSchema = require('../model/room.model')
 const { exists } = require('../model/room.model')
-const {createToken} = require('./auth.js')
+const { createToken } = require('./auth.js')
 
 // simple push of DB array
 exports.receiveTrack = async function (req, res, roomID) {
