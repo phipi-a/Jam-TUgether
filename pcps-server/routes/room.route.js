@@ -1,7 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify, verifyAdmin, PwErr, whoAmI } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
 const { receiveTrack, sendTracks } = require('../js/room.js')
 const { fillRoom} = require('../js/prepareRoom.js')
@@ -29,7 +29,12 @@ async function createRoom (roomID, password, object) {
 // Update "updated" to current time
 async function updateRoom (roomID) {
   const newDate = new Date(Date.now())
-  const room = RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
+  await RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
+}
+// Update "lastAccessAdmin" to current time
+async function updateAdminAccess (roomID) {
+  const newDate = new Date(Date.now())
+  await RoomSchema.updateOne({ roomID: roomID }, { lastAccessAdmin: newDate }).exec()
 }
 
 /**
@@ -280,34 +285,40 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
     receiveTrack(req, res, req.params.id)
   }
 })
-
 /**
  * @openapi
- * /api/test:
+ * /api/room/:id/admin:
  *   post:
- *     summary:
- *      Test request, simulates posting.
+ *     summary: Returns success if saved sent track
+ *     description: Saves incoming tracks
  *     parameters:
- *       - in: body
- *         name: test
- *         description: Send a Test Post.
+ *       - roomID: id
+ *         in: path
+ *         required: true
  *         schema:
- *           type: object
- *           required:
- *             - JWToken in header field 'Authorization'
+ *           type: integer
+ *           minimum: 1
  *     responses:
  *       200:
- *         description: 'test'
- *       403:
- *         description: Forbidden (invalid token)
+ *         description: {description: Not Admin}
+ *       202:
+ *         description: {description: Admin}
+ *       500:
+ *         description: Failure
  */
-roomRoute.post('/test', verify, async (req, res) => {
-  receiveTrack(req, res)
-})
-
-roomRoute.post('/test2', async (req, res) => {
-  updateRoom(req.body.roomID)
-  res.status(200).send('test2')
+roomRoute.get('/room/:id/admin', verify, async (req, res) => {
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  if (room == null) {
+    res.status(500).send('Room does not exist!')
+  }
+  await updateRoom(room.roomID)
+  const priviliges = await whoAmI(req, res, room)
+  if (priviliges.description === 'Admin') {
+    await updateAdminAccess(room.roomID)
+    res.status(202).send(priviliges)
+  } else {
+    res.status(200).send(priviliges)
+  }
 })
 
 module.exports = roomRoute

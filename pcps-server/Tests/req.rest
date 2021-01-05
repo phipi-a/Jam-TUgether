@@ -23,9 +23,9 @@ Content-Type: application/json
 }
 
 ###
-POST  http://localhost:3000/api/room/7
+GET  http://localhost:3000/api/room/1/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImQ0ZjU3MDIyNDhiYzdkODhkYjUyIiwicm9vbSI6Niwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzM2NzcyLCJleHAiOjE2MDk3Mzg1NzJ9.zw5kfrnhDmVxmyRZ8lQmfjWbs2TnRgh_KMrh_qrRfq8 '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQ5NTFlMTA5NmEwMTJmZWQ4MTkyIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5ODM2NDYyLCJleHAiOjE2MDk4MzgyNjJ9.fh0NZMfpyxDv-2_zoWHFppxNV2ZkCTSYMTIS_A_QpxQ '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "retinstrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]

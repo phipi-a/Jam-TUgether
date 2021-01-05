@@ -30,7 +30,6 @@ exports.createToken = async function (permission, roomID) {
 
 function decodeToken (token) {
   const decoded = jwt.decode(token, { json: true })
-  console.log(decoded)
   return decoded
 }
 
@@ -68,4 +67,11 @@ exports.verify = function (req, res, next) {
     req.id = id
     next()
   })
+}
+exports.whoAmI = async function (req, res, room) {
+  const decoded = decodeToken(getToken(req, res))
+  if (decoded.rndmPayload === room.adminBytes) {
+    return { description: 'Admin' }
+  }
+  return { description: 'Not Admin' }
 }
