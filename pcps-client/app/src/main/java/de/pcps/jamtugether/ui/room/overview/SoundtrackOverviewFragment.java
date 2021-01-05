@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
@@ -24,6 +25,7 @@ import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
+import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -72,7 +74,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
 
             roomViewModel = new ViewModelProvider(roomFragment, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
-            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID, token)).get(CompositeSoundtrackViewModel.class);
+            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID, userID, token)).get(CompositeSoundtrackViewModel.class);
 
             SoundtrackOverviewViewModel.Factory soundtrackOverviewViewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token);
             soundtrackOverviewViewModel = new ViewModelProvider(this, soundtrackOverviewViewModelFactory).get(SoundtrackOverviewViewModel.class);
@@ -138,7 +140,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         soundtrackOverviewViewModel.getNavigateBack().observe(getViewLifecycleOwner(), leaveRoom -> {
             if (leaveRoom) {
                 NavigationUtils.navigateBack(NavHostFragment.findNavController(this));
-                soundtrackOverviewViewModel.onRoomDeleted();
+                soundtrackOverviewViewModel.onNavigatedBack();
             }
         });
 

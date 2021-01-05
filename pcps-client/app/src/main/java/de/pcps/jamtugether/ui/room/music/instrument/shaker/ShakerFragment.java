@@ -37,7 +37,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, token, musicianViewViewModel);
+            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
 
@@ -77,8 +77,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onResume() {
         super.onResume();
         if (accelerometerSensor != null) {
-            mSensorManager.registerListener(shakerViewModel, accelerometerSensor,
-                    SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(shakerViewModel, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         }
     }
 }

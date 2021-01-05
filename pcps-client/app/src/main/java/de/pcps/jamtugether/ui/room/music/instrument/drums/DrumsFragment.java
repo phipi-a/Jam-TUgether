@@ -29,7 +29,7 @@ public class DrumsFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, token, musicianViewViewModel);
+            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
         }
