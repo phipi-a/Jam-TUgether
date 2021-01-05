@@ -15,6 +15,9 @@ const roomRoute = express.Router()
 const RoomSchema = require('../model/room.model')
 const { exists } = require('../model/room.model')
 
+// New errors
+const ROOM_LIMIT_ERROR = new Error('Limit for number of rooms is reached!')
+
 // Create room function
 async function createRoom (roomID, password, object) {
   await RoomSchema.create(fillRoom(roomID, password), (error, data, next) => {
@@ -53,6 +56,8 @@ async function updateRoom (roomID) {
  *     responses:
  *       201:
  *         description: roomID + JWToken
+ *       503:
+ *         description: Limit for number of rooms reached
  *       500:
  *         description: Failure
  */
@@ -61,7 +66,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
     // Check if the number of rooms is below limit (limit: 10)
     const numberOfRooms = await RoomSchema.countDocuments().exec()
     if ((Number(numberOfRooms) + 1) > 10) {
-      throw new Error('Limit for number of rooms is reached')
+      throw ROOM_LIMIT_ERROR
     }
 
     // Check password, limit to n characters
@@ -101,6 +106,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
   } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
+    } else if (err === ROOM_LIMIT_ERROR) {
+      res.status(503).send('Limit for number of rooms is reached.')
     } else {
       console.log(err)
       res.status(500).send('Couldn\'t create room.')
