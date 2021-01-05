@@ -40,7 +40,9 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
 
+    @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
 
@@ -48,7 +50,6 @@ public class RoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
     public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
-        Timber.d("token: %s", token);
         AppInjector.inject(this);
         // todo start fetching admin info
         this.roomID = roomID;

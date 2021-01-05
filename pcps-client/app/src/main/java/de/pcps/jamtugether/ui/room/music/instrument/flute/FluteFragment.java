@@ -12,9 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
-import timber.log.Timber;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteFragment extends InstrumentFragment {
 
@@ -71,8 +72,7 @@ public class FluteFragment extends InstrumentFragment {
                 FluteViewModel fluteViewModel = (FluteViewModel) instrumentViewModel;
                 fluteViewModel.startRecording();
             } else {
-                //TODO:Add Error Message
-                Timber.e("onRequestPermissionsResult: No microphone permission");
+                UiUtils.showInfoDialog(context, R.string.no_permission_microphone_error_title, R.string.no_permission_microphone_error_message);
             }
         }
     }
