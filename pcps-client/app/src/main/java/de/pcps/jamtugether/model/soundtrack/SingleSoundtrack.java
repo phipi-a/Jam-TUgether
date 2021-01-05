@@ -46,6 +46,7 @@ public class SingleSoundtrack extends Soundtrack {
     @Nullable
     private transient BaseSoundPool soundPool;
 
+    // soundtrack from server
     public SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence) {
         this(userID, instrument, number, soundSequence, false);
     }
@@ -60,7 +61,6 @@ public class SingleSoundtrack extends Soundtrack {
         this(userID, instrument, number, new ArrayList<>(), true);
     }
 
-    // soundtrack from server
     private SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
         super();
         this.userID = userID;
