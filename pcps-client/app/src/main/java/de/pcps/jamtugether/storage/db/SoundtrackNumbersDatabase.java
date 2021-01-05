@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.utils.providers;
+package de.pcps.jamtugether.storage.db;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +15,7 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 @Singleton
-public class SoundtrackNumberProvider {
+public class SoundtrackNumbersDatabase {
 
     @NonNull
     private final List<Integer> usedNumbersForFlute = new ArrayList<>();
@@ -27,7 +27,7 @@ public class SoundtrackNumberProvider {
     private final List<Integer> usedNumbersForShaker = new ArrayList<>();
 
     @Inject
-    public SoundtrackNumberProvider() { }
+    public SoundtrackNumbersDatabase() { }
 
     @NonNull
     private List<Integer> getListFrom(@NonNull Instrument instrument) {
@@ -47,7 +47,7 @@ public class SoundtrackNumberProvider {
         getListFrom(soundtrack.getInstrument()).remove(Integer.valueOf(soundtrack.getNumber()));
     }
 
-    public int getFreeNumberFor(@NonNull Instrument instrument) {
+    public int getUnusedNumberFor(@NonNull Instrument instrument) {
         List<Integer> usedNumbers = getListFrom(instrument);
         int number = 1;
         Collections.sort(usedNumbers);

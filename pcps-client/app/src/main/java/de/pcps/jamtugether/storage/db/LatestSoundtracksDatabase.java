@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.utils.providers;
+package de.pcps.jamtugether.storage.db;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,45 +12,45 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 @Singleton
-public class OwnLatestSoundtrackProvider {
+public class LatestSoundtracksDatabase {
 
     @Nullable
-    private SingleSoundtrack ownLatestFluteSoundtrack;
+    private SingleSoundtrack latestFluteSoundtrack;
 
     @Nullable
-    private SingleSoundtrack ownLatestDrumsSoundtrack;
+    private SingleSoundtrack latestDrumsSoundtrack;
 
     @Nullable
-    private SingleSoundtrack ownLatestShakerSoundtrack;
+    private SingleSoundtrack latestShakerSoundtrack;
 
     @Inject
-    public OwnLatestSoundtrackProvider() { }
+    public LatestSoundtracksDatabase() { }
 
     public void onUserLeftRoom() {
-        ownLatestShakerSoundtrack = null;
-        ownLatestDrumsSoundtrack = null;
-        ownLatestShakerSoundtrack = null;
+        latestShakerSoundtrack = null;
+        latestDrumsSoundtrack = null;
+        latestShakerSoundtrack = null;
     }
 
     public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
         Instrument instrument = ownSoundtrack.getInstrument();
         if(instrument == Flute.getInstance()) {
-            ownLatestFluteSoundtrack = ownSoundtrack;
+            latestFluteSoundtrack = ownSoundtrack;
         } else if(instrument == Drums.getInstance()) {
-            ownLatestDrumsSoundtrack = ownSoundtrack;
+            latestDrumsSoundtrack = ownSoundtrack;
         } else {
-            ownLatestShakerSoundtrack = ownSoundtrack;
+            latestShakerSoundtrack = ownSoundtrack;
         }
     }
 
     @Nullable
-    public SingleSoundtrack getOwnLatestSoundtrack(@NonNull Instrument instrument) {
+    public SingleSoundtrack getLatestSoundtrack(@NonNull Instrument instrument) {
         if(instrument == Flute.getInstance()) {
-            return ownLatestFluteSoundtrack;
+            return latestFluteSoundtrack;
         } else if(instrument == Drums.getInstance()) {
-            return ownLatestDrumsSoundtrack;
+            return latestDrumsSoundtrack;
         } else {
-            return ownLatestShakerSoundtrack;
+            return latestShakerSoundtrack;
         }
     }
 }

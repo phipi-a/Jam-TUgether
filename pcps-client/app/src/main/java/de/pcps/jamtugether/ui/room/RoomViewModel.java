@@ -15,7 +15,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import timber.log.Timber;
 
 public class RoomViewModel extends ViewModel {
@@ -30,7 +30,7 @@ public class RoomViewModel extends ViewModel {
     SoundtrackRepository soundtrackRepository;
 
     @Inject
-    SoundtrackNumberProvider soundtrackNumberProvider;
+    SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     private final int roomID;
 
@@ -72,7 +72,7 @@ public class RoomViewModel extends ViewModel {
         if (userIsAdmin.getValue()) {
             onAdminLeft();
         }
-        soundtrackNumberProvider.onUserLeftRoom();
+        soundtrackNumbersDatabase.onUserLeftRoom();
     }
 
     private void onAdminLeft() {

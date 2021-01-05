@@ -27,8 +27,8 @@ import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.providers.OwnLatestSoundtrackProvider;
-import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
+import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
 import de.pcps.jamtugether.timer.JamTimer;
@@ -51,10 +51,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     protected SingleSoundtrackPlayer singleSoundtrackPlayer;
 
     @Inject
-    protected SoundtrackNumberProvider soundtrackNumberProvider;
+    protected SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @Inject
-    protected OwnLatestSoundtrackProvider ownLatestSoundtrackProvider;
+    protected LatestSoundtracksDatabase latestSoundtracksDatabase;
 
     @NonNull
     private final Instrument instrument;
@@ -141,7 +141,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         this.userID = userID;
         this.token = token;
         this.callback = callback;
-        this.ownSoundtrack = ownLatestSoundtrackProvider.getOwnLatestSoundtrack(instrument);
+        this.ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
         }
@@ -167,7 +167,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         } else {
             timerMillis.setValue(-1L);
 
-            int soundtrackNumber = soundtrackNumberProvider.getFreeNumberFor(instrument);
+            int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
 
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
             ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString(), soundtrackNumber);
@@ -183,8 +183,6 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             return;
         }
 
-        uploadPossible.setValue(false);
-
         SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         // add to local list
@@ -193,17 +191,21 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         soundtrackRepository.updateAllSoundtracks(allSoundtracks);
 
         progressBarVisibility.setValue(View.VISIBLE);
+        uploadPossible.setValue(false);
+
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
         soundtrackRepository.uploadSoundtracks(token, roomID, soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
-                soundtrackNumberProvider.onSoundtrackCreated(toBePublished);
+                soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
             }
 
             @Override
             public void onError(@NonNull Error error) {
                 progressBarVisibility.setValue(View.INVISIBLE);
+                uploadPossible.setValue(true);
+
                 networkError.setValue(error);
             }
         });
@@ -214,7 +216,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
-            ownLatestSoundtrackProvider.onOwnSoundtrackUpdated(ownSoundtrack);
+            latestSoundtracksDatabase.onOwnSoundtrackUpdated(ownSoundtrack);
             this.uploadPossible.setValue(true);
         }
         startedSoundtrackCreation.setValue(false);

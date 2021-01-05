@@ -24,7 +24,7 @@ import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import retrofit2.Call;
 
 @Singleton
@@ -34,7 +34,7 @@ public class SoundtrackRepository {
     private final SoundtrackService soundtrackService;
 
     @NonNull
-    private final SoundtrackNumberProvider soundtrackNumberProvider;
+    private final SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @NonNull
     private final Context context;
@@ -67,9 +67,9 @@ public class SoundtrackRepository {
     private boolean networkErrorOfCurrentRoomShown;
 
     @Inject
-    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull SoundtrackNumberProvider soundtrackNumberProvider, @NonNull Context context) {
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull SoundtrackNumbersDatabase soundtrackNumbersDatabase, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
-        this.soundtrackNumberProvider = soundtrackNumberProvider;
+        this.soundtrackNumbersDatabase = soundtrackNumbersDatabase;
         this.context = context;
     }
 
@@ -137,7 +137,7 @@ public class SoundtrackRepository {
 
                 List<SingleSoundtrack> ownDeletedSoundtracks = getOwnDeletedSoundtracks(newSoundtracks);
                 for(SingleSoundtrack soundtrack : ownDeletedSoundtracks) {
-                    soundtrackNumberProvider.onSoundtrackDeleted(soundtrack);
+                    soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
                 }
 
                 previousSoundtracks.clear();

@@ -24,14 +24,11 @@ import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
-import de.pcps.jamtugether.utils.providers.OwnLatestSoundtrackProvider;
-import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
+import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerViewModel;
 import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
@@ -55,10 +52,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     SoundtrackController soundtrackController;
 
     @Inject
-    SoundtrackNumberProvider soundtrackNumberProvider;
+    SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @Inject
-    OwnLatestSoundtrackProvider ownLatestSoundtrackProvider;
+    LatestSoundtracksDatabase latestSoundtracksDatabase;
 
     private final int roomID;
 
@@ -158,7 +155,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         }
         soundtrackRepository.updateAllSoundtracks(newList);
 
-        soundtrackNumberProvider.onSoundtrackDeleted(soundtrack);
+        soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
 
         // todo tell server
 
@@ -216,7 +213,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     private void onRoomDeleted() {
         soundtrackController.stopPlayers();
-        ownLatestSoundtrackProvider.onUserLeftRoom();
+        latestSoundtracksDatabase.onUserLeftRoom();
     }
 
     public void onNavigatedBack() {
