@@ -84,6 +84,10 @@ public class SoundtrackRepository {
         call.enqueue(callback);
     }
 
+    public void onTokenChanged(@NonNull String currentToken) {
+        this.currentToken = currentToken;
+    }
+
     public void fetchSoundtracks(int currentRoomID, int currentUserID, @NonNull String currentToken, boolean requestedFromUser) {
         this.currentRoomID = currentRoomID;
         this.currentUserID = currentUserID;

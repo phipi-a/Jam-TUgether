@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
-    <!-- todo decide how to label sound tracks -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

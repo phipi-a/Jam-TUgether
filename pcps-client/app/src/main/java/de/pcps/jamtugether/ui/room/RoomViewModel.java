@@ -8,14 +8,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
-import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerViewModel;
+import timber.log.Timber;
 
 public class RoomViewModel extends ViewModel {
 
@@ -34,18 +35,24 @@ public class RoomViewModel extends ViewModel {
     private final int roomID;
 
     @NonNull
+    private final MutableLiveData<String> token = new MutableLiveData<>();
+
+    @NonNull
     private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
 
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    public RoomViewModel(int roomID, boolean userIsAdmin) {
+    public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
+        Timber.d("token: %s", token);
         AppInjector.inject(this);
         // todo start fetching admin info
         this.roomID = roomID;
+        this.token.setValue(token);
         this.userIsAdmin.setValue(userIsAdmin);
     }
 
@@ -68,11 +75,25 @@ public class RoomViewModel extends ViewModel {
     }
 
     private void onAdminLeft() {
-        // todo tell server
+        roomRepository.removeAdmin(roomID, token.getValue(), new JamCallback<RemoveAdminResponse>() {
+            @Override
+            public void onSuccess(@NonNull RemoveAdminResponse response) {
+                Timber.d("onSuccess()");
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
     }
 
     public void handleBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
+    }
+
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
     }
 
     public void onNavigatedBack() {
@@ -80,8 +101,18 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
+    public LiveData<String> getToken() {
+        return token;
+    }
+
+    @NonNull
     public LiveData<Boolean> getUserIsAdmin() {
         return userIsAdmin;
+    }
+
+    @NonNull
+    public LiveData<Error> getNetworkError() {
+        return networkError;
     }
 
     @NonNull
@@ -98,10 +129,14 @@ public class RoomViewModel extends ViewModel {
 
         private final int roomID;
 
+        @NonNull
+        private final String token;
+
         private final boolean userIsAdmin;
 
-        public Factory(int roomID, boolean userIsAdmin) {
+        public Factory(int roomID, @NonNull String token, boolean userIsAdmin) {
             this.roomID = roomID;
+            this.token = token;
             this.userIsAdmin = userIsAdmin;
         }
 
@@ -110,7 +145,7 @@ public class RoomViewModel extends ViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomViewModel.class)) {
-                return (T) new RoomViewModel(roomID, userIsAdmin);
+                return (T) new RoomViewModel(roomID, token, userIsAdmin);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
