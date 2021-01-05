@@ -66,7 +66,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final String password;
 
     @NonNull
-    private final String token;
+    private String token;
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
@@ -178,6 +178,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
                 networkError.setValue(error);
             }
         });
+    }
+
+    public void onTokenChanged(@NonNull String token) {
+        this.token = token;
     }
 
     public void onDeleteRoomButtonClicked() {

@@ -30,6 +30,10 @@ public class CompositeSoundtrackViewModel extends ViewModel {
         compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
     }
 
+    public void onTokenChanged(@NonNull String token) {
+        soundtrackRepository.onTokenChanged(token);
+    }
+
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return compositeSoundtrack;

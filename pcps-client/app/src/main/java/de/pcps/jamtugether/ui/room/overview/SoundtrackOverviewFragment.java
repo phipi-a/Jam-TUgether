@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
@@ -25,7 +24,6 @@ import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -65,7 +63,12 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
             userID = getArguments().getInt(USER_KEY);
             String password = getArguments().getString(PASSWORD_KEY);
+
+            // this token is only needed for creation of room view model
+            // since this token might not be up to date, other view models will get
+            // the current token from the room view model
             String token = getArguments().getString(TOKEN_KEY);
+
             boolean admin = getArguments().getBoolean(ADMIN_KEY);
 
             Fragment roomFragment = getParentFragment();
@@ -73,10 +76,13 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 return;
             }
 
-            roomViewModel = new ViewModelProvider(roomFragment, new RoomViewModel.Factory(roomID, admin)).get(RoomViewModel.class);
-            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID, userID, token)).get(CompositeSoundtrackViewModel.class);
+            roomViewModel = new ViewModelProvider(roomFragment, new RoomViewModel.Factory(roomID, token, admin)).get(RoomViewModel.class);
 
-            SoundtrackOverviewViewModel.Factory soundtrackOverviewViewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, token);
+            String currentToken = roomViewModel.getToken().getValue();
+
+            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, new CompositeSoundtrackViewModel.Factory(roomID, userID, currentToken)).get(CompositeSoundtrackViewModel.class);
+
+            SoundtrackOverviewViewModel.Factory soundtrackOverviewViewModelFactory = new SoundtrackOverviewViewModel.Factory(roomID, password, currentToken);
             soundtrackOverviewViewModel = new ViewModelProvider(this, soundtrackOverviewViewModelFactory).get(SoundtrackOverviewViewModel.class);
         }
     }
@@ -93,19 +99,21 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
 
-        final Runnable commitCallback = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
+        final Runnable invalidateItemDecorations = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
 
         soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), soundtracks -> soundtrackOverviewViewModel.onNewSoundtracks(soundtracks));
+
+        roomViewModel.getToken().observe(getViewLifecycleOwner(), token -> soundtrackOverviewViewModel.onTokenChanged(token));
 
         roomViewModel.getUserIsAdmin().observe(getViewLifecycleOwner(), admin -> {
             if (admin) {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), soundtrackOverviewViewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
+                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
             } else {
                 RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(userID, soundtrackOverviewViewModel.getSoundtrackOnChangeCallback(), soundtrackOverviewViewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, commitCallback));
+                soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
             }
         });
 
