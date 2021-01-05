@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
-import de.pcps.jamtugether.databinding.ViewSoundtrackAdminBinding;
+import de.pcps.jamtugether.databinding.ViewSoundtrackWithDeleteBinding;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.base.BaseViewHolder;
@@ -15,9 +15,9 @@ import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
 public class DeleteViewHolder extends BaseViewHolder {
 
     @NonNull
-    private final ViewSoundtrackAdminBinding binding;
+    private final ViewSoundtrackWithDeleteBinding binding;
 
-    DeleteViewHolder(@NonNull ViewSoundtrackAdminBinding binding) {
+    DeleteViewHolder(@NonNull ViewSoundtrackWithDeleteBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
@@ -38,6 +38,6 @@ public class DeleteViewHolder extends BaseViewHolder {
     @NonNull
     public static DeleteViewHolder from(@NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new DeleteViewHolder(ViewSoundtrackAdminBinding.inflate(inflater, parent, false));
+        return new DeleteViewHolder(ViewSoundtrackWithDeleteBinding.inflate(inflater, parent, false));
     }
 }
