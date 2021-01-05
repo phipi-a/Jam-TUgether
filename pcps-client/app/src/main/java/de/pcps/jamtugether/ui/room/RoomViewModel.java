@@ -12,6 +12,10 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
+import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerViewModel;
 
 public class RoomViewModel extends ViewModel {
 
@@ -23,6 +27,9 @@ public class RoomViewModel extends ViewModel {
 
     @Inject
     SoundtrackRepository soundtrackRepository;
+
+    @Inject
+    SoundtrackNumberProvider soundtrackNumberProvider;
 
     private final int roomID;
 
@@ -42,10 +49,6 @@ public class RoomViewModel extends ViewModel {
         this.userIsAdmin.setValue(userIsAdmin);
     }
 
-    public void handleBackPressed() {
-        showLeaveRoomConfirmationDialog.setValue(true);
-    }
-
     public void onLeaveRoomConfirmationDialogShown() {
         showLeaveRoomConfirmationDialog.setValue(false);
     }
@@ -58,13 +61,18 @@ public class RoomViewModel extends ViewModel {
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        if(userIsAdmin.getValue()) {
-           onAdminLeft();
+        if (userIsAdmin.getValue()) {
+            onAdminLeft();
         }
+        soundtrackNumberProvider.onUserLeftRoom();
     }
 
     private void onAdminLeft() {
         // todo tell server
+    }
+
+    public void handleBackPressed() {
+        showLeaveRoomConfirmationDialog.setValue(true);
     }
 
     public void onNavigatedBack() {

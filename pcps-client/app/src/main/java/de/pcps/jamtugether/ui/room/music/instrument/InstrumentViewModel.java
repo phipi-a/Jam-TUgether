@@ -27,13 +27,14 @@ import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.utils.providers.OwnLatestSoundtrackProvider;
+import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
 import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public abstract class InstrumentViewModel extends ViewModel implements LifecycleObserver {
 
@@ -49,6 +50,12 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     @Inject
     protected SingleSoundtrackPlayer singleSoundtrackPlayer;
 
+    @Inject
+    protected SoundtrackNumberProvider soundtrackNumberProvider;
+
+    @Inject
+    protected OwnLatestSoundtrackProvider ownLatestSoundtrackProvider;
+
     @NonNull
     private final Instrument instrument;
 
@@ -59,7 +66,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
     private final String token;
 
     @NonNull
-    protected final OnOwnSoundtrackChangedCallback callback;
+    private final OnOwnSoundtrackChangedCallback callback;
 
     @NonNull
     protected final MutableLiveData<Boolean> startedSoundtrackCreation = new MutableLiveData<>(false);
@@ -134,6 +141,10 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         this.userID = userID;
         this.token = token;
         this.callback = callback;
+        this.ownSoundtrack = ownLatestSoundtrackProvider.getOwnLatestSoundtrack(instrument);
+        if (ownSoundtrack != null) {
+            callback.onOwnSoundtrackChanged(ownSoundtrack);
+        }
     }
 
     public void onCompositeSoundtrackChanged(@NonNull CompositeSoundtrack compositeSoundtrack) {
@@ -155,9 +166,13 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             }
         } else {
             timerMillis.setValue(-1L);
+
+            int soundtrackNumber = soundtrackNumberProvider.getFreeNumberFor(instrument);
+
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString());
+            ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString(), soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
+
             startedSoundtrackCreation.setValue(true);
             countDownTimer.start();
         }
@@ -170,7 +185,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
         uploadPossible.setValue(false);
 
-        SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getSoundSequence());
+        SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         // add to local list
         List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
@@ -183,7 +198,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
-                Timber.d("onSuccess() | %s", response);
+                soundtrackNumberProvider.onSoundtrackCreated(toBePublished);
             }
 
             @Override
@@ -199,6 +214,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
+            ownLatestSoundtrackProvider.onOwnSoundtrackUpdated(ownSoundtrack);
             this.uploadPossible.setValue(true);
         }
         startedSoundtrackCreation.setValue(false);

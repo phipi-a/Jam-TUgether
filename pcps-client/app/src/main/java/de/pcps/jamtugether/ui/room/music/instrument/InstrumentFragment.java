@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public abstract class InstrumentFragment extends BaseFragment {
@@ -23,11 +24,14 @@ public abstract class InstrumentFragment extends BaseFragment {
 
     protected int roomID;
     protected int userID;
+
     protected String token;
 
-    protected MusicianViewViewModel musicianViewViewModel;
-    protected InstrumentViewModel instrumentViewModel;
+    protected OnOwnSoundtrackChangedCallback onOwnSoundtrackChangedCallback;
+
     private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
+
+    protected InstrumentViewModel instrumentViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +51,9 @@ public abstract class InstrumentFragment extends BaseFragment {
                 return;
             }
 
-            musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
+            onOwnSoundtrackChangedCallback = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
-            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID, token);
+            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID, userID, token);
             compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
         }
     }

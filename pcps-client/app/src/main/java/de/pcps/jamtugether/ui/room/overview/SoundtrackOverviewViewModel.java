@@ -5,7 +5,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -25,9 +24,15 @@ import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
+import de.pcps.jamtugether.utils.providers.OwnLatestSoundtrackProvider;
+import de.pcps.jamtugether.utils.providers.SoundtrackNumberProvider;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
+import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerViewModel;
+import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -48,6 +53,12 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     @Inject
     SoundtrackController soundtrackController;
+
+    @Inject
+    SoundtrackNumberProvider soundtrackNumberProvider;
+
+    @Inject
+    OwnLatestSoundtrackProvider ownLatestSoundtrackProvider;
 
     private final int roomID;
 
@@ -130,6 +141,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
+        Timber.d("deleteSoundtrack(): %d", soundtrack.getNumber());
         List<SingleSoundtrack> soundtracks = getAllSoundtracks().getValue();
         if (soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
@@ -140,9 +152,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         for (SingleSoundtrack singleSoundtrack : soundtracks) {
             if (singleSoundtrack != soundtrack) {
                 newList.add(singleSoundtrack);
+            } else {
+                Timber.d("soundtrack %d = soundtrack %d", singleSoundtrack.getNumber(), soundtrack.getNumber());
             }
         }
         soundtrackRepository.updateAllSoundtracks(newList);
+
+        soundtrackNumberProvider.onSoundtrackDeleted(soundtrack);
 
         // todo tell server
 
@@ -153,6 +169,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         roomRepository.deleteRoom(roomID, password, token, new JamCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
+                onRoomDeleted();
                 navigateBack.setValue(true);
             }
 
@@ -193,9 +210,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         showRoomDeletionConfirmDialog.setValue(false);
     }
 
-    public void onRoomDeleted() {
-        navigateBack.setValue(false);
+    private void onRoomDeleted() {
         soundtrackController.stopPlayers();
+        ownLatestSoundtrackProvider.onUserLeftRoom();
+    }
+
+    public void onNavigatedBack() {
+        navigateBack.setValue(false);
     }
 
     public int getRoomID() {
