@@ -3,8 +3,8 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr, whoAmI } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
-const { receiveTrack, sendTracks } = require('../js/room.js')
-const { fillRoom} = require('../js/prepareRoom.js')
+const { receiveTrack, sendTracks, checkAdmin } = require('../js/room.js')
+const { fillRoom } = require('../js/prepareRoom.js')
 
 const app = express()
 
@@ -288,9 +288,9 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
 /**
  * @openapi
  * /api/room/:id/admin:
- *   post:
- *     summary: Returns success if saved sent track
- *     description: Saves incoming tracks
+ *   get:
+ *     summary: Returns "Admin" if admin else it returns "not Admin" with flag= true for new admin token or "not Admin" with flag = false
+ *     description: Checks if user is Admin and if new Admin is needed. In case Admin is needed sends new Admin token
  *     parameters:
  *       - roomID: id
  *         in: path
@@ -300,7 +300,8 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *           minimum: 1
  *     responses:
  *       200:
- *         description: {description: Not Admin}
+ *         description: if flag true than token else no token
+ *
  *       202:
  *         description: {description: Admin}
  *       500:
@@ -313,12 +314,39 @@ roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   }
   await updateRoom(room.roomID)
   const priviliges = await whoAmI(req, res, room)
-  if (priviliges.description === 'Admin') {
+  if (priviliges === 'Admin') {
     await updateAdminAccess(room.roomID)
-    res.status(202).send(priviliges)
+    res.status(202).json(priviliges)
   } else {
-    res.status(200).send(priviliges)
+    const answer = await checkAdmin(room.lastAccessAdmin, room.roomID)
+    answer.description = answer.flag ? 'new Admin' : 'Not Admin'
+    res.status(200).json(answer)
   }
 })
+/**
+ * @openapi
+ * /api/room/:id/admin:
+ *   delete:
+ *     summary: Returns success if Admin left
+ *     description: Updates DB such that new Admin is needed
+ *     parameters:
+ *       - roomID: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: {description: "Success"}
+ *       500:
+ *         description: Failure
+ */
+roomRoute.delete('/room/:id/admin', verifyAdmin, async (req, res) => {
+  // update last access of admin to high 
+  const newDate = new Date(Date.now() - 18000000)
+  await RoomSchema.updateOne({ roomID: req.body.roomID }, { lastAccessAdmin: newDate }).exec()
+  res.status(200).json({ description: 'Success' })
+}
+)
 
 module.exports = roomRoute

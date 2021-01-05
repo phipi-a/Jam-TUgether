@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const RoomSchema = require('../model/room.model')
 const { exists } = require('../model/room.model')
+const {createToken} = require('./auth.js')
 
 // simple push of DB array
 exports.receiveTrack = async function (req, res, roomID) {
@@ -27,4 +28,20 @@ function prepareSoundtrack (soundtrack) {
     instrument: soundtrack.instrument,
     soundSequence: soundtrack.soundSequence
   }
+}
+// controls if newAdmin is needed
+exports.checkAdmin = async function (adminTime, roomID) {
+  // cast current Date - 1,5 minutes (90000 ms) to Date
+  const time = new Date(Date.now() - 90000)
+  const flag = adminTime <= time
+  // flag true means new Admin is needed
+  if (flag) {
+    // update last access of admin
+    const newDate = new Date(Date.now())
+    await RoomSchema.updateOne({ roomID: roomID }, { lastAccessAdmin: newDate }).exec()
+    const token = await createToken('Admin', roomID)
+    console.log(token)
+    return { description: '', flag: flag, token: token }
+  }
+  return { description: '', flag: flag }
 }
