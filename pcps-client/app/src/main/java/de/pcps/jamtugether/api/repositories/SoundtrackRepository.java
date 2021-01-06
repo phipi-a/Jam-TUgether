@@ -130,6 +130,9 @@ public class SoundtrackRepository {
             showCompositionIsLoading.setValue(true);
             loadingCompositionOfCurrentRoomShown = true;
         }
+        if(currentToken == null) {
+            return;
+        }
         getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {

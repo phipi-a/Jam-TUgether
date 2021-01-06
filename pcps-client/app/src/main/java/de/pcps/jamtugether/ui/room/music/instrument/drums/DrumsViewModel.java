@@ -21,13 +21,6 @@ public class DrumsViewModel extends InstrumentViewModel {
         super(drums, roomID, userID, token, callback);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private void onPause() {
-        if(startedSoundtrackCreation()) {
-            finishSoundtrack();
-        }
-    }
-
     public void onSnareClicked() {
         drums.playSnare();
         onElementPlayed(Drums.SNARE_PITCH, SoundResource.SNARE);

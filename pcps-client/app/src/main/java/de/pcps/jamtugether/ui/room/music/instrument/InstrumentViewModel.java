@@ -22,6 +22,7 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
@@ -36,7 +37,7 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-public abstract class InstrumentViewModel extends ViewModel implements LifecycleObserver {
+public abstract class InstrumentViewModel extends ViewModel {
 
     @Inject
     protected Application application;
@@ -86,14 +87,7 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
         @Override
         public void onFinished() {
-            countDownTimer.stop();
-            countDownTimerMillis.setValue(-1L);
-            startedMillis = System.currentTimeMillis();
-            timer.start();
-            if (playWithCompositeSoundtrack) {
-                compositeSoundtrackPlayer.stop(compositeSoundtrack);
-                compositeSoundtrackPlayer.play(compositeSoundtrack);
-            }
+            startRecording();
         }
     };
 
@@ -178,6 +172,17 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         }
     }
 
+    protected void startRecording() {
+        countDownTimer.stop();
+        countDownTimerMillis.setValue(-1L);
+        startedMillis = System.currentTimeMillis();
+        timer.start();
+        if (playWithCompositeSoundtrack) {
+            compositeSoundtrackPlayer.stop(compositeSoundtrack);
+            compositeSoundtrackPlayer.play(compositeSoundtrack);
+        }
+    }
+
     public void onUploadButtonClicked() {
         if (ownSoundtrack == null) {
             return;
@@ -186,9 +191,11 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
         SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         // add to local list
-        List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
-        allSoundtracks.add(toBePublished);
-        soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+        if(soundtrackRepository.getAllSoundtracks().getValue() != null) {
+            List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
+            allSoundtracks.add(toBePublished);
+            soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+        }
 
         progressBarVisibility.setValue(View.VISIBLE);
         uploadPossible.setValue(false);
@@ -229,6 +236,13 @@ public abstract class InstrumentViewModel extends ViewModel implements Lifecycle
 
     public void onNetworkErrorShown() {
         networkError.setValue(null);
+    }
+
+    @Override
+    protected void onCleared() {
+        if(startedSoundtrackCreation()) {
+            finishSoundtrack();
+        }
     }
 
     @NonNull

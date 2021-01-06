@@ -9,10 +9,8 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,16 +31,24 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     @NonNull
     private final MutableLiveData<Float> shakeIntensity = new MutableLiveData<>(0f);
 
+    @NonNull
+    private final MutableLiveData<Boolean> lockOrientation = new MutableLiveData<>(false);
+
     public ShakerViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
         super(shaker, roomID, userID, token, callback);
         this.vibrator = (Vibrator) application.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private void onPause() {
-        if (startedSoundtrackCreation()) {
-            finishSoundtrack();
-        }
+    @Override
+    protected void startRecording() {
+        super.startRecording();
+        lockOrientation.setValue(true);
+    }
+
+    @Override
+    protected void finishSoundtrack() {
+        super.finishSoundtrack();
+        lockOrientation.setValue(false);
     }
 
     @Override
@@ -98,10 +104,16 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         return shakeIntensity;
     }
 
+    @NonNull
+    public LiveData<Boolean> getLockOrientation() {
+        return lockOrientation;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
         shaker.stop();
+        lockOrientation.setValue(false);
     }
 
     static class Factory implements ViewModelProvider.Factory {

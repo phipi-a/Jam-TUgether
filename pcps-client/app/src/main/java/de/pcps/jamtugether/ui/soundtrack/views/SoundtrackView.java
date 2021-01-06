@@ -118,25 +118,25 @@ public class SoundtrackView extends View {
 
     private void drawFluteSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
-        float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
+        float heightOfPitchOne = this.getHeight() / (float) Flute.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
-            float y = this.getY() + heightOfPitchOne * (Sound.MAX_PITCH - sound.getPitch());
+            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - sound.getPitch());
             canvas.drawRect(xStart, y, xEnd, this.getY() + this.getHeight(), paint);
         }
     }
 
     private void drawFluteInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
-        float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
+        float heightOfPitchOne = this.getHeight() / (float) Flute.PITCH_RANGE;
         float lastX = -1;
         float lastY = -1;
 
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
-            float y = this.getY() + heightOfPitchOne * (Sound.MAX_PITCH - sound.getPitch());
+            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - sound.getPitch());
             if (lastX == xStart && lastY != -1) {
                 canvas.drawLine(xStart, lastY, xStart, y, paint);
             }
@@ -148,7 +148,7 @@ public class SoundtrackView extends View {
 
     private void drawDrumsSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
-        float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
+        float heightOfPitchOne = this.getHeight() / (float) Drums.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float height;
             long millis;
@@ -172,7 +172,7 @@ public class SoundtrackView extends View {
                     break;
             }
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
-            float yStart = this.getY() + heightOfPitchOne * (Sound.MAX_PITCH - heightPercentage);
+            float yStart = this.getY() + heightOfPitchOne * (Drums.MAX_PITCH - heightPercentage);
             float xEnd = xStart + widthOfOneMilliSecond * millis;
             float yEnd = yStart + height;
             canvas.drawRect(xStart, yStart, xEnd, yEnd, paint);
@@ -180,6 +180,17 @@ public class SoundtrackView extends View {
     }
 
     private void drawShakerSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        // todo
+        float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
+        int containerHeight = UiUtils.getPixels(getContext(), R.dimen.soundtrack_view_height);
+        float height = containerHeight / 2.0f;
+        float borderSpace = (containerHeight - height) / 2;
+        float yStart = this.getY() + borderSpace;
+        float yEnd = this.getY() + this.getHeight() - borderSpace;
+        float millis = SoundResource.SHAKER.getDuration() / 1.5f;
+        for (Sound sound : singleSoundtrack.getSoundSequence()) {
+            float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
+            float xEnd = xStart + widthOfOneMilliSecond * millis;
+            canvas.drawOval(xStart, yStart, xEnd, yEnd, paint);
+        }
     }
 }
