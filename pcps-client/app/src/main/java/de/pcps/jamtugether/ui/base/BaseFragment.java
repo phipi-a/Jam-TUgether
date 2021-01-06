@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.base;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -38,6 +39,14 @@ public abstract class BaseFragment extends Fragment {
         this.fragmentActivity = (FragmentActivity) context;
         this.activity = (AppCompatActivity) context;
         this.context = context;
+    }
+
+    protected void lockOrientation() {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+    }
+
+    protected void unlockOrientation() {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     // fragments can override this method for custom logic

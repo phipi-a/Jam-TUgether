@@ -186,7 +186,7 @@ public class SoundtrackView extends View {
         float borderSpace = (containerHeight - height) / 2;
         float yStart = this.getY() + borderSpace;
         float yEnd = this.getY() + this.getHeight() - borderSpace;
-        long millis = SoundResource.SHAKER.getDuration() / 2;
+        float millis = SoundResource.SHAKER.getDuration() / 1.5f;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = xStart + widthOfOneMilliSecond * millis;

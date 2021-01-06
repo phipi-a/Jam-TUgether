@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room.music.instrument.flute;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -20,7 +21,7 @@ import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PER
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
 import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
-public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeChangedCallback {
+public class FluteViewModel extends InstrumentViewModel implements LifecycleObserver, OnAmplitudeChangedCallback {
 
     @NonNull
     private static final Flute flute = Flute.getInstance();
@@ -51,9 +52,6 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
         fragmentFocused = false;
-        if (startedSoundtrackCreation()) {
-            finishSoundtrack();
-        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

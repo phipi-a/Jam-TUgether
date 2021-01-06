@@ -39,7 +39,6 @@ public class ShakerFragment extends InstrumentFragment {
         if (getArguments() != null) {
             ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
-            getLifecycle().addObserver(instrumentViewModel);
 
             // Get sensor manager
             mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
@@ -61,6 +60,14 @@ public class ShakerFragment extends InstrumentFragment {
         binding.setViewModel(shakerViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
+
+        shakerViewModel.getLockOrientation().observe(getViewLifecycleOwner(), lockOrientation -> {
+            if(lockOrientation) {
+                lockOrientation();
+            } else {
+                unlockOrientation();
+            }
+        });
 
         return binding.getRoot();
     }

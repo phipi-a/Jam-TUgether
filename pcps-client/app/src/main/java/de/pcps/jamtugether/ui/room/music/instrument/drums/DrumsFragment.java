@@ -31,7 +31,6 @@ public class DrumsFragment extends InstrumentFragment {
         if (getArguments() != null) {
             DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
-            getLifecycle().addObserver(instrumentViewModel);
         }
     }
 

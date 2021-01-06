@@ -39,7 +39,7 @@ public class FluteFragment extends InstrumentFragment {
         if (getArguments() != null) {
             FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
-            getLifecycle().addObserver(instrumentViewModel);
+            getLifecycle().addObserver((FluteViewModel) instrumentViewModel);
         }
     }
 
