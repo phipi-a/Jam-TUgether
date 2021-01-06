@@ -103,7 +103,7 @@ public class RoomFragment extends TabLayoutFragment {
             @StringRes
             @Override
             public int getTabTitle(int position) {
-                return position == 0 ? R.string.room_over_view : R.string.musician_view;
+                return position == 0 ? R.string.soundtrack_over_view : R.string.musician_view;
             }
 
             @NonNull

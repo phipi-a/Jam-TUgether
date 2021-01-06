@@ -24,14 +24,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/app_name_text_view"
+                    android:id="@+id/create_room_text_view"
                     style="@style/JamTugetherTitleStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="@dimen/title_margin_top"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/app_name"
+                    android:text="@string/create_room"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
                     app:errorIconDrawable="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/app_name_text_view"
+                    app:layout_constraintTop_toBottomOf="@id/create_room_text_view"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -69,7 +69,7 @@
                     android:layout_marginEnd="50dp"
                     android:layout_marginBottom="@dimen/layout_margin_bottom"
                     android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString)}"
-                    android:text="@string/create_room"
+                    android:text="@string/go_to_room"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
