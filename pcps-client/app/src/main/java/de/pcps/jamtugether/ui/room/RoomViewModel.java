@@ -15,6 +15,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import timber.log.Timber;
 
@@ -31,6 +32,9 @@ public class RoomViewModel extends ViewModel {
 
     @Inject
     SoundtrackNumbersDatabase soundtrackNumbersDatabase;
+
+    @Inject
+    LatestSoundtracksDatabase latestSoundtracksDatabase;
 
     private final int roomID;
 
@@ -69,13 +73,17 @@ public class RoomViewModel extends ViewModel {
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        if (userIsAdmin.getValue()) {
+        if (userIsAdmin.getValue() != null && userIsAdmin.getValue()) {
             onAdminLeft();
         }
         soundtrackNumbersDatabase.onUserLeftRoom();
+        latestSoundtracksDatabase.onUserLeftRoom();
     }
 
     private void onAdminLeft() {
+        if(token.getValue() == null) {
+            return;
+        }
         roomRepository.removeAdmin(roomID, token.getValue(), new JamCallback<RemoveAdminResponse>() {
             @Override
             public void onSuccess(@NonNull RemoveAdminResponse response) {

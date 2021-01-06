@@ -221,6 +221,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     private void onRoomDeleted() {
         soundtrackController.stopPlayers();
+        soundtrackNumbersDatabase.onUserLeftRoom();
         latestSoundtracksDatabase.onUserLeftRoom();
     }
 

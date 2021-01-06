@@ -27,7 +27,7 @@ public class LatestSoundtracksDatabase {
     public LatestSoundtracksDatabase() { }
 
     public void onUserLeftRoom() {
-        latestShakerSoundtrack = null;
+        latestFluteSoundtrack = null;
         latestDrumsSoundtrack = null;
         latestShakerSoundtrack = null;
     }
