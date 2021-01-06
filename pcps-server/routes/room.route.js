@@ -272,7 +272,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  *           minimum: 1
  *     responses:
  *       200:
- *         description: success
+ *         description: soundtrackID
  *       500:
  *         description: Failure
  */

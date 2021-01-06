@@ -14,7 +14,7 @@ exports.receiveTrack = async function (req, res, roomID) {
     }
   }
   await RoomSchema.updateMany(query, updateDocument)
-  res.json({ soundtrackID: soundtracks._id })
+  res.status(200).json({ soundtrackID: soundtracks._id })
 }
 
 exports.sendTracks = async function (req, res, room) {
