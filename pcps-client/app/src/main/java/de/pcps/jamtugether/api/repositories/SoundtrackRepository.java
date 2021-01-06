@@ -87,7 +87,7 @@ public class SoundtrackRepository {
     }
 
     public void deleteSoundtrack(@NonNull String token, int roomID, @NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<DeleteTrackResponse> callback) {
-        DeleteSoundtrackBody body = new DeleteSoundtrackBody(soundtrack.getUserID(), soundtrack.getInstrument().getServerString(), soundtrack.getNumber());
+        DeleteSoundtrackBody body = new DeleteSoundtrackBody(roomID, soundtrack.getUserID(), soundtrack.getInstrument().getServerString(), soundtrack.getNumber());
         Call<DeleteTrackResponse> call = soundtrackService.deleteSoundtrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
         call.enqueue(callback);
     }

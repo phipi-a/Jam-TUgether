@@ -158,7 +158,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         soundtrackRepository.deleteSoundtrack(token, roomID, soundtrack, new JamCallback<DeleteTrackResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteTrackResponse response) {
-                Timber.d("onSuccess()");
+                Timber.d("onSuccess() soundtrack deleted");
             }
 
             @Override
