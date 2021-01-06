@@ -51,10 +51,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onCreateSoundtrackButtonClicked()}"
-                android:src="@{viewModel.getStartedSoundtrackCreation() ? @drawable/ic_stop : @drawable/ic_record}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:startedCreatingSoundtrack="@{viewModel.startedSoundtrackCreation}"
                 tools:ignore="ContentDescription" />
 
             <TextView
