@@ -21,15 +21,15 @@ exports.sendTracks = async function (req, res) {
 
 exports.deleteTracks = async function (req, res, roomID) {
   const query = { roomID: roomID }
-  
-  const soundTracks = await RoomSchema.find(query, {_id: 0, soundtracks: 1})
-  const s = soundTracks[0].soundtracks;
+
+  const soundTracks = await RoomSchema.find(query, { _id: 0, soundtracks: 1 })
+  const s = soundTracks[0].soundtracks
 
   s.forEach(element => {
-    if(element.userID == req.body.userID && element.instrument == req.body.instrument && element.number == req.body.number){
+    if (element.userID === req.body.userID && element.instrument === req.body.instrument && element.number === req.body.number) {
       element.soundSequence = []
     }
-  });
+  })
 
   const updateDocument = {
     $set: {
@@ -39,5 +39,5 @@ exports.deleteTracks = async function (req, res, roomID) {
 
   await RoomSchema.updateMany(query, updateDocument)
 
-  res.status(200).json({ description: 'track deleted'})
+  res.status(200).json({ description: 'track deleted' })
 }
