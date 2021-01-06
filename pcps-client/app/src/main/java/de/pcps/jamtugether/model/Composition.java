@@ -8,22 +8,22 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class Composition {
 
-    private final int room;
+    private final int roomID;
 
     @NonNull
-    private final List<SingleSoundtrack> singleSoundtracks;
+    private final List<SingleSoundtrack> soundtracks;
 
-    public Composition(int room, @NonNull List<SingleSoundtrack> singleSoundtracks) {
-        this.room = room;
-        this.singleSoundtracks = singleSoundtracks;
+    public Composition(int roomID, @NonNull List<SingleSoundtrack> soundtracks) {
+        this.roomID = roomID;
+        this.soundtracks = soundtracks;
     }
 
-    public int getRoom() {
-        return room;
+    public int getRoomID() {
+        return roomID;
     }
 
     @NonNull
-    public List<SingleSoundtrack> getSingleSoundtracks() {
-        return singleSoundtracks;
+    public List<SingleSoundtrack> getSoundtracks() {
+        return soundtracks;
     }
 }

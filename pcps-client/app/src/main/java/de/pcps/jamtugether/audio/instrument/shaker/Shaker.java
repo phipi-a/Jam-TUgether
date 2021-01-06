@@ -11,9 +11,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.sound.pool.ShakerSoundPool;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
-// todo
 public class Shaker extends Instrument {
 
     @Nullable
@@ -28,7 +26,6 @@ public class Shaker extends Instrument {
     @RawRes
     @Override
     public int getSoundResource(int element) {
-        // todo
         return SHAKER_SOUND;
     }
 
@@ -48,11 +45,10 @@ public class Shaker extends Instrument {
         return false;
     }
 
-    @NonNull
-    @Override
-    public SingleSoundtrack generateSoundtrack(int userID) {
-        // todo
-        return null;
+    public void play() {
+        if (soundPool != null) {
+            soundPool.playSoundRes(SHAKER_SOUND, 1);
+        }
     }
 
     @NonNull

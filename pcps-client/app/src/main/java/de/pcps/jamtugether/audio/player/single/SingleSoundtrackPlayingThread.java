@@ -26,13 +26,11 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
         for (Sound sound : soundtrack.getSoundsFor(millis, finishSounds)) {
             Instrument instrument = soundtrack.getInstrument();
             BaseSoundPool soundPool = soundtrack.getSoundPool();
-            if(instrument == null || soundPool == null) {
+            if(soundPool == null) {
                 continue;
             }
-            int soundRes = instrument.getSoundResource(sound.getElement());
-            soundPool.playSoundRes(soundRes, sound.getPitch(), streamID -> {
-                callback.onSoundPlayed(new SoundWithStreamID(sound, streamID));
-            });
+            int soundRes = instrument.getSoundResource(sound.getPitch());
+            soundPool.playSoundRes(soundRes, sound.getPitch(), streamID -> callback.onSoundPlayed(new SoundWithStreamID(sound, streamID)));
         }
     }
 
@@ -47,7 +45,7 @@ public class SingleSoundtrackPlayingThread extends SoundtrackPlayingThread {
     @Override
     protected void stopSounds(int millis) {
         Instrument instrument = soundtrack.getInstrument();
-        if(instrument == null || !instrument.soundsNeedToBeStopped()) {
+        if(!instrument.soundsNeedToBeStopped()) {
             return;
         }
         for (Sound sound : soundtrack.getSoundSequence()) {

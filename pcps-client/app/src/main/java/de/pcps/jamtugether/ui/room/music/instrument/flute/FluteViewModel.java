@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
-import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
-import de.pcps.jamtugether.model.sound.ServerSound;
+import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -39,8 +38,8 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
     private int currentStartTimeMillis = -1;
     private int currentPitch = -1;
 
-    public FluteViewModel(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(flute, roomID, userID, callback);
+    public FluteViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(flute, roomID, userID, token, callback);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         if (currentStartTimeMillis != -1 && currentPitch != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if(ownSoundtrack != null) {
-                ownSoundtrack.addSound(new ServerSound(roomID, userID, Flute.getInstance(), 0, currentStartTimeMillis, endTimeMillis, currentPitch));
+                ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
             }
             currentStartTimeMillis = -1;
             currentPitch = -1;
@@ -142,11 +141,15 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         private final int userID;
 
         @NonNull
+        private final String token;
+
+        @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
             this.roomID = roomID;
             this.userID = userID;
+            this.token = token;
             this.callback = callback;
         }
 
@@ -155,7 +158,7 @@ public class FluteViewModel extends InstrumentViewModel implements OnAmplitudeCh
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(FluteViewModel.class)) {
-                return (T) new FluteViewModel(roomID, userID, callback);
+                return (T) new FluteViewModel(roomID, userID, token, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

@@ -5,7 +5,7 @@ exports.fillRoom = function (roomID, password) {
     password: password,
     numberOfUser: 1,
     adminBytes: 'non-existing',
-    soundtracks: [{ userID: 1, soundseq: [], volume: 1 }]
+    soundtracks: []
   }
   return jsonRoom
 }

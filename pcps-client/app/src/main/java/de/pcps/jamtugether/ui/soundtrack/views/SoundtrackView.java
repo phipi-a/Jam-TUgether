@@ -69,7 +69,7 @@ public class SoundtrackView extends View {
 
     @ColorInt
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
-        Instrument instrument = singleSoundtrack.getSoundSequence().get(0).getInstrument();
+        Instrument instrument = singleSoundtrack.getInstrument();
         if (instrument == Flute.getInstance()) {
             return Color.BLUE;
         }
@@ -101,9 +101,9 @@ public class SoundtrackView extends View {
             return;
         }
         paint.setColor(getPaintColor(singleSoundtrack));
-        if(singleSoundtrack.getInstrument() == Flute.getInstance()) {
+        if (singleSoundtrack.getInstrument() == Flute.getInstance()) {
             drawFluteInCompositeSoundtrack(canvas, singleSoundtrack);
-        } else if(singleSoundtrack.getInstrument() == Drums.getInstance()) {
+        } else if (singleSoundtrack.getInstrument() == Drums.getInstance()) {
             drawDrumsSoundtrack(canvas, singleSoundtrack);
         } else {
             drawShakerSoundtrack(canvas, singleSoundtrack);
@@ -150,27 +150,23 @@ public class SoundtrackView extends View {
         float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
         float heightOfPitchOne = this.getHeight() / (float) Sound.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
-            int heightPercentage;
             float height;
             long millis;
-            switch (sound.getElement()) {
-                case 0:
-                    heightPercentage = 50;
-                    millis = 200;
+            int heightPercentage = sound.getPitch();
+            switch (sound.getPitch()) {
+                case Drums.SNARE_PITCH:
+                    millis = 125;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_snare_height);
                     break;
-                case 1:
-                    heightPercentage = 30;
-                    millis = 150;
+                case Drums.KICK_PITCH:
+                    millis = 100;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_kick_height);
                     break;
-                case 2:
-                    heightPercentage = 70;
-                    millis = 100;
+                case Drums.HAT_PITCH:
+                    millis = 75;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_hat_height);
                     break;
                 default:
-                    heightPercentage = 90;
                     millis = SoundResource.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
                     height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_cymbal_height);
                     break;

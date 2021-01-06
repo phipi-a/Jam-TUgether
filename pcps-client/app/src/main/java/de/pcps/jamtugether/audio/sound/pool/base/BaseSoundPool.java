@@ -88,7 +88,7 @@ public abstract class BaseSoundPool {
     }
 
     public void setVolume(float volume) {
-        this.volume = volume;
+        //this.volume = volume;
     }
 
     public void stopSound(int streamID) {

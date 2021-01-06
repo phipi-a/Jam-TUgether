@@ -14,11 +14,15 @@ public abstract class SoundtrackListAdapter<T extends RecyclerView.ViewHolder> e
     protected final Soundtrack.OnChangeCallback onChangeCallback;
 
     @NonNull
+    protected final SingleSoundtrack.OnDeleteListener onDeleteListener;
+
+    @NonNull
     protected final LifecycleOwner lifecycleOwner;
 
-    public SoundtrackListAdapter(@NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
+    public SoundtrackListAdapter(@NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
         super(SingleSoundtrack.DIFF_UTIL_CALLBACK);
         this.onChangeCallback = onChangeCallback;
+        this.onDeleteListener = onDeleteListener;
         this.lifecycleOwner = lifecycleOwner;
     }
 }

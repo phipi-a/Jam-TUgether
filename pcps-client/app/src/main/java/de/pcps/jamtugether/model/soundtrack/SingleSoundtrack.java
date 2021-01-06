@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.ServerSound;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import timber.log.Timber;
 
 public class SingleSoundtrack extends Soundtrack {
 
@@ -21,7 +22,7 @@ public class SingleSoundtrack extends Soundtrack {
     public static final DiffUtil.ItemCallback<SingleSoundtrack> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<SingleSoundtrack>() {
         @Override
         public boolean areItemsTheSame(@NonNull SingleSoundtrack oldItem, @NonNull SingleSoundtrack newItem) {
-            return oldItem.getUserID() == newItem.getUserID();
+            return oldItem.getID().equals(newItem.getID());
         }
 
         @Override
@@ -33,50 +34,48 @@ public class SingleSoundtrack extends Soundtrack {
     private final int userID;
 
     @NonNull
+    private final String instrument;
+
+    private final int number;
+
+    @NonNull
     private final List<Sound> soundSequence;
 
-    private final List<ServerSound> serverSoundSequence;
+    private transient final boolean isOwnSoundtrack;
 
-    private Instrument instrument;
-
-    private boolean isOwnSoundtrack;
-
-    /**
-     * The sound pool on which this soundtrack is being played
-     */
     @Nullable
-    private BaseSoundPool soundPool;
+    private transient BaseSoundPool soundPool;
 
-    public SingleSoundtrack(int userID, @NonNull List<Sound> soundSequence) {
+    // soundtrack from server
+    public SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence) {
+        this(userID, instrument, number, soundSequence, false);
+    }
+
+    // empty soundtrack (never sent to server)
+    public SingleSoundtrack() {
+        this(-1, Instruments.FALLBACK.getServerString(), -1, new ArrayList<>());
+    }
+
+    // own soundtrack object (starts with empty array list)
+    public SingleSoundtrack(int userID, @NonNull String instrument, int number) {
+        this(userID, instrument, number, new ArrayList<>(), true);
+    }
+
+    private SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
         super();
         this.userID = userID;
-        this.soundSequence = soundSequence;
-        this.serverSoundSequence = new ArrayList<>();
-    }
-
-    public SingleSoundtrack(int userID) {
-        this(userID, new ArrayList<>());
-    }
-
-    public SingleSoundtrack(int userID, @NonNull Instrument instrument) {
-        this(userID);
         this.instrument = instrument;
-        this.isOwnSoundtrack = true;
+        this.number = number;
+        this.soundSequence = soundSequence;
+        this.isOwnSoundtrack = isOwnSoundtrack;
     }
 
     public void loadSounds(@NonNull Context context) {
-        Instrument instrument;
-        if (isEmpty()) {
-            instrument = this.instrument;
-        } else {
-            instrument = soundSequence.get(0).getInstrument();
-        }
-        soundPool = instrument.createSoundPool(context);
+        soundPool = getInstrument().createSoundPool(context);
     }
 
-    public void addSound(ServerSound serverSound) {
-        serverSoundSequence.add(serverSound);
-        soundSequence.add(serverSound);
+    public void addSound(Sound sound) {
+        soundSequence.add(sound);
     }
 
     @Override
@@ -94,14 +93,6 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence.isEmpty();
     }
 
-    @Nullable
-    public Instrument getInstrument() {
-        if (soundSequence.isEmpty()) {
-            return instrument;
-        }
-        return soundSequence.get(0).getInstrument();
-    }
-
     public boolean isOwnSoundtrack() {
         return isOwnSoundtrack;
     }
@@ -114,8 +105,7 @@ public class SingleSoundtrack extends Soundtrack {
             if (sound.getStartTime() == currentTime) {
                 sounds.add(sound);
             }
-            Instrument instrument = getInstrument();
-            boolean soundNeedsToBeResumed = instrument != null && instrument.soundsNeedToBeResumed();
+            boolean soundNeedsToBeResumed = getInstrument().soundsNeedToBeResumed();
 
             if (finishSounds && soundNeedsToBeResumed) {
                 // finish sounds that were interrupted because of pause or that were jumped to because of forwarding
@@ -127,18 +117,27 @@ public class SingleSoundtrack extends Soundtrack {
         return sounds;
     }
 
+    @NonNull
+    public String getID() {
+        return String.valueOf(userID).concat(instrument).concat(String.valueOf(number));
+    }
+
     public int getUserID() {
         return userID;
     }
 
     @NonNull
-    public List<Sound> getSoundSequence() {
-        return soundSequence;
+    public Instrument getInstrument() {
+        return Instruments.fromServer(instrument);
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     @NonNull
-    public List<ServerSound> getServerSoundSequence() {
-        return serverSoundSequence;
+    public List<Sound> getSoundSequence() {
+        return soundSequence;
     }
 
     @Nullable
@@ -148,7 +147,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public SingleSoundtrack clone(@NonNull Context context) {
-        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.soundSequence);
+        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.instrument, -1, this.soundSequence);
         cloned.loadSounds(context);
         return cloned;
     }

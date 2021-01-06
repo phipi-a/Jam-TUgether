@@ -6,19 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.TimeUtils;
 
 public class Drums extends Instrument {
 
@@ -27,15 +20,19 @@ public class Drums extends Instrument {
 
     @RawRes
     public static final int SNARE = SoundResource.SNARE.getResource();
+    public static final int SNARE_PITCH = 50;
 
     @RawRes
     public static final int KICK = SoundResource.KICK.getResource();
+    public static final int KICK_PITCH = 30;
 
     @RawRes
     public static final int HAT = SoundResource.HAT.getResource();
+    public static final int HAT_PITCH = 70;
 
     @RawRes
     public static final int CYMBAL = SoundResource.CYMBAL.getResource();
+    public static final int CYMBAL_PITCH = 90;
 
     public Drums() {
         super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
@@ -43,13 +40,13 @@ public class Drums extends Instrument {
 
     @RawRes
     @Override
-    public int getSoundResource(int element) {
-        switch (element) {
-            case 0:
+    public int getSoundResource(int pitch) {
+        switch (pitch) {
+            case SNARE_PITCH:
                 return SNARE;
-            case 1:
+            case KICK_PITCH:
                 return KICK;
-            case 2:
+            case HAT_PITCH:
                 return HAT;
             default:
                 return CYMBAL;
@@ -72,38 +69,26 @@ public class Drums extends Instrument {
         return false;
     }
 
-    @NonNull
-    @Override
-    public SingleSoundtrack generateSoundtrack(int userID) {
-        Random random = new Random();
-        List<Sound> soundSequence = new ArrayList<>();
-        for (int j = 0; j < 20; j++) {
-            int element = random.nextInt(4);
-            soundSequence.add(new Sound(getServerString(), element, (int) TimeUtils.ONE_SECOND * j, (int) TimeUtils.ONE_SECOND * (j + 1), -1));
-        }
-        return new SingleSoundtrack(userID, soundSequence);
-    }
-
     public void playSnare() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(SNARE, 1);
         }
     }
 
     public void playKick() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(KICK, 1);
         }
     }
 
     public void playHat() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(HAT, 1);
         }
     }
 
     public void playCymbal() {
-        if(soundPool != null) {
+        if (soundPool != null) {
             soundPool.playSoundRes(CYMBAL, 1);
         }
     }
