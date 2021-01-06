@@ -8,7 +8,7 @@ const roomSchema = new Schema({
   lastAccessAdmin: { type: Date, default: Date.now },
   adminBytes: String,
   numberOfUser: Number,
-  soundtracks: [{ userID: Number, instrument: String, soundSequence: [{ _id: false, starttime: Number, endtime: Number, pitch: Number }] }]
+  soundtracks: [{ userID: Number, instrument: String, number: Number, soundSequence: [{ _id: false, starttime: Number, endtime: Number, pitch: Number }] }]
 }, {
   collection: 'rooms'
 })

@@ -1,6 +1,6 @@
 DELETE  http://localhost:3000/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjMyMTI0NzAyNzVjOWY2NmM1ZTBlIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5MDUzMDI1LCJleHAiOjE2MDkwNTQ4MjV9.bqe8_OZnAXKT6ujr9fBz8xNLLgJ518GOn6XLhQSr7yA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijg0MmI1MzViYTMyOWExYzhiYjllIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzEyMTY4LCJleHAiOjE2MDk3MTM5Njh9.GsdfRxw2oDCfLke1fj4O5xzlFHcF83eVnZ_LoSs5AEw '
 
 {
   "roomID" : "1",
@@ -39,3 +39,15 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 {
   "roomID": "1"
 }
+###
+DELETE   http://localhost:3000/api/room/1
+Content-Type: application/json
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijc2YWY2YzQzM2E1YjA2MDdjZTkxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5OTU1MzY2LCJleHAiOjE2MDk5NTcxNjZ9.gOhdWbDIzpAPQ-uF_lAT5VO7mYf7FYAXYcmTkz2ov8s '
+
+{
+  "roomID" : "1",
+  "userID" : "1",
+  "instrument" : "instrument123",
+  "number" : "1"
+}
+###

@@ -3,7 +3,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr, whoAmI } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
-const { receiveTrack, sendTracks, checkAdmin } = require('../js/room.js')
+const { receiveTrack, sendTracks, checkAdmin, deleteTracks } = require('../js/room.js')
 const { fillRoom } = require('../js/prepareRoom.js')
 
 const app = express()
@@ -123,7 +123,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 /**
  * @openapi
  * /api/delete-room:
- *   post:
+ *   delete:
  *     summary: Delete existing room.
  *     parameters:
  *       - in: body
@@ -297,6 +297,36 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
     receiveTrack(req, res, req.params.id)
   }
 })
+
+/**
+ * @openapi
+ * /api/room/:id:
+ *   delete:
+ *     summary: Returns success if specified track has been deleted
+ *     description: Deletes specified track
+ *     parameters:
+ *       - roomID: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: success
+ *       500:
+ *         description: Failure
+ */
+roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  if (room == null) {
+    res.status(500).json({ description: 'Room does not exist!' })
+  } else {
+    await updateRoom(req.params.id)
+    deleteTracks(req, res, req.params.id)
+  }
+})
+
 /**
  * @openapi
  * /api/room/:id/admin:
