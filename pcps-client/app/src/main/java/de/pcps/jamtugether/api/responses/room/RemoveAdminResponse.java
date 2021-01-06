@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.api.responses.base.SimpleResponse;
 
-public class DeleteRoomResponse extends SimpleResponse {
+public class RemoveAdminResponse extends SimpleResponse {
 
-    public DeleteRoomResponse(@NonNull String description) {
+    public RemoveAdminResponse(@NonNull String description) {
         super(description);
     }
 }

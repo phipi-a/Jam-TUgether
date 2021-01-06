@@ -37,9 +37,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout">
 
+            <!-- width and height of these buttons are calculated later based on screen width -->
             <ImageButton
                 android:id="@+id/hat_button"
-                android:layout_width="@dimen/drums_element_width_default"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
                 android:padding="@dimen/drums_element_padding"
@@ -51,7 +52,7 @@
 
             <ImageButton
                 android:id="@+id/kick_button"
-                android:layout_width="@dimen/drums_element_width_default"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
                 android:padding="@dimen/drums_element_padding"
@@ -63,7 +64,7 @@
 
             <ImageButton
                 android:id="@+id/snare_button"
-                android:layout_width="@dimen/drums_element_width_default"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
                 android:padding="@dimen/drums_element_padding"
@@ -75,7 +76,7 @@
 
             <ImageButton
                 android:id="@+id/cymbal_button"
-                android:layout_width="@dimen/drums_element_width_default"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
                 android:padding="@dimen/drums_element_padding"

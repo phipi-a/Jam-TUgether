@@ -73,10 +73,11 @@ public class CreateRoomViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull CreateRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
-                roomID = response.getRoomID();
-                // todo set userID
 
+                roomID = response.getRoomID();
+                userID = response.getUserID();
                 token = response.getToken();
+
                 navigateToAdminRoom.setValue(true);
             }
 

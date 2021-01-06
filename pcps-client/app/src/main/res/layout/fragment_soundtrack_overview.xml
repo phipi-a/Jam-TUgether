@@ -9,8 +9,12 @@
         <import type="android.view.View" />
 
         <variable
-            name="viewModel"
+            name="soundtrackOverviewViewModel"
             type="de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel" />
+
+        <variable
+            name="roomViewModel"
+            type="de.pcps.jamtugether.ui.room.RoomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/room_id_text_view_margin_start"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
-            android:text="@{@string/room_format(viewModel.getRoomID())}"
+            android:text="@{@string/room_format(soundtrackOverviewViewModel.getRoomID())}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,10 +38,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
             android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
-            android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
+            android:onClick="@{() -> soundtrackOverviewViewModel.onDeleteRoomButtonClicked()}"
             android:text="@string/delete_room"
             android:textSize="16dp"
-            android:visibility="@{viewModel.getUserIsAdmin() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{roomViewModel.getUserIsAdmin() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,6 +66,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/composite_soundtrack_layout" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/iconColor"
+            android:visibility="@{soundtrackOverviewViewModel.progressBarVisibility}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

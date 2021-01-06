@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -17,19 +18,15 @@ import javax.inject.Singleton;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
+import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
-import de.pcps.jamtugether.api.services.room.RoomService;
-import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
-import de.pcps.jamtugether.api.services.room.bodies.DeleteTrackBody;
+import de.pcps.jamtugether.api.services.room.bodies.DeleteSoundtrackBody;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.audio.instrument.drums.Drums;
-import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
+import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import retrofit2.Call;
 
 @Singleton
@@ -39,77 +36,172 @@ public class SoundtrackRepository {
     private final SoundtrackService soundtrackService;
 
     @NonNull
+    private final SoundtrackNumbersDatabase soundtrackNumbersDatabase;
+
+    @NonNull
     private final Context context;
 
     private int currentRoomID;
+    private int currentUserID;
 
-    private boolean fetching;
-
-
-
-
-    @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>();
+    @Nullable
+    private String currentToken;
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+    private final Handler handler = new Handler();
+
+    @Nullable
+    private Runnable soundtrackFetchingRunnable;
+
+    @NonNull
+    private final List<SingleSoundtrack> previousSoundtracks = new ArrayList<>();
+
+    @NonNull
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(new ArrayList<>());
+
+    @NonNull
+    private final MutableLiveData<Boolean> showCompositionIsLoading = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
+
+    private boolean loadingCompositionOfCurrentRoomShown;
+    private boolean networkErrorOfCurrentRoomShown;
 
     @Inject
-    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull Context context, @NonNull RoomService roomService) {
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull SoundtrackNumbersDatabase soundtrackNumbersDatabase, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
+        this.soundtrackNumbersDatabase = soundtrackNumbersDatabase;
         this.context = context;
     }
 
-    public void deleteTrack(int roomID, int userID, @NonNull String instrument, int startTime, int endTime, int pitch, @NonNull String token, @NonNull JamCallback<DeleteTrackResponse> callback) {
-        DeleteTrackBody body = new DeleteTrackBody(roomID, userID, instrument, startTime, endTime, pitch);
-        Call<DeleteTrackResponse> call = soundtrackService.deleteTrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), body);
+    private void getComposition(@NonNull String token, int roomID, @NonNull JamCallback<Composition> callback) {
+        Call<Composition> call = soundtrackService.getComposition(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
         call.enqueue(callback);
     }
 
-    public void fetchSoundtracks(int currentRoomID) {
+    public void uploadSoundtracks(@NonNull String token, int roomID, @NonNull List<SingleSoundtrack> soundtracks, @NonNull JamCallback<UploadSoundtracksResponse> callback) {
+        UploadSoundtracksBody body = new UploadSoundtracksBody(soundtracks);
+        Call<UploadSoundtracksResponse> call = soundtrackService.uploadSoundtracks(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
+        call.enqueue(callback);
+    }
+
+    public void deleteSoundtrack(@NonNull String token, int roomID, @NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<DeleteTrackResponse> callback) {
+        DeleteSoundtrackBody body = new DeleteSoundtrackBody(soundtrack.getUserID(), soundtrack.getInstrument().getServerString(), soundtrack.getNumber());
+        Call<DeleteTrackResponse> call = soundtrackService.deleteSoundtrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
+        call.enqueue(callback);
+    }
+
+    public void onTokenChanged(@NonNull String currentToken) {
+        this.currentToken = currentToken;
+    }
+
+    public void fetchSoundtracks(int currentRoomID, int currentUserID, @NonNull String currentToken, boolean requestedFromUser) {
         this.currentRoomID = currentRoomID;
-        fetchSoundtracks();
-        if (!fetching) {
-            startFetchingSoundtracks();
-            fetching = true;
+        this.currentUserID = currentUserID;
+        this.currentToken = currentToken;
+
+        fetchSoundtracks(requestedFromUser);
+
+        if (!requestedFromUser) {
+            if (soundtrackFetchingRunnable == null) {
+                startFetchingSoundtracks();
+            }
         }
     }
 
     private void startFetchingSoundtracks() {
-        Handler handler = new Handler();
-        new Runnable() {
+        soundtrackFetchingRunnable = new Runnable() {
 
             @Override
             public void run() {
-                fetchSoundtracks();
+                if (currentToken == null || currentRoomID == -1 || currentUserID == -1) {
+                    return;
+                }
+                fetchSoundtracks(false);
                 handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
             }
-        }.run();
+        };
+        soundtrackFetchingRunnable.run();
     }
 
-    private void fetchSoundtracks() {
-        allSoundtracks.setValue(generateTestSoundtracks());
-    }
-
-    @NonNull
-    private List<SingleSoundtrack> generateTestSoundtracks() {
-        List<SingleSoundtrack> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Instrument instrument = Instruments.ARRAY[i % 3];
-            SingleSoundtrack singleSoundtrack = instrument.generateSoundtrack(i);
-            singleSoundtrack.loadSounds(context);
-            list.add(singleSoundtrack);
+    private void fetchSoundtracks(boolean requestedFromUser) {
+        if(!loadingCompositionOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
+            showCompositionIsLoading.setValue(true);
+            loadingCompositionOfCurrentRoomShown = true;
         }
-        return list;
+        getComposition(currentToken, currentRoomID, new JamCallback<Composition>() {
+            @Override
+            public void onSuccess(@NonNull Composition response) {
+                showCompositionIsLoading.setValue(false);
+                List<SingleSoundtrack> newSoundtracks = new ArrayList<>();
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    if (soundtrack != null) {
+                        soundtrack.loadSounds(context);
+                        newSoundtracks.add(soundtrack);
+                    }
+                }
+                allSoundtracks.setValue(newSoundtracks);
+
+                List<SingleSoundtrack> ownDeletedSoundtracks = getOwnDeletedSoundtracks(newSoundtracks);
+                for(SingleSoundtrack soundtrack : ownDeletedSoundtracks) {
+                    soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
+                }
+
+                previousSoundtracks.clear();
+                previousSoundtracks.addAll(newSoundtracks);
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                showCompositionIsLoading.setValue(false);
+                if (!networkErrorOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
+                    compositionNetworkError.setValue(error);
+                    networkErrorOfCurrentRoomShown = true;
+                }
+            }
+        });
     }
 
-    // updates soundtracks locally so the change can be visible immediately
+    private List<SingleSoundtrack> getOwnDeletedSoundtracks(@NonNull List<SingleSoundtrack> newSoundtracks) {
+        List<SingleSoundtrack> ownDeletedSoundtracks = new ArrayList<>();
+        for(SingleSoundtrack soundtrack : previousSoundtracks) {
+            if(!isInList(soundtrack, newSoundtracks) && soundtrack.getUserID() == currentUserID) {
+                ownDeletedSoundtracks.add(soundtrack);
+            }
+        }
+        return ownDeletedSoundtracks;
+    }
+
+    private boolean isInList(@NonNull SingleSoundtrack soundtrack, @NonNull List<SingleSoundtrack> list) {
+        for(SingleSoundtrack element : list) {
+            if(element.getID().equals(soundtrack.getID())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void onUserLeftRoom() {
+        if (soundtrackFetchingRunnable != null) {
+            handler.removeCallbacks(soundtrackFetchingRunnable);
+            soundtrackFetchingRunnable = null;
+        }
+        currentToken = null;
+        currentRoomID = -1;
+        currentUserID = -1;
+        loadingCompositionOfCurrentRoomShown = false;
+        networkErrorOfCurrentRoomShown = false;
+        previousSoundtracks.clear();
+    }
+
+    // updates soundtracks locally so that the change can be visible immediately
     public void updateAllSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
     }
 
-    public void onNetworkErrorShown() {
-        networkError.setValue(null);
+    public void onCompositionNetworkErrorShown() {
+        compositionNetworkError.setValue(null);
     }
 
     @NonNull
@@ -123,7 +215,12 @@ public class SoundtrackRepository {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Boolean> getShowCompositionIsLoading() {
+        return showCompositionIsLoading;
+    }
+
+    @NonNull
+    public LiveData<Error> getCompositionNetworkError() {
+        return compositionNetworkError;
     }
 }

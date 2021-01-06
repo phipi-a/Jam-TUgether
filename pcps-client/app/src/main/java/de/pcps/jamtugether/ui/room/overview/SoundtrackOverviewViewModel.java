@@ -1,11 +1,13 @@
 package de.pcps.jamtugether.ui.room.overview;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,13 +21,16 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
+import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
+import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import de.pcps.jamtugether.ui.room.UserStatusChangeCallback;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -47,19 +52,19 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @Inject
     SoundtrackController soundtrackController;
 
+    @Inject
+    SoundtrackNumbersDatabase soundtrackNumbersDatabase;
+
+    @Inject
+    LatestSoundtracksDatabase latestSoundtracksDatabase;
+
     private final int roomID;
 
     @NonNull
     private final String password;
 
     @NonNull
-    private final String token;
-
-    @NonNull
-    private final UserStatusChangeCallback userStatusChangeCallback;
-
-    @NonNull
-    private final MutableLiveData<Boolean> userIsAdmin;
+    private String token;
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>();
@@ -79,13 +84,11 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token, boolean userIsAdmin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+    public SoundtrackOverviewViewModel(int roomID, @NonNull String password, @NonNull String token) {
         AppInjector.inject(this);
         this.roomID = roomID;
         this.password = password;
         this.token = token;
-        this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
-        this.userStatusChangeCallback = userStatusChangeCallback;
     }
 
     public void onNewSoundtracks(@NonNull List<SingleSoundtrack> newSoundtracks) {
@@ -150,7 +153,19 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         }
         soundtrackRepository.updateAllSoundtracks(newList);
 
-        // todo tell server
+        soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
+
+        soundtrackRepository.deleteSoundtrack(token, roomID, soundtrack, new JamCallback<DeleteTrackResponse>() {
+            @Override
+            public void onSuccess(@NonNull DeleteTrackResponse response) {
+                Timber.d("onSuccess()");
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
 
         soundtrackToBeDeleted = null;
     }
@@ -159,6 +174,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         roomRepository.deleteRoom(roomID, password, token, new JamCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
+                onRoomDeleted();
                 navigateBack.setValue(true);
             }
 
@@ -167,6 +183,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
                 networkError.setValue(error);
             }
         });
+    }
+
+    public void onTokenChanged(@NonNull String token) {
+        this.token = token;
     }
 
     public void onDeleteRoomButtonClicked() {
@@ -184,7 +204,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onSoundtrackRepositoryNetworkErrorShown() {
-        soundtrackRepository.onNetworkErrorShown();
+        soundtrackRepository.onCompositionNetworkErrorShown();
     }
 
     public void onNetworkErrorShown() {
@@ -199,9 +219,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         showRoomDeletionConfirmDialog.setValue(false);
     }
 
-    public void onRoomDeleted() {
-        navigateBack.setValue(false);
+    private void onRoomDeleted() {
         soundtrackController.stopPlayers();
+        latestSoundtracksDatabase.onUserLeftRoom();
+    }
+
+    public void onNavigatedBack() {
+        navigateBack.setValue(false);
     }
 
     public int getRoomID() {
@@ -211,11 +235,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
         return soundtrackController;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getUserIsAdmin() {
-        return userIsAdmin;
     }
 
     @NonNull
@@ -239,8 +258,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
+    public LiveData<Integer> getProgressBarVisibility() {
+        return Transformations.map(soundtrackRepository.getShowCompositionIsLoading(), showLoading -> showLoading ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @NonNull
     public LiveData<Error> getSoundtrackRepositoryNetworkError() {
-        return soundtrackRepository.getNetworkError();
+        return soundtrackRepository.getCompositionNetworkError();
     }
 
     @NonNull
@@ -258,17 +282,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         @NonNull
         private final String token;
 
-        private final boolean admin;
-
-        @NonNull
-        private final UserStatusChangeCallback userStatusChangeCallback;
-
-        public Factory(int roomID, @NonNull String password, @NonNull String token, boolean admin, @NonNull UserStatusChangeCallback userStatusChangeCallback) {
+        public Factory(int roomID, @NonNull String password, @NonNull String token) {
             this.roomID = roomID;
             this.password = password;
             this.token = token;
-            this.admin = admin;
-            this.userStatusChangeCallback = userStatusChangeCallback;
         }
 
         @SuppressWarnings("unchecked")
@@ -276,7 +293,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(SoundtrackOverviewViewModel.class)) {
-                return (T) new SoundtrackOverviewViewModel(roomID, password, token, admin, userStatusChangeCallback);
+                return (T) new SoundtrackOverviewViewModel(roomID, password, token);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

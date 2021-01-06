@@ -5,9 +5,10 @@ const roomSchema = new Schema({
   roomID: Number,
   password: String,
   updated: { type: Date, default: Date.now },
+  lastAccessAdmin: { type: Date, default: Date.now },
   adminBytes: String,
   numberOfUser: Number,
-  soundtracks: [{ _id: false, userID: Number, instrument: String, soundSequence: [{ _id: false, starttime: Number, endtime: Number, pitch: Number }] }]
+  soundtracks: [{ userID: Number, instrument: String, soundSequence: [{ _id: false, starttime: Number, endtime: Number, pitch: Number }] }]
 }, {
   collection: 'rooms'
 })

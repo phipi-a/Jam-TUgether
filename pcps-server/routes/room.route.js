@@ -1,10 +1,10 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
-const { checkPwdLen, createToken, verify, verifyAdmin, PwErr } = require('../js/auth.js')
+const { checkPwdLen, createToken, verify, verifyAdmin, PwErr, whoAmI } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
-const { receiveTrack, sendTracks } = require('../js/room.js')
-const { fillRoom} = require('../js/prepareRoom.js')
+const { receiveTrack, sendTracks, checkAdmin } = require('../js/room.js')
+const { fillRoom } = require('../js/prepareRoom.js')
 
 const app = express()
 
@@ -14,6 +14,9 @@ const roomRoute = express.Router()
 // DB schema
 const RoomSchema = require('../model/room.model')
 const { exists } = require('../model/room.model')
+
+// New errors
+const ROOM_LIMIT_ERROR = new Error('Limit for number of rooms is reached!')
 
 // Create room function
 async function createRoom (roomID, password, object) {
@@ -29,7 +32,12 @@ async function createRoom (roomID, password, object) {
 // Update "updated" to current time
 async function updateRoom (roomID) {
   const newDate = new Date(Date.now())
-  const room = RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
+  await RoomSchema.updateOne({ roomID: roomID }, { updated: newDate }).exec()
+}
+// Update "lastAccessAdmin" to current time
+async function updateAdminAccess (roomID) {
+  const newDate = new Date(Date.now())
+  await RoomSchema.updateOne({ roomID: roomID }, { lastAccessAdmin: newDate }).exec()
 }
 
 /**
@@ -53,6 +61,8 @@ async function updateRoom (roomID) {
  *     responses:
  *       201:
  *         description: roomID + JWToken
+ *       503:
+ *         description: Limit for number of rooms reached
  *       500:
  *         description: Failure
  */
@@ -61,7 +71,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
     // Check if the number of rooms is below limit (limit: 10)
     const numberOfRooms = await RoomSchema.countDocuments().exec()
     if ((Number(numberOfRooms) + 1) > 10) {
-      throw new Error('Limit for number of rooms is reached')
+      throw ROOM_LIMIT_ERROR
     }
 
     // Check password, limit to n characters
@@ -101,6 +111,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
   } catch (err) {
     if (err === PwErr) {
       res.status(413).send('Password too large.')
+    } else if (err === ROOM_LIMIT_ERROR) {
+      res.status(503).send('Limit for number of rooms is reached.')
     } else {
       console.log(err)
       res.status(500).send('Couldn\'t create room.')
@@ -285,34 +297,68 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
     receiveTrack(req, res, req.params.id)
   }
 })
-
 /**
  * @openapi
- * /api/test:
- *   post:
- *     summary:
- *      Test request, simulates posting.
+ * /api/room/:id/admin:
+ *   get:
+ *     summary: Returns "Admin" if admin else it returns "not Admin" with flag= true for new admin token or "not Admin" with flag = false
+ *     description: Checks if user is Admin and if new Admin is needed. In case Admin is needed sends new Admin token
  *     parameters:
- *       - in: body
- *         name: test
- *         description: Send a Test Post.
+ *       - roomID: id
+ *         in: path
+ *         required: true
  *         schema:
- *           type: object
- *           required:
- *             - JWToken in header field 'Authorization'
+ *           type: integer
+ *           minimum: 1
  *     responses:
  *       200:
- *         description: 'test'
- *       403:
- *         description: Forbidden (invalid token)
+ *         description: if flag true than token else no token
+ *
+ *       202:
+ *         description: {description: Admin}
+ *       500:
+ *         description: Failure
  */
-roomRoute.post('/test', verify, async (req, res) => {
-  receiveTrack(req, res)
+roomRoute.get('/room/:id/admin', verify, async (req, res) => {
+  const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
+  if (room == null) {
+    res.status(500).send('Room does not exist!')
+  }
+  await updateRoom(room.roomID)
+  const priviliges = await whoAmI(req, res, room)
+  if (priviliges === 'Admin') {
+    await updateAdminAccess(room.roomID)
+    res.status(202).json(priviliges)
+  } else {
+    const answer = await checkAdmin(room.lastAccessAdmin, room.roomID)
+    answer.description = answer.flag ? 'new Admin' : 'Not Admin'
+    res.status(200).json(answer)
+  }
 })
-
-roomRoute.post('/test2', async (req, res) => {
-  updateRoom(req.body.roomID)
-  res.status(200).send('test2')
-})
+/**
+ * @openapi
+ * /api/room/:id/admin:
+ *   delete:
+ *     summary: Returns success if Admin left
+ *     description: Updates DB such that new Admin is needed
+ *     parameters:
+ *       - roomID: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: {description: "Success"}
+ *       500:
+ *         description: Failure
+ */
+roomRoute.delete('/room/:id/admin', verifyAdmin, async (req, res) => {
+  // update last access of admin to high 
+  const newDate = new Date(Date.now() - 18000000)
+  await RoomSchema.updateOne({ roomID: req.body.roomID }, { lastAccessAdmin: newDate }).exec()
+  res.status(200).json({ description: 'Success' })
+}
+)
 
 module.exports = roomRoute

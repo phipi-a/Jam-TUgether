@@ -9,7 +9,6 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public abstract class Instrument {
 
@@ -99,10 +98,6 @@ public abstract class Instrument {
     public abstract boolean soundsNeedToBeStopped();
 
     public abstract boolean soundsNeedToBeResumed();
-
-    // todo remove later
-    @NonNull
-    public abstract SingleSoundtrack generateSoundtrack(int userID);
 
     public interface ClickListener {
         void onInstrumentClicked(@NonNull Instrument instrument);

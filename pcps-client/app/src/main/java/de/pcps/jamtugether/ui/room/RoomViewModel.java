@@ -8,17 +8,40 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.base.Error;
+import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
+import timber.log.Timber;
 
-public class RoomViewModel extends ViewModel implements UserStatusChangeCallback {
+public class RoomViewModel extends ViewModel {
 
     @Inject
     SoundtrackController soundtrackController;
 
+    @Inject
+    RoomRepository roomRepository;
+
+    @Inject
+    SoundtrackRepository soundtrackRepository;
+
+    @Inject
+    SoundtrackNumbersDatabase soundtrackNumbersDatabase;
+
     private final int roomID;
 
-    private boolean userIsAdmin;
+    @NonNull
+    private final MutableLiveData<String> token = new MutableLiveData<>();
+
+    @NonNull
+    private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
+
+    @NonNull
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
@@ -26,19 +49,12 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    public RoomViewModel(int roomID, boolean userIsAdmin) {
+    public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
+        // todo start fetching admin info
         this.roomID = roomID;
-        this.userIsAdmin = userIsAdmin;
-    }
-
-    public void handleBackPressed() {
-        showLeaveRoomConfirmationDialog.setValue(true);
-    }
-
-    @Override
-    public void onUserStatusChanged(boolean admin) {
-        this.userIsAdmin = admin;
+        this.token.setValue(token);
+        this.userIsAdmin.setValue(userIsAdmin);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -47,17 +63,57 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
     public void onLeaveRoomConfirmationButtonClicked() {
         navigateBack.setValue(true);
+        soundtrackRepository.onUserLeftRoom();
         onUserLeft();
     }
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        // todo tell sever
-        //  add admin info
+        if (userIsAdmin.getValue()) {
+            onAdminLeft();
+        }
+        soundtrackNumbersDatabase.onUserLeftRoom();
+    }
+
+    private void onAdminLeft() {
+        roomRepository.removeAdmin(roomID, token.getValue(), new JamCallback<RemoveAdminResponse>() {
+            @Override
+            public void onSuccess(@NonNull RemoveAdminResponse response) {
+                Timber.d("onSuccess()");
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
+    }
+
+    public void handleBackPressed() {
+        showLeaveRoomConfirmationDialog.setValue(true);
+    }
+
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
     }
 
     public void onNavigatedBack() {
         this.navigateBack.setValue(false);
+    }
+
+    @NonNull
+    public LiveData<String> getToken() {
+        return token;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUserIsAdmin() {
+        return userIsAdmin;
+    }
+
+    @NonNull
+    public LiveData<Error> getNetworkError() {
+        return networkError;
     }
 
     @NonNull
@@ -74,10 +130,14 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
 
         private final int roomID;
 
+        @NonNull
+        private final String token;
+
         private final boolean userIsAdmin;
 
-        public Factory(int roomID, boolean userIsAdmin) {
+        public Factory(int roomID, @NonNull String token, boolean userIsAdmin) {
             this.roomID = roomID;
+            this.token = token;
             this.userIsAdmin = userIsAdmin;
         }
 
@@ -86,7 +146,7 @@ public class RoomViewModel extends ViewModel implements UserStatusChangeCallback
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomViewModel.class)) {
-                return (T) new RoomViewModel(roomID, userIsAdmin);
+                return (T) new RoomViewModel(roomID, token, userIsAdmin);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

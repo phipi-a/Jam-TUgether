@@ -1,4 +1,7 @@
 module.exports = {
   db: 'mongodb://localhost:27017/jamtugether',
-  useUnifiedTopology: true
+  options: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
 }

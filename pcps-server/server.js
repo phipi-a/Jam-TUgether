@@ -9,7 +9,7 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 
 // Connecting MongoDB
-mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbConfig.db, dbConfig.options)
   .catch(error => console.log('Couldn\'t connect database ' + error))
 
 const db = mongoose.connection
@@ -27,14 +27,14 @@ app.use(express.urlencoded({ extended: false }))
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: 'JamTugether API',
+      title: 'JamTUgether API',
       version: '1.0.0'
     }
   },
   // In which files the documentation comments are
   apis: ['server.js', 'routes/room.route.js'],
   // Define endpoint in documentation (doesn't work in swagger-ui-express 4.1.5)
-  servers: [{ url: '/api', description: 'The API server'}]
+  servers: [{ url: '/api', description: 'The API server' }]
 }
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions)

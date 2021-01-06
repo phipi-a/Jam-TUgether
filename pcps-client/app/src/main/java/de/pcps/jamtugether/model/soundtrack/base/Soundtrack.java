@@ -15,14 +15,14 @@ public abstract class Soundtrack {
     public static final long MAX_TIME = TimeUtils.FIVE_MINUTES;
 
     @NonNull
-    private final MutableLiveData<State> state;
+    private transient final MutableLiveData<State> state;
 
     @NonNull
-    private final MutableLiveData<Float> progress;
+    private transient final MutableLiveData<Float> progress;
 
-    private int progressInMillis;
+    private transient int progressInMillis;
 
-    private float volume;
+    private transient float volume;
 
     public Soundtrack() {
         this.state = new MutableLiveData<>(State.IDLE);

@@ -2,6 +2,8 @@ package de.pcps.jamtugether.api;
 
 import androidx.annotation.NonNull;
 
+import java.io.IOException;
+
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.GenericError;
 import retrofit2.Call;
@@ -13,9 +15,9 @@ public abstract class JamCallback<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        if(response.isSuccessful()) {
+        if (response.isSuccessful()) {
             T body = response.body();
-            if(body == null) {
+            if (body == null) {
                 onError(new GenericError());
             } else {
                 onSuccess(body);

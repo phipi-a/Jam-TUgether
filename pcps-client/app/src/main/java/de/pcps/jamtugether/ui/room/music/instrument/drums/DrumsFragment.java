@@ -29,7 +29,7 @@ public class DrumsFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(userID, musicianViewViewModel);
+            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
         }
@@ -38,12 +38,11 @@ public class DrumsFragment extends InstrumentFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         FragmentDrumsBinding binding = FragmentDrumsBinding.inflate(inflater, container, false);
         binding.setViewModel((DrumsViewModel) instrumentViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
-
-        observeCompositeSoundtrack();
 
         return binding.getRoot();
     }

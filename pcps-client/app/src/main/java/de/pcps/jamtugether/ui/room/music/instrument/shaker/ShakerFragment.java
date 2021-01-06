@@ -37,7 +37,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(userID, musicianViewViewModel);
+            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
             getLifecycle().addObserver(instrumentViewModel);
 
@@ -54,14 +54,13 @@ public class ShakerFragment extends InstrumentFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         FragmentShakerBinding binding = FragmentShakerBinding.inflate(inflater, container, false);
         shakerViewModel = (ShakerViewModel) instrumentViewModel;
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(shakerViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
-
-        observeCompositeSoundtrack();
 
         return binding.getRoot();
     }
@@ -78,8 +77,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onResume() {
         super.onResume();
         if (accelerometerSensor != null) {
-            mSensorManager.registerListener(shakerViewModel, accelerometerSensor,
-                    SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(shakerViewModel, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         }
     }
 }

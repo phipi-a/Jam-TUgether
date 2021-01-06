@@ -32,6 +32,8 @@ public class RoomFragment extends TabLayoutFragment {
 
     private RoomViewModel roomViewModel;
 
+    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,11 @@ public class RoomFragment extends TabLayoutFragment {
             this.token = args.getToken();
             this.userIsAdmin = args.getAdmin();
 
-            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, userIsAdmin);
+            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, token, userIsAdmin);
             roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
+
+            String currentToken = roomViewModel.getToken().getValue();
+            compositeSoundtrackViewModel = new ViewModelProvider(this, new CompositeSoundtrackViewModel.Factory(roomID, userID, currentToken)).get(CompositeSoundtrackViewModel.class);
         }
     }
 
@@ -53,10 +58,19 @@ public class RoomFragment extends TabLayoutFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        roomViewModel.getToken().observe(getViewLifecycleOwner(), token -> compositeSoundtrackViewModel.onTokenChanged(token));
+
         roomViewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.leave_room, R.string.leave_room_confirmation, () -> roomViewModel.onLeaveRoomConfirmationButtonClicked());
+                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> roomViewModel.onLeaveRoomConfirmationButtonClicked());
                 roomViewModel.onLeaveRoomConfirmationDialogShown();
+            }
+        });
+
+        roomViewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if (networkError != null) {
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
+                roomViewModel.onNetworkErrorShown();
             }
         });
 
@@ -95,7 +109,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, userID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
             }
 
             @Override

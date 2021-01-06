@@ -35,34 +35,38 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     private final String instrument;
 
+    private final int number;
+
     @NonNull
     private final List<Sound> soundSequence;
 
-    private final boolean isOwnSoundtrack;
+    private transient final boolean isOwnSoundtrack;
 
     @Nullable
-    private BaseSoundPool soundPool;
+    private transient BaseSoundPool soundPool;
 
-    public SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
+    // soundtrack from server
+    public SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence) {
+        this(userID, instrument, number, soundSequence, false);
+    }
+
+    // empty soundtrack (never sent to server)
+    public SingleSoundtrack() {
+        this(-1, Instruments.FALLBACK.getServerString(), -1, new ArrayList<>());
+    }
+
+    // own soundtrack object (starts with empty array list)
+    public SingleSoundtrack(int userID, @NonNull String instrument, int number) {
+        this(userID, instrument, number, new ArrayList<>(), true);
+    }
+
+    private SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
         super();
         this.userID = userID;
         this.instrument = instrument;
+        this.number = number;
         this.soundSequence = soundSequence;
         this.isOwnSoundtrack = isOwnSoundtrack;
-    }
-
-    // just used for empty soundtrack, this is never sent to server
-    public SingleSoundtrack() {
-        this(-1, Instruments.FALLBACK.getServerString(), new ArrayList<>(), false);
-    }
-
-    // own soundtrack object
-    public SingleSoundtrack(int userID, @NonNull String instrument) {
-        this(userID, instrument, new ArrayList<>(), true);
-    }
-
-    public SingleSoundtrack(int userID, @NonNull String instrument, @NonNull List<Sound> soundSequence) {
-        this(userID, instrument, soundSequence, false);
     }
 
     public void loadSounds(@NonNull Context context) {
@@ -114,7 +118,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public String getID() {
-        return String.valueOf(userID).concat(instrument);
+        return String.valueOf(userID).concat(instrument).concat(String.valueOf(number));
     }
 
     public int getUserID() {
@@ -124,6 +128,10 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     public Instrument getInstrument() {
         return Instruments.fromServer(instrument);
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     @NonNull
@@ -138,7 +146,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public SingleSoundtrack clone(@NonNull Context context) {
-        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.instrument, this.soundSequence);
+        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.instrument, -1, this.soundSequence);
         cloned.loadSounds(context);
         return cloned;
     }
