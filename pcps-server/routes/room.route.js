@@ -110,12 +110,12 @@ roomRoute.post('/create-room', async (req, res, next) => {
     res.status(201).send(createJSON(newRoomID.toString(), token, userID.toString()))
   } catch (err) {
     if (err === PwErr) {
-      res.status(413).send('Password too large.')
+      res.status(413).json({ description: 'Password too large.' })
     } else if (err === ROOM_LIMIT_ERROR) {
-      res.status(503).send('Limit for number of rooms is reached.')
+      res.status(503).json({ description: 'Limit for number of rooms is reached.' })
     } else {
       console.log(err)
-      res.status(500).send('Couldn\'t create room.')
+      res.status(500).json({ description: 'Couldn\'t create room.' })
     }
   }
 })
@@ -157,7 +157,7 @@ roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
-      return res.status(401).send('No room with matching roomId found')
+      return res.status(401).json({ description: 'No room with matching roomId found' })
     }
     // Check pw length
     checkPwdLen(req.body.password, res)
@@ -165,18 +165,18 @@ roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
     if (await bcrypt.compare(req.body.password, room.password)) {
       RoomSchema.deleteOne({ roomID: req.body.roomID }, (err, obj) => {
         if (err) {
-          res.status(501).send(' Error, cannot delete room')
+          res.status(501).json({ description: 'Error, cannot delete room' })
         }
         res.status(200).json({ description: 'Deleted room' })
       })
     } else {
-      res.status(401).send('Wrong Password.')
+      res.status(401).json({ description: 'Wrong Password.' })
     }
   } catch (err) {
     if (err === PwErr) {
-      res.status(413).send('Password too large.')
+      res.status(413).json({ description: 'Password too large.' })
     } else {
-      res.status(500).send('Couldn\'t delete room.')
+      res.status(500).json({ description: 'Couldn\'t delete room.' })
     }
   }
 })
@@ -215,7 +215,7 @@ roomRoute.post('/login', async (req, res) => {
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
-      return res.status(401).send('No room with matching roomId found')
+      return res.status(401).json({ description: 'No room with matching roomId found' })
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
@@ -229,13 +229,13 @@ roomRoute.post('/login', async (req, res) => {
       await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
       res.status(201).send(createJSON(req.body.roomID.toString(), token, userID.toString()))
     } else {
-      res.status(401).send('Wrong Password.')
+      res.status(401).json({ description: 'Wrong Password.' })
     }
   } catch (err) {
     if (err === PwErr) {
-      res.status(413).send('Password too large.')
+      res.status(413).json({ description: 'Password too large.' })
     } else {
-      res.status(500).send('Couldn\'t create room.')
+      res.status(500).json({ description: 'Couldn\'t create room.' })
     }
   }
 })
@@ -262,7 +262,7 @@ roomRoute.post('/login', async (req, res) => {
 roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).send('Room does not exist!')
+    res.status(500).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     sendTracks(req, res, room)
@@ -291,7 +291,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
 roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).send('Room does not exist!')
+    res.status(500).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     receiveTrack(req, res, req.params.id)
@@ -322,7 +322,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
 roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).send('Room does not exist!')
+    res.status(500).json({ description: 'Room does not exist!' })
   }
   await updateRoom(room.roomID)
   const priviliges = await whoAmI(req, res, room)
@@ -354,7 +354,7 @@ roomRoute.get('/room/:id/admin', verify, async (req, res) => {
  *         description: Failure
  */
 roomRoute.delete('/room/:id/admin', verifyAdmin, async (req, res) => {
-  // update last access of admin to high 
+  // update last access of admin to high
   const newDate = new Date(Date.now() - 18000000)
   await RoomSchema.updateOne({ roomID: req.body.roomID }, { lastAccessAdmin: newDate }).exec()
   res.status(200).json({ description: 'Success' })
