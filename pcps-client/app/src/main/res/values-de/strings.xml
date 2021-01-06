@@ -24,7 +24,9 @@
 
     <string name="password">Passwort</string>
 
-    <string name="room_over_view">Übersicht</string>
+    <string name="go_to_room">Zum Raum</string>
+
+    <string name="soundtrack_over_view">Übersicht</string>
     <string name="musician_view">Musikeransicht</string>
 
     <string name="room_input_empty">Du musst einen Raum eingeben.</string>

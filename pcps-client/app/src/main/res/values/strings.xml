@@ -25,7 +25,9 @@
 
     <string name="password">Password</string>
 
-    <string name="room_over_view">Overview</string>
+    <string name="go_to_room">Go to room</string>
+
+    <string name="soundtrack_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
 
     <string name="room_input_empty">You have to enter a room.</string>
