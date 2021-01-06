@@ -7,6 +7,7 @@ import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.GenericError;
 import de.pcps.jamtugether.api.errors.InternalServerError;
 import de.pcps.jamtugether.api.errors.NoInternetConnectionError;
+import de.pcps.jamtugether.api.errors.PageNotFoundError;
 import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
@@ -41,6 +42,8 @@ public abstract class Error {
                 return new UnauthorizedAccessError();
             case 403:
                 return new ForbiddenAccessError();
+            case 404:
+                return new PageNotFoundError();
             case 413:
                 return new PasswordTooLargeError();
             case 500:

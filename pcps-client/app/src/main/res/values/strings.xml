@@ -60,6 +60,8 @@
     <string name="unauthorized_access_error_message">The authentication failed.</string>
     <string name="room_or_password_invalid_title">Error</string>
     <string name="room_or_password_invalid_message">Room or password is invalid.</string>
+    <string name="page_not_found_error_title">Page not found</string>
+    <string name="page_not_found_error_message">The requested page was not found.</string>
     <string name="internal_server_error_title">Error</string>
     <string name="internal_server_error_message">Something went wrong.</string>
     <string name="password_too_large_error_title">Error</string>

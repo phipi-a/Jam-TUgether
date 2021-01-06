@@ -15,6 +15,10 @@ import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 public class Drums extends Instrument {
 
+    public static final int MIN_PITCH = 0;
+    public static final int MAX_PITCH = 100;
+    public static final int PITCH_RANGE = MAX_PITCH - MIN_PITCH;
+
     @Nullable
     private static Drums instance;
 

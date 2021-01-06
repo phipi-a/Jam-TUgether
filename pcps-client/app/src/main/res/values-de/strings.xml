@@ -59,6 +59,8 @@
     <string name="unauthorized_access_error_message">Die Authentifizierung ist fehlgeschlagen.</string>
     <string name="room_or_password_invalid_title">Fehler</string>
     <string name="room_or_password_invalid_message">Raum oder Passwort ist ungültig.</string>
+    <string name="page_not_found_error_title">Seite nicht gefunden</string>
+    <string name="page_not_found_error_message">Die angeforderte Seite konnte nicht gefunden werden.</string>
     <string name="internal_server_error_title">Fehler</string>
     <string name="internal_server_error_message">Etwas ist schief gelaufen.</string>
     <string name="password_too_large_error_title">Fehler</string>
