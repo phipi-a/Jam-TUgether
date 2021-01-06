@@ -14,7 +14,7 @@ exports.receiveTrack = async function (req, res, roomID) {
     }
   }
   await RoomSchema.updateMany(query, updateDocument)
-  res.send(soundtracks._id)
+  res.json({ soundtrackID: soundtracks._id })
 }
 
 exports.sendTracks = async function (req, res, room) {
@@ -24,9 +24,9 @@ exports.sendTracks = async function (req, res, room) {
 function prepareSoundtrack (soundtrack) {
   return {
     _id: mongoose.Types.ObjectId(),
-    userID: soundtrack.userID,
-    instrument: soundtrack.instrument,
-    soundSequence: soundtrack.soundSequence
+    userID: soundtrack[0].userID,
+    instrument: soundtrack[0].instrument,
+    soundSequence: soundtrack[0].soundSequence
   }
 }
 // controls if newAdmin is needed
