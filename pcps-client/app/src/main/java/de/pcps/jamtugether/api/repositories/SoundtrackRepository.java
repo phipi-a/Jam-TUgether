@@ -19,6 +19,8 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
+import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
+import de.pcps.jamtugether.api.services.room.bodies.DeleteSoundtrackBody;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
@@ -81,6 +83,12 @@ public class SoundtrackRepository {
     public void uploadSoundtracks(@NonNull String token, int roomID, @NonNull List<SingleSoundtrack> soundtracks, @NonNull JamCallback<UploadSoundtracksResponse> callback) {
         UploadSoundtracksBody body = new UploadSoundtracksBody(soundtracks);
         Call<UploadSoundtracksResponse> call = soundtrackService.uploadSoundtracks(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
+        call.enqueue(callback);
+    }
+
+    public void deleteSoundtrack(@NonNull String token, int roomID, @NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<DeleteTrackResponse> callback) {
+        DeleteSoundtrackBody body = new DeleteSoundtrackBody(roomID, soundtrack.getUserID(), soundtrack.getInstrument().getServerString(), soundtrack.getNumber());
+        Call<DeleteTrackResponse> call = soundtrackService.deleteSoundtrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
         call.enqueue(callback);
     }
 

@@ -21,6 +21,7 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
+import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
@@ -138,7 +139,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     private void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack) {
-        Timber.d("deleteSoundtrack(): %d", soundtrack.getNumber());
         List<SingleSoundtrack> soundtracks = getAllSoundtracks().getValue();
         if (soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
@@ -149,15 +149,23 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         for (SingleSoundtrack singleSoundtrack : soundtracks) {
             if (singleSoundtrack != soundtrack) {
                 newList.add(singleSoundtrack);
-            } else {
-                Timber.d("soundtrack %d = soundtrack %d", singleSoundtrack.getNumber(), soundtrack.getNumber());
             }
         }
         soundtrackRepository.updateAllSoundtracks(newList);
 
         soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
 
-        // todo tell server
+        soundtrackRepository.deleteSoundtrack(token, roomID, soundtrack, new JamCallback<DeleteTrackResponse>() {
+            @Override
+            public void onSuccess(@NonNull DeleteTrackResponse response) {
+                Timber.d("onSuccess() soundtrack deleted");
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
 
         soundtrackToBeDeleted = null;
     }
