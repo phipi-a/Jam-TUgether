@@ -25,20 +25,20 @@ Content-Type: application/json
 ###
 POST  http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjYwNTcwYTczYTViMmNkYjYwYjY0Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzYyMjU4LCJleHAiOjE2MDk3NjQwNTh9.Fo-_WnWshmq18WAx5Yt22Cl2zFB1P7g7H5wo7mnwwwQ '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijc2YWY2YzQzM2E1YjA2MDdjZTkxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5OTU1MzY2LCJleHAiOjE2MDk5NTcxNjZ9.gOhdWbDIzpAPQ-uF_lAT5VO7mYf7FYAXYcmTkz2ov8s '
 
 {
-  "soundtracks": [{"userID" : "1", "instrument" : "instrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
+  "soundtracks": [{"userID" : "1", "instrument" : "instrument123", "number" : "2", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
 }
 ### 
 DELETE   http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjYwNTcwYTczYTViMmNkYjYwYjY0Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzYyMjU4LCJleHAiOjE2MDk3NjQwNTh9.Fo-_WnWshmq18WAx5Yt22Cl2zFB1P7g7H5wo7mnwwwQ '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijc2YWY2YzQzM2E1YjA2MDdjZTkxIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5OTU1MzY2LCJleHAiOjE2MDk5NTcxNjZ9.gOhdWbDIzpAPQ-uF_lAT5VO7mYf7FYAXYcmTkz2ov8s '
 
 {
   "roomID" : "1",
   "userID" : "1",
   "instrument" : "instrument123",
-  "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]
+  "number" : "1"
 }
 ### 

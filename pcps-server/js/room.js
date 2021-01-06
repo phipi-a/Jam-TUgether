@@ -26,7 +26,7 @@ exports.deleteTracks = async function (req, res, roomID) {
   const s = soundTracks[0].soundtracks;
 
   s.forEach(element => {
-    if(element.userID == req.body.userID && element.instrument == req.body.instrument){
+    if(element.userID == req.body.userID && element.instrument == req.body.instrument && element.number == req.body.number){
       element.soundSequence = []
     }
   });
