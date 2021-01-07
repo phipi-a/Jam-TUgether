@@ -39,10 +39,10 @@ public class RoomViewModel extends ViewModel {
     private final int roomID;
 
     @NonNull
-    private final MutableLiveData<String> token = new MutableLiveData<>();
+    private final MutableLiveData<String> token;
 
     @NonNull
-    private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> userIsAdmin;
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
@@ -57,8 +57,8 @@ public class RoomViewModel extends ViewModel {
         AppInjector.inject(this);
         // todo start fetching admin info
         this.roomID = roomID;
-        this.token.setValue(token);
-        this.userIsAdmin.setValue(userIsAdmin);
+        this.token = new MutableLiveData<>(token);
+        this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {

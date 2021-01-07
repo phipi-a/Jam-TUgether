@@ -67,16 +67,16 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private String token;
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
     @NonNull
-    private final MutableLiveData<Boolean> showSoundtrackDeletionConfirmDialog = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showSoundtrackDeletionConfirmDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
     @NonNull
     private final List<SingleSoundtrack> previousSoundtracks = new ArrayList<>();

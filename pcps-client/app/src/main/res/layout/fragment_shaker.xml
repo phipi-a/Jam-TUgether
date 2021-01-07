@@ -35,7 +35,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitStart"
             android:src="@drawable/shaker"
-            app:intensity="@{viewModel.getShakeIntensity()}"
+            app:intensity="@{viewModel.shakeIntensity}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout"

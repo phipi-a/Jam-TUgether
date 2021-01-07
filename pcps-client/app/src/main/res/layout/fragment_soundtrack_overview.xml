@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/room_id_text_view_margin_start"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
-            android:text="@{@string/room_format(soundtrackOverviewViewModel.getRoomID())}"
+            android:text="@{@string/room_format(soundtrackOverviewViewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
             android:onClick="@{() -> soundtrackOverviewViewModel.onDeleteRoomButtonClicked()}"
             android:text="@string/delete_room"
             android:textSize="16dp"
-            android:visibility="@{roomViewModel.getUserIsAdmin() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{roomViewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
