@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.Constants;
+import de.pcps.jamtugether.api.responses.room.AdminStatusResponse;
 import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
@@ -48,6 +49,11 @@ public class RoomRepository {
 
     public void removeAdmin(int roomID, @NonNull String token, @NonNull JamCallback<RemoveAdminResponse> callback) {
         Call<RemoveAdminResponse> call = roomService.removeAdmin(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
+    }
+
+    public void getAdminStatus(int roomID, @NonNull String token, @NonNull JamCallback<AdminStatusResponse> callback) {
+        Call<AdminStatusResponse> call = roomService.getAdminStatus(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
         call.enqueue(callback);
     }
 }

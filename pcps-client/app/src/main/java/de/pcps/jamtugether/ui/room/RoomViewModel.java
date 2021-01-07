@@ -12,6 +12,7 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.api.responses.room.AdminStatusResponse;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
@@ -55,10 +56,10 @@ public class RoomViewModel extends ViewModel {
 
     public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
-        // todo start fetching admin info
         this.roomID = roomID;
         this.token.setValue(token);
         this.userIsAdmin.setValue(userIsAdmin);
+        getAdminInfo(this, roomID, token);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -88,6 +89,26 @@ public class RoomViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull RemoveAdminResponse response) {
                 Timber.d("onSuccess()");
+            }
+
+            @Override
+            public void onError(@NonNull Error error) {
+                networkError.setValue(error);
+            }
+        });
+    }
+
+    private void getAdminInfo(RoomViewModel model, int roomID, @NonNull String token) {
+        roomRepository.getAdminStatus(roomID, token, new JamCallback<AdminStatusResponse>() {
+            @Override
+            public void onSuccess(@NonNull AdminStatusResponse response) {
+                Timber.d("onSuccess() %s", response.getDescription());
+                if (response.getFlag() != null && response.getFlag() != getUserIsAdmin().getValue()) {
+                    model.userIsAdmin.setValue(response.getFlag());
+                    if (response.getFlag()) {
+                        model.token.setValue(response.getToken());
+                    }
+                }
             }
 
             @Override
