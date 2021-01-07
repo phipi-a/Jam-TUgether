@@ -87,7 +87,17 @@ public abstract class InstrumentViewModel extends ViewModel {
 
         @Override
         public void onFinished() {
-            startRecording();
+            countDownTimer.stop();
+            countDownTimerMillis.setValue(-1L);
+            startedMillis = System.currentTimeMillis();
+            timer.start();
+            if (playWithCompositeSoundtrack) {
+                if (compositeSoundtrack != null) {
+                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
+                    compositeSoundtrackPlayer.play(compositeSoundtrack);
+                }
+            }
+            onTimerStarted();
         }
     };
 
@@ -172,16 +182,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    protected void startRecording() {
-        countDownTimer.stop();
-        countDownTimerMillis.setValue(-1L);
-        startedMillis = System.currentTimeMillis();
-        timer.start();
-        if (playWithCompositeSoundtrack) {
-            compositeSoundtrackPlayer.stop(compositeSoundtrack);
-            compositeSoundtrackPlayer.play(compositeSoundtrack);
-        }
-    }
+    protected void onTimerStarted() { }
 
     public void onUploadButtonClicked() {
         if (ownSoundtrack == null) {
@@ -191,7 +192,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         // add to local list
-        if(soundtrackRepository.getAllSoundtracks().getValue() != null) {
+        if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
             List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
             allSoundtracks.add(toBePublished);
             soundtrackRepository.updateAllSoundtracks(allSoundtracks);
@@ -240,7 +241,7 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        if(startedSoundtrackCreation()) {
+        if (startedSoundtrackCreation()) {
             finishSoundtrack();
         }
     }

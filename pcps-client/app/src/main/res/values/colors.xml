@@ -3,9 +3,17 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFCC0000</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="green">#FF00FF00</color>
     <color name="gray">#FFAAAAAA</color>
     <color name="black">#FF000000</color>
+
     <color name="inputTextErrorColor">@color/red</color>
+    <color name="recordButtonColor">@color/red</color>
+
+    <color name="soundtrackFluteColor">@color/blue</color>
+    <color name="soundtrackDrumsColor">@color/red</color>
+    <color name="soundtrackShakerColor">@color/green</color>
 
     <!-- light mode -->
     <color name="colorPrimary">@color/white</color>
