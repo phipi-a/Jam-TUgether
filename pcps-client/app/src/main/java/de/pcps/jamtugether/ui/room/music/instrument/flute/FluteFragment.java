@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -22,11 +23,11 @@ public class FluteFragment extends InstrumentFragment {
     private static final int REQUEST_MICROPHONE = 1;
 
     @NonNull
-    public static FluteFragment newInstance(int roomID, int userID, @NonNull String token) {
+    public static FluteFragment newInstance(int roomID, @NonNull User user, @NonNull String token) {
         FluteFragment fragment = new FluteFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
-        args.putInt(USER_ID_KEY, userID);
+        args.putSerializable(USER_KEY, user);
         args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
@@ -37,7 +38,7 @@ public class FluteFragment extends InstrumentFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
+            FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(roomID, user, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
             getLifecycle().addObserver((FluteViewModel) instrumentViewModel);
         }

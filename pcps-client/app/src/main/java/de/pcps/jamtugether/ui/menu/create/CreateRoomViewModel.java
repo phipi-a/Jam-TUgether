@@ -19,6 +19,7 @@ import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.model.User;
 
 public class CreateRoomViewModel extends ViewModel {
 
@@ -29,7 +30,9 @@ public class CreateRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
 
     private int roomID;
-    private int userID;
+
+    @Nullable
+    private User user;
 
     @Nullable
     private String password;
@@ -39,6 +42,9 @@ public class CreateRoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<String> nameInputError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<String> passwordInputError = new MutableLiveData<>(null);
@@ -53,20 +59,37 @@ public class CreateRoomViewModel extends ViewModel {
         AppInjector.inject(this);
     }
 
-    public void onCreateRoomButtonClicked(@NonNull String password) {
+    public void onCreateRoomButtonClicked(@NonNull String userName, @NonNull String password) {
         Context context = application.getApplicationContext();
+
+        boolean emptyUserName = false;
+        boolean emptyPassword = false;
+
+        if(userName.isEmpty()) {
+            nameInputError.setValue(context.getString(R.string.name_input_empty));
+            emptyUserName = true;
+        }
 
         if (password.isEmpty()) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
+            emptyPassword = true;
+        }
+
+        if(emptyUserName || emptyPassword) {
+            if(!emptyUserName) {
+                nameInputError.setValue(null);
+            }
+            if(!emptyPassword) {
+                passwordInputError.setValue(null);
+            }
             return;
         }
-        passwordInputError.setValue(null);
 
         this.password = password;
-        createRoom(password);
+        createRoom(userName, password);
     }
 
-    private void createRoom(@NonNull String password) {
+    private void createRoom(@NonNull String userName, @NonNull String password) {
         progressBarVisibility.setValue(View.VISIBLE);
 
         roomRepository.createRoom(password, new JamCallback<CreateRoomResponse>() {
@@ -75,7 +98,10 @@ public class CreateRoomViewModel extends ViewModel {
                 progressBarVisibility.setValue(View.INVISIBLE);
 
                 roomID = response.getRoomID();
-                userID = response.getUserID();
+
+                int userID = response.getUserID();
+                user = new User(userID, userName);
+
                 token = response.getToken();
 
                 navigateToAdminRoom.setValue(true);
@@ -110,8 +136,9 @@ public class CreateRoomViewModel extends ViewModel {
         return roomID;
     }
 
-    public int getUserID() {
-        return userID;
+    @Nullable
+    public User getUser() {
+        return user;
     }
 
     @Nullable
@@ -127,6 +154,11 @@ public class CreateRoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Boolean> getNavigateToAdminRoom() {
         return navigateToAdminRoom;
+    }
+
+    @NonNull
+    public LiveData<String> getNameInputError() {
+        return nameInputError;
     }
 
     @NonNull

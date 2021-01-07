@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentCreateRoomBinding;
@@ -32,6 +33,7 @@ public class CreateRoomFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
+        binding.userNameTextInputLayout.observeError(viewModel.getNameInputError(), getViewLifecycleOwner());
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
@@ -43,12 +45,13 @@ public class CreateRoomFragment extends BaseFragment {
 
         viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if (navigateToJamRoom) {
+                User user = viewModel.getUser();
                 String password = viewModel.getPassword();
                 String token = viewModel.getToken();
-                if(password == null || token == null) {
+                if(user == null || password == null || token == null) {
                     return;
                 }
-                NavigationUtils.navigateToRoomAsAdmin(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), password, token);
+                NavigationUtils.navigateToRoomAsAdmin(NavHostFragment.findNavController(this), viewModel.getRoomID(), user, password, token);
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToAdminRoom();
             }

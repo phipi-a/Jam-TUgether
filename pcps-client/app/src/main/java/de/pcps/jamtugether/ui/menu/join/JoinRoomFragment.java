@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentJoinRoomBinding;
@@ -32,6 +33,7 @@ public class JoinRoomFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
+        binding.userNameTextInputLayout.observeError(viewModel.getNameInputError(), getViewLifecycleOwner());
         binding.roomIdTextInputLayout.observeError(viewModel.getRoomInputError(), getViewLifecycleOwner());
         binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
 
@@ -44,12 +46,13 @@ public class JoinRoomFragment extends BaseFragment {
 
         viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if (navigateToRegularRoom) {
+                User user = viewModel.getUser();
                 String password = viewModel.getPassword();
                 String token = viewModel.getToken();
-                if(password == null || token == null) {
+                if(user == null || password == null || token == null) {
                     return;
                 }
-                NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), viewModel.getUserID(), password, token);
+                NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), user, password, token);
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }

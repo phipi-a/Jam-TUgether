@@ -5,7 +5,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -22,10 +21,10 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
@@ -61,7 +60,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final Instrument instrument;
 
     private final int roomID;
-    private final int userID;
+
+    @NonNull
+    private final User user;
 
     @NonNull
     private final String token;
@@ -138,11 +139,11 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
         this.roomID = roomID;
-        this.userID = userID;
+        this.user = user;
         this.token = token;
         this.callback = callback;
         this.ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
@@ -174,7 +175,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
 
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, instrument.getServerString(), soundtrackNumber);
+            ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument.getServerString(), soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
 
             startedSoundtrackCreation.setValue(true);
@@ -189,14 +190,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             return;
         }
 
-        SingleSoundtrack toBePublished = new SingleSoundtrack(userID, instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
-
-        // add to local list
-        if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
-            List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
-            allSoundtracks.add(toBePublished);
-            soundtrackRepository.updateAllSoundtracks(allSoundtracks);
-        }
+        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);
         uploadPossible.setValue(false);
@@ -207,6 +201,13 @@ public abstract class InstrumentViewModel extends ViewModel {
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
+
+                // add to local list in order to be visible immediately
+                if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
+                    List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
+                    allSoundtracks.add(toBePublished);
+                    soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+                }
             }
 
             @Override

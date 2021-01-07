@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteFragment;
@@ -22,22 +23,23 @@ import de.pcps.jamtugether.utils.NavigationUtils;
 public class MusicianViewFragment extends BaseFragment {
 
     private static final String ROOM_ID_KEY = "room_id_key";
-    private static final String USER_ID_KEY = "user_id_key";
+    private static final String USER_KEY = "user_key";
     private static final String TOKEN_KEY = "token_key";
 
     private int roomID;
-    private int userID;
+
+    private User user;
 
     private String token;
 
     private MusicianViewViewModel viewModel;
 
     @NonNull
-    public static MusicianViewFragment newInstance(int roomID, int userID, @NonNull String token) {
+    public static MusicianViewFragment newInstance(int roomID, @NonNull User user, @NonNull String token) {
         MusicianViewFragment fragment = new MusicianViewFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
-        args.putInt(USER_ID_KEY, userID);
+        args.putSerializable(USER_KEY, user);
         args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
@@ -48,7 +50,7 @@ public class MusicianViewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             roomID = getArguments().getInt(ROOM_ID_KEY);
-            userID = getArguments().getInt(USER_ID_KEY);
+            user = (User) getArguments().getSerializable(USER_KEY);
             token = getArguments().getString(TOKEN_KEY);
 
             viewModel = new ViewModelProvider(this).get(MusicianViewViewModel.class);
@@ -66,21 +68,21 @@ public class MusicianViewFragment extends BaseFragment {
 
         viewModel.getShowFluteFragment().observe(getViewLifecycleOwner(), showFluteFragment -> {
             if (showFluteFragment) {
-                replaceInstrumentFragment(FluteFragment.newInstance(roomID, userID, token));
+                replaceInstrumentFragment(FluteFragment.newInstance(roomID, user, token));
                 viewModel.onFluteFragmentShown();
             }
         });
 
         viewModel.getShowDrumsFragment().observe(getViewLifecycleOwner(), showDrumsFragment -> {
             if (showDrumsFragment) {
-                replaceInstrumentFragment(DrumsFragment.newInstance(roomID, userID, token));
+                replaceInstrumentFragment(DrumsFragment.newInstance(roomID, user, token));
                 viewModel.onDrumsFragmentShown();
             }
         });
 
         viewModel.getShowShakerFragment().observe(getViewLifecycleOwner(), showShakerFragment -> {
             if (showShakerFragment) {
-                replaceInstrumentFragment(ShakerFragment.newInstance(roomID, userID, token));
+                replaceInstrumentFragment(ShakerFragment.newInstance(roomID, user, token));
                 viewModel.onShakerFragmentShown();
             }
         });
@@ -89,7 +91,7 @@ public class MusicianViewFragment extends BaseFragment {
     }
 
     private void addSoundtrackFragment() {
-        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, userID, token), R.id.own_soundtrack_fragment_container);
+        NavigationUtils.replaceFragment(getChildFragmentManager(), OwnSoundtrackFragment.newInstance(roomID, user.getID(), token), R.id.own_soundtrack_fragment_container);
     }
 
     private void replaceInstrumentFragment(@NonNull Fragment fragment) {

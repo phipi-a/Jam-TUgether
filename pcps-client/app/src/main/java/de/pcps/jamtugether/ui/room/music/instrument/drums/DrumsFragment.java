@@ -10,16 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.databinding.FragmentDrumsBinding;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 
 public class DrumsFragment extends InstrumentFragment {
 
     @NonNull
-    public static DrumsFragment newInstance(int roomID, int userID, @NonNull String token) {
+    public static DrumsFragment newInstance(int roomID, @NonNull User user, @NonNull String token) {
         DrumsFragment fragment = new DrumsFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
-        args.putInt(USER_ID_KEY, userID);
+        args.putSerializable(USER_KEY, user);
         args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
@@ -29,7 +30,7 @@ public class DrumsFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
+            DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(roomID, user, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
         }
     }

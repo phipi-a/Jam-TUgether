@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 
 public class ShakerFragment extends InstrumentFragment {
@@ -23,11 +24,11 @@ public class ShakerFragment extends InstrumentFragment {
     private ShakerViewModel shakerViewModel;
 
     @NonNull
-    public static ShakerFragment newInstance(int roomID, int userID, @NonNull String token) {
+    public static ShakerFragment newInstance(int roomID, @NonNull User user, @NonNull String token) {
         ShakerFragment fragment = new ShakerFragment();
         Bundle args = new Bundle();
         args.putInt(ROOM_ID_KEY, roomID);
-        args.putInt(USER_ID_KEY, userID);
+        args.putSerializable(USER_KEY, user);
         args.putString(TOKEN_KEY, token);
         fragment.setArguments(args);
         return fragment;
@@ -37,7 +38,7 @@ public class ShakerFragment extends InstrumentFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, userID, token, onOwnSoundtrackChangedCallback);
+            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, user, token, onOwnSoundtrackChangedCallback);
             instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
 
             // Get sensor manager
