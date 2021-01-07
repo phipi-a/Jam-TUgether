@@ -2,14 +2,14 @@ package de.pcps.jamtugether.ui.soundtrack.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
@@ -17,7 +17,6 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
-import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -67,26 +66,23 @@ public class SoundtrackView extends View {
         }
     }
 
-    @ColorInt
+    @ColorRes
     private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
         Instrument instrument = singleSoundtrack.getInstrument();
         if (instrument == Flute.getInstance()) {
-            return Color.BLUE;
+            return R.color.soundtrackFluteColor;
         }
         if (instrument == Drums.getInstance()) {
-            return Color.RED;
+            return R.color.soundtrackDrumsColor;
         }
-        if (instrument == Shaker.getInstance()) {
-            return Color.GREEN;
-        }
-        return Color.GRAY;
+        return R.color.soundtrackShakerColor;
     }
 
     private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
         if (singleSoundtrack.isEmpty()) {
             return;
         }
-        paint.setColor(getPaintColor(singleSoundtrack));
+        paint.setColor(ContextCompat.getColor(getContext(), getPaintColor(singleSoundtrack)));
         if (singleSoundtrack.getInstrument() == Flute.getInstance()) {
             drawFluteSoundtrack(canvas, singleSoundtrack);
         } else if (singleSoundtrack.getInstrument() == Drums.getInstance()) {
@@ -96,23 +92,23 @@ public class SoundtrackView extends View {
         }
     }
 
-    private void drawInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
+    private void drawInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
         if (singleSoundtrack.isEmpty()) {
             return;
         }
-        paint.setColor(getPaintColor(singleSoundtrack));
+        paint.setColor(ContextCompat.getColor(getContext(), getPaintColor(singleSoundtrack)));
         if (singleSoundtrack.getInstrument() == Flute.getInstance()) {
-            drawFluteInCompositeSoundtrack(canvas, singleSoundtrack);
+            drawFluteInCompositeSoundtrack(canvas, singleSoundtrack, length);
         } else if (singleSoundtrack.getInstrument() == Drums.getInstance()) {
-            drawDrumsSoundtrack(canvas, singleSoundtrack);
+            drawDrumsSoundtrack(canvas, singleSoundtrack, length);
         } else {
-            drawShakerSoundtrack(canvas, singleSoundtrack);
+            drawShakerSoundtrack(canvas, singleSoundtrack, length);
         }
     }
 
     private void drawCompositeSoundtrack(@NonNull Canvas canvas, @NonNull CompositeSoundtrack compositeSoundtrack) {
         for (SingleSoundtrack singleSoundtrack : compositeSoundtrack.getSoundtracks()) {
-            drawInCompositeSoundtrack(canvas, singleSoundtrack);
+            drawInCompositeSoundtrack(canvas, singleSoundtrack, compositeSoundtrack.getLength());
         }
     }
 
@@ -127,8 +123,8 @@ public class SoundtrackView extends View {
         }
     }
 
-    private void drawFluteInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
+    private void drawFluteInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
+        float widthOfOneMilliSecond = this.getWidth() / (float) length;
         float heightOfPitchOne = this.getHeight() / (float) Flute.PITCH_RANGE;
         float lastX = -1;
         float lastY = -1;
@@ -147,7 +143,11 @@ public class SoundtrackView extends View {
     }
 
     private void drawDrumsSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
+        drawDrumsSoundtrack(canvas, singleSoundtrack, singleSoundtrack.getLength());
+    }
+
+    private void drawDrumsSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
+        float widthOfOneMilliSecond = this.getWidth() / (float) length;
         float heightOfPitchOne = this.getHeight() / (float) Drums.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float height;
@@ -180,7 +180,11 @@ public class SoundtrackView extends View {
     }
 
     private void drawShakerSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
+        drawShakerSoundtrack(canvas, singleSoundtrack, singleSoundtrack.getLength());
+    }
+
+    private void drawShakerSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
+        float widthOfOneMilliSecond = this.getWidth() / (float) length;
         int containerHeight = UiUtils.getPixels(getContext(), R.dimen.soundtrack_view_height);
         float height = containerHeight / 2.0f;
         float borderSpace = (containerHeight - height) / 2;

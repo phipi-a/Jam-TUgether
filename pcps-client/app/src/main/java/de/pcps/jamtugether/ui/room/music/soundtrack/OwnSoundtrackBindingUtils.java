@@ -13,7 +13,7 @@ public class OwnSoundtrackBindingUtils {
     @BindingAdapter("startedCreatingSoundtrack")
     public static void setStartedCreatingSoundtrack(@NonNull ImageView playPauseButton, boolean startedCreatingSoundtrack) {
         int imageRes = startedCreatingSoundtrack ? R.drawable.ic_stop : R.drawable.ic_record;
-        int color = ContextCompat.getColor(playPauseButton.getContext(), startedCreatingSoundtrack ? R.color.iconColor : R.color.red);
+        int color = ContextCompat.getColor(playPauseButton.getContext(), startedCreatingSoundtrack ? R.color.iconColor : R.color.recordButtonColor);
         playPauseButton.setImageResource(imageRes);
         playPauseButton.setColorFilter(color);
     }
