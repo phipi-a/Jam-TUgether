@@ -14,6 +14,7 @@
     <string name="room_id">Room ID</string>
 
     <string name="user_name">Name</string>
+    <string name="user_name_info">This name will be displayed next to your own soundtracks.</string>
 
     <string name="instrument_flute">Flute</string>
     <string name="instrument_drums">Drums</string>

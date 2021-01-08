@@ -41,6 +41,9 @@ public class CreateRoomViewModel extends ViewModel {
     private String token;
 
     @NonNull
+    private final MutableLiveData<Boolean> showNameInfoDialog = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
 
     @NonNull
@@ -57,6 +60,10 @@ public class CreateRoomViewModel extends ViewModel {
 
     public CreateRoomViewModel() {
         AppInjector.inject(this);
+    }
+
+    public void onNameInfoButtonClicked() {
+        showNameInfoDialog.setValue(true);
     }
 
     public void onCreateRoomButtonClicked(@NonNull String userName, @NonNull String password) {
@@ -124,6 +131,10 @@ public class CreateRoomViewModel extends ViewModel {
         });
     }
 
+    public void onNameInfoDialogShown() {
+        showNameInfoDialog.setValue(false);
+    }
+
     public void onNetworkErrorShown() {
         networkError.setValue(null);
     }
@@ -149,6 +160,11 @@ public class CreateRoomViewModel extends ViewModel {
     @Nullable
     public String getToken() {
         return token;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowNameInfoDialog() {
+        return showNameInfoDialog;
     }
 
     @NonNull

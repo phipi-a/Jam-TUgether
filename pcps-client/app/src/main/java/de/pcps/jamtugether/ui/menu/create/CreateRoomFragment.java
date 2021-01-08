@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
@@ -33,8 +34,12 @@ public class CreateRoomFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        binding.userNameTextInputLayout.observeError(viewModel.getNameInputError(), getViewLifecycleOwner());
-        binding.roomPasswordTextInputLayout.observeError(viewModel.getPasswordInputError(), getViewLifecycleOwner());
+        viewModel.getShowNameInfoDialog().observe(getViewLifecycleOwner(), showNameInfoDialog -> {
+            if(showNameInfoDialog) {
+                UiUtils.showInfoDialog(context, R.string.user_name, R.string.user_name_info);
+                viewModel.onNameInfoDialogShown();
+            }
+        });
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {

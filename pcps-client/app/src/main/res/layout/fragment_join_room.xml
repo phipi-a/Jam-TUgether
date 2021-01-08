@@ -44,6 +44,7 @@
                     android:layout_marginTop="100dp"
                     android:layout_marginEnd="50dp"
                     app:endIconMode="clear_text"
+                    app:error="@{viewModel.nameInputError}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/join_room_text_view">
@@ -59,6 +60,18 @@
                         android:textSize="15dp" />
                 </de.pcps.jamtugether.ui.base.views.JamTextInputLayout>
 
+                <ImageView
+                    android:id="@+id/name_info_button"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:onClick="@{() -> viewModel.onNameInfoButtonClicked()}"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="@id/user_name_text_input_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/user_name_text_input_layout"
+                    app:layout_constraintTop_toTopOf="@id/user_name_text_input_layout"
+                    app:tint="@color/iconColor" />
+
                 <de.pcps.jamtugether.ui.base.views.JamTextInputLayout
                     android:id="@+id/room_id_text_input_layout"
                     android:layout_width="0dp"
@@ -67,6 +80,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="50dp"
                     app:endIconMode="clear_text"
+                    app:error="@{viewModel.roomInputError}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/user_name_text_input_layout">
@@ -89,6 +103,7 @@
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="50dp"
+                    app:error="@{viewModel.passwordInputError}"
                     app:errorIconDrawable="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

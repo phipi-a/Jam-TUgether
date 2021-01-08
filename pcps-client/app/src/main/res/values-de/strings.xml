@@ -13,6 +13,7 @@
     <string name="room_id">Raum ID</string>
 
     <string name="user_name">Name</string>
+    <string name="user_name_info">Dieser Name wird neben deinen eigenen Soundtracks stehen.</string>
 
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>

@@ -42,6 +42,9 @@ public class JoinRoomViewModel extends ViewModel {
     private String token;
 
     @NonNull
+    private final MutableLiveData<Boolean> showNameInfoDialog = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
 
     @NonNull
@@ -61,6 +64,10 @@ public class JoinRoomViewModel extends ViewModel {
 
     public JoinRoomViewModel() {
         AppInjector.inject(this);
+    }
+
+    public void onNameInfoButtonClicked() {
+        showNameInfoDialog.setValue(true);
     }
 
     public void onJoinRoomButtonClicked(@NonNull String userName, @NonNull String roomIDString, @NonNull String password) {
@@ -152,6 +159,10 @@ public class JoinRoomViewModel extends ViewModel {
         });
     }
 
+    public void onNameInfoDialogShown() {
+        showNameInfoDialog.setValue(false);
+    }
+
     public void onNetworkErrorShown() {
         networkError.setValue(null);
     }
@@ -177,6 +188,11 @@ public class JoinRoomViewModel extends ViewModel {
     @Nullable
     public String getPassword() {
         return password;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowNameInfoDialog() {
+        return showNameInfoDialog;
     }
 
     @NonNull

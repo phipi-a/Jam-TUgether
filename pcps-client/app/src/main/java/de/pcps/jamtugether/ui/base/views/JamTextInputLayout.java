@@ -22,10 +22,6 @@ public class JamTextInputLayout extends TextInputLayout {
         this.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryTextColor)));
     }
 
-    public void observeError(@NonNull LiveData<String> error, @NonNull LifecycleOwner lifecycleOwner) {
-        error.observe(lifecycleOwner, this::setError);
-    }
-
     @Override
     public void setError(@Nullable CharSequence errorText) {
         super.setError(errorText);
