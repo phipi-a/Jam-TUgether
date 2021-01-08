@@ -8,7 +8,7 @@ import de.pcps.jamtugether.api.errors.GenericError;
 import de.pcps.jamtugether.api.errors.InternalServerError;
 import de.pcps.jamtugether.api.errors.NoInternetConnectionError;
 import de.pcps.jamtugether.api.errors.PageNotFoundError;
-import de.pcps.jamtugether.api.errors.ReachMaxRoomNumberError;
+import de.pcps.jamtugether.api.errors.RoomNumberLimitReachedError;
 import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
@@ -50,7 +50,7 @@ public abstract class Error {
             case 500:
                 return new InternalServerError();
             case 503:
-                return new ReachMaxRoomNumberError();
+                return new RoomNumberLimitReachedError();
             default:
                 return new GenericError();
         }

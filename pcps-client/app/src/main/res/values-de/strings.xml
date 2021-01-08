@@ -73,8 +73,8 @@
     <string name="forbidden_access_error_message">Du hast nicht die Berechtigung diese Aktion durchzuführen.</string>
     <string name="no_internet_connection_title">Kein Internet</string>
     <string name="no_internet_connection_message">Du hast keine Internetverbindung.</string>
-    <string name="reach_max_room_number_error_title">Fehler</string>
-    <string name="reach_max_room_number_error_message">Maximale Anzahl an Räumen erreicht</string>
+    <string name="room_number_limit_reached_error_title">Fehler</string>
+    <string name="room_number_limit_reached_error_message">Du kannst keine weiteren Räume erstellen, da die maximale Anzahl an Räumen bereits erreicht wurde.</string>
     <string name="generic_error_title">Fehler</string>
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
 </resources>
