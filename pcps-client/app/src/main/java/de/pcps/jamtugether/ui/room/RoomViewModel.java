@@ -12,7 +12,6 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.responses.room.AdminStatusResponse;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
@@ -40,12 +39,6 @@ public class RoomViewModel extends ViewModel {
     private final int roomID;
 
     @NonNull
-    private final MutableLiveData<String> token = new MutableLiveData<>();
-
-    @NonNull
-    private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>();
-
-    @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
     @NonNull
@@ -57,9 +50,9 @@ public class RoomViewModel extends ViewModel {
     public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
         this.roomID = roomID;
-        this.token.setValue(token);
-        this.userIsAdmin.setValue(userIsAdmin);
-        getAdminInfo(this, roomID, token);
+
+        roomRepository.updateInfo(token, userIsAdmin);
+        roomRepository.fetchAdminStatus(roomID, token);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -68,47 +61,30 @@ public class RoomViewModel extends ViewModel {
 
     public void onLeaveRoomConfirmationButtonClicked() {
         navigateBack.setValue(true);
-        soundtrackRepository.onUserLeftRoom();
         onUserLeft();
     }
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        if (userIsAdmin.getValue() != null && userIsAdmin.getValue()) {
+        Boolean userIsAdmin = getUserIsAdmin().getValue();
+        if (userIsAdmin != null && userIsAdmin) {
             onAdminLeft();
         }
+        roomRepository.onUserLeftRoom();
+        soundtrackRepository.onUserLeftRoom();
         soundtrackNumbersDatabase.onUserLeftRoom();
         latestSoundtracksDatabase.onUserLeftRoom();
     }
 
     private void onAdminLeft() {
-        if(token.getValue() == null) {
+        String token = roomRepository.getCurrentToken().getValue();
+        if (token == null) {
             return;
         }
-        roomRepository.removeAdmin(roomID, token.getValue(), new JamCallback<RemoveAdminResponse>() {
+        roomRepository.removeAdmin(roomID, token, new JamCallback<RemoveAdminResponse>() {
             @Override
             public void onSuccess(@NonNull RemoveAdminResponse response) {
                 Timber.d("onSuccess()");
-            }
-
-            @Override
-            public void onError(@NonNull Error error) {
-                networkError.setValue(error);
-            }
-        });
-    }
-
-    private void getAdminInfo(RoomViewModel model, int roomID, @NonNull String token) {
-        roomRepository.getAdminStatus(roomID, token, new JamCallback<AdminStatusResponse>() {
-            @Override
-            public void onSuccess(@NonNull AdminStatusResponse response) {
-                Timber.d("onSuccess() %s", response.getDescription());
-                if (response.getFlag() != null && response.getFlag() != getUserIsAdmin().getValue()) {
-                    model.userIsAdmin.setValue(response.getFlag());
-                    if (response.getFlag()) {
-                        model.token.setValue(response.getToken());
-                    }
-                }
             }
 
             @Override
@@ -132,12 +108,12 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<String> getToken() {
-        return token;
+        return roomRepository.getCurrentToken();
     }
 
     @NonNull
     public LiveData<Boolean> getUserIsAdmin() {
-        return userIsAdmin;
+        return roomRepository.getUserIsAdmin();
     }
 
     @NonNull

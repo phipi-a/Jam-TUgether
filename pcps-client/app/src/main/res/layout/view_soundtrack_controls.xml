@@ -80,7 +80,7 @@
             android:layout_height="@dimen/soundtrack_play_pause_icon_width"
             android:layout_marginStart="@dimen/soundtrack_play_pause_icon_margin_start"
             android:onClick="@{() -> onChangeListener.onPlayPauseButtonClicked(soundtrack)}"
-            android:src="@{soundtrack.getState() == State.PLAYING ? @drawable/ic_pause : @drawable/ic_play}"
+            android:src="@{soundtrack.state == State.PLAYING ? @drawable/ic_pause : @drawable/ic_play}"
             app:layout_constraintStart_toEndOf="@id/fast_rewind_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />
@@ -103,7 +103,7 @@
             android:layout_marginStart="@dimen/soundtrack_stop_icon_margin_start"
             android:onClick="@{() -> onChangeListener.onStopButtonClicked(soundtrack)}"
             android:src="@drawable/ic_stop"
-            android:visibility="@{soundtrack.getState() == State.IDLE || soundtrack.getState() == State.STOPPED ? View.INVISIBLE : View.VISIBLE}"
+            android:visibility="@{soundtrack.state == State.IDLE || soundtrack.state == State.STOPPED ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/fast_forward_button"
             app:layout_constraintTop_toTopOf="@id/volume_mute_icon"
             app:tint="@color/iconColor" />

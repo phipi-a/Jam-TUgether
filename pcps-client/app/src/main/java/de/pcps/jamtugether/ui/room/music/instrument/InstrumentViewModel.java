@@ -73,10 +73,10 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected final MutableLiveData<Boolean> startedSoundtrackCreation = new MutableLiveData<>(false);
 
     @NonNull
-    protected final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>();
+    protected final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
 
     @NonNull
-    protected final MutableLiveData<Long> timerMillis = new MutableLiveData<>();
+    protected final MutableLiveData<Long> timerMillis = new MutableLiveData<>(-1L);
 
     @NonNull
     private final BaseJamTimer.OnTickCallback countDownTimerCallback = new BaseJamTimer.OnTickCallback() {
@@ -132,7 +132,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>();
+    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
     private boolean playWithCompositeSoundtrack;
 

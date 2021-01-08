@@ -4,8 +4,6 @@ import com.squareup.moshi.Json;
 
 public class Sound {
 
-
-
     @Json(name = "starttime")
     private final int startTime;
 
