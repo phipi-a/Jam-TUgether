@@ -39,12 +39,6 @@ public class RoomViewModel extends ViewModel {
     private final int roomID;
 
     @NonNull
-    private final MutableLiveData<String> token;
-
-    @NonNull
-    private final MutableLiveData<Boolean> userIsAdmin;
-
-    @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
     @NonNull
@@ -55,10 +49,10 @@ public class RoomViewModel extends ViewModel {
 
     public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
-        // todo start fetching admin info
         this.roomID = roomID;
-        this.token = new MutableLiveData<>(token);
-        this.userIsAdmin = new MutableLiveData<>(userIsAdmin);
+
+        roomRepository.updateInfo(token, userIsAdmin);
+        roomRepository.fetchAdminStatus(roomID, token);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -67,24 +61,27 @@ public class RoomViewModel extends ViewModel {
 
     public void onLeaveRoomConfirmationButtonClicked() {
         navigateBack.setValue(true);
-        soundtrackRepository.onUserLeftRoom();
         onUserLeft();
     }
 
     private void onUserLeft() {
         soundtrackController.stopPlayers();
-        if (userIsAdmin.getValue() != null && userIsAdmin.getValue()) {
+        Boolean userIsAdmin = getUserIsAdmin().getValue();
+        if (userIsAdmin != null && userIsAdmin) {
             onAdminLeft();
         }
+        roomRepository.onUserLeftRoom();
+        soundtrackRepository.onUserLeftRoom();
         soundtrackNumbersDatabase.onUserLeftRoom();
         latestSoundtracksDatabase.onUserLeftRoom();
     }
 
     private void onAdminLeft() {
-        if(token.getValue() == null) {
+        String token = roomRepository.getCurrentToken().getValue();
+        if (token == null) {
             return;
         }
-        roomRepository.removeAdmin(roomID, token.getValue(), new JamCallback<RemoveAdminResponse>() {
+        roomRepository.removeAdmin(roomID, token, new JamCallback<RemoveAdminResponse>() {
             @Override
             public void onSuccess(@NonNull RemoveAdminResponse response) {
                 Timber.d("onSuccess()");
@@ -111,12 +108,12 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<String> getToken() {
-        return token;
+        return roomRepository.getCurrentToken();
     }
 
     @NonNull
     public LiveData<Boolean> getUserIsAdmin() {
-        return userIsAdmin;
+        return roomRepository.getUserIsAdmin();
     }
 
     @NonNull

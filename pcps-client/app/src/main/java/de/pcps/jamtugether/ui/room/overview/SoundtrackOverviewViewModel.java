@@ -223,6 +223,8 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         soundtrackController.stopPlayers();
         soundtrackNumbersDatabase.onUserLeftRoom();
         latestSoundtracksDatabase.onUserLeftRoom();
+        roomRepository.onUserLeftRoom();
+        soundtrackRepository.onUserLeftRoom();
     }
 
     public void onNavigatedBack() {
