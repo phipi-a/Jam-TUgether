@@ -13,6 +13,9 @@
     <string name="join_room_info">Join your favorite room by entering the room ID</string>
     <string name="room_id">Room ID</string>
 
+    <string name="user_name">Name</string>
+    <string name="user_name_info">This name will be displayed next to your own soundtracks.</string>
+
     <string name="instrument_flute">Flute</string>
     <string name="instrument_drums">Drums</string>
     <string name="instrument_shaker">Shaker</string>
@@ -30,6 +33,7 @@
     <string name="soundtrack_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
 
+    <string name="name_input_empty">Du have to enter a name.</string>
     <string name="room_input_empty">You have to enter a room.</string>
     <string name="room_invalid">This room is invalid.</string>
     <string name="password_input_empty">You have to enter a password.</string>

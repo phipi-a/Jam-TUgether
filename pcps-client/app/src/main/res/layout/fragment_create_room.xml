@@ -37,17 +37,55 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <de.pcps.jamtugether.ui.base.views.JamTextInputLayout
-                    android:id="@+id/room_password_text_input_layout"
+                    android:id="@+id/user_name_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="100dp"
                     android:layout_marginEnd="50dp"
-                    android:hint="@string/password"
-                    app:errorIconDrawable="@null"
+                    android:hint="@string/user_name"
+                    app:endIconMode="clear_text"
+                    app:error="@{viewModel.nameInputError}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/create_room_text_view"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/user_name_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:textCursorDrawable="@drawable/edit_text_cursor"
+                        android:textSize="15dp" />
+                </de.pcps.jamtugether.ui.base.views.JamTextInputLayout>
+
+                <ImageView
+                    android:id="@+id/name_info_button"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:onClick="@{() -> viewModel.onNameInfoButtonClicked()}"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="@id/user_name_text_input_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/user_name_text_input_layout"
+                    app:layout_constraintTop_toTopOf="@id/user_name_text_input_layout"
+                    app:tint="@color/iconColor" />
+
+                <de.pcps.jamtugether.ui.base.views.JamTextInputLayout
+                    android:id="@+id/room_password_text_input_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="50dp"
+                    android:hint="@string/password"
+                    app:error="@{viewModel.passwordInputError}"
+                    app:errorIconDrawable="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_name_text_input_layout"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +106,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="50dp"
                     android:layout_marginBottom="@dimen/layout_margin_bottom"
-                    android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(roomPasswordEditText.getText().toString())}"
+                    android:onClick="@{() -> viewModel.onCreateRoomButtonClicked(userNameEditText.getText().toString(), roomPasswordEditText.getText().toString())}"
                     android:text="@string/go_to_room"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

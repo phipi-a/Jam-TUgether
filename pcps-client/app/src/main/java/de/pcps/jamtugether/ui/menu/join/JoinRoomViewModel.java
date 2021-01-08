@@ -20,6 +20,7 @@ import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.model.User;
 
 public class JoinRoomViewModel extends ViewModel {
 
@@ -30,7 +31,9 @@ public class JoinRoomViewModel extends ViewModel {
     RoomRepository roomRepository;
 
     private int roomID;
-    private int userID;
+
+    @Nullable
+    private User user;
 
     @Nullable
     private String password;
@@ -39,7 +42,13 @@ public class JoinRoomViewModel extends ViewModel {
     private String token;
 
     @NonNull
+    private final MutableLiveData<Boolean> showNameInfoDialog = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<String> nameInputError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<String> roomInputError = new MutableLiveData<>(null);
@@ -57,11 +66,21 @@ public class JoinRoomViewModel extends ViewModel {
         AppInjector.inject(this);
     }
 
-    public void onJoinRoomButtonClicked(@NonNull String roomIDString, @NonNull String password) {
+    public void onNameInfoButtonClicked() {
+        showNameInfoDialog.setValue(true);
+    }
+
+    public void onJoinRoomButtonClicked(@NonNull String userName, @NonNull String roomIDString, @NonNull String password) {
         Context context = application.getApplicationContext();
 
+        boolean emptyUserName = false;
         boolean emptyRoom = false;
         boolean emptyPassword = false;
+
+        if(userName.isEmpty()) {
+            nameInputError.setValue(context.getString(R.string.name_input_empty));
+            emptyUserName = true;
+        }
 
         if (roomIDString.isEmpty()) {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
@@ -73,7 +92,10 @@ public class JoinRoomViewModel extends ViewModel {
             emptyPassword = true;
         }
 
-        if (emptyRoom || emptyPassword) {
+        if (emptyUserName || emptyRoom || emptyPassword) {
+            if(!emptyUserName) {
+                nameInputError.setValue(null);
+            }
             if (!emptyRoom) {
                 roomInputError.setValue(null);
             }
@@ -91,10 +113,10 @@ public class JoinRoomViewModel extends ViewModel {
         }
 
         this.password = password;
-        joinRoom(roomID, password);
+        joinRoom(roomID, userName, password);
     }
 
-    private void joinRoom(int roomID, @NonNull String password) {
+    private void joinRoom(int roomID, @NonNull String userName, @NonNull String password) {
         progressBarVisibility.setValue(View.VISIBLE);
 
         roomRepository.joinRoom(roomID, password, new JamCallback<JoinRoomResponse>() {
@@ -102,7 +124,9 @@ public class JoinRoomViewModel extends ViewModel {
             public void onSuccess(@NonNull JoinRoomResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
 
-                userID = response.getUserID();
+                int userID = response.getUserID();
+                user = new User(userID, userName);
+
                 token = response.getToken();
 
                 navigateToRegularRoom.setValue(true);
@@ -135,6 +159,10 @@ public class JoinRoomViewModel extends ViewModel {
         });
     }
 
+    public void onNameInfoDialogShown() {
+        showNameInfoDialog.setValue(false);
+    }
+
     public void onNetworkErrorShown() {
         networkError.setValue(null);
     }
@@ -147,8 +175,9 @@ public class JoinRoomViewModel extends ViewModel {
         return roomID;
     }
 
-    public int getUserID() {
-        return userID;
+    @Nullable
+    public User getUser() {
+        return user;
     }
 
     @Nullable
@@ -162,8 +191,18 @@ public class JoinRoomViewModel extends ViewModel {
     }
 
     @NonNull
+    public LiveData<Boolean> getShowNameInfoDialog() {
+        return showNameInfoDialog;
+    }
+
+    @NonNull
     public LiveData<Boolean> getNavigateToRegularRoom() {
         return navigateToRegularRoom;
+    }
+
+    @NonNull
+    public LiveData<String> getNameInputError() {
+        return nameInputError;
     }
 
     @NonNull

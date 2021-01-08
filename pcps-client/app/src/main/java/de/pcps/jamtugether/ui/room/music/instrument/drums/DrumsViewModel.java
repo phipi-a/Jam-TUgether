@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
@@ -17,8 +18,8 @@ public class DrumsViewModel extends InstrumentViewModel {
     @NonNull
     private static final Drums drums = Drums.getInstance();
 
-    public DrumsViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(drums, roomID, userID, token, callback);
+    public DrumsViewModel(int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, roomID, user, token, callback);
     }
 
     public void onSnareClicked() {
@@ -62,7 +63,9 @@ public class DrumsViewModel extends InstrumentViewModel {
     static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;
-        private final int userID;
+
+        @NonNull
+        private final User user;
 
         @NonNull
         private final String token;
@@ -70,9 +73,9 @@ public class DrumsViewModel extends InstrumentViewModel {
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+        public Factory(int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
             this.roomID = roomID;
-            this.userID = userID;
+            this.user = user;
             this.token = token;
             this.callback = callback;
         }
@@ -82,7 +85,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DrumsViewModel.class)) {
-                return (T) new DrumsViewModel(roomID, userID, token, callback);
+                return (T) new DrumsViewModel(roomID, user, token, callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

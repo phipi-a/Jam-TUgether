@@ -78,8 +78,8 @@
             android:name="roomID"
             app:argType="integer" />
         <argument
-            android:name="userID"
-            app:argType="integer" />
+            android:name="user"
+            app:argType="de.pcps.jamtugether.model.User" />
         <argument
             android:name="password"
             app:argType="string" />
@@ -89,6 +89,7 @@
         <argument
             android:name="admin"
             app:argType="boolean" />
+
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"

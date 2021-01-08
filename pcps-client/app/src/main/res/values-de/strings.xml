@@ -12,6 +12,9 @@
     <string name="join_room_info">Raum betreten</string>
     <string name="room_id">Raum ID</string>
 
+    <string name="user_name">Name</string>
+    <string name="user_name_info">Dieser Name wird neben deinen eigenen Soundtracks stehen.</string>
+
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
@@ -29,6 +32,7 @@
     <string name="soundtrack_over_view">Übersicht</string>
     <string name="musician_view">Musikeransicht</string>
 
+    <string name="name_input_empty">Du musst einen Namen eingeben.</string>
     <string name="room_input_empty">Du musst einen Raum eingeben.</string>
     <string name="room_invalid">Dieser Raum ist ungültig.</string>
     <string name="password_input_empty">Du musst ein Passwort eingeben.</string>

@@ -144,21 +144,19 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
             return;
         }
 
-        // delete from local list
-        List<SingleSoundtrack> newList = new ArrayList<>();
-        for (SingleSoundtrack singleSoundtrack : soundtracks) {
-            if (singleSoundtrack != soundtrack) {
-                newList.add(singleSoundtrack);
-            }
-        }
-        soundtrackRepository.updateAllSoundtracks(newList);
-
         soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
 
         soundtrackRepository.deleteSoundtrack(token, roomID, soundtrack, new JamCallback<DeleteTrackResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteTrackResponse response) {
-                Timber.d("onSuccess() soundtrack deleted");
+                // delete from local list in order to be visible immediately
+                List<SingleSoundtrack> newList = new ArrayList<>();
+                for (SingleSoundtrack singleSoundtrack : soundtracks) {
+                    if (singleSoundtrack != soundtrack) {
+                        newList.add(singleSoundtrack);
+                    }
+                }
+                soundtrackRepository.updateAllSoundtracks(newList);
             }
 
             @Override

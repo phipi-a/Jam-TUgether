@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
 import de.pcps.jamtugether.ui.base.TabLayoutFragment;
 import de.pcps.jamtugether.ui.base.views.JamTabView;
@@ -22,7 +23,8 @@ import de.pcps.jamtugether.utils.UiUtils;
 public class RoomFragment extends TabLayoutFragment {
 
     private int roomID;
-    private int userID;
+
+    private User user;
 
     private String password;
 
@@ -40,7 +42,7 @@ public class RoomFragment extends TabLayoutFragment {
         if (getArguments() != null) {
             RoomFragmentArgs args = RoomFragmentArgs.fromBundle(getArguments());
             this.roomID = args.getRoomID();
-            this.userID = args.getUserID();
+            this.user = args.getUser();
             this.password = args.getPassword();
             this.token = args.getToken();
             this.userIsAdmin = args.getAdmin();
@@ -49,7 +51,7 @@ public class RoomFragment extends TabLayoutFragment {
             roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
 
             String currentToken = roomViewModel.getToken().getValue();
-            compositeSoundtrackViewModel = new ViewModelProvider(this, new CompositeSoundtrackViewModel.Factory(roomID, userID, currentToken)).get(CompositeSoundtrackViewModel.class);
+            compositeSoundtrackViewModel = new ViewModelProvider(this, new CompositeSoundtrackViewModel.Factory(roomID, user.getID(), currentToken)).get(CompositeSoundtrackViewModel.class);
         }
     }
 
@@ -109,7 +111,7 @@ public class RoomFragment extends TabLayoutFragment {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, userID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, user.getID(), password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, user, token);
             }
 
             @Override
