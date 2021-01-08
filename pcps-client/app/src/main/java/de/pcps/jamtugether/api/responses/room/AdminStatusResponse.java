@@ -1,21 +1,24 @@
 package de.pcps.jamtugether.api.responses.room;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.squareup.moshi.Json;
 
 import de.pcps.jamtugether.api.responses.base.SimpleResponse;
 
-public class AdminStatusResponse {
-    @NonNull
-    private final String description;
-    @NonNull
-    private final Boolean flag;
+public class AdminStatusResponse extends SimpleResponse {
 
+    @Json(name = "flag")
+    @Nullable
+    private final Boolean isAdmin;
+
+    @Nullable
     private final String token;
 
-    public AdminStatusResponse(@NonNull String description, @NonNull Boolean flag, String token) {
-
-        this.description = description;
-        this.flag = flag;
+    public AdminStatusResponse(@NonNull String description, @Nullable Boolean isAdmin, @Nullable String token) {
+        super(description);
+        this.isAdmin = isAdmin;
         this.token = token;
     }
 
@@ -24,9 +27,9 @@ public class AdminStatusResponse {
         return description;
     }
 
-    @NonNull
-    public Boolean getFlag() { return flag; }
+    @Nullable
+    public Boolean isAdmin() { return isAdmin; }
 
-    @NonNull
+    @Nullable
     public String getToken() { return token; }
 }

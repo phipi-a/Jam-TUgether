@@ -119,12 +119,12 @@ public class RoomRepository {
 
             @Override
             public void onSuccess(@NonNull AdminStatusResponse response) {
-                Boolean flag = response.getFlag();
+                Boolean isAdmin = response.isAdmin();
                 String token = response.getToken();
 
-                if (flag != null) {
-                    currentUserIsAdmin.setValue(flag);
-                    if (flag) {
+                if (isAdmin != null) {
+                    currentUserIsAdmin.setValue(isAdmin);
+                    if (isAdmin && token != null) {
                         currentToken.setValue(token);
                     }
                 }
