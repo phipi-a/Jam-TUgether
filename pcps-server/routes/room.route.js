@@ -68,9 +68,9 @@ async function updateAdminAccess (roomID) {
  */
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
-    // Check if the number of rooms is below limit (limit: 10)
+    // Check if the number of rooms is below limit (limit: 10) TODO TESTING 50
     const numberOfRooms = await RoomSchema.countDocuments().exec()
-    if ((Number(numberOfRooms) + 1) > 10) {
+    if ((Number(numberOfRooms) + 1) > 50) {
       throw ROOM_LIMIT_ERROR
     }
 
