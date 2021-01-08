@@ -23,10 +23,11 @@ exports.sendTracks = async function (req, res, room) {
 
 function prepareSoundtrack (soundtrack) {
   return {
-    _id: mongoose.Types.ObjectId(),
     userID: soundtrack[0].userID,
     instrument: soundtrack[0].instrument,
-    soundSequence: soundtrack[0].soundSequence
+    soundSequence: soundtrack[0].soundSequence,
+    userName: soundtrack[0].userName,
+    number: soundtrack[0].number
   }
 }
 // controls if newAdmin is needed
