@@ -6,10 +6,14 @@
     <data>
 
         <import type="de.pcps.jamtugether.utils.StringUtils" />
+
         <import type="android.view.View" />
 
+        <!-- if this layout is used for displaying the composite soundtrack,
+             this variable won't be set -->
+
         <variable
-            name="soundtrack"
+            name="singleSoundtrack"
             type="de.pcps.jamtugether.model.soundtrack.SingleSoundtrack" />
 
     </data>
@@ -35,9 +39,9 @@
             android:maxLines="1"
             android:paddingStart="0dp"
             android:paddingEnd="5dp"
-            android:text="@{soundtrack.getUserName()}"
+            android:text="@{singleSoundtrack.getUserName()}"
             android:textColor="@color/primaryTextColor"
-            android:visibility="@{StringUtils.isEmpty(soundtrack.getUserName()) ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{StringUtils.isEmpty(singleSoundtrack.getUserName()) || singleSoundtrack.isOwnSoundtrack() ? View.GONE : View.VISIBLE}" />
 
         <!-- "margin top" of container = "0dp" in order to look exactly like view_soundtrack_admin-->
 

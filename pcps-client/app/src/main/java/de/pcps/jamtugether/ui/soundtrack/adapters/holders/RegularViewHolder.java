@@ -24,7 +24,7 @@ public class RegularViewHolder extends BaseViewHolder {
 
     @Override
     public void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
-        binding.setSoundtrack(singleSoundtrack);
+        binding.setSingleSoundtrack(singleSoundtrack);
         binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
         binding.soundtrackControlsLayout.setOnChangeListener(onChangeCallback);
         binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
