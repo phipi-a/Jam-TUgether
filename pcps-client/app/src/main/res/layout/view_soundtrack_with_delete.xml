@@ -29,34 +29,36 @@
         <!-- "margin top" = "sound track margin top * (-1)" in order to
              align the actual sound track view to the bottom of the controls
              Otherwise, the clear button would be aligned to the control layout
-             leaving too much space between the controls and the actual view -->
+             leaving too much space between the user name and the actual view -->
+
+        <TextView
+            android:id="@+id/soundtrack_user_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/soundtrack_item_clear_button_width"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp"
+            android:text="@{soundtrack.getUserName()}"
+            android:textColor="@color/primaryTextColor" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp">
 
-
-
             <include
                 android:id="@+id/soundtrack_container"
                 layout="@layout/view_soundtrack_container"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/soundtrack_view_height"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/soundtrack_title"
-                style="@style/JamTUgetherAlertDialogTheme"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="@{soundtrack.getUserName()}" />
 
             <ImageView
                 android:id="@+id/delete_button"
