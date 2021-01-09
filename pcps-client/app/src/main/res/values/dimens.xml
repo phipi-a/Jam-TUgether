@@ -24,7 +24,7 @@
     <dimen name="soundtrack_fast_forward_icon_width">25dp</dimen>
     <dimen name="soundtrack_stop_icon_margin_start">10dp</dimen>
     <dimen name="soundtrack_stop_icon_width">25dp</dimen>
-    <dimen name="soundtrack_stop_icon_margin_end">20dp</dimen>
+    <dimen name="soundtrack_stop_icon_margin_end">10dp</dimen>
 
     <dimen name="composite_soundtrack_margin_top">25dp</dimen>
     <dimen name="soundtrack_item_margin_top">20dp</dimen>

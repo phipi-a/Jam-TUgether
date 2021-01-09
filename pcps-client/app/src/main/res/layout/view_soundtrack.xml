@@ -3,6 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
+    <data>
+
+        <import type="de.pcps.jamtugether.utils.StringUtils" />
+
+        <import type="android.view.View" />
+
+        <!-- if this layout is used for displaying the composite soundtrack,
+             this variable won't be set -->
+
+        <variable
+            name="singleSoundtrack"
+            type="de.pcps.jamtugether.model.soundtrack.SingleSoundtrack" />
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +29,22 @@
             android:id="@+id/soundtrack_controls_layout"
             layout="@layout/view_soundtrack_controls" />
 
-        <!-- "margin top" = "0dp" in order to look exactly like view_soundtrack_admin-->
+        <TextView
+            android:id="@+id/soundtrack_user_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/soundtrack_item_clear_button_width"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp"
+            android:text="@{singleSoundtrack.getUserName()}"
+            android:textColor="@color/primaryTextColor"
+            android:visibility="@{StringUtils.isEmpty(singleSoundtrack.getUserName()) || singleSoundtrack.isOwnSoundtrack() ? View.GONE : View.VISIBLE}" />
+
+        <!-- "margin top" of container = "0dp" in order to look exactly like view_soundtrack_admin-->
+
         <include
             android:id="@+id/soundtrack_container"
             layout="@layout/view_soundtrack_container"

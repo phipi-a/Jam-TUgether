@@ -21,6 +21,7 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.utils.StringUtils;
 
 public class JoinRoomViewModel extends ViewModel {
 
@@ -77,17 +78,17 @@ public class JoinRoomViewModel extends ViewModel {
         boolean emptyRoom = false;
         boolean emptyPassword = false;
 
-        if(userName.isEmpty()) {
+        if(StringUtils.isEmpty(userName)) {
             nameInputError.setValue(context.getString(R.string.name_input_empty));
             emptyUserName = true;
         }
 
-        if (roomIDString.isEmpty()) {
+        if (StringUtils.isEmpty(roomIDString)) {
             roomInputError.setValue(context.getString(R.string.room_input_empty));
             emptyRoom = true;
         }
 
-        if (password.isEmpty()) {
+        if (StringUtils.isEmpty(password)) {
             passwordInputError.setValue(context.getString(R.string.password_input_empty));
             emptyPassword = true;
         }

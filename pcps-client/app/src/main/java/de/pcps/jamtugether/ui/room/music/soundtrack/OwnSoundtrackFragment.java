@@ -73,7 +73,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 
-        SoundtrackDataBindingUtils.bindSingleSoundtrack(binding.ownSoundtrackLayout, ownSoundtrackViewModel.getOwnSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindOwnSoundtrack(binding.ownSoundtrackLayout, ownSoundtrackViewModel.getOwnSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 
         ownSoundtrackViewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if (showHelpDialog) {

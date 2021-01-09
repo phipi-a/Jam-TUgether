@@ -29,7 +29,20 @@
         <!-- "margin top" = "sound track margin top * (-1)" in order to
              align the actual sound track view to the bottom of the controls
              Otherwise, the clear button would be aligned to the control layout
-             leaving too much space between the controls and the actual view -->
+             leaving too much space between the user name and the actual view -->
+
+        <TextView
+            android:id="@+id/soundtrack_user_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/soundtrack_item_clear_button_width"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp"
+            android:text="@{soundtrack.getUserName()}"
+            android:textColor="@color/primaryTextColor" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
