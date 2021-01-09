@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
+    <data>
+
+        <variable
+            name="soundtrack"
+            type="de.pcps.jamtugether.model.soundtrack.SingleSoundtrack" />
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +23,16 @@
             layout="@layout/view_soundtrack_controls" />
 
         <!-- "margin top" = "0dp" in order to look exactly like view_soundtrack_admin-->
+
+        <TextView
+            android:id="@+id/soundtrack_title"
+            style="@style/JamTUgetherAlertDialogTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@{soundtrack.getUserName()}" />
+
         <include
             android:id="@+id/soundtrack_container"
             layout="@layout/view_soundtrack_container"
