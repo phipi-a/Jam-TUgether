@@ -358,7 +358,8 @@ roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const priviliges = await whoAmI(req, res, room)
   if (priviliges === 'Admin') {
     await updateAdminAccess(room.roomID)
-    res.status(202).json(priviliges)
+    const answer = { description: priviliges }
+    res.status(202).json(answer)
   } else {
     const answer = await checkAdmin(room.lastAccessAdmin, room.roomID)
     answer.description = answer.flag ? 'new Admin' : 'Not Admin'
