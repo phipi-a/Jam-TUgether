@@ -11,7 +11,6 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,7 +29,6 @@ import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -99,20 +97,14 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         if (soundtracks == null || !soundtracks.contains(soundtrack)) {
             return;
         }
-
         soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
 
         soundtrackRepository.deleteSoundtrack(token, roomID, soundtrack, new JamCallback<DeleteTrackResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteTrackResponse response) {
                 // delete from local list in order to be visible immediately
-                List<SingleSoundtrack> newList = new ArrayList<>();
-                for (SingleSoundtrack singleSoundtrack : soundtracks) {
-                    if (singleSoundtrack != soundtrack) {
-                        newList.add(singleSoundtrack);
-                    }
-                }
-                soundtrackRepository.updateAllSoundtracks(newList);
+                soundtracks.remove(soundtrack);
+                soundtrackRepository.updateAllSoundtracks(soundtracks);
             }
 
             @Override
