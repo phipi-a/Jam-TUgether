@@ -25,7 +25,7 @@ Content-Type: application/json
 ###
 GET  http://localhost:3000/api/room/1/
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjAzM2NjNmE1ZDlkYTc2NTAyMjgyIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5OTI3MzIwLCJleHAiOjE2MDk5MjkxMjB9.H62J9ufULMmKNN_wDTUt2FU3FogDPgpnq9d9bbzd22w '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijk4ZDBjMWE0ZDc1MzgwZGNjZWMzIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0NTIyLCJleHAiOjE2MTAzMTYzMjJ9.KRu4fEY9yBmJd9Jv2VAVrTb6PSK7Qmew52C5PZn-XxA '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "retinstrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
@@ -34,26 +34,34 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 ###
 DELETE  http://localhost:3000/api/room/1/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjE4ODk0NjcwYzE3YzE2NjYwNTNlIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5ODQwNTQ4LCJleHAiOjE2MDk4NDIzNDh9.y0a0algLGcNAe2qNllHKdKvLeHgpla823JqIl2qBsNM '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImNhZjRmYWI4NzgwYjhlZTRmMGI3Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0Nzk3LCJleHAiOjE2MTAzMTY1OTd9.npXUKR4yDVhSDdoqYhNPsBD_K51I-qIj7bNgKkCz1R8 '
 
 {
   "roomID": "1"
 }
 ###
-DELETE   http://:3000/api/room/1
+POST   http://localhost:3000/api/room/1/
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjM1M2I2ZDU2N2JlN2I0M2Q4NDc1Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMTkyNTY5LCJleHAiOjE2MTAxOTQzNjl9.ILWJIRvcr0fsMYULHBjcTnfcenS09Ratatmrnbrp_Bs '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImM2NjRjOWJhODdkYmUwOGJjNzE5Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE2NjAxLCJleHAiOjE2MTAzMTg0MDF9.haF9Ie0HcMKbf2hR63Tdobg_6BDlulvooryZkX61l-w '
 
 {
-  "roomID" : "1",
-  "userID" : "1",
-  "instrument" : "instrument123",
-  "number" : "1"
+  "soundtracks": [{"userID" : 1, "instrument" : "retinstrument123", "number" : 1, "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
+}
+###
+DELETE   http://localhost:3000/api/room/1
+Content-Type: application/json
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImM2NjRjOWJhODdkYmUwOGJjNzE5Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE2NjAxLCJleHAiOjE2MTAzMTg0MDF9.haF9Ie0HcMKbf2hR63Tdobg_6BDlulvooryZkX61l-w '
+
+{
+  "roomID" : 1,
+  "userID" : 1,
+  "instrument" : "retinstrument123",
+  "number" : 1
 }
 ###
 GET http://localhost:3000/api/room/1/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImZhNDFkNWE4NGM0ODNlOTc4MGRkIiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMTkxODA2LCJleHAiOjE2MTAxOTM2MDZ9.J5plDyozDYD7cZznoJAOKkMWRkF88feTEQZeTv7ULc0 '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijk4ZDBjMWE0ZDc1MzgwZGNjZWMzIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0NTIyLCJleHAiOjE2MTAzMTYzMjJ9.KRu4fEY9yBmJd9Jv2VAVrTb6PSK7Qmew52C5PZn-XxA '
 
 {
   "roomID" : 1,
