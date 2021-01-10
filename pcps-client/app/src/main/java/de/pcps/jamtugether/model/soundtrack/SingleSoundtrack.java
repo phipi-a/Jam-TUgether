@@ -100,9 +100,7 @@ public class SingleSoundtrack extends Soundtrack {
         if (isEmpty()) {
             return 0;
         }
-        Sound firstSound = soundSequence.get(0);
-        Sound lastSound = soundSequence.get(soundSequence.size() - 1);
-        return lastSound.getEndTime() - firstSound.getStartTime();
+        return soundSequence.get(soundSequence.size() - 1).getEndTime();
     }
 
     @Override
