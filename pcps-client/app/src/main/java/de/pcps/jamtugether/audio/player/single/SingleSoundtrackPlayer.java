@@ -3,9 +3,7 @@ package de.pcps.jamtugether.audio.player.single;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,7 +21,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 public class SingleSoundtrackPlayer extends SoundtrackPlayer {
 
     @NonNull
-    private final HashMap<Integer, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
+    private final HashMap<String, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
     public SingleSoundtrackPlayer() { }
@@ -34,7 +32,7 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
             SingleSoundtrackPlayingThread thread = new SingleSoundtrackPlayingThread(singleSoundtrack, this);
-            threadMap.put(singleSoundtrack.getUserID(), thread);
+            threadMap.put(singleSoundtrack.getID(), thread);
             return thread;
         }
         return null;
@@ -45,7 +43,7 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
         if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            SoundtrackPlayingThread thread = threadMap.get(singleSoundtrack.getUserID());
+            SoundtrackPlayingThread thread = threadMap.get(singleSoundtrack.getID());
             return thread != null ? thread : createThread(soundtrack);
         }
         return null;
@@ -66,7 +64,7 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         super.pause(soundtrack);
         if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            threadMap.remove(singleSoundtrack.getUserID());
+            threadMap.remove(singleSoundtrack.getID());
         }
     }
 
@@ -75,46 +73,8 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         super.stop(soundtrack);
         if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            threadMap.remove(singleSoundtrack.getUserID());
+            threadMap.remove(singleSoundtrack.getID());
         }
-    }
-
-    /**
-     * stops every soundtrack except the ones that are in the given list
-     */
-    public void stopExcept(@NonNull List<SingleSoundtrack> keepPlayingList) {
-        List<Integer> toBeRemoved = new ArrayList<>();
-        for (Integer key : threadMap.keySet()) {
-            SingleSoundtrackPlayingThread thread = threadMap.get(key);
-            if(thread == null) {
-                continue;
-            }
-            if(!keepPlaying(thread, keepPlayingList)) {
-                thread.stopSoundtrack();
-                toBeRemoved.add(key);
-            }
-        }
-        for (Integer key : toBeRemoved) {
-            threadMap.remove(key);
-        }
-    }
-
-    private boolean keepPlaying(@NonNull SingleSoundtrackPlayingThread thread, @NonNull List<SingleSoundtrack> keepPlayingList) {
-        Soundtrack soundtrack = thread.getSoundtrack();
-        if(!(soundtrack instanceof SingleSoundtrack)) {
-            return false;
-        }
-        SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-        if(singleSoundtrack.isOwnSoundtrack()) {
-            return true;
-        }
-
-        for(SingleSoundtrack keepPlaying : keepPlayingList) {
-            if(singleSoundtrack.getUserID() == keepPlaying.getUserID()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -131,7 +91,7 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
         Soundtrack soundtrack = thread.getSoundtrack();
         if (soundtrack instanceof SingleSoundtrack) {
             SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
-            threadMap.remove(singleSoundtrack.getUserID());
+            threadMap.remove(singleSoundtrack.getID());
         }
     }
 }

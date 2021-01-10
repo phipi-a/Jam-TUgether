@@ -11,10 +11,8 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
-import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 /**
  * This player is responsible for playing every single soundtrack of the app
@@ -24,7 +22,7 @@ import timber.log.Timber;
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
 
     @NonNull
-    private final HashMap<List<Integer>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
+    private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
     public CompositeSoundtrackPlayer() {
@@ -36,7 +34,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             CompositeSoundtrackPlayingThread thread = new CompositeSoundtrackPlayingThread(compositeSoundtrack, this);
-            threadMap.put(compositeSoundtrack.getUserIDs(), thread);
+            threadMap.put(compositeSoundtrack.getIDs(), thread);
             return thread;
         }
         return null;
@@ -47,7 +45,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     protected SoundtrackPlayingThread getThread(@NonNull Soundtrack soundtrack) {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            CompositeSoundtrackPlayingThread thread = threadMap.get(compositeSoundtrack.getUserIDs());
+            CompositeSoundtrackPlayingThread thread = threadMap.get(compositeSoundtrack.getIDs());
             return thread != null ? thread : createThread(soundtrack);
         }
         return null;
@@ -68,7 +66,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         super.pause(soundtrack);
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            threadMap.remove(compositeSoundtrack.getUserIDs());
+            threadMap.remove(compositeSoundtrack.getIDs());
         }
     }
 
@@ -77,7 +75,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         super.stop(soundtrack);
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            threadMap.remove(compositeSoundtrack.getUserIDs());
+            threadMap.remove(compositeSoundtrack.getIDs());
         }
     }
 
@@ -95,7 +93,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         Soundtrack soundtrack = thread.getSoundtrack();
         if(soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
-            threadMap.remove(compositeSoundtrack.getUserIDs());
+            threadMap.remove(compositeSoundtrack.getIDs());
         }
     }
 }

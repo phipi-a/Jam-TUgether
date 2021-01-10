@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
@@ -79,6 +80,19 @@ public class SingleSoundtrack extends Soundtrack {
 
     public void addSound(Sound sound) {
         soundSequence.add(sound);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SingleSoundtrack that = (SingleSoundtrack) o;
+        return getID().equals(that.getID()) && soundSequence.equals(that.soundSequence);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, userName, instrument, number, soundSequence, isOwnSoundtrack, soundPool);
     }
 
     @Override

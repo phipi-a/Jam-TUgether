@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 
 public class CompositeSoundtrackViewModel extends ViewModel {
@@ -43,7 +42,6 @@ public class CompositeSoundtrackViewModel extends ViewModel {
     public static class Factory implements ViewModelProvider.Factory {
 
         private final int roomID;
-
         private final int userID;
 
         @NonNull

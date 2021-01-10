@@ -101,8 +101,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
         final Runnable invalidateItemDecorations = () -> binding.allSoundtracksRecyclerView.post(binding.allSoundtracksRecyclerView::invalidateItemDecorations);
 
-        soundtrackOverviewViewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), soundtracks -> soundtrackOverviewViewModel.onNewSoundtracks(soundtracks));
-
         roomViewModel.getToken().observe(getViewLifecycleOwner(), token -> soundtrackOverviewViewModel.onTokenChanged(token));
 
         roomViewModel.getUserIsAdmin().observe(getViewLifecycleOwner(), admin -> {

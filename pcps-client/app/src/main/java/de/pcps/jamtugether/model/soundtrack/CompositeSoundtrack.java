@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
@@ -41,12 +42,25 @@ public class CompositeSoundtrack extends Soundtrack {
     }
 
     @NonNull
-    public List<Integer> getUserIDs() {
-        List<Integer> userIDs = new ArrayList<>();
+    public List<String> getIDs() {
+        List<String> compositeIDs = new ArrayList<>();
         for (SingleSoundtrack soundtrack : soundtracks) {
-            userIDs.add(soundtrack.getUserID());
+            compositeIDs.add(soundtrack.getID());
         }
-        return userIDs;
+        return compositeIDs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompositeSoundtrack that = (CompositeSoundtrack) o;
+        return soundtracks.equals(that.soundtracks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(soundtracks);
     }
 
     @NonNull
