@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,6 +218,7 @@ public class SoundtrackRepository {
     }
 
     public void updateAllSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
+        Timber.d("updateAllSoundtracks() | soundtracks: %s", soundtracks);
         allSoundtracks.setValue(soundtracks);
 
         CompositeSoundtrack newCompositeSoundtrack = CompositeSoundtrack.from(soundtracks, context);
