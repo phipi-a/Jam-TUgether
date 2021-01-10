@@ -43,6 +43,10 @@ public abstract class Soundtrack {
         return state;
     }
 
+    public void setState(@NonNull State state) {
+        this.state.setValue(state);
+    }
+
     public void postState(@NonNull State state) {
         this.state.postValue(state);
     }
@@ -62,6 +66,11 @@ public abstract class Soundtrack {
 
     public int getProgressInMillis() {
         return progressInMillis;
+    }
+
+    public void setProgressInMillis(int progressInMillis) {
+        this.progressInMillis = progressInMillis;
+        this.progress.setValue(calculateProgress(progressInMillis));
     }
 
     public void postProgressInMillis(int progressInMillis) {

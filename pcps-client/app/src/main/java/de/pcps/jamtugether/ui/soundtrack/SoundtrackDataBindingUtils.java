@@ -37,7 +37,6 @@ public class SoundtrackDataBindingUtils {
     public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackBinding binding, @NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
         ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
         SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
-
         compositeSoundtrack.observe(lifecycleOwner, soundtrack -> {
             controlsBinding.setSoundtrack(soundtrack);
             controlsBinding.setOnChangeListener(onChangeCallback);

@@ -37,7 +37,7 @@
         <!-- width of this slider is calculated later based on screen width -->
         <com.google.android.material.slider.Slider
             android:id="@+id/volume_slider"
-            android:layout_width="0dp"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_volume_slider_margin_start"
             android:stepSize="1"
