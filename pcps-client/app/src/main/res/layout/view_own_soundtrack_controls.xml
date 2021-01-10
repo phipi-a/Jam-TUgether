@@ -47,8 +47,9 @@
 
             <ImageView
                 android:id="@+id/play_pause_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onCreateSoundtrackButtonClicked()}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +62,7 @@
                 android:id="@+id/timer_text_view"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:text="@{viewModel.timerText}"
                 android:textColor="@color/primaryTextColor"
