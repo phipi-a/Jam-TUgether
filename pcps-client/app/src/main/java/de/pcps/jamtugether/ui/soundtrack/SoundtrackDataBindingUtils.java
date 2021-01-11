@@ -26,7 +26,7 @@ public class SoundtrackDataBindingUtils {
         SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
 
         ownSoundtrack.observe(lifecycleOwner, soundtrack -> {
-            binding.setSingleSoundtrack(soundtrack);
+            binding.setSoundtrack(soundtrack);
             controlsBinding.setSoundtrack(soundtrack);
             controlsBinding.setOnChangeListener(onChangeCallback);
             controlsBinding.setLifecycleOwner(lifecycleOwner);
@@ -38,6 +38,7 @@ public class SoundtrackDataBindingUtils {
         ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
         SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
         compositeSoundtrack.observe(lifecycleOwner, soundtrack -> {
+            binding.setSoundtrack(soundtrack);
             controlsBinding.setSoundtrack(soundtrack);
             controlsBinding.setOnChangeListener(onChangeCallback);
             controlsBinding.setLifecycleOwner(lifecycleOwner);

@@ -1,6 +1,9 @@
 package de.pcps.jamtugether.model.soundtrack.base;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -37,6 +40,9 @@ public abstract class Soundtrack {
     public abstract int getLength();
 
     public abstract boolean isEmpty();
+
+    @Nullable
+    public abstract String getLabel(@NonNull Context context);
 
     @NonNull
     public LiveData<State> getState() {

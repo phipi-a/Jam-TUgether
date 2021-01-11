@@ -108,8 +108,10 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence.isEmpty();
     }
 
-    public boolean isOwnSoundtrack() {
-        return isOwnSoundtrack;
+    @Nullable
+    @Override
+    public String getLabel(@NonNull Context context) {
+        return isOwnSoundtrack || userID == -1 ? null : userName;
     }
 
     @NonNull

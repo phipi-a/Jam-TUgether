@@ -12,7 +12,7 @@
     <string name="join_room_info">Raum betreten</string>
     <string name="room_id">Raum ID</string>
 
-    <string name="user_name">Name</string>
+    <string name="user_name">Benutzername</string>
     <string name="user_name_info">Dieser Name wird neben deinen eigenen Soundtracks stehen.</string>
 
     <string name="instrument_flute">Flöte</string>
@@ -41,6 +41,8 @@
     <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
     <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
     <string name="play_shaker_help">Schüttel dein Handy.</string>
+
+    <string name="composite">Gesamt</string>
 
     <string name="upload">Hochladen</string>
     <string name="play_with_composite_soundtrack">mit Tonspur</string>
