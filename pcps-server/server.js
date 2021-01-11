@@ -43,6 +43,21 @@ const swaggerDocument = swaggerJsDoc(swaggerOptions)
 const roomRoute = require('./routes/room.route')
 app.use('/api', roomRoute)
 
+// every 10 minutes go through rooms, if nothing happend in room after 30 minutes delete room
+// recursive function (instead of setInterval()), less error-prone
+const deleteUnusedRooms = async function () {
+  console.log('Checking for unused rooms...')
+  // cast current Date - 30 minutes (1800000 ms) to Date
+  const time = new Date(Date.now() - 1800000)
+  // delete all rooms that haven't been updated in the last 30 minutes
+  const room = await RoomSchema.deleteMany({ updated: { $lte: time } })
+
+  // run delteUnusedRooms every 10 minutes (600000s)
+  setTimeout(deleteUnusedRooms, 600000)
+}
+deleteUnusedRooms()
+
+
 // Documentation root
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
