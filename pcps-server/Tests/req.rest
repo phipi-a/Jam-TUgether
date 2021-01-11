@@ -25,7 +25,7 @@ Content-Type: application/json
 ###
 GET  http://localhost:3000/api/room/1/
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijk4ZDBjMWE0ZDc1MzgwZGNjZWMzIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0NTIyLCJleHAiOjE2MTAzMTYzMjJ9.KRu4fEY9yBmJd9Jv2VAVrTb6PSK7Qmew52C5PZn-XxA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQ5NTc3MzBjYjAxOGM3NDg5N2RlIiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzY0NDk1LCJleHAiOjE2MTAzNjYyOTV9.jmnocng_X6icxN7yy78sFe2fVkDus9kuGZbOIwhBp-U '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "retinstrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
@@ -42,7 +42,7 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 ###
 POST   http://localhost:3000/api/room/1/
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImM2NjRjOWJhODdkYmUwOGJjNzE5Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE2NjAxLCJleHAiOjE2MTAzMTg0MDF9.haF9Ie0HcMKbf2hR63Tdobg_6BDlulvooryZkX61l-w '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQ5NTc3MzBjYjAxOGM3NDg5N2RlIiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzY0NDk1LCJleHAiOjE2MTAzNjYyOTV9.jmnocng_X6icxN7yy78sFe2fVkDus9kuGZbOIwhBp-U '
 
 {
   "soundtracks": [{"userID" : 1, "instrument" : "retinstrument123", "number" : 1, "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
@@ -50,7 +50,7 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 ###
 DELETE   http://localhost:3000/api/room/1
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImM2NjRjOWJhODdkYmUwOGJjNzE5Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE2NjAxLCJleHAiOjE2MTAzMTg0MDF9.haF9Ie0HcMKbf2hR63Tdobg_6BDlulvooryZkX61l-w '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQ5NTc3MzBjYjAxOGM3NDg5N2RlIiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzY0NDk1LCJleHAiOjE2MTAzNjYyOTV9.jmnocng_X6icxN7yy78sFe2fVkDus9kuGZbOIwhBp-U '
 
 {
   "roomID" : 1,

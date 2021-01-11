@@ -226,7 +226,7 @@ roomRoute.post('/login', async (req, res) => {
       const update = { numberOfUser: userID }
       await room.updateOne(update)
       // create default sound for new user
-      await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
+      // await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
       res.status(201).send(createJSON(req.body.roomID.toString(), token, userID.toString()))
     } else {
       res.status(401).json({ description: 'Wrong Password.' })
