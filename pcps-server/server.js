@@ -57,7 +57,6 @@ const deleteUnusedRooms = async function () {
 }
 deleteUnusedRooms()
 
-
 // Documentation root
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
