@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public class CompositeSoundtrack extends Soundtrack {
@@ -39,6 +40,12 @@ public class CompositeSoundtrack extends Soundtrack {
     @Override
     public boolean isEmpty() {
         return soundtracks.isEmpty();
+    }
+
+    @NonNull
+    @Override
+    public String getLabel(@NonNull Context context) {
+        return context.getString(R.string.composite);
     }
 
     @NonNull
