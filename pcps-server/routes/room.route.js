@@ -235,7 +235,7 @@ roomRoute.post('/login', async (req, res) => {
     if (err === PwErr) {
       res.status(413).json({ description: 'Password too large.' })
     } else {
-      res.status(500).json({ description: 'Couldn\'t create room.' })
+      res.status(500).json({ description: 'Couldn\'t log in room.' })
     }
   }
 })
@@ -262,7 +262,7 @@ roomRoute.post('/login', async (req, res) => {
 roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     sendTracks(req, res, room)
@@ -291,7 +291,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
 roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     receiveTrack(req, res, req.params.id)
@@ -320,7 +320,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
 roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     deleteTracks(req, res, req.params.id)
@@ -352,7 +352,7 @@ roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
 roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   }
   await updateRoom(room.roomID)
   const priviliges = await whoAmI(req, res, room)
