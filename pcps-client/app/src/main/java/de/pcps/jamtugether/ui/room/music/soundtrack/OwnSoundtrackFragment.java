@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.soundtrack;
 
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.utils.UiUtils;
+
+
 
 public class OwnSoundtrackFragment extends BaseFragment {
 
@@ -26,6 +30,9 @@ public class OwnSoundtrackFragment extends BaseFragment {
     private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     private OwnSoundtrackViewModel ownSoundtrackViewModel;
+
+    private SoundPool soundPool;
+    private int metronome;
 
     @NonNull
     public static OwnSoundtrackFragment newInstance(int roomID, int userID, @NonNull String token) {
@@ -41,6 +48,9 @@ public class OwnSoundtrackFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //
+        ownSoundtrackViewModel = new ViewModelProvider(this).get(OwnSoundtrackViewModel.class);
+        //
         if (getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
             int userID = getArguments().getInt(USER_ID_KEY);
@@ -69,7 +79,16 @@ public class OwnSoundtrackFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
+
         binding.setViewModel(ownSoundtrackViewModel);
+        //
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
+        metronome = soundPool.load(getContext(), R.raw.metronome,1);
+        ownSoundtrackViewModel.getMetronomeClicked().observe(getViewLifecycleOwner(),isClicked ->{
+            soundPool.play(metronome,1.0f,1.0f,0,0,1);
+        });
+        //
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 

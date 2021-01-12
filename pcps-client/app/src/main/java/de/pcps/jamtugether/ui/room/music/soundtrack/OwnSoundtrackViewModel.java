@@ -59,6 +59,17 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
 
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
+    //
+    @NonNull
+    public LiveData<Boolean> getMetronomeClicked(){
+        return metronomeClicked;
+    }
+    @NonNull
+    private final MutableLiveData<Boolean> metronomeClicked = new MutableLiveData<>(false);
+    public  void onMetronomeButtonClicked(){
+        metronomeClicked.setValue(true);
+    }
+    //
 
     public OwnSoundtrackViewModel(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
