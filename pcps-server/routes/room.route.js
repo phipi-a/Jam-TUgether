@@ -317,7 +317,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
+roomRoute.delete('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(410).json({ description: 'Room does not exist!' })
