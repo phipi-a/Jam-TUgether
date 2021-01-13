@@ -48,9 +48,6 @@ public class OwnSoundtrackFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //
-        ownSoundtrackViewModel = new ViewModelProvider(this).get(OwnSoundtrackViewModel.class);
-        //
         if (getArguments() != null) {
             int roomID = getArguments().getInt(ROOM_ID_KEY);
             int userID = getArguments().getInt(USER_ID_KEY);
@@ -81,14 +78,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
 
         binding.setViewModel(ownSoundtrackViewModel);
-        //
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        soundPool = new SoundPool.Builder().setMaxStreams(1).build();
-        metronome = soundPool.load(getContext(), R.raw.metronome,1);
-        ownSoundtrackViewModel.getMetronomeClicked().observe(getViewLifecycleOwner(),isClicked ->{
-            soundPool.play(metronome,1.0f,1.0f,0,0,1);
-        });
-        //
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), ownSoundtrackViewModel.getSoundtrackOnChangeCallback(), getViewLifecycleOwner());
 

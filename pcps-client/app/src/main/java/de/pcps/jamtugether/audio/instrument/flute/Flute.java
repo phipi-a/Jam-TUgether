@@ -10,8 +10,8 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
 import de.pcps.jamtugether.audio.sound.pool.FluteSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 import de.pcps.jamtugether.model.sound.SoundResource;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 public class Flute extends Instrument {
 
@@ -42,7 +42,7 @@ public class Flute extends Instrument {
 
     @NonNull
     @Override
-    public BaseSoundPool createSoundPool(@NonNull Context context) {
+    public InstrumentSoundPool createSoundPool(@NonNull Context context) {
         return new FluteSoundPool(context);
     }
 

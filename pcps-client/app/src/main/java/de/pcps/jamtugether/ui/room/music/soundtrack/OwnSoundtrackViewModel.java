@@ -17,6 +17,8 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.audio.metronome.Metronome;
+import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -40,6 +42,12 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @Inject
     SoundtrackController soundtrackController;
 
+    @Inject
+    MetronomeController metronomeController;
+
+    @NonNull
+    private static final Metronome metronome = Metronome.getInstance();
+
     private final int roomID;
 
     @NonNull
@@ -59,17 +67,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
 
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
-    //
-    @NonNull
-    public LiveData<Boolean> getMetronomeClicked(){
-        return metronomeClicked;
-    }
-    @NonNull
-    private final MutableLiveData<Boolean> metronomeClicked = new MutableLiveData<>(false);
-    public  void onMetronomeButtonClicked(){
-        metronomeClicked.setValue(true);
-    }
-    //
 
     public OwnSoundtrackViewModel(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
@@ -90,6 +87,10 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
             updateHelpDialogData(instrument);
             currentInstrument = instrument;
         }
+    }
+
+    public void onMetronomeButtonClicked() {
+        metronomeController.onPlayStopButtonClicked();
     }
 
     private void updateHelpDialogData(@NonNull Instrument instrument) {
@@ -154,6 +155,11 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     public LiveData<Error> getSoundtrackRepositoryNetworkError() {
         return soundtrackRepository.getCompositionNetworkError();
+    }
+
+    @NonNull
+    public LiveData<Boolean> getMetronomePlaying() {
+        return metronome.getPlaying();
     }
 
     static class Factory implements ViewModelProvider.Factory {

@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 
-public class DrumsSoundPool extends BaseSoundPool {
+public class DrumsSoundPool extends InstrumentSoundPool {
 
     /*
      this is necessary in order to play a lot of

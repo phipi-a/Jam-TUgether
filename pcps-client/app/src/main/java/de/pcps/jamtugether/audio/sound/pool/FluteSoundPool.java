@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 
-public class FluteSoundPool extends BaseSoundPool {
+public class FluteSoundPool extends InstrumentSoundPool {
 
     public FluteSoundPool(@NonNull Context context) {
         super(context, 1, Flute.FLUTE_SOUND);

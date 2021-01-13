@@ -9,6 +9,7 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 
 public abstract class Instrument {
 
@@ -41,7 +42,7 @@ public abstract class Instrument {
     private final String serverString;
 
     @Nullable
-    protected BaseSoundPool soundPool;
+    protected InstrumentSoundPool soundPool;
 
     public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
         this.ordinal = ordinal;
@@ -55,7 +56,7 @@ public abstract class Instrument {
     public abstract int getSoundResource(int pitch);
 
     @NonNull
-    public abstract BaseSoundPool createSoundPool(@NonNull Context context);
+    public abstract InstrumentSoundPool createSoundPool(@NonNull Context context);
 
     public void loadSounds(@NonNull Context context) {
         soundPool = createSoundPool(context);

@@ -10,8 +10,8 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 import de.pcps.jamtugether.model.sound.SoundResource;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 public class Drums extends Instrument {
 
@@ -59,7 +59,7 @@ public class Drums extends Instrument {
 
     @NonNull
     @Override
-    public BaseSoundPool createSoundPool(@NonNull Context context) {
+    public InstrumentSoundPool createSoundPool(@NonNull Context context) {
         return new DrumsSoundPool(context);
     }
 

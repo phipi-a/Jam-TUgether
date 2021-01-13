@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
 
-public class ShakerSoundPool extends BaseSoundPool {
+public class ShakerSoundPool extends InstrumentSoundPool {
 
     private static final int SOUND_POOL_MAX_STREAMS = 100;
 

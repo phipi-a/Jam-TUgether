@@ -4,6 +4,7 @@ import android.app.Application;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
+import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.log.JamTimberTree;
@@ -24,6 +25,7 @@ public class JamTUgetherApplication extends Application {
         for (Instrument instrument : Instruments.LIST) {
             instrument.loadSounds(this.getApplicationContext());
         }
+        Metronome.getInstance().loadSounds(this.getApplicationContext());
 
         for(SoundResource soundResource : SoundResource.values()) {
             int duration = SoundUtils.getSoundDuration(soundResource.getResource(), this.getApplicationContext());

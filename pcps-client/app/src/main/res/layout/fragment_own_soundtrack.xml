@@ -83,6 +83,7 @@
             app:layout_constraintBottom_toBottomOf="@id/room_id_text_view"
             app:layout_constraintEnd_toStartOf="@+id/help_button"
             app:layout_constraintTop_toTopOf="@+id/help_button"
+            app:metronomePlaying="@{viewModel.metronomePlaying}"
             app:tint="@color/iconColor" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

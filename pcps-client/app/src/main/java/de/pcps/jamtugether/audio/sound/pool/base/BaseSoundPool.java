@@ -88,7 +88,7 @@ public abstract class BaseSoundPool {
     }
 
     public void setVolume(float volume) {
-        //this.volume = volume;
+        this.volume = volume;
     }
 
     public void stopSound(int streamID) {
@@ -110,8 +110,6 @@ public abstract class BaseSoundPool {
     public boolean soundIsLoaded(int soundID) {
         return loadedSoundIDs.contains(soundID);
     }
-
-    public abstract float calculatePitch(int pitchPercentage);
 
     @NonNull
     public static BaseSoundPool from(@NonNull String instrumentString, @NonNull Context context) {
