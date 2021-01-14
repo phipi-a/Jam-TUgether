@@ -22,6 +22,7 @@ import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
+import de.pcps.jamtugether.model.User;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -31,13 +32,23 @@ public class RoomRepository {
     @NonNull
     private final RoomService roomService;
 
-    private int currentRoomID;
+    @NonNull
+    private final MutableLiveData<Boolean> userInRoom = new MutableLiveData<>(false);
+
+    @Nullable
+    private Integer roomID;
+
+    @Nullable
+    private String password;
+
+    @Nullable
+    private User user;
 
     @NonNull
-    private final MutableLiveData<String> currentToken = new MutableLiveData<>();
+    private final MutableLiveData<String> token = new MutableLiveData<>(null);
 
     @NonNull
-    private final MutableLiveData<Boolean> currentUserIsAdmin = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> userIsAdmin = new MutableLiveData<>(false);
 
     @NonNull
     private final Handler handler = new Handler();
@@ -62,13 +73,21 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
-    public void deleteRoom(int roomID, @NonNull String password, @NonNull String token, @NonNull JamCallback<DeleteRoomResponse> callback) {
+    public void deleteRoom(@NonNull JamCallback<DeleteRoomResponse> callback) {
+        String token = this.token.getValue();
+        if(roomID == null || password == null || token == null) {
+            return;
+        }
         DeleteRoomBody body = new DeleteRoomBody(roomID, password);
         Call<DeleteRoomResponse> call = roomService.deleteRoom(String.format(Constants.BEARER_TOKEN_FORMAT, token), body);
         call.enqueue(callback);
     }
 
-    public void removeAdmin(int roomID, @NonNull String token, @NonNull JamCallback<RemoveAdminResponse> callback) {
+    public void removeAdmin(@NonNull JamCallback<RemoveAdminResponse> callback) {
+        String token = this.token.getValue();
+        if (roomID == null || token == null) {
+            return;
+        }
         Call<RemoveAdminResponse> call = roomService.removeAdmin(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
         call.enqueue(callback);
     }
@@ -78,44 +97,68 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
-    // called by RoomViewModel every time a user enters a new room
-    public void updateInfo(@NonNull String currentToken, boolean userIsAdmin) {
-        this.currentToken.setValue(currentToken);
-        this.currentUserIsAdmin.setValue(userIsAdmin);
+    public void setUserInRoom(boolean userInRoom) {
+        this.userInRoom.setValue(userInRoom);
+        if (!userInRoom) {
+            onUserLeftRoom();
+        }
     }
 
-    public void fetchAdminStatus(int currentRoomID, @NonNull String currentToken) {
-        this.currentRoomID = currentRoomID;
-        this.currentToken.setValue(currentToken);
+    private void onUserLeftRoom() {
+        if (adminStatusFetchingRunnable != null) {
+            handler.removeCallbacks(adminStatusFetchingRunnable);
+            adminStatusFetchingRunnable = null;
+        }
+        roomID = null;
+        password = null;
+        user = null;
+        token.setValue(null);
+        userIsAdmin.setValue(false);
+    }
 
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
+
+    public void setPassword(@NonNull String password) {
+        this.password = password;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
+    }
+
+    public void setToken(@NonNull String token) {
+        this.token.setValue(token);
+    }
+
+    public void setUserIsAdmin(boolean userIsAdmin) {
+        this.userIsAdmin.setValue(userIsAdmin);
+    }
+
+    public void startFetchingAdminStatus() {
         fetchAdminStatus();
 
         if (adminStatusFetchingRunnable == null) {
-            startFetchingAdminStatus();
-        }
-    }
+            adminStatusFetchingRunnable = new Runnable() {
 
-    private void startFetchingAdminStatus() {
-        adminStatusFetchingRunnable = new Runnable() {
-
-            @Override
-            public void run() {
-                if (currentToken == null || currentRoomID == -1) {
-                    return;
+                @Override
+                public void run() {
+                    fetchAdminStatus();
+                    handler.postDelayed(this, Constants.ADMIN_STATUS_FETCHING_INTERVAL);
                 }
-                fetchAdminStatus();
-                handler.postDelayed(this, Constants.ADMIN_STATUS_FETCHING_INTERVAL);
-            }
-        };
-        adminStatusFetchingRunnable.run();
+            };
+            adminStatusFetchingRunnable.run();
+        }
     }
 
     private void fetchAdminStatus() {
-        String token = currentToken.getValue();
-        if (token == null) {
+        String token = this.token.getValue();
+
+        if (roomID == null || token == null) {
             return;
         }
-        getAdminStatus(currentRoomID, token, new JamCallback<AdminStatusResponse>() {
+        getAdminStatus(roomID, token, new JamCallback<AdminStatusResponse>() {
 
             @Override
             public void onSuccess(@NonNull AdminStatusResponse response) {
@@ -123,9 +166,9 @@ public class RoomRepository {
                 String token = response.getToken();
 
                 if (isAdmin != null) {
-                    currentUserIsAdmin.setValue(isAdmin);
+                    userIsAdmin.setValue(isAdmin);
                     if (isAdmin && token != null) {
-                        currentToken.setValue(token);
+                        RoomRepository.this.token.setValue(token);
                     }
                 }
             }
@@ -137,22 +180,33 @@ public class RoomRepository {
         });
     }
 
-    public void onUserLeftRoom() {
-        if (adminStatusFetchingRunnable != null) {
-            handler.removeCallbacks(adminStatusFetchingRunnable);
-            adminStatusFetchingRunnable = null;
-        }
-        currentToken.setValue(null);
-        currentRoomID = -1;
+    @NonNull
+    public LiveData<Boolean> getUserInRoom() {
+        return userInRoom;
+    }
+
+    @Nullable
+    public Integer getRoomID() {
+        return roomID;
+    }
+
+    @Nullable
+    public String getPassword() {
+        return password;
+    }
+
+    @Nullable
+    public User getUser() {
+        return user;
     }
 
     @NonNull
-    public LiveData<String> getCurrentToken() {
-        return currentToken;
+    public LiveData<String> getToken() {
+        return token;
     }
 
     @NonNull
     public LiveData<Boolean> getUserIsAdmin() {
-        return currentUserIsAdmin;
+        return userIsAdmin;
     }
 }

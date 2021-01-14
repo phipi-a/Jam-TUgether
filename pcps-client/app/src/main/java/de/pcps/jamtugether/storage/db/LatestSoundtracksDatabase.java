@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
@@ -24,7 +25,13 @@ public class LatestSoundtracksDatabase {
     private SingleSoundtrack latestShakerSoundtrack;
 
     @Inject
-    public LatestSoundtracksDatabase() { }
+    public LatestSoundtracksDatabase(@NonNull RoomRepository roomRepository) {
+        roomRepository.getUserInRoom().observeForever(userInRoom -> {
+            if(!userInRoom) {
+                onUserLeftRoom();
+            }
+        });
+    }
 
     public void onUserLeftRoom() {
         latestFluteSoundtrack = null;

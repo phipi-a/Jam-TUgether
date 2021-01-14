@@ -15,6 +15,8 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.interceptors.InternetConnectionInterceptor;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.room.RoomService;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -75,5 +77,12 @@ public class AppModule {
     @NonNull
     public RoomService provideRoomService(@NonNull Retrofit retrofit) {
         return retrofit.create(RoomService.class);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    public Soundtrack.OnChangeCallback provideSoundtrackOnChangeCallback(@NonNull SoundtrackController soundtrackController) {
+        return soundtrackController;
     }
 }

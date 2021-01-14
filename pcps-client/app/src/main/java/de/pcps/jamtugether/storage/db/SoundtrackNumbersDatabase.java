@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.storage.db;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
@@ -27,7 +29,19 @@ public class SoundtrackNumbersDatabase {
     private final List<Integer> usedNumbersForShaker = new ArrayList<>();
 
     @Inject
-    public SoundtrackNumbersDatabase() { }
+    public SoundtrackNumbersDatabase(@NonNull RoomRepository roomRepository) {
+        roomRepository.getUserInRoom().observeForever(userInRoom -> {
+            if(!userInRoom) {
+                onUserLeftRoom();
+            }
+        });
+    }
+
+    private void onUserLeftRoom() {
+        usedNumbersForFlute.clear();
+        usedNumbersForDrums.clear();
+        usedNumbersForShaker.clear();
+    }
 
     @NonNull
     private List<Integer> getListFrom(@NonNull Instrument instrument) {
@@ -60,11 +74,5 @@ public class SoundtrackNumbersDatabase {
             }
         }
         return number;
-    }
-
-    public void onUserLeftRoom() {
-        usedNumbersForFlute.clear();
-        usedNumbersForDrums.clear();
-        usedNumbersForShaker.clear();
     }
 }

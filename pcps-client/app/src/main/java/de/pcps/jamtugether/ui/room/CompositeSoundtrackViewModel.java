@@ -3,7 +3,6 @@ package de.pcps.jamtugether.ui.room;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
@@ -23,44 +22,15 @@ public class CompositeSoundtrackViewModel extends ViewModel {
     @NonNull
     private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
-    public CompositeSoundtrackViewModel(int roomID, int userID, @NonNull String token) {
+    public CompositeSoundtrackViewModel() {
         AppInjector.inject(this);
 
-        soundtrackRepository.fetchSoundtracks(roomID, userID, token, false);
+        soundtrackRepository.startFetchingSoundtracks(false);
         compositeSoundtrack = soundtrackRepository.getCompositeSoundtrack();
-    }
-
-    public void onTokenChanged(@NonNull String token) {
-        soundtrackRepository.onTokenChanged(token);
     }
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return compositeSoundtrack;
-    }
-
-    public static class Factory implements ViewModelProvider.Factory {
-
-        private final int roomID;
-        private final int userID;
-
-        @NonNull
-        private final String token;
-
-        public Factory(int roomID, int userID, @NonNull String token) {
-            this.roomID = roomID;
-            this.userID = userID;
-            this.token = token;
-        }
-
-        @SuppressWarnings("unchecked")
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(CompositeSoundtrackViewModel.class)) {
-                return (T) new CompositeSoundtrackViewModel(roomID, userID, token);
-            }
-            throw new IllegalArgumentException("Unknown ViewModel class");
-        }
     }
 }

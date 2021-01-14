@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
-import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
@@ -40,8 +39,8 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     private int currentStartTimeMillis = -1;
     private int currentPitch = -1;
 
-    public FluteViewModel(int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(flute, roomID, user, token, callback);
+    public FluteViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(flute, callback);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
         if (currentStartTimeMillis != -1 && currentPitch != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-            if(ownSoundtrack != null) {
+            if (ownSoundtrack != null) {
                 ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
             }
             currentStartTimeMillis = -1;
@@ -136,21 +135,10 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
-
-        @NonNull
-        private final User user;
-
-        @NonNull
-        private final String token;
-
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
-            this.user = user;
-            this.token = token;
+        public Factory(@NonNull OnOwnSoundtrackChangedCallback callback) {
             this.callback = callback;
         }
 
@@ -159,7 +147,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(FluteViewModel.class)) {
-                return (T) new FluteViewModel(roomID, user, token, callback);
+                return (T) new FluteViewModel(callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

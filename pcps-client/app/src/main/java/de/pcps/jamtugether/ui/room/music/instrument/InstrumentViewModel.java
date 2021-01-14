@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -35,12 +36,14 @@ import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public abstract class InstrumentViewModel extends ViewModel {
 
     @Inject
     protected Application application;
+
+    @Inject
+    protected RoomRepository roomRepository;
 
     @Inject
     protected SoundtrackRepository soundtrackRepository;
@@ -59,14 +62,6 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @NonNull
     private final Instrument instrument;
-
-    private final int roomID;
-
-    @NonNull
-    private final User user;
-
-    @NonNull
-    private final String token;
 
     @NonNull
     private final OnOwnSoundtrackChangedCallback callback;
@@ -140,12 +135,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
-        this.roomID = roomID;
-        this.user = user;
-        this.token = token;
         this.callback = callback;
         this.ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
         if (ownSoundtrack != null) {
@@ -175,6 +167,11 @@ public abstract class InstrumentViewModel extends ViewModel {
 
             int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
 
+            User user = roomRepository.getUser();
+            if(user == null) {
+                return;
+            }
+
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
             ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument.getServerString(), soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
@@ -184,10 +181,12 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    protected void onTimerStarted() { }
+    protected void onTimerStarted() {
+    }
 
     public void onUploadButtonClicked() {
-        if (ownSoundtrack == null) {
+        User user = roomRepository.getUser();
+        if (ownSoundtrack == null || user == null) {
             return;
         }
 
@@ -197,7 +196,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         uploadPossible.setValue(false);
 
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
-        soundtrackRepository.uploadSoundtracks(token, roomID, soundtracks, new JamCallback<UploadSoundtracksResponse>() {
+        soundtrackRepository.uploadSoundtracks(soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
