@@ -39,7 +39,7 @@ public class RoomViewModel extends ViewModel {
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
-        roomRepository.onUserInRoom(roomID, password, user, token, userIsAdmin);
+        roomRepository.onUserEnteredRoom(roomID, password, user, token, userIsAdmin);
 
         roomRepository.startFetchingAdminStatus();
         soundtrackRepository.startFetchingComposition();

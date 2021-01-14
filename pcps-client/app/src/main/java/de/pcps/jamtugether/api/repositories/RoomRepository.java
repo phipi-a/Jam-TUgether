@@ -101,7 +101,7 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
-    public void onUserInRoom(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
+    public void onUserEnteredRoom(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         this.userInRoom.setValue(true);
         this.roomID = roomID;
         this.password = password;
