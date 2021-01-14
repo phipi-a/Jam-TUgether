@@ -41,12 +41,6 @@ public class SoundtrackRepository {
     private final Context context;
 
     @NonNull
-    private final Handler handler = new Handler();
-
-    @Nullable
-    private Runnable soundtracksRunnable;
-
-    @NonNull
     private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(new ArrayList<>());
 
     @Nullable
@@ -56,13 +50,16 @@ public class SoundtrackRepository {
     private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(new CompositeSoundtrack(new ArrayList<>()));
 
     @NonNull
-    private final MutableLiveData<Boolean> showCompositionIsLoading = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
 
-    private boolean loadingCompositionOfCurrentRoomShown;
-    private boolean networkErrorOfCurrentRoomShown;
+    @NonNull
+    private final Handler handler = new Handler();
+
+    @Nullable
+    private Runnable soundtracksRunnable;
 
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
@@ -109,44 +106,36 @@ public class SoundtrackRepository {
         call.enqueue(callback);
     }
 
-    public void startFetchingSoundtracks(boolean requestedFromUser) {
-        fetchSoundtracks(requestedFromUser);
+    public void startFetchingComposition() {
+        fetchComposition();
 
-        if (!requestedFromUser) {
-            if (soundtracksRunnable == null) {
-                soundtracksRunnable = new Runnable() {
+        if (soundtracksRunnable == null) {
+            soundtracksRunnable = new Runnable() {
 
-                    @Override
-                    public void run() {
-                        fetchSoundtracks(false);
-                        handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
-                    }
-                };
-                soundtracksRunnable.run();
-            }
+                @Override
+                public void run() {
+                    fetchComposition();
+                    handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
+                }
+            };
+            soundtracksRunnable.run();
         }
     }
 
-    private void fetchSoundtracks(boolean requestedFromUser) {
-        if (!loadingCompositionOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
-            showCompositionIsLoading.setValue(true);
-            loadingCompositionOfCurrentRoomShown = true;
-        }
+    public void fetchComposition() {
+        isFetchingComposition.setValue(true);
 
         getComposition(new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                showCompositionIsLoading.setValue(false);
+                isFetchingComposition.setValue(false);
                 onSoundtracksChanged(response.getSoundtracks());
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                showCompositionIsLoading.setValue(false);
-                if (!networkErrorOfCurrentRoomShown || requestedFromUser) { // loading for the first time or requested from user
-                    compositionNetworkError.setValue(error);
-                    networkErrorOfCurrentRoomShown = true;
-                }
+                isFetchingComposition.setValue(false);
+                compositionNetworkError.setValue(error);
             }
         });
     }
@@ -164,9 +153,6 @@ public class SoundtrackRepository {
             handler.removeCallbacks(soundtracksRunnable);
             soundtracksRunnable = null;
         }
-
-        loadingCompositionOfCurrentRoomShown = false;
-        networkErrorOfCurrentRoomShown = false;
         previousCompositeSoundtrack = null;
     }
 
@@ -185,8 +171,8 @@ public class SoundtrackRepository {
     }
 
     @NonNull
-    public LiveData<Boolean> getShowCompositionIsLoading() {
-        return showCompositionIsLoading;
+    public LiveData<Boolean> getIsFetchingComposition() {
+        return isFetchingComposition;
     }
 
     @NonNull

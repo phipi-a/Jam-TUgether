@@ -1,12 +1,9 @@
 package de.pcps.jamtugether.ui.room.overview;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
@@ -50,6 +47,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
+
+    private boolean loadingOfCompositionShown;
+    private boolean compositionNetworkErrorShown;
 
     public SoundtrackOverviewViewModel() {
         AppInjector.inject(this);
@@ -114,8 +114,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         deleteRoom();
     }
 
-    public void onSoundtrackRepositoryNetworkErrorShown() {
+    public void onCompositionNetworkErrorShown() {
         soundtrackRepository.onCompositionNetworkErrorShown();
+        compositionNetworkErrorShown = true;
     }
 
     public void onNetworkErrorShown() {
@@ -136,6 +137,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     public void onNavigatedBack() {
         navigateBack.setValue(false);
+    }
+
+    public void onLoadingOfCompositionShown() {
+        loadingOfCompositionShown = true;
     }
 
     @Nullable
@@ -180,17 +185,25 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Integer> getProgressBarVisibility() {
-        return Transformations.map(soundtrackRepository.getShowCompositionIsLoading(), showLoading -> showLoading ? View.VISIBLE : View.INVISIBLE);
+    public LiveData<Boolean> getIsFetchingComposition() {
+        return soundtrackRepository.getIsFetchingComposition();
     }
 
     @NonNull
-    public LiveData<Error> getSoundtrackRepositoryNetworkError() {
+    public LiveData<Error> getCompositionNetworkError() {
         return soundtrackRepository.getCompositionNetworkError();
     }
 
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
+    }
+
+    public boolean getLoadingOfCompositionShown() {
+        return loadingOfCompositionShown;
+    }
+
+    public boolean getCompositionNetworkErrorShown() {
+        return compositionNetworkErrorShown;
     }
 }

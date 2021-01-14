@@ -145,19 +145,19 @@ public class RoomRepository {
             @Override
             public void onSuccess(@NonNull AdminStatusResponse response) {
                 Boolean isAdmin = response.isAdmin();
-                String token = response.getToken();
+                String newToken = response.getToken();
 
                 if (isAdmin != null) {
                     userIsAdmin.setValue(isAdmin);
-                    if (isAdmin && token != null) {
-                        RoomRepository.this.token.setValue(token);
+                    if (isAdmin && newToken != null) {
+                        token.setValue(newToken);
                     }
                 }
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                Timber.d("onError()");
+                Timber.e("onError()");
             }
         });
     }

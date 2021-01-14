@@ -73,10 +73,12 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
         });
 
-        viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
-                viewModel.onSoundtrackRepositoryNetworkErrorShown();
+                if (!viewModel.getCompositionNetworkErrorShown()) {
+                    UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                    viewModel.onCompositionNetworkErrorShown();
+                }
             }
         });
 

@@ -42,7 +42,7 @@ public class RoomViewModel extends ViewModel {
         roomRepository.onUserInRoom(roomID, password, user, token, userIsAdmin);
 
         roomRepository.startFetchingAdminStatus();
-        soundtrackRepository.startFetchingSoundtracks(false);
+        soundtrackRepository.startFetchingComposition();
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
