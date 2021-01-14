@@ -40,6 +40,11 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         }
     }
 
+    @Override
+    public void onOwnSoundtrackChanged(@NonNull SingleSoundtrack ownSoundtrack) {
+        this.ownSoundtrack.setValue(ownSoundtrack);
+    }
+
     public void onFluteFragmentShown() {
         showFluteFragment.setValue(false);
     }
@@ -70,10 +75,5 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     public LiveData<SingleSoundtrack> getOwnSoundtrack() {
         return ownSoundtrack;
-    }
-
-    @Override
-    public void onOwnSoundtrackChanged(@NonNull SingleSoundtrack ownSoundtrack) {
-        this.ownSoundtrack.setValue(ownSoundtrack);
     }
 }

@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.databinding.FragmentShakerBinding;
-import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 
 public class ShakerFragment extends InstrumentFragment {
@@ -24,31 +23,23 @@ public class ShakerFragment extends InstrumentFragment {
     private ShakerViewModel shakerViewModel;
 
     @NonNull
-    public static ShakerFragment newInstance(int roomID, @NonNull User user, @NonNull String token) {
-        ShakerFragment fragment = new ShakerFragment();
-        Bundle args = new Bundle();
-        args.putInt(ROOM_ID_KEY, roomID);
-        args.putSerializable(USER_KEY, user);
-        args.putString(TOKEN_KEY, token);
-        fragment.setArguments(args);
-        return fragment;
+    public static ShakerFragment newInstance() {
+        return new ShakerFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(roomID, user, token, onOwnSoundtrackChangedCallback);
-            instrumentViewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
+        ShakerViewModel.Factory shakerViewModelFactory = new ShakerViewModel.Factory(onOwnSoundtrackChangedCallback);
+        viewModel = new ViewModelProvider(this, shakerViewModelFactory).get(ShakerViewModel.class);
 
-            // Get sensor manager
-            mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
+        // Get sensor manager
+        mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
 
-            // Get the default sensor of specified type
-            accelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // Get the default sensor of specified type
+        accelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-            mSensorManager.registerListener(shakerViewModel, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-        }
+        mSensorManager.registerListener(shakerViewModel, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Nullable
@@ -56,11 +47,11 @@ public class ShakerFragment extends InstrumentFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         FragmentShakerBinding binding = FragmentShakerBinding.inflate(inflater, container, false);
-        shakerViewModel = (ShakerViewModel) instrumentViewModel;
+        shakerViewModel = (ShakerViewModel) viewModel;
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(shakerViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
-        binding.ownSoundtrackControlsLayout.setViewModel(instrumentViewModel);
+        binding.ownSoundtrackControlsLayout.setViewModel(viewModel);
 
         shakerViewModel.getLockOrientation().observe(getViewLifecycleOwner(), lockOrientation -> {
             if(lockOrientation) {

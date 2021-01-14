@@ -30,7 +30,9 @@ public class JamTabView extends ConstraintLayout {
     }
 
     public void setTitle(@StringRes int title) {
-        this.tabTitleTextView.setText(title);
+        if(tabTitleTextView != null) {
+            this.tabTitleTextView.setText(title);
+        }
     }
 
     public void activate() {

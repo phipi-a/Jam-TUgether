@@ -1,18 +1,16 @@
 package de.pcps.jamtugether.di;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
-import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsViewModel;
-import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel;
+import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel;
+import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
 import de.pcps.jamtugether.ui.welcome.WelcomeViewModel;
@@ -49,12 +47,16 @@ public class AppInjector {
         appComponent.inject(roomViewModel);
     }
 
-    public static void inject(@NonNull CompositeSoundtrackViewModel compositeSoundtrackViewModel) {
-        appComponent.inject(compositeSoundtrackViewModel);
+    public static void inject(@NonNull SoundtrackOverviewFragment soundtrackOverviewFragment) {
+        appComponent.inject(soundtrackOverviewFragment);
     }
 
     public static void inject(@NonNull SoundtrackOverviewViewModel soundtrackOverviewViewModel) {
         appComponent.inject(soundtrackOverviewViewModel);
+    }
+
+    public static void inject(@NonNull OwnSoundtrackFragment ownSoundtrackFragment) {
+        appComponent.inject(ownSoundtrackFragment);
     }
 
     public static void inject(@NonNull OwnSoundtrackViewModel ownSoundtrackViewModel) {

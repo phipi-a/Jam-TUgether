@@ -5,8 +5,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -35,12 +38,14 @@ import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public abstract class InstrumentViewModel extends ViewModel {
 
     @Inject
     protected Application application;
+
+    @Inject
+    protected RoomRepository roomRepository;
 
     @Inject
     protected SoundtrackRepository soundtrackRepository;
@@ -60,14 +65,6 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     private final Instrument instrument;
 
-    private final int roomID;
-
-    @NonNull
-    private final User user;
-
-    @NonNull
-    private final String token;
-
     @NonNull
     private final OnOwnSoundtrackChangedCallback callback;
 
@@ -79,47 +76,6 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @NonNull
     protected final MutableLiveData<Long> timerMillis = new MutableLiveData<>(-1L);
-
-    @NonNull
-    private final BaseJamTimer.OnTickCallback countDownTimerCallback = new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            countDownTimerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-            countDownTimer.stop();
-            countDownTimerMillis.setValue(-1L);
-            startedMillis = System.currentTimeMillis();
-            timer.start();
-            if (playWithCompositeSoundtrack) {
-                if (compositeSoundtrack != null) {
-                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
-                    compositeSoundtrackPlayer.play(compositeSoundtrack);
-                }
-            }
-            onTimerStarted();
-        }
-    };
-
-    @NonNull
-    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, countDownTimerCallback);
-
-    private final BaseJamTimer.OnTickCallback timerCallback = new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            timerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-            finishSoundtrack();
-        }
-    };
-
-    @NonNull
-    protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, timerCallback);
 
     @Nullable
     private CompositeSoundtrack compositeSoundtrack;
@@ -140,17 +96,20 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     protected long startedMillis;
 
-    public InstrumentViewModel(@NonNull Instrument instrument, int roomID, @NonNull User user, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
+    public InstrumentViewModel(@NonNull Instrument instrument, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
         this.instrument = instrument;
-        this.roomID = roomID;
-        this.user = user;
-        this.token = token;
         this.callback = callback;
         this.ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
         }
+    }
+
+    public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
+            this.compositeSoundtrack = compositeSoundtrack;
+        });
     }
 
     public void onCompositeSoundtrackChanged(@NonNull CompositeSoundtrack compositeSoundtrack) {
@@ -160,6 +119,42 @@ public abstract class InstrumentViewModel extends ViewModel {
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
         this.playWithCompositeSoundtrack = checked;
     }
+
+    @NonNull
+    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+        @Override
+        public void onTicked(long millis) {
+            countDownTimerMillis.setValue(millis);
+        }
+
+        @Override
+        public void onFinished() {
+            countDownTimer.stop();
+            countDownTimerMillis.setValue(-1L);
+            startedMillis = System.currentTimeMillis();
+            timer.start();
+            if (playWithCompositeSoundtrack) {
+                if (compositeSoundtrack != null) {
+                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
+                    compositeSoundtrackPlayer.play(compositeSoundtrack);
+                }
+            }
+            onTimerStarted();
+        }
+    });
+
+    @NonNull
+    protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+        @Override
+        public void onTicked(long millis) {
+            timerMillis.setValue(millis);
+        }
+
+        @Override
+        public void onFinished() {
+            finishSoundtrack();
+        }
+    });
 
     public void onCreateSoundtrackButtonClicked() {
         if (startedSoundtrackCreation()) {
@@ -175,6 +170,11 @@ public abstract class InstrumentViewModel extends ViewModel {
 
             int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
 
+            User user = roomRepository.getUser();
+            if (user == null) {
+                return;
+            }
+
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
             ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument.getServerString(), soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
@@ -184,10 +184,12 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    protected void onTimerStarted() { }
+    protected void onTimerStarted() {
+    }
 
     public void onUploadButtonClicked() {
-        if (ownSoundtrack == null) {
+        User user = roomRepository.getUser();
+        if (ownSoundtrack == null || user == null) {
             return;
         }
 
@@ -197,7 +199,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         uploadPossible.setValue(false);
 
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
-        soundtrackRepository.uploadSoundtracks(token, roomID, soundtracks, new JamCallback<UploadSoundtracksResponse>() {
+        soundtrackRepository.uploadSoundtracks(soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 progressBarVisibility.setValue(View.INVISIBLE);
@@ -207,7 +209,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
                     List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
                     allSoundtracks.add(toBePublished);
-                    soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+                    soundtrackRepository.onSoundtracksChanged(allSoundtracks);
                 }
             }
 

@@ -10,54 +10,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public abstract class InstrumentFragment extends BaseFragment {
 
-    protected static final String ROOM_ID_KEY = "room_id_key";
-    protected static final String USER_KEY = "user_key";
-    protected static final String TOKEN_KEY = "token_key";
-
-    protected int roomID;
-
-    protected User user;
-
-    protected String token;
+    protected InstrumentViewModel viewModel;
 
     protected OnOwnSoundtrackChangedCallback onOwnSoundtrackChangedCallback;
-
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
-
-    protected InstrumentViewModel instrumentViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            roomID = getArguments().getInt(ROOM_ID_KEY);
-            user = (User) getArguments().getSerializable(USER_KEY);
-            token = getArguments().getString(TOKEN_KEY);
-
-            Fragment musicianFragment = getParentFragment();
-            if(musicianFragment == null) {
-                return;
-            }
-            Fragment roomFragment = musicianFragment.getParentFragment();
-            if(roomFragment == null) {
-                return;
-            }
-
-            onOwnSoundtrackChangedCallback = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
-
-            CompositeSoundtrackViewModel.Factory compositeSoundtrackViewModelFactory = new CompositeSoundtrackViewModel.Factory(roomID, user.getID(), token);
-            compositeSoundtrackViewModel = new ViewModelProvider(roomFragment, compositeSoundtrackViewModelFactory).get(CompositeSoundtrackViewModel.class);
+        Fragment musicianFragment = getParentFragment();
+        if(musicianFragment == null) {
+            return;
         }
+
+        Fragment roomFragment = musicianFragment.getParentFragment();
+        if(roomFragment == null) {
+            return;
+        }
+
+        onOwnSoundtrackChangedCallback = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
     }
 
     @Nullable
@@ -65,12 +43,12 @@ public abstract class InstrumentFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        compositeSoundtrackViewModel.getCompositeSoundtrack().observe(getViewLifecycleOwner(), compositeSoundtrack -> instrumentViewModel.onCompositeSoundtrackChanged(compositeSoundtrack));
+        viewModel.observeCompositeSoundtrack(getViewLifecycleOwner());
 
-        instrumentViewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if(networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
-                instrumentViewModel.onNetworkErrorShown();
+                viewModel.onNetworkErrorShown();
             }
         });
 

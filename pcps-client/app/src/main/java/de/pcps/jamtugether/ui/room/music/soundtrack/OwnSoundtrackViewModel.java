@@ -16,7 +16,9 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.base.Error;
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
@@ -25,6 +27,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -38,15 +41,13 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     SoundtrackRepository soundtrackRepository;
 
     @Inject
+    RoomRepository roomRepository;
+
+    @Inject
     SoundtrackController soundtrackController;
 
-    private final int roomID;
-
     @NonNull
-    private final MusicianViewViewModel musicianViewViewModel;
-
-    @NonNull
-    private final Instrument.OnChangeCallback onChangeCallback;
+    private final Instrument.OnChangeCallback instrumentOnChangeCallback;
 
     @Nullable
     private String helpDialogTitle;
@@ -60,14 +61,12 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
-    public OwnSoundtrackViewModel(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
+    public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback) {
         AppInjector.inject(this);
-        this.roomID = roomID;
-        this.musicianViewViewModel = musicianViewViewModel;
-        this.onChangeCallback = musicianViewViewModel;
+        this.instrumentOnChangeCallback = instrumentOnChangeCallback;
 
         Instrument mainInstrument = preferences.getMainInstrument();
-        onChangeCallback.onInstrumentChanged(mainInstrument);
+        instrumentOnChangeCallback.onInstrumentChanged(mainInstrument);
         updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
     }
@@ -75,7 +74,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @Override
     public void onInstrumentClicked(@NonNull Instrument instrument) {
         if (instrument != currentInstrument) {
-            onChangeCallback.onInstrumentChanged(instrument);
+            instrumentOnChangeCallback.onInstrumentChanged(instrument);
             updateHelpDialogData(instrument);
             currentInstrument = instrument;
         }
@@ -111,8 +110,9 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         return Instruments.LIST;
     }
 
-    public int getRoomID() {
-        return roomID;
+    @Nullable
+    public Integer getRoomID() {
+        return roomRepository.getRoomID();
     }
 
     @Nullable
@@ -126,18 +126,8 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     }
 
     @NonNull
-    public Soundtrack.OnChangeCallback getSoundtrackOnChangeCallback() {
-        return soundtrackController;
-    }
-
-    @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
-    }
-
-    @NonNull
-    public LiveData<SingleSoundtrack> getOwnSoundtrack() {
-        return musicianViewViewModel.getOwnSoundtrack();
     }
 
     @NonNull
@@ -145,16 +135,18 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         return soundtrackRepository.getCompositionNetworkError();
     }
 
+    @NonNull
+    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
+        return soundtrackRepository.getCompositeSoundtrack();
+    }
+
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
-
         @NonNull
-        private final MusicianViewViewModel musicianViewViewModel;
+        private final Instrument.OnChangeCallback instrumentOnChangeCallback;
 
-        public Factory(int roomID, @NonNull MusicianViewViewModel musicianViewViewModel) {
-            this.roomID = roomID;
-            this.musicianViewViewModel = musicianViewViewModel;
+        public Factory(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback) {
+            this.instrumentOnChangeCallback = instrumentOnChangeCallback;
         }
 
         @SuppressWarnings("unchecked")
@@ -162,7 +154,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(OwnSoundtrackViewModel.class)) {
-                return (T) new OwnSoundtrackViewModel(roomID, musicianViewViewModel);
+                return (T) new OwnSoundtrackViewModel(instrumentOnChangeCallback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
