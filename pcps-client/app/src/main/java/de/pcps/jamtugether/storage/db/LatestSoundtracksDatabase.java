@@ -33,7 +33,7 @@ public class LatestSoundtracksDatabase {
         });
     }
 
-    public void onUserLeftRoom() {
+    private void onUserLeftRoom() {
         latestFluteSoundtrack = null;
         latestDrumsSoundtrack = null;
         latestShakerSoundtrack = null;

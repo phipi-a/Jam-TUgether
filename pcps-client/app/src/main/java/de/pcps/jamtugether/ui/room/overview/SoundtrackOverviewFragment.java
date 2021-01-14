@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.ui.room.overview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -20,7 +17,6 @@ import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
@@ -35,8 +31,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
     private SoundtrackOverviewViewModel viewModel;
 
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
-
     @NonNull
     public static SoundtrackOverviewFragment newInstance() {
         return new SoundtrackOverviewFragment();
@@ -47,14 +41,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         AppInjector.inject(this);
 
-        Fragment roomFragment = getParentFragment();
-        if (roomFragment == null) {
-            return;
-        }
-
         viewModel = new ViewModelProvider(this).get(SoundtrackOverviewViewModel.class);
-
-        compositeSoundtrackViewModel = new ViewModelProvider(roomFragment).get(CompositeSoundtrackViewModel.class);
     }
 
     @Nullable
@@ -64,7 +51,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
         binding.allSoundtracksRecyclerView.addItemDecoration(new SoundtrackItemDecoration(activity));
 
@@ -77,7 +64,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
             } else {
                 Integer userID = viewModel.getUserID();
-                if(userID == null) {
+                if (userID == null) {
                     return;
                 }
                 RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(userID, onChangeCallback, viewModel, getViewLifecycleOwner());
@@ -122,11 +109,5 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         });
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.activity = (AppCompatActivity) context;
     }
 }

@@ -5,8 +5,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -75,47 +77,6 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     protected final MutableLiveData<Long> timerMillis = new MutableLiveData<>(-1L);
 
-    @NonNull
-    private final BaseJamTimer.OnTickCallback countDownTimerCallback = new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            countDownTimerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-            countDownTimer.stop();
-            countDownTimerMillis.setValue(-1L);
-            startedMillis = System.currentTimeMillis();
-            timer.start();
-            if (playWithCompositeSoundtrack) {
-                if (compositeSoundtrack != null) {
-                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
-                    compositeSoundtrackPlayer.play(compositeSoundtrack);
-                }
-            }
-            onTimerStarted();
-        }
-    };
-
-    @NonNull
-    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, countDownTimerCallback);
-
-    private final BaseJamTimer.OnTickCallback timerCallback = new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            timerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-            finishSoundtrack();
-        }
-    };
-
-    @NonNull
-    protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, timerCallback);
-
     @Nullable
     private CompositeSoundtrack compositeSoundtrack;
 
@@ -145,6 +106,12 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
+    public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
+            this.compositeSoundtrack = compositeSoundtrack;
+        });
+    }
+
     public void onCompositeSoundtrackChanged(@NonNull CompositeSoundtrack compositeSoundtrack) {
         this.compositeSoundtrack = compositeSoundtrack;
     }
@@ -152,6 +119,42 @@ public abstract class InstrumentViewModel extends ViewModel {
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
         this.playWithCompositeSoundtrack = checked;
     }
+
+    @NonNull
+    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+        @Override
+        public void onTicked(long millis) {
+            countDownTimerMillis.setValue(millis);
+        }
+
+        @Override
+        public void onFinished() {
+            countDownTimer.stop();
+            countDownTimerMillis.setValue(-1L);
+            startedMillis = System.currentTimeMillis();
+            timer.start();
+            if (playWithCompositeSoundtrack) {
+                if (compositeSoundtrack != null) {
+                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
+                    compositeSoundtrackPlayer.play(compositeSoundtrack);
+                }
+            }
+            onTimerStarted();
+        }
+    });
+
+    @NonNull
+    protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+        @Override
+        public void onTicked(long millis) {
+            timerMillis.setValue(millis);
+        }
+
+        @Override
+        public void onFinished() {
+            finishSoundtrack();
+        }
+    });
 
     public void onCreateSoundtrackButtonClicked() {
         if (startedSoundtrackCreation()) {
@@ -168,7 +171,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
 
             User user = roomRepository.getUser();
-            if(user == null) {
+            if (user == null) {
                 return;
             }
 
@@ -206,7 +209,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
                     List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
                     allSoundtracks.add(toBePublished);
-                    soundtrackRepository.updateAllSoundtracks(allSoundtracks);
+                    soundtrackRepository.onSoundtracksChanged(allSoundtracks);
                 }
             }
 

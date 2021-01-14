@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.storage.db;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import java.util.ArrayList;
@@ -11,10 +12,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.utils.SoundtrackUtils;
 
 @Singleton
 public class SoundtrackNumbersDatabase {
@@ -28,11 +32,28 @@ public class SoundtrackNumbersDatabase {
     @NonNull
     private final List<Integer> usedNumbersForShaker = new ArrayList<>();
 
+    @Nullable
+    private List<SingleSoundtrack> previousSoundtracks;
+
     @Inject
-    public SoundtrackNumbersDatabase(@NonNull RoomRepository roomRepository) {
+    public SoundtrackNumbersDatabase(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
+        Observer<List<SingleSoundtrack>> soundtracksObserver = soundtracks -> {
+            User user = roomRepository.getUser();
+
+            if (user != null && previousSoundtracks != null) {
+                for (SingleSoundtrack soundtrack : SoundtrackUtils.getOwnDeletedSoundtracks(user, previousSoundtracks, soundtracks)) {
+                    onSoundtrackDeleted(soundtrack);
+                }
+            }
+            previousSoundtracks = soundtracks;
+        };
+
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(!userInRoom) {
+            if(userInRoom) {
+                soundtrackRepository.getAllSoundtracks().observeForever(soundtracksObserver);
+            } else {
                 onUserLeftRoom();
+                soundtrackRepository.getAllSoundtracks().removeObserver(soundtracksObserver);
             }
         });
     }

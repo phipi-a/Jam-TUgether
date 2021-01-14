@@ -54,7 +54,7 @@ public class RoomRepository {
     private final Handler handler = new Handler();
 
     @Nullable
-    private Runnable adminStatusFetchingRunnable;
+    private Runnable adminStatusRunnable;
 
     @Inject
     public RoomRepository(@NonNull RoomService roomService) {
@@ -92,22 +92,29 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
-    private void getAdminStatus(int roomID, @NonNull String token, @NonNull JamCallback<AdminStatusResponse> callback) {
+    private void getAdminStatus(@NonNull JamCallback<AdminStatusResponse> callback) {
+        String token = this.token.getValue();
+        if (roomID == null || token == null) {
+            return;
+        }
         Call<AdminStatusResponse> call = roomService.getAdminStatus(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
         call.enqueue(callback);
     }
 
-    public void setUserInRoom(boolean userInRoom) {
-        this.userInRoom.setValue(userInRoom);
-        if (!userInRoom) {
-            onUserLeftRoom();
-        }
+    public void onUserInRoom(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
+        this.userInRoom.setValue(true);
+        this.roomID = roomID;
+        this.password = password;
+        this.user = user;
+        this.token.setValue(token);
+        this.userIsAdmin.setValue(userIsAdmin);
     }
 
-    private void onUserLeftRoom() {
-        if (adminStatusFetchingRunnable != null) {
-            handler.removeCallbacks(adminStatusFetchingRunnable);
-            adminStatusFetchingRunnable = null;
+    public void onUserLeftRoom() {
+        this.userInRoom.setValue(false);
+        if (adminStatusRunnable != null) {
+            handler.removeCallbacks(adminStatusRunnable);
+            adminStatusRunnable = null;
         }
         roomID = null;
         password = null;
@@ -116,31 +123,11 @@ public class RoomRepository {
         userIsAdmin.setValue(false);
     }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
-
-    public void setPassword(@NonNull String password) {
-        this.password = password;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
-
-    public void setToken(@NonNull String token) {
-        this.token.setValue(token);
-    }
-
-    public void setUserIsAdmin(boolean userIsAdmin) {
-        this.userIsAdmin.setValue(userIsAdmin);
-    }
-
     public void startFetchingAdminStatus() {
         fetchAdminStatus();
 
-        if (adminStatusFetchingRunnable == null) {
-            adminStatusFetchingRunnable = new Runnable() {
+        if (adminStatusRunnable == null) {
+            adminStatusRunnable = new Runnable() {
 
                 @Override
                 public void run() {
@@ -148,17 +135,12 @@ public class RoomRepository {
                     handler.postDelayed(this, Constants.ADMIN_STATUS_FETCHING_INTERVAL);
                 }
             };
-            adminStatusFetchingRunnable.run();
+            adminStatusRunnable.run();
         }
     }
 
     private void fetchAdminStatus() {
-        String token = this.token.getValue();
-
-        if (roomID == null || token == null) {
-            return;
-        }
-        getAdminStatus(roomID, token, new JamCallback<AdminStatusResponse>() {
+        getAdminStatus(new JamCallback<AdminStatusResponse>() {
 
             @Override
             public void onSuccess(@NonNull AdminStatusResponse response) {

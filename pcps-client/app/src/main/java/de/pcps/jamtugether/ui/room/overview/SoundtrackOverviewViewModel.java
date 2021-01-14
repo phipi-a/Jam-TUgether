@@ -20,6 +20,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -72,7 +73,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
             public void onSuccess(@NonNull DeleteTrackResponse response) {
                 // delete from local list in order to be visible immediately
                 soundtracks.remove(soundtrack);
-                soundtrackRepository.updateAllSoundtracks(soundtracks);
+                soundtrackRepository.onSoundtracksChanged(soundtracks);
             }
 
             @Override
@@ -130,7 +131,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     private void onRoomDeleted() {
-        roomRepository.setUserInRoom(false);
+        roomRepository.onUserLeftRoom();
     }
 
     public void onNavigatedBack() {
@@ -171,6 +172,11 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     public LiveData<List<SingleSoundtrack>> getAllSoundtracks() {
         return soundtrackRepository.getAllSoundtracks();
+    }
+
+    @NonNull
+    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
+        return soundtrackRepository.getCompositeSoundtrack();
     }
 
     @NonNull

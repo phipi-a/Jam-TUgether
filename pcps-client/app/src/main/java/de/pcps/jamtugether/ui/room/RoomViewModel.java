@@ -13,10 +13,8 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
-import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
-import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 
 public class RoomViewModel extends ViewModel {
@@ -41,14 +39,10 @@ public class RoomViewModel extends ViewModel {
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
-        roomRepository.setUserInRoom(true);
-        roomRepository.setRoomID(roomID);
-        roomRepository.setPassword(password);
-        roomRepository.setUser(user);
-        roomRepository.setToken(token);
-        roomRepository.setUserIsAdmin(userIsAdmin);
+        roomRepository.onUserInRoom(roomID, password, user, token, userIsAdmin);
 
         roomRepository.startFetchingAdminStatus();
+        soundtrackRepository.startFetchingSoundtracks(false);
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -61,7 +55,7 @@ public class RoomViewModel extends ViewModel {
     }
 
     private void onUserLeftRoom() {
-        roomRepository.setUserInRoom(false);
+        roomRepository.onUserLeftRoom();
 
         Boolean userIsAdmin = getUserIsAdmin().getValue();
         if (userIsAdmin != null && userIsAdmin) {

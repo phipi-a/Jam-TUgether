@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -21,8 +20,6 @@ public abstract class InstrumentFragment extends BaseFragment {
     protected InstrumentViewModel viewModel;
 
     protected OnOwnSoundtrackChangedCallback onOwnSoundtrackChangedCallback;
-
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public abstract class InstrumentFragment extends BaseFragment {
         }
 
         onOwnSoundtrackChangedCallback = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
-        compositeSoundtrackViewModel = new ViewModelProvider(roomFragment).get(CompositeSoundtrackViewModel.class);
     }
 
     @Nullable
@@ -47,7 +43,7 @@ public abstract class InstrumentFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        compositeSoundtrackViewModel.getCompositeSoundtrack().observe(getViewLifecycleOwner(), compositeSoundtrack -> viewModel.onCompositeSoundtrackChanged(compositeSoundtrack));
+        viewModel.observeCompositeSoundtrack(getViewLifecycleOwner());
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if(networkError != null) {

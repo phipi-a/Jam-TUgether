@@ -16,7 +16,6 @@ import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.room.CompositeSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -27,8 +26,6 @@ public class OwnSoundtrackFragment extends BaseFragment {
     Soundtrack.OnChangeCallback onChangeCallback;
 
     private OwnSoundtrackViewModel viewModel;
-
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     private MusicianViewViewModel musicianViewViewModel;
 
@@ -47,13 +44,6 @@ public class OwnSoundtrackFragment extends BaseFragment {
             return;
         }
 
-        Fragment roomFragment = musicianFragment.getParentFragment();
-        if(roomFragment == null) {
-            return;
-        }
-
-        compositeSoundtrackViewModel = new ViewModelProvider(roomFragment).get(CompositeSoundtrackViewModel.class);
-
         musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
         OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(musicianViewViewModel);
@@ -66,7 +56,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
 
-        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, compositeSoundtrackViewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
+        SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
         SoundtrackDataBindingUtils.bindOwnSoundtrack(binding.ownSoundtrackLayout, musicianViewViewModel.getOwnSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
