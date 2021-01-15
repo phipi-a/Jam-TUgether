@@ -205,7 +205,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     private int calculateProgress(long millis) {
-        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
+        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
     }
 
     public boolean getCompositionNetworkErrorShown() {

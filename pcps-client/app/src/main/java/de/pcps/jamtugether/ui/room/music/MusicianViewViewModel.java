@@ -14,7 +14,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback, OnOwnSoundtrackChangedCallback {
 
     @NonNull
-    private static final SingleSoundtrack EMPTY_SOUNDTRACK = new SingleSoundtrack();
+    private static final SingleSoundtrack EMPTY_OWN_SOUNDTRACK = new SingleSoundtrack();
 
     @NonNull
     private final MutableLiveData<Boolean> showFluteFragment = new MutableLiveData<>(false);
@@ -26,11 +26,11 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(EMPTY_SOUNDTRACK);
+    private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(EMPTY_OWN_SOUNDTRACK);
 
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
-        ownSoundtrack.setValue(EMPTY_SOUNDTRACK);
+        ownSoundtrack.setValue(EMPTY_OWN_SOUNDTRACK);
         if (instrument == Flute.getInstance()) {
             showFluteFragment.setValue(true);
         } else if (instrument == Drums.getInstance()) {

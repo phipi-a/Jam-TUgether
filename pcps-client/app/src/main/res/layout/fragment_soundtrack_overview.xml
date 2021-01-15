@@ -20,14 +20,12 @@
 
         <ProgressBar
             android:id="@+id/count_down_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="@dimen/soundtracks_fetching_progress_bar_width"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/count_down_progress_bar_width"
+            android:layout_height="@dimen/count_down_progress_bar_width"
             android:layout_marginTop="10dp"
-            android:max="100"
+            android:indeterminateOnly="false"
             android:progress="@{viewModel.countDownProgress}"
-            android:progressBackgroundTint="@color/soundtracksFetchingProgressBarBackgroundColor"
-            android:progressTint="@color/soundtracksFetchingProgressBarColor"
+            android:progressDrawable="@drawable/progress_bar_circle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/composite_soundtrack_margin_top"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

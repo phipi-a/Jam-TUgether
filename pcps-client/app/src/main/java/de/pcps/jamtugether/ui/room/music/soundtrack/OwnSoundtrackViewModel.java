@@ -20,13 +20,13 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -135,17 +135,12 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     }
 
     @NonNull
-    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return soundtrackRepository.getCompositeSoundtrack();
-    }
-
-    @NonNull
     public LiveData<Integer> getCountDownProgress() {
         return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
     }
 
     private int calculateProgress(long millis) {
-        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
+        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
     }
 
     static class Factory implements ViewModelProvider.Factory {
