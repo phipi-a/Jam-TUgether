@@ -15,6 +15,9 @@
     <color name="soundtrackDrumsColor">@color/red</color>
     <color name="soundtrackShakerColor">@color/green</color>
 
+    <color name="soundtracksFetchingProgressBarColor">@color/red</color>
+    <color name="soundtracksFetchingProgressBarBackgroundColor">@color/gray</color>
+
     <!-- light mode -->
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryVariant">@color/black</color>
