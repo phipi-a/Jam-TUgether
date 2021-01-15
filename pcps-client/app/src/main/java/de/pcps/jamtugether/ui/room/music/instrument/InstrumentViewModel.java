@@ -112,10 +112,6 @@ public abstract class InstrumentViewModel extends ViewModel {
         });
     }
 
-    public void onCompositeSoundtrackChanged(@NonNull CompositeSoundtrack compositeSoundtrack) {
-        this.compositeSoundtrack = compositeSoundtrack;
-    }
-
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
         this.playWithCompositeSoundtrack = checked;
     }
@@ -217,19 +213,17 @@ public abstract class InstrumentViewModel extends ViewModel {
             public void onError(@NonNull Error error) {
                 progressBarVisibility.setValue(View.INVISIBLE);
                 uploadPossible.setValue(true);
-
                 networkError.setValue(error);
             }
         });
     }
 
     protected void finishSoundtrack() {
-        timer.stop();
         if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             latestSoundtracksDatabase.onOwnSoundtrackUpdated(ownSoundtrack);
-            this.uploadPossible.setValue(true);
+            uploadPossible.setValue(true);
         }
         startedSoundtrackCreation.setValue(false);
     }

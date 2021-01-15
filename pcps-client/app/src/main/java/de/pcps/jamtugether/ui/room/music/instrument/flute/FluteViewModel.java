@@ -33,7 +33,6 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     private FluteRecordingThread fluteRecordingThread;
 
     private boolean fragmentFocused;
-
     private boolean soundIsPlaying;
 
     private int currentStartTimeMillis = -1;

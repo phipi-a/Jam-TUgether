@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,19 +16,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
-import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
+import de.pcps.jamtugether.utils.TimeUtils;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -138,6 +137,20 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return soundtrackRepository.getCompositeSoundtrack();
+    }
+
+    @NonNull
+    public LiveData<String> getTimerText() {
+        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), TimeUtils::formatTimerSecondsSimple);
+    }
+
+    @NonNull
+    public LiveData<Integer> getProgressBarProgress() {
+        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
+    }
+
+    private int calculateProgress(long millis) {
+        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
     }
 
     static class Factory implements ViewModelProvider.Factory {

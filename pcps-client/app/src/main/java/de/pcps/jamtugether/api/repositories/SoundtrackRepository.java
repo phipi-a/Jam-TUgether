@@ -25,7 +25,10 @@ import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.timer.JamCountDownTimer;
+import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
+import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
 
 @Singleton
@@ -41,13 +44,19 @@ public class SoundtrackRepository {
     private final Context context;
 
     @NonNull
-    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(new ArrayList<>());
+    private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
+
+    @NonNull
+    private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(EMPTY_SOUNDTRACK_LIST);
 
     @Nullable
     private CompositeSoundtrack previousCompositeSoundtrack;
 
     @NonNull
-    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(new CompositeSoundtrack(new ArrayList<>()));
+    private final CompositeSoundtrack EMPTY_COMPOSITE_SOUNDTRACK = new CompositeSoundtrack(EMPTY_SOUNDTRACK_LIST);
+
+    @NonNull
+    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(EMPTY_COMPOSITE_SOUNDTRACK);
 
     @NonNull
     private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
@@ -60,6 +69,21 @@ public class SoundtrackRepository {
 
     @Nullable
     private Runnable soundtracksRunnable;
+
+    @NonNull
+    private final BaseJamTimer countDownTimer = new JamCountDownTimer(Constants.SOUNDTRACK_FETCHING_INTERVAL, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+        @Override
+        public void onTicked(long millis) {
+            countDownTimerMillis.setValue(millis);
+        }
+
+        @Override
+        public void onFinished() {
+        }
+    });
+
+    @NonNull
+    private final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
 
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
@@ -108,12 +132,14 @@ public class SoundtrackRepository {
 
     public void startFetchingComposition() {
         fetchComposition();
+        countDownTimer.start();
 
         if (soundtracksRunnable == null) {
             soundtracksRunnable = new Runnable() {
 
                 @Override
                 public void run() {
+                    countDownTimer.reset();
                     fetchComposition();
                     handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
                 }
@@ -153,7 +179,15 @@ public class SoundtrackRepository {
             handler.removeCallbacks(soundtracksRunnable);
             soundtracksRunnable = null;
         }
+        if (!countDownTimer.isStopped()) {
+            countDownTimer.stop();
+        }
+        allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
+        compositeSoundtrack.setValue(EMPTY_COMPOSITE_SOUNDTRACK);
+        isFetchingComposition.setValue(false);
+        compositionNetworkError.setValue(null);
+        countDownTimerMillis.setValue(-1L);
     }
 
     public void onCompositionNetworkErrorShown() {
@@ -178,5 +212,10 @@ public class SoundtrackRepository {
     @NonNull
     public LiveData<Error> getCompositionNetworkError() {
         return compositionNetworkError;
+    }
+
+    @NonNull
+    public LiveData<Long> getCountDownTimerMillis() {
+        return countDownTimerMillis;
     }
 }
