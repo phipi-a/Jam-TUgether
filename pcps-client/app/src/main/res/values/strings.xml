@@ -44,6 +44,7 @@
     <string name="play_drums_help">Click on the elements to create their respective sounds.</string>
 
     <string name="composite">Composite</string>
+    <string name="own_soundtrack">Own soundtrack</string>
 
     <string name="upload">Upload</string>
     <string name="play_with_composite_soundtrack">with soundtrack</string>

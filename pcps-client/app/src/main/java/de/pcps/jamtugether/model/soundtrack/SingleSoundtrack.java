@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
@@ -44,7 +45,7 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     private final List<Sound> soundSequence;
 
-    private transient final boolean isOwnSoundtrack;
+    private transient final boolean representsOwnSoundtrack;
 
     @Nullable
     private transient BaseSoundPool soundPool;
@@ -56,7 +57,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     // empty soundtrack (never sent to server)
     public SingleSoundtrack() {
-        this(-1, "", Instruments.FALLBACK.getServerString(), -1, new ArrayList<>());
+        this(-1, "", Instruments.FALLBACK.getServerString(), -1, new ArrayList<>(), true);
     }
 
     // own soundtrack object (starts with empty array list)
@@ -64,14 +65,14 @@ public class SingleSoundtrack extends Soundtrack {
         this(userID, userName, instrument, number, new ArrayList<>(), true);
     }
 
-    private SingleSoundtrack(int userID, @NonNull String userName, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
+    private SingleSoundtrack(int userID, @NonNull String userName, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean representsOwnSoundtrack) {
         super();
         this.userID = userID;
         this.userName = userName;
         this.instrument = instrument;
         this.number = number;
         this.soundSequence = soundSequence;
-        this.isOwnSoundtrack = isOwnSoundtrack;
+        this.representsOwnSoundtrack = representsOwnSoundtrack;
     }
 
     public void loadSounds(@NonNull Context context) {
@@ -92,7 +93,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, userName, instrument, number, soundSequence, isOwnSoundtrack, soundPool);
+        return Objects.hash(userID, userName, instrument, number, soundSequence, representsOwnSoundtrack, soundPool);
     }
 
     @Override
@@ -111,7 +112,10 @@ public class SingleSoundtrack extends Soundtrack {
     @Nullable
     @Override
     public String getLabel(@NonNull Context context) {
-        return isOwnSoundtrack || userID == -1 ? null : userName;
+        if (representsOwnSoundtrack) {
+            return context.getString(R.string.own_soundtrack);
+        }
+        return userName;
     }
 
     @NonNull
