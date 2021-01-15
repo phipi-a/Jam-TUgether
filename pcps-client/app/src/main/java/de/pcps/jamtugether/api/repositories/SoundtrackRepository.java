@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +46,6 @@ public class SoundtrackRepository {
 
     @Nullable
     private CompositeSoundtrack previousCompositeSoundtrack;
-
-    @NonNull
-    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(new CompositeSoundtrack(new ArrayList<>()));
 
     @NonNull
     private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
@@ -129,7 +127,7 @@ public class SoundtrackRepository {
             @Override
             public void onSuccess(@NonNull Composition response) {
                 isFetchingComposition.setValue(false);
-                onSoundtracksChanged(response.getSoundtracks());
+                allSoundtracks.setValue(response.getSoundtracks());
             }
 
             @Override
@@ -142,10 +140,6 @@ public class SoundtrackRepository {
 
     public void onSoundtracksChanged(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
-
-        CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
-        compositeSoundtrack.setValue(newCompositeSoundtrack);
-        previousCompositeSoundtrack = newCompositeSoundtrack;
     }
 
     private void onUserLeftRoom() {
@@ -167,7 +161,11 @@ public class SoundtrackRepository {
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return compositeSoundtrack;
+        return Transformations.map(allSoundtracks, soundtracks -> {
+            CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
+            previousCompositeSoundtrack = newCompositeSoundtrack;
+            return newCompositeSoundtrack;
+        });
     }
 
     @NonNull

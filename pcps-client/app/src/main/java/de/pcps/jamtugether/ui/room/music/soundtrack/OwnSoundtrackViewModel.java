@@ -18,16 +18,11 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.storage.Preferences;
-import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
 
@@ -133,11 +128,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     public LiveData<Error> getSoundtrackRepositoryNetworkError() {
         return soundtrackRepository.getCompositionNetworkError();
-    }
-
-    @NonNull
-    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return soundtrackRepository.getCompositeSoundtrack();
     }
 
     static class Factory implements ViewModelProvider.Factory {
