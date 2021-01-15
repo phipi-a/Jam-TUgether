@@ -55,6 +55,8 @@ public class OwnSoundtrackFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
+        binding.soundtracksFetchingCountDownLayout.setLifecycleOwner(getViewLifecycleOwner());
+        binding.soundtracksFetchingCountDownLayout.setCountDownProvider(viewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 

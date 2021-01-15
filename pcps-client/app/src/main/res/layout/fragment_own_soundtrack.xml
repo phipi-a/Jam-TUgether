@@ -15,30 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="@dimen/soundtracks_fetching_progress_bar_width"
+        <include
+            android:id="@+id/soundtracks_fetching_count_down_layout"
+            layout="@layout/view_soundtracks_fetching_count_down"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:max="100"
-            android:progress="@{viewModel.progressBarProgress}"
-            android:progressBackgroundTint="@color/soundtracksFetchingProgressBarBackgroundColor"
-            android:progressTint="@color/soundtracksFetchingProgressBarColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/timer_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@{viewModel.timerText}"
-            android:textColor="@color/primaryTextColor"
-            app:layout_constraintEnd_toEndOf="@id/progress_bar"
-            app:layout_constraintStart_toStartOf="@id/progress_bar"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
 
         <TextView
             android:id="@+id/room_id_text_view"
@@ -49,7 +33,7 @@
             android:text="@{@string/room_format(viewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timer_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/soundtracks_fetching_count_down_layout" />
 
         <Spinner
             android:id="@+id/instrument_spinner"
