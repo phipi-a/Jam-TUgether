@@ -25,10 +25,9 @@ import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.ui.room.SoundtracksFetchingCountDownProvider;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener, SoundtracksFetchingCountDownProvider {
+public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
     @Inject
     SoundtrackRepository soundtrackRepository;
@@ -201,19 +200,12 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    @Override
-    public LiveData<Integer> getProgress() {
+    public LiveData<Integer> getCountDownProgress() {
         return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
     }
 
     private int calculateProgress(long millis) {
         return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
-    }
-
-    @NonNull
-    @Override
-    public LiveData<String> getCountDownText() {
-        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), TimeUtils::formatTimerSecondsSimple);
     }
 
     public boolean getCompositionNetworkErrorShown() {

@@ -50,8 +50,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         FragmentSoundtrackOverviewBinding binding = FragmentSoundtrackOverviewBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
-        binding.soundtracksFetchingCountDownLayout.setLifecycleOwner(getViewLifecycleOwner());
-        binding.soundtracksFetchingCountDownLayout.setCountDownProvider(viewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 

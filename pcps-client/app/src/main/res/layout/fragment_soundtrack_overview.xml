@@ -18,11 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/soundtracks_fetching_count_down_layout"
-            layout="@layout/view_soundtracks_fetching_count_down"
-            android:layout_width="0dp"
+        <ProgressBar
+            android:id="@+id/count_down_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="@dimen/soundtracks_fetching_progress_bar_width"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:max="100"
+            android:progress="@{viewModel.countDownProgress}"
+            android:progressBackgroundTint="@color/soundtracksFetchingProgressBarBackgroundColor"
+            android:progressTint="@color/soundtracksFetchingProgressBarColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +41,7 @@
             android:text="@{@string/room_format(viewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/soundtracks_fetching_count_down_layout" />
+            app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
         <TextView
             android:id="@+id/delete_room_text_view"
@@ -49,7 +54,7 @@
             android:textSize="16dp"
             android:visibility="@{viewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/soundtracks_fetching_count_down_layout" />
+            app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
         <include
             android:id="@+id/composite_soundtrack_layout"
