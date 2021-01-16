@@ -19,6 +19,8 @@ import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.sound.drums.DrumsSound;
+import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -150,30 +152,28 @@ public class SoundtrackView extends View {
         float widthOfOneMilliSecond = this.getWidth() / (float) length;
         float heightOfPitchOne = this.getHeight() / (float) Drums.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
-            float height;
-            long millis;
             int heightPercentage = sound.getPitch();
-            switch (sound.getPitch()) {
-                case Drums.SNARE_PITCH:
-                    millis = 125;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_snare_height);
-                    break;
-                case Drums.KICK_PITCH:
-                    millis = 100;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_kick_height);
-                    break;
-                case Drums.HAT_PITCH:
-                    millis = 75;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_hat_height);
-                    break;
-                default:
-                    millis = SoundResource.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_cymbal_height);
-                    break;
+            int height;
+            long widthInMillis;
+
+            int pitch = sound.getPitch();
+            if (pitch == DrumsSound.SNARE.getPitch()) {
+                widthInMillis = 125;
+                height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_snare_height);
+            } else if (pitch == DrumsSound.KICK.getPitch()) {
+                widthInMillis = 100;
+                height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_kick_height);
+            } else if (pitch == DrumsSound.HAT.getPitch()) {
+                widthInMillis = 75;
+                height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_hat_height);
+            } else {
+                widthInMillis = DrumsSound.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
+                height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_cymbal_height);
             }
+
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float yStart = this.getY() + heightOfPitchOne * (Drums.MAX_PITCH - heightPercentage);
-            float xEnd = xStart + widthOfOneMilliSecond * millis;
+            float xEnd = xStart + widthOfOneMilliSecond * widthInMillis;
             float yEnd = yStart + height;
             canvas.drawRect(xStart, yStart, xEnd, yEnd, paint);
         }
@@ -190,7 +190,7 @@ public class SoundtrackView extends View {
         float borderSpace = (containerHeight - height) / 2;
         float yStart = this.getY() + borderSpace;
         float yEnd = this.getY() + this.getHeight() - borderSpace;
-        float millis = SoundResource.SHAKER.getDuration() / 1.5f;
+        float millis = ShakerSound.SHAKER.getDuration() / 1.5f;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = xStart + widthOfOneMilliSecond * millis;

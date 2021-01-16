@@ -14,20 +14,14 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
 import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.sound.flute.FluteSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
-
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PERCENTAGE;
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
 public class FluteViewModel extends InstrumentViewModel implements LifecycleObserver, OnAmplitudeChangedCallback {
 
     @NonNull
     private static final Flute flute = Flute.getInstance();
-
-    @NonNull
-    private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     @Nullable
     private FluteRecordingThread fluteRecordingThread;
@@ -35,8 +29,10 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     private boolean fragmentFocused;
     private boolean soundIsPlaying;
 
-    private int currentStartTimeMillis = -1;
-    private int currentPitch = -1;
+    private int startTimeMillis = -1;
+
+    @NonNull
+    private final MutableLiveData<Integer> pitch = new MutableLiveData<>(FluteSound.DEFAULT.getPitch());
 
     public FluteViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
         super(flute, callback);
@@ -75,14 +71,13 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
-            Float pitchPercentage = this.pitchPercentage.getValue();
-            if (!soundIsPlaying && pitchPercentage != null) {
-                flute.play(pitchPercentage * 100, streamID -> {
+            Integer pitch = this.pitch.getValue();
+            if (!soundIsPlaying && pitch != null) {
+                flute.play(pitch, streamID -> {
                     soundIsPlaying = streamID != 0;
 
                     if (startedSoundtrackCreation() && soundIsPlaying) {
-                        currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-                        currentPitch = (int) (pitchPercentage * 100);
+                        startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     }
                 });
             }
@@ -91,25 +86,19 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     private void finishSound() {
         flute.stop();
-        if (currentStartTimeMillis != -1 && currentPitch != -1) {
+        Integer pitch = this.pitch.getValue();
+        if (startTimeMillis != -1 && pitch != null) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if (ownSoundtrack != null) {
-                ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
+                ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
             }
-            currentStartTimeMillis = -1;
-            currentPitch = -1;
+            startTimeMillis = -1;
         }
         soundIsPlaying = false;
     }
 
-    public void onPitchChanged(float newPitch) {
-        if (newPitch < PITCH_MIN_PERCENTAGE) {
-            newPitch = PITCH_MIN_PERCENTAGE;
-        }
-        if (newPitch > PITCH_MAX_PERCENTAGE) {
-            newPitch = PITCH_MAX_PERCENTAGE;
-        }
-        pitchPercentage.setValue(newPitch);
+    public void onPitchChanged(int pitch) {
+        this.pitch.setValue(pitch);
     }
 
 
@@ -121,15 +110,15 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
     }
 
-    @NonNull
-    public LiveData<Float> getPitchPercentage() {
-        return pitchPercentage;
-    }
-
     @Override
     protected void onCleared() {
         super.onCleared();
         stopRecording();
+    }
+
+    @NonNull
+    public LiveData<Integer> getPitch() {
+        return pitch;
     }
 
     static class Factory implements ViewModelProvider.Factory {

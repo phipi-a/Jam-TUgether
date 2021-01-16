@@ -8,24 +8,33 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
+import de.pcps.jamtugether.model.sound.flute.FluteSound;
+
 public class FluteDataBindingUtils {
 
     @SuppressLint("ClickableViewAccessibility")
     @BindingAdapter("touchListener")
     public static void setTouchListener(@NonNull View self, @NonNull FluteViewModel viewModel) {
         self.setOnTouchListener((view, event) -> {
-            float soundPitchPercentage;
+            // todo
             int[] location = new int[2];
             view.getLocationInWindow(location);
-            soundPitchPercentage = (event.getRawY() - location[1]) / view.getHeight();
-            viewModel.onPitchChanged(soundPitchPercentage);
+            int noteHeight = view.getHeight() / FluteSound.values().length;
+            double y = event.getRawY() - location[1];
+            int pitch = FluteSound.DEFAULT.getPitch();
+            for (int i = 0; i < FluteSound.values().length; i++) {
+                if (noteHeight * i >= y) {
+                    pitch = FluteSound.values()[i].getPitch();
+                }
+            }
+            viewModel.onPitchChanged(pitch);
             return true;
         });
     }
 
-    @BindingAdapter("pitchPercentage")
-    public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, float pitchPercentage) {
+    @BindingAdapter("pitch")
+    public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, int pitch) {
         ClipDrawable clipDrawable = (ClipDrawable) fluteFillImageView.getDrawable();
-        clipDrawable.setLevel((int) (10000 * pitchPercentage));
+        clipDrawable.setLevel(pitch * 100);
     }
 }
