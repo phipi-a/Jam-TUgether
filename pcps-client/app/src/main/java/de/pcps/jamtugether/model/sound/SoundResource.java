@@ -7,5 +7,7 @@ public interface SoundResource {
     @RawRes
     int getResource();
 
+    int getPitch();
+
     int getDuration();
 }

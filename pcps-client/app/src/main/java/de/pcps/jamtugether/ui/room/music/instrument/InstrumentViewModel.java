@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -255,7 +254,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             if (millis == -1L) {
                 return "";
             }
-            return TimeUtils.formatTimerSecondMinutes(millis);
+            return TimeUtils.formatToMinutesSeconds(millis);
         });
     }
 
@@ -265,7 +264,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             if (millis == -1L) {
                 return "";
             }
-            return TimeUtils.formatTimerSecondsSimple(millis);
+            return TimeUtils.formatToSeconds(millis);
         });
     }
 

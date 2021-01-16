@@ -28,6 +28,11 @@ public enum ShakerSound implements SoundResource {
     }
 
     @Override
+    public int getPitch() {
+        return ordinal();
+    }
+
+    @Override
     public int getDuration() {
         return duration;
     }

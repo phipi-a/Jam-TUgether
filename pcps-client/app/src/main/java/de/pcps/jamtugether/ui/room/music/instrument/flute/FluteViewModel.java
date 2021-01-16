@@ -87,6 +87,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     private void finishSound() {
         flute.stop();
         Integer pitch = this.pitch.getValue();
+
         if (startTimeMillis != -1 && pitch != null) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if (ownSoundtrack != null) {

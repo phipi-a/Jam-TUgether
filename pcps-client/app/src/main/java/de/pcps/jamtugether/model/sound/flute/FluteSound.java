@@ -10,19 +10,19 @@ import de.pcps.jamtugether.model.sound.SoundResource;
 
 public enum FluteSound implements SoundResource {
 
-    C(R.raw.flute_sound, 8),
-    C_SHARP(R.raw.flute_sound, 15),
-    D(R.raw.flute_sound, 22),
-    D_SHARP(R.raw.flute_sound, 29),
-    E(R.raw.flute_sound, 36),
-    F(R.raw.flute_sound, 43),
-    F_SHARP(R.raw.flute_sound, 50),
-    G(R.raw.flute_sound, 57),
-    G_SHARP(R.raw.flute_sound, 64),
-    A(R.raw.flute_sound, 71),
-    A_SHARP(R.raw.flute_sound, 78),
-    B(R.raw.flute_sound, 85),
-    C_HIGH(R.raw.flute_sound, 92);
+    C(R.raw.flute_c),
+    C_SHARP(R.raw.flute_c_sharp),
+    D(R.raw.flute_d),
+    D_SHARP(R.raw.flute_d_sharp),
+    E(R.raw.flute_e),
+    F(R.raw.flute_f),
+    F_SHARP(R.raw.flute_f_sharp),
+    G(R.raw.flute_g),
+    G_SHARP(R.raw.flute_g_sharp),
+    A(R.raw.flute_a),
+    A_SHARP(R.raw.flute_a_sharp),
+    B(R.raw.flute_b),
+    C_HIGH(R.raw.flute_c_high);
 
     @NonNull
     public static final FluteSound DEFAULT = C;
@@ -31,21 +31,18 @@ public enum FluteSound implements SoundResource {
     private static final HashMap<Integer, FluteSound> pitchMap = new HashMap<>();
 
     static {
-        for(FluteSound fluteSound : values()) {
-            pitchMap.put(fluteSound.pitch, fluteSound);
+        for (FluteSound fluteSound : values()) {
+            pitchMap.put(fluteSound.getPitch(), fluteSound);
         }
     }
 
     @RawRes
     private final int soundResource;
 
-    private final int pitch;
-
     private int duration;
 
-    FluteSound(@RawRes int soundResource, int pitch) {
+    FluteSound(@RawRes int soundResource) {
         this.soundResource = soundResource;
-        this.pitch = pitch;
     }
 
     public void setDuration(int duration) {
@@ -57,8 +54,9 @@ public enum FluteSound implements SoundResource {
         return soundResource;
     }
 
+    @Override
     public int getPitch() {
-        return pitch;
+        return ordinal();
     }
 
     @Override

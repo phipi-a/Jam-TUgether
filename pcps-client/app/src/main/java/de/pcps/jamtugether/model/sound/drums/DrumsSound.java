@@ -9,10 +9,10 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.sound.SoundResource;
 
 public enum DrumsSound implements SoundResource {
-    SNARE(R.raw.drum_snare, 5),
-    KICK(R.raw.drum_kick, 30),
-    HAT(R.raw.drum_hat, 70),
-    CYMBAL(R.raw.drum_cymbal, 90);
+    KICK(R.raw.drum_kick),
+    SNARE(R.raw.drum_snare),
+    HAT(R.raw.drum_hat),
+    CYMBAL(R.raw.drum_cymbal);
 
     @NonNull
     private static final DrumsSound DEFAULT = KICK;
@@ -22,20 +22,17 @@ public enum DrumsSound implements SoundResource {
 
     static {
         for (DrumsSound drumsSound : values()) {
-            pitchMap.put(drumsSound.pitch, drumsSound);
+            pitchMap.put(drumsSound.getPitch(), drumsSound);
         }
     }
 
     @RawRes
     private final int soundResource;
 
-    private final int pitch;
-
     private int duration;
 
-    DrumsSound(@RawRes int soundResource, int pitch) {
+    DrumsSound(@RawRes int soundResource) {
         this.soundResource = soundResource;
-        this.pitch = pitch;
     }
 
     public void setDuration(int duration) {
@@ -47,8 +44,9 @@ public enum DrumsSound implements SoundResource {
         return soundResource;
     }
 
+    @Override
     public int getPitch() {
-        return pitch;
+        return ordinal();
     }
 
     @Override

@@ -95,7 +95,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
         if (ownSoundtrack != null) {
-            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, -1));
+            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, ShakerSound.SHAKER.getPitch()));
         }
     }
 
