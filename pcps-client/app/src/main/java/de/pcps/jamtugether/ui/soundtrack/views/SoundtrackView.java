@@ -24,6 +24,7 @@ import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.utils.TimeUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class SoundtrackView extends View {
@@ -136,16 +137,16 @@ public class SoundtrackView extends View {
         }
     }
 
-    private static int getDrumsSoundWidthInMillis(@NonNull DrumsSound drumsSound) {
+    private static long getDrumsSoundWidthInMillis(@NonNull DrumsSound drumsSound) {
         switch (drumsSound) {
             case SNARE:
-                return 50;
+                return 125;
             case HAT:
-                return 70;
+                return 75;
             case CYMBAL:
-                return 90;
+                return DrumsSound.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
             default:
-                return 30;
+                return 100;
         }
     }
 
@@ -226,7 +227,7 @@ public class SoundtrackView extends View {
             DrumsSound drumsSound = DrumsSound.from(sound.getPitch());
             int heightPercentage = getDrumsSoundHeightPercentage(drumsSound);
             int height = getDrumsSoundHeight(drumsSound, getContext());
-            int widthInMillis = getDrumsSoundWidthInMillis(drumsSound);
+            long widthInMillis = getDrumsSoundWidthInMillis(drumsSound);
 
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float yStart = this.getY() + heightOfPitchOne * (Drums.MAX_PITCH - heightPercentage);

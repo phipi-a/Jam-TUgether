@@ -31,8 +31,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     private int startTimeMillis = -1;
 
-    @NonNull
-    private final MutableLiveData<Integer> pitch = new MutableLiveData<>(FluteSound.DEFAULT.getPitch());
+    private int pitch = FluteSound.DEFAULT.getPitch();
 
     public FluteViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
         super(flute, callback);
@@ -71,8 +70,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
-            Integer pitch = this.pitch.getValue();
-            if (!soundIsPlaying && pitch != null) {
+            if (!soundIsPlaying) {
                 flute.play(pitch, streamID -> {
                     soundIsPlaying = streamID != 0;
 
@@ -86,9 +84,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     private void finishSound() {
         flute.stop();
-        Integer pitch = this.pitch.getValue();
-
-        if (startTimeMillis != -1 && pitch != null) {
+        if (startTimeMillis != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if (ownSoundtrack != null) {
                 ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
@@ -99,7 +95,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     }
 
     public void onPitchChanged(int pitch) {
-        this.pitch.setValue(pitch);
+        this.pitch = pitch;
     }
 
 
@@ -115,11 +111,6 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     protected void onCleared() {
         super.onCleared();
         stopRecording();
-    }
-
-    @NonNull
-    public LiveData<Integer> getPitch() {
-        return pitch;
     }
 
     static class Factory implements ViewModelProvider.Factory {

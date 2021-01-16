@@ -155,6 +155,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (startedSoundtrackCreation()) {
             if (countDownTimer.isStopped()) {
                 finishSoundtrack();
+                timer.stop();
             } else {
                 countDownTimer.stop();
                 countDownTimerMillis.setValue(-1L);

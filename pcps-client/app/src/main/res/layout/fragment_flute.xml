@@ -27,30 +27,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_flute"
+        <com.google.android.material.slider.Slider
             android:layout_width="wrap_content"
             android:layout_height="200dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            android:src="@drawable/flute"
+            android:layout_marginEnd="20dp"
+            android:stepSize="1.0"
+            android:valueFrom="0.0"
+            android:valueTo="12.0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout"
-            app:touchListener="@{viewModel}" />
-
-        <ImageView
-            android:id="@+id/iv_flute_fill"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_gravity="end"
-            android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            android:src="@drawable/flute_clip"
-            app:layout_constraintEnd_toEndOf="@id/iv_flute"
-            app:layout_constraintStart_toStartOf="@id/iv_flute"
-            app:layout_constraintTop_toTopOf="@id/iv_flute"
-            app:pitch="@{viewModel.pitch}" />
+            app:onPitchChanged="@{(slider, value, fromUser) -> viewModel.onPitchChanged((int) value)}"
+            app:thumbColor="@color/iconColor"
+            app:tickColorActive="@color/volumeSliderTickActiveColor"
+            app:tickColorInactive="@color/volumeSliderTickInactiveColor"
+            app:trackColorActive="@color/volumeSliderTickActiveColor"
+            app:trackColorInactive="@color/volumeSliderTickInactiveColor" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
