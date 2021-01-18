@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.JamTUgether"
         tools:targetApi="m">
-        <activity android:name=".MainActivity">
+        <activity android:name=".TestingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

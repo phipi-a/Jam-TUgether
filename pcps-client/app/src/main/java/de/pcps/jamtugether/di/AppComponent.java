@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
+import de.pcps.jamtugether.TestingActivity;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
@@ -40,4 +41,6 @@ public interface AppComponent {
     void inject(OwnSoundtrackViewModel ownSoundtrackViewModel);
 
     void inject(InstrumentViewModel instrumentViewModel);
+
+    void inject(TestingActivity testingActivity);
 }
