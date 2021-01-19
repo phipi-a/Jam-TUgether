@@ -84,6 +84,16 @@ public class SingleSoundtrack extends Soundtrack {
     }
 
     @Override
+    public String toString() {
+        return "SingleSoundtrack{" +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", instrument='" + instrument + '\'' +
+                ", number=" + number +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

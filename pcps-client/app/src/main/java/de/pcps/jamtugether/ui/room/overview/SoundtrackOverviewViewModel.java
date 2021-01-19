@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -76,17 +77,22 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
             @Override
             public void onSuccess(@NonNull DeleteTrackResponse response) {
                 // delete from local list in order to be visible immediately
-                soundtracks.remove(soundtrack);
-                soundtrackRepository.onSoundtracksChanged(soundtracks);
+                List<SingleSoundtrack> list = new ArrayList<>();
+                for (SingleSoundtrack singleSoundtrack : soundtracks) {
+                    if (!singleSoundtrack.equals(soundtrack)) {
+                        list.add(singleSoundtrack);
+                    }
+                }
+                soundtrackRepository.onSoundtracksChanged(list);
+                soundtrackToBeDeleted = null;
             }
 
             @Override
             public void onError(@NonNull Error error) {
                 networkError.setValue(error);
+                soundtrackToBeDeleted = null;
             }
         });
-
-        soundtrackToBeDeleted = null;
     }
 
     private void deleteRoom() {
