@@ -11,6 +11,7 @@ import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.base.BaseViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.DeleteViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.RegularViewHolder;
+import timber.log.Timber;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseViewHolder> {
 
@@ -27,7 +28,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
     @Override
     public int getItemViewType(int position) {
         SingleSoundtrack soundtrack = getItem(position);
-        if(soundtrack.getUserID() == userID) {
+        if (soundtrack.getUserID() == userID) {
             return DELETE_VIEW;
         }
         return REGULAR_VIEW;
@@ -36,7 +37,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == DELETE_VIEW) {
+        if (viewType == DELETE_VIEW) {
             return DeleteViewHolder.from(parent);
         }
         return RegularViewHolder.from(parent);
@@ -44,6 +45,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        Timber.d("onBindViewHolder() | %s", getItem(position));
         holder.bind(getItem(position), onChangeCallback, onDeleteListener, lifecycleOwner);
     }
 }

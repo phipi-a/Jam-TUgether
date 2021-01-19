@@ -23,6 +23,7 @@ import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
+import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -61,7 +62,10 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             if (admin) {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
+                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
+                    Timber.d("submitList() | %s", allSoundtracks);
+                    adapter.submitList(allSoundtracks, invalidateItemDecorations);
+                });
             } else {
                 Integer userID = viewModel.getUserID();
                 if (userID == null) {
@@ -69,7 +73,10 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 }
                 RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(userID, onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
+                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
+                    Timber.d("submitList() | %s", allSoundtracks);
+                    adapter.submitList(allSoundtracks, invalidateItemDecorations);
+                });
             }
         });
 

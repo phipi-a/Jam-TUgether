@@ -31,6 +31,7 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -42,9 +43,6 @@ public class SoundtrackRepository {
     private final RoomRepository roomRepository;
 
     @NonNull
-    private final Context context;
-
-    @NonNull
     private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
 
     @NonNull
@@ -54,10 +52,7 @@ public class SoundtrackRepository {
     private CompositeSoundtrack previousCompositeSoundtrack;
 
     @NonNull
-    private final CompositeSoundtrack EMPTY_COMPOSITE_SOUNDTRACK = new CompositeSoundtrack(EMPTY_SOUNDTRACK_LIST);
-
-    @NonNull
-    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(EMPTY_COMPOSITE_SOUNDTRACK);
+    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     @NonNull
     private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
@@ -90,7 +85,11 @@ public class SoundtrackRepository {
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
         this.roomRepository = roomRepository;
-        this.context = context;
+        this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
+            CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
+            previousCompositeSoundtrack = newCompositeSoundtrack;
+            return newCompositeSoundtrack;
+        });
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
             if (!userInRoom) {
@@ -167,6 +166,10 @@ public class SoundtrackRepository {
         });
     }
 
+    /**
+     * used to update local list immediately
+     * @param soundtracks
+     */
     public void onSoundtracksChanged(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
     }
@@ -181,7 +184,6 @@ public class SoundtrackRepository {
         }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
-        compositeSoundtrack.setValue(EMPTY_COMPOSITE_SOUNDTRACK);
         isFetchingComposition.setValue(false);
         compositionNetworkError.setValue(null);
         countDownTimerMillis.setValue(-1L);
@@ -198,11 +200,7 @@ public class SoundtrackRepository {
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(allSoundtracks, soundtracks -> {
-            CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
-            previousCompositeSoundtrack = newCompositeSoundtrack;
-            return newCompositeSoundtrack;
-        });
+        return compositeSoundtrack;
     }
 
     @NonNull
