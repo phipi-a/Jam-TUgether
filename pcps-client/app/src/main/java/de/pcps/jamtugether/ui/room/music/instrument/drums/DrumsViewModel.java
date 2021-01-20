@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -46,6 +47,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         int soundDuration = soundResource.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
+        SingleSoundtrack ownSoundtrack = this.ownSoundtrack;
         if(ownSoundtrack != null) {
             ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
         }

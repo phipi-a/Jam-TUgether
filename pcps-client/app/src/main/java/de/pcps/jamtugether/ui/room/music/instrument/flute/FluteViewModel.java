@@ -14,6 +14,7 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
 import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -93,6 +94,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
         if (currentStartTimeMillis != -1 && currentPitch != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+            SingleSoundtrack ownSoundtrack = this.ownSoundtrack;
             if (ownSoundtrack != null) {
                 ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
             }
