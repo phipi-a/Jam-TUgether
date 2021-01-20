@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
@@ -36,6 +37,7 @@ import de.pcps.jamtugether.timer.JamCountDownTimer;
 import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
+import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 
 public abstract class InstrumentViewModel extends ViewModel {
@@ -83,7 +85,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected SingleSoundtrack ownSoundtrack;
 
     @NonNull
-    private final MutableLiveData<Boolean> uploadPossible = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> uploadButtonEnabled = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<Integer> uploadButtonVisibility;
@@ -93,6 +95,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+
+    @Nullable
+    private List<SingleSoundtrack> previousSoundtracks;
 
     private boolean playWithCompositeSoundtrack;
 
@@ -111,10 +116,24 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
-        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
-            this.compositeSoundtrack = compositeSoundtrack;
+    public void observeAllSoundtracks(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getAllSoundtracks().observe(lifecycleOwner, allSoundtracks -> {
+            User user = roomRepository.getUser();
+
+            if (user != null && previousSoundtracks != null && ownSoundtrack != null) {
+                for (SingleSoundtrack deletedSoundtrack : SoundtrackUtils.getOwnDeletedSoundtracks(user, previousSoundtracks, allSoundtracks)) {
+                    // check if deleted soundtrack is own soundtrack
+                    if (deletedSoundtrack.getUserID() == user.getID() && deletedSoundtrack.getInstrument() == ownSoundtrack.getInstrument() && deletedSoundtrack.getNumber() == ownSoundtrack.getNumber()) {
+                        uploadButtonEnabled.setValue(true);
+                    }
+                }
+            }
+            previousSoundtracks = allSoundtracks;
         });
+    }
+
+    public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> this.compositeSoundtrack = compositeSoundtrack);
     }
 
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
@@ -122,7 +141,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     @NonNull
-    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(TimeUtils.ONE_SECOND * 3, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
+    protected final BaseJamTimer countDownTimer = new JamCountDownTimer(Constants.SOUNDTRACK_RECORDING_COUNT_DOWN, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
         @Override
         public void onTicked(long millis) {
             countDownTimerMillis.setValue(millis);
@@ -198,7 +217,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);
-        uploadPossible.setValue(false);
+        uploadButtonEnabled.setValue(false);
 
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
         soundtrackRepository.uploadSoundtracks(soundtracks, new JamCallback<UploadSoundtracksResponse>() {
@@ -218,7 +237,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             @Override
             public void onError(@NonNull Error error) {
                 progressBarVisibility.setValue(View.INVISIBLE);
-                uploadPossible.setValue(true);
+                uploadButtonEnabled.setValue(true);
                 networkError.setValue(error);
             }
         });
@@ -229,7 +248,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             latestSoundtracksDatabase.onOwnSoundtrackUpdated(ownSoundtrack);
-            uploadPossible.setValue(true);
+            uploadButtonEnabled.setValue(true);
             uploadButtonVisibility.setValue(View.VISIBLE);
         }
         startedSoundtrackCreation.setValue(false);
@@ -277,8 +296,8 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getUploadPossible() {
-        return uploadPossible;
+    public LiveData<Boolean> getUploadButtonEnabled() {
+        return uploadButtonEnabled;
     }
 
     @NonNull
