@@ -14,7 +14,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 public class MusicianViewViewModel extends ViewModel implements Instrument.OnChangeCallback, OnOwnSoundtrackChangedCallback {
 
     @NonNull
-    private static final SingleSoundtrack EMPTY_OWN_SOUNDTRACK = new SingleSoundtrack();
+    private static final SingleSoundtrack EMPTY_OWN_SOUNDTRACK = new SingleSoundtrack("");
 
     @NonNull
     private final MutableLiveData<Boolean> showFluteFragment = new MutableLiveData<>(false);

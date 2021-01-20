@@ -86,6 +86,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Boolean> uploadPossible = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Integer> uploadButtonVisibility;
+
+    @NonNull
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
@@ -99,9 +102,12 @@ public abstract class InstrumentViewModel extends ViewModel {
         AppInjector.inject(this);
         this.instrument = instrument;
         this.callback = callback;
-        this.ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
+        ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
+            uploadButtonVisibility = new MutableLiveData<>(View.VISIBLE);
+        } else {
+            uploadButtonVisibility = new MutableLiveData<>(View.GONE);
         }
     }
 
@@ -172,7 +178,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             }
 
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument.getServerString(), soundtrackNumber);
+            ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument, soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
 
             startedSoundtrackCreation.setValue(true);
@@ -189,7 +195,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             return;
         }
 
-        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
+        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);
         uploadPossible.setValue(false);
@@ -224,6 +230,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             latestSoundtracksDatabase.onOwnSoundtrackUpdated(ownSoundtrack);
             uploadPossible.setValue(true);
+            uploadButtonVisibility.setValue(View.VISIBLE);
         }
         startedSoundtrackCreation.setValue(false);
     }
@@ -272,6 +279,11 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     public LiveData<Boolean> getUploadPossible() {
         return uploadPossible;
+    }
+
+    @NonNull
+    public LiveData<Integer> getUploadButtonVisibility() {
+        return uploadButtonVisibility;
     }
 
     @NonNull

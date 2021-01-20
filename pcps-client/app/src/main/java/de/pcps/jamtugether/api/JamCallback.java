@@ -2,8 +2,6 @@ package de.pcps.jamtugether.api;
 
 import androidx.annotation.NonNull;
 
-import java.io.IOException;
-
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.GenericError;
 import retrofit2.Call;

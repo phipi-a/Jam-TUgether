@@ -23,6 +23,7 @@ import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.StringUtils;
 
 public class JoinRoomViewModel extends ViewModel {
@@ -140,6 +141,9 @@ public class JoinRoomViewModel extends ViewModel {
                     @Override
                     public void onSuccess(@NonNull Composition response) {
                         progressBarVisibility.setValue(View.INVISIBLE);
+                        for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                            soundtrack.loadSounds(application.getApplicationContext());
+                        }
                         soundtrackRepository.setSoundtracks(response.getSoundtracks());
                         navigateToRegularRoom.setValue(true);
                     }

@@ -31,6 +31,7 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -40,6 +41,9 @@ public class SoundtrackRepository {
 
     @NonNull
     private final RoomRepository roomRepository;
+
+    @NonNull
+    private final Context context;
 
     @NonNull
     private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
@@ -84,8 +88,15 @@ public class SoundtrackRepository {
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
         this.roomRepository = roomRepository;
+        this.context = context;
         this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
+            if (previousCompositeSoundtrack == null) {
+                Timber.d("previousSoundtrack null");
+            } else {
+                Timber.d("previousSoundtrack: %s", previousCompositeSoundtrack.getProgress().getValue());
+            }
             CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
+            Timber.d("newCompositeSoundtrack: %s", newCompositeSoundtrack.getProgress().getValue());
             previousCompositeSoundtrack = newCompositeSoundtrack;
             return newCompositeSoundtrack;
         });
@@ -158,8 +169,11 @@ public class SoundtrackRepository {
         getComposition(new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                isFetchingComposition.setValue(false);
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    soundtrack.loadSounds(context);
+                }
                 allSoundtracks.setValue(response.getSoundtracks());
+                isFetchingComposition.setValue(false);
             }
 
             @Override
