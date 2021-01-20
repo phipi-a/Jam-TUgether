@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -206,7 +205,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
                     List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
                     allSoundtracks.add(toBePublished);
-                    soundtrackRepository.onSoundtracksChanged(allSoundtracks);
+                    soundtrackRepository.setSoundtracks(allSoundtracks);
                 }
             }
 

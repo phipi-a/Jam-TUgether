@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
@@ -15,6 +17,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 
 public class RoomViewModel extends ViewModel {
@@ -66,7 +69,8 @@ public class RoomViewModel extends ViewModel {
     private void onAdminLeft() {
         roomRepository.removeAdmin(new JamCallback<RemoveAdminResponse>() {
             @Override
-            public void onSuccess(@NonNull RemoveAdminResponse response) { }
+            public void onSuccess(@NonNull RemoveAdminResponse response) {
+            }
 
             @Override
             public void onError(@NonNull Error error) {
@@ -85,6 +89,18 @@ public class RoomViewModel extends ViewModel {
 
     public void onNavigatedBack() {
         this.navigateBack.setValue(false);
+    }
+
+    /**
+     * @return 0 if musician view should be shown when user enters room
+     *         1 if soundtrack overview should be shown when user enters room
+     */
+    public int getInitialTabPosition() {
+        List<SingleSoundtrack> soundtracks = soundtrackRepository.getAllSoundtracks().getValue();
+        if (soundtracks != null && !soundtracks.isEmpty()) {
+            return 0;
+        }
+        return 1;
     }
 
     @NonNull
