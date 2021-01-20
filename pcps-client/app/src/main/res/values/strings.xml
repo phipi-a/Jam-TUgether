@@ -46,6 +46,9 @@
     <string name="composite">Composite</string>
     <string name="own_soundtrack">Own soundtrack</string>
 
+    <string name="composite_soundtrack_place_holder">Composite soundtrack</string>
+    <string name="own_soundtrack_place_holder">Own soundtrack</string>
+
     <string name="upload">Upload</string>
     <string name="play_with_composite_soundtrack">with soundtrack</string>
 
