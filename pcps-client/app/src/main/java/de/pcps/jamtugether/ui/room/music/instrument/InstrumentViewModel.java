@@ -172,7 +172,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             }
 
             // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-            ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument.getServerString(), soundtrackNumber);
+            ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument, soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
 
             startedSoundtrackCreation.setValue(true);
@@ -189,7 +189,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             return;
         }
 
-        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument.getServerString(), ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
+        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);
         uploadPossible.setValue(false);

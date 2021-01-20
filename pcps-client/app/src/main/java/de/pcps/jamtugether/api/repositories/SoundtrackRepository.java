@@ -42,6 +42,9 @@ public class SoundtrackRepository {
     private final RoomRepository roomRepository;
 
     @NonNull
+    private final Context context;
+
+    @NonNull
     private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
 
     @NonNull
@@ -84,6 +87,7 @@ public class SoundtrackRepository {
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
         this.roomRepository = roomRepository;
+        this.context = context;
         this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
             CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
             previousCompositeSoundtrack = newCompositeSoundtrack;
@@ -158,8 +162,11 @@ public class SoundtrackRepository {
         getComposition(new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                isFetchingComposition.setValue(false);
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    soundtrack.loadSounds(context);
+                }
                 allSoundtracks.setValue(response.getSoundtracks());
+                isFetchingComposition.setValue(false);
             }
 
             @Override
