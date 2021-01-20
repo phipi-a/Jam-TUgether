@@ -31,6 +31,7 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -89,7 +90,13 @@ public class SoundtrackRepository {
         this.roomRepository = roomRepository;
         this.context = context;
         this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
+            if (previousCompositeSoundtrack == null) {
+                Timber.d("previousSoundtrack null");
+            } else {
+                Timber.d("previousSoundtrack: %s", previousCompositeSoundtrack.getProgress().getValue());
+            }
             CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
+            Timber.d("newCompositeSoundtrack: %s", newCompositeSoundtrack.getProgress().getValue());
             previousCompositeSoundtrack = newCompositeSoundtrack;
             return newCompositeSoundtrack;
         });
