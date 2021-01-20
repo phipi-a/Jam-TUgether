@@ -27,7 +27,7 @@ public class LatestSoundtracksDatabase {
     @Inject
     public LatestSoundtracksDatabase(@NonNull RoomRepository roomRepository) {
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(!userInRoom) {
+            if (!userInRoom) {
                 onUserLeftRoom();
             }
         });
@@ -41,9 +41,9 @@ public class LatestSoundtracksDatabase {
 
     public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
         Instrument instrument = ownSoundtrack.getInstrument();
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             latestFluteSoundtrack = ownSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             latestDrumsSoundtrack = ownSoundtrack;
         } else {
             latestShakerSoundtrack = ownSoundtrack;
@@ -52,9 +52,9 @@ public class LatestSoundtracksDatabase {
 
     @Nullable
     public SingleSoundtrack getLatestSoundtrack(@NonNull Instrument instrument) {
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             return latestFluteSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             return latestDrumsSoundtrack;
         } else {
             return latestShakerSoundtrack;

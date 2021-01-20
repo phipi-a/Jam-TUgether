@@ -26,12 +26,12 @@ public abstract class InstrumentFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         Fragment musicianFragment = getParentFragment();
-        if(musicianFragment == null) {
+        if (musicianFragment == null) {
             return;
         }
 
         Fragment roomFragment = musicianFragment.getParentFragment();
-        if(roomFragment == null) {
+        if (roomFragment == null) {
             return;
         }
 
@@ -43,10 +43,11 @@ public abstract class InstrumentFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        viewModel.observeAllSoundtracks(getViewLifecycleOwner());
         viewModel.observeCompositeSoundtrack(getViewLifecycleOwner());
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if(networkError != null) {
+            if (networkError != null) {
                 UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
