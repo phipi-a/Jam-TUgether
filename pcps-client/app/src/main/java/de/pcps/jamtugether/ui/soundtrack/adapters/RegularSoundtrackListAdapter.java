@@ -11,7 +11,6 @@ import de.pcps.jamtugether.ui.soundtrack.adapters.base.SoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.base.BaseViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.DeleteViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.RegularViewHolder;
-import timber.log.Timber;
 
 public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseViewHolder> {
 
@@ -45,7 +44,6 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        Timber.d("onBindViewHolder() | %s", getItem(position));
         holder.bind(getItem(position), onChangeCallback, onDeleteListener, lifecycleOwner);
     }
 }

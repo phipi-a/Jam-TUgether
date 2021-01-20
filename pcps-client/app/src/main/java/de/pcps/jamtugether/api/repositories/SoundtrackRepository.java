@@ -31,7 +31,6 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
-import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -168,7 +167,6 @@ public class SoundtrackRepository {
 
     /**
      * used to update local list immediately
-     * @param soundtracks
      */
     public void onSoundtracksChanged(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
