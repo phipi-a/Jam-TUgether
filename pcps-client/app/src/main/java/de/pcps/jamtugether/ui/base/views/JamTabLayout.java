@@ -28,7 +28,7 @@ public class JamTabLayout extends TabLayout {
                     continue;
                 }
                 JamTabView tabView = (JamTabView) tab.getCustomView();
-                if(tabView == null) {
+                if (tabView == null) {
                     continue;
                 }
                 boolean tabViewIsSelected = position == currentPosition;
@@ -48,6 +48,7 @@ public class JamTabLayout extends TabLayout {
     public void setup(@NonNull ViewPager2 viewPager, @NonNull TabLayoutAdapter adapter) {
         this.viewPager = viewPager;
         viewPager.setAdapter(adapter);
+
         new TabLayoutMediator(this, viewPager, (tab, position) -> {
             JamTabView tabView = adapter.getTabView(position);
             tabView.setTitle(adapter.getTabTitle(position));
@@ -60,7 +61,10 @@ public class JamTabLayout extends TabLayout {
         }).attach();
 
         viewPager.registerOnPageChangeCallback(onPageChangeCallback);
+
+        this.getTabAt(adapter.getInitialTabPosition()).select();
     }
+
 
     public void unregisterOnPageChangeCallback() {
         if (viewPager != null) {

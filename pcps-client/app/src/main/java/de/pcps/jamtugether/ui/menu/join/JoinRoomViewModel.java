@@ -18,8 +18,10 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
+import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.utils.StringUtils;
 
@@ -30,6 +32,9 @@ public class JoinRoomViewModel extends ViewModel {
 
     @Inject
     RoomRepository roomRepository;
+
+    @Inject
+    SoundtrackRepository soundtrackRepository;
 
     private int roomID;
 
@@ -78,7 +83,7 @@ public class JoinRoomViewModel extends ViewModel {
         boolean emptyRoom = false;
         boolean emptyPassword = false;
 
-        if(StringUtils.isEmpty(userName)) {
+        if (StringUtils.isEmpty(userName)) {
             nameInputError.setValue(context.getString(R.string.name_input_empty));
             emptyUserName = true;
         }
@@ -94,7 +99,7 @@ public class JoinRoomViewModel extends ViewModel {
         }
 
         if (emptyUserName || emptyRoom || emptyPassword) {
-            if(!emptyUserName) {
+            if (!emptyUserName) {
                 nameInputError.setValue(null);
             }
             if (!emptyRoom) {
@@ -123,14 +128,28 @@ public class JoinRoomViewModel extends ViewModel {
         roomRepository.joinRoom(roomID, password, new JamCallback<JoinRoomResponse>() {
             @Override
             public void onSuccess(@NonNull JoinRoomResponse response) {
-                progressBarVisibility.setValue(View.INVISIBLE);
-
                 int userID = response.getUserID();
                 user = new User(userID, userName);
 
                 token = response.getToken();
 
-                navigateToRegularRoom.setValue(true);
+                // fetch soundtracks before navigating to room fragment in order to decide in time
+                // which tab should be active when user enters room
+                // active tab (musician view or overview) depends on whether composition is empty or not
+                soundtrackRepository.getComposition(roomID, token, new JamCallback<Composition>() {
+                    @Override
+                    public void onSuccess(@NonNull Composition response) {
+                        progressBarVisibility.setValue(View.INVISIBLE);
+                        soundtrackRepository.setSoundtracks(response.getSoundtracks());
+                        navigateToRegularRoom.setValue(true);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Error error) {
+                        progressBarVisibility.setValue(View.INVISIBLE);
+                        navigateToRegularRoom.setValue(true);
+                    }
+                });
             }
 
             @Override

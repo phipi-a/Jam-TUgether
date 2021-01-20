@@ -97,6 +97,11 @@ public class SoundtrackRepository {
         });
     }
 
+    public void getComposition(int roomID, @NonNull String token, JamCallback<Composition> callback) {
+        Call<Composition> call = soundtrackService.getComposition(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
+    }
+
     private void getComposition(@NonNull JamCallback<Composition> callback) {
         Integer roomID = roomRepository.getRoomID();
         String token = roomRepository.getToken().getValue();
@@ -165,10 +170,7 @@ public class SoundtrackRepository {
         });
     }
 
-    /**
-     * used to update local list immediately
-     */
-    public void onSoundtracksChanged(@NonNull List<SingleSoundtrack> soundtracks) {
+    public void setSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
     }
 

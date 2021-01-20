@@ -83,7 +83,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
                         list.add(singleSoundtrack);
                     }
                 }
-                soundtrackRepository.onSoundtracksChanged(list);
+                soundtrackRepository.setSoundtracks(list);
                 soundtrackToBeDeleted = null;
             }
 
