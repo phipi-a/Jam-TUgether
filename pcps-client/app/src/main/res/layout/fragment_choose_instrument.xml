@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="de.pcps.jamtugether.ui.welcome.WelcomeViewModel" />
+            type="de.pcps.jamtugether.ui.onboarding.instrument.ChooseInstrumentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

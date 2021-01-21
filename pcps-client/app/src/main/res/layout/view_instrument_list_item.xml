@@ -9,7 +9,7 @@
 
         <variable
             name="clickListener"
-            type="de.pcps.jamtugether.audio.instrument.base.Instrument.ClickListener" />
+            type="de.pcps.jamtugether.audio.instrument.base.Instrument.OnClickListener" />
     </data>
 
     <androidx.appcompat.widget.AppCompatButton

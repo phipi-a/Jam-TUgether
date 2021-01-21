@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.welcome;
+package de.pcps.jamtugether.ui.onboarding.instrument;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,38 +8,34 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
+import de.pcps.jamtugether.databinding.FragmentChooseInstrumentBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.ui.instrument.InstrumentListAdapter;
-import de.pcps.jamtugether.databinding.FragmentWelcomeBinding;
 
-public class WelcomeFragment extends BaseFragment {
+public class ChooseInstrumentFragment extends BaseFragment {
 
-    private WelcomeViewModel viewModel;
+    private ChooseInstrumentViewModel viewModel;
+
+    @NonNull
+    public static ChooseInstrumentFragment newInstance() {
+        return new ChooseInstrumentFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(WelcomeViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ChooseInstrumentViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentWelcomeBinding binding = FragmentWelcomeBinding.inflate(inflater, container, false);
+        FragmentChooseInstrumentBinding binding = FragmentChooseInstrumentBinding.inflate(inflater, container, false);
 
         InstrumentListAdapter adapter = new InstrumentListAdapter(viewModel);
         binding.instrumentsRecyclerView.setAdapter(adapter);
         adapter.submitList(viewModel.getInstruments());
-
-        viewModel.getNavigateToMenu().observe(getViewLifecycleOwner(), navigateToMenu -> {
-            if (navigateToMenu) {
-                NavigationUtils.navigateToMenu(NavHostFragment.findNavController(this));
-                viewModel.onNavigatedToMenu();
-            }
-        });
 
         return binding.getRoot();
     }
