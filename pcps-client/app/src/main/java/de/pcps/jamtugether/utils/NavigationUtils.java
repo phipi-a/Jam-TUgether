@@ -10,7 +10,7 @@ import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomFragmentDirections;
-import de.pcps.jamtugether.ui.welcome.WelcomeFragmentDirections;
+import de.pcps.jamtugether.ui.onboarding.OnBoardingFragmentDirections;
 
 public class NavigationUtils {
 
@@ -19,7 +19,7 @@ public class NavigationUtils {
     }
 
     public static void navigateToMenu(@NonNull NavController nc) {
-        nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());
+        nc.navigate(OnBoardingFragmentDirections.actionOnboardingFragmentToMenuFragment());
     }
 
     public static void navigateToSettings(@NonNull NavController nc) {

@@ -99,7 +99,7 @@ public abstract class Instrument {
 
     public abstract boolean soundsNeedToBeResumed();
 
-    public interface ClickListener {
+    public interface OnClickListener {
         void onInstrumentClicked(@NonNull Instrument instrument);
     }
 

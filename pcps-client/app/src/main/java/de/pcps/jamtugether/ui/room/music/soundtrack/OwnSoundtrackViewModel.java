@@ -28,9 +28,8 @@ import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
-public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
+public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnClickListener {
 
     @Inject
     Application application;

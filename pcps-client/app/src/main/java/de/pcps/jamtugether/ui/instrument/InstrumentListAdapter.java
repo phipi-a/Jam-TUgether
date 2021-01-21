@@ -13,11 +13,11 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentListAdapter.ViewHolder> {
 
     @NonNull
-    private final Instrument.ClickListener clickListener;
+    private final Instrument.OnClickListener onClickListener;
 
-    public InstrumentListAdapter(@NonNull Instrument.ClickListener clickListener) {
+    public InstrumentListAdapter(@NonNull Instrument.OnClickListener onClickListener) {
         super(Instrument.DIFF_UTIL_CALLBACK);
-        this.clickListener = clickListener;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -28,7 +28,7 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getItem(position), clickListener);
+        holder.bind(getItem(position), onClickListener);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,9 +41,9 @@ public class InstrumentListAdapter extends ListAdapter<Instrument, InstrumentLis
             this.binding = binding;
         }
 
-        void bind(@NonNull Instrument instrument, @NonNull Instrument.ClickListener clickListener) {
+        void bind(@NonNull Instrument instrument, @NonNull Instrument.OnClickListener onClickListener) {
             binding.setInstrument(instrument);
-            binding.setClickListener(clickListener);
+            binding.setClickListener(onClickListener);
             binding.executePendingBindings();
         }
 

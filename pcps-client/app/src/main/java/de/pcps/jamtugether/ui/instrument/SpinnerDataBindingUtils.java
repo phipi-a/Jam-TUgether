@@ -14,7 +14,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 public class SpinnerDataBindingUtils {
 
     @BindingAdapter(value = {"currentInstrument", "instrumentList", "clickListener"})
-    public static void setInstruments(@NonNull Spinner spinner, @NonNull Instrument currentInstrument, @NonNull List<Instrument> instrumentList, @NonNull Instrument.ClickListener clickListener) {
+    public static void setInstruments(@NonNull Spinner spinner, @NonNull Instrument currentInstrument, @NonNull List<Instrument> instrumentList, @NonNull Instrument.OnClickListener onClickListener) {
         InstrumentSpinnerAdapter adapter = new InstrumentSpinnerAdapter(spinner.getContext(), instrumentList);
         spinner.setAdapter(adapter);
         spinner.setSelection(currentInstrument.getOrdinal());
@@ -22,7 +22,7 @@ public class SpinnerDataBindingUtils {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Instrument mainInstrument = instrumentList.get(position);
-                clickListener.onInstrumentClicked(mainInstrument);
+                onClickListener.onInstrumentClicked(mainInstrument);
             }
 
             @Override
