@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import de.pcps.jamtugether.databinding.FragmentOnboardingBinding;
+import de.pcps.jamtugether.databinding.FragmentOnBoardingBinding;
 import de.pcps.jamtugether.ui.base.views.PageIndicatorAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
@@ -31,7 +31,7 @@ public class OnBoardingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentOnboardingBinding binding = FragmentOnboardingBinding.inflate(inflater, container, false);
+        FragmentOnBoardingBinding binding = FragmentOnBoardingBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 

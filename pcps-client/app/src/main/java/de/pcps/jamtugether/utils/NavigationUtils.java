@@ -19,7 +19,7 @@ public class NavigationUtils {
     }
 
     public static void navigateToMenu(@NonNull NavController nc) {
-        nc.navigate(OnBoardingFragmentDirections.actionOnboardingFragmentToMenuFragment());
+        nc.navigate(OnBoardingFragmentDirections.actionOnBoardingFragmentToMenuFragment());
     }
 
     public static void navigateToSettings(@NonNull NavController nc) {

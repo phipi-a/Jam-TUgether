@@ -25,7 +25,7 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     private final MutableLiveData<Integer> pagePosition = new MutableLiveData<>(0);
 
     @NonNull
-    private final MutableLiveData<List<PageIndicator>> pageIndicators = new MutableLiveData<>(PageIndicator.createList(OnBoardingAdapter.ON_BOARDING_ITEMS, 0));
+    private final MutableLiveData<List<PageIndicator>> pageIndicators = new MutableLiveData<>(PageIndicator.createList(OnBoardingAdapter.ON_BOARDING_ITEM_COUNT, 0));
 
     @NonNull
     private final MutableLiveData<Integer> backButtonVisibility = new MutableLiveData<>(View.INVISIBLE);
@@ -43,14 +43,14 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
-            pageIndicators.setValue(PageIndicator.createList(OnBoardingAdapter.ON_BOARDING_ITEMS, position));
+            pageIndicators.setValue(PageIndicator.createList(OnBoardingAdapter.ON_BOARDING_ITEM_COUNT, position));
 
             if (position == 0) {
                 backButtonVisibility.setValue(View.GONE);
             } else {
                 backButtonVisibility.setValue(View.VISIBLE);
             }
-            if (position == OnBoardingAdapter.ON_BOARDING_ITEMS - 1) {
+            if (position == OnBoardingAdapter.ON_BOARDING_ITEM_COUNT - 1) {
                 nextButtonVisibility.setValue(View.GONE);
                 finishButtonVisibility.setValue(View.VISIBLE);
             } else {

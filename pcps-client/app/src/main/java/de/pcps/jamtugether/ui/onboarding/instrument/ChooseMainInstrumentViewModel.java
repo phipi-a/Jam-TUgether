@@ -12,18 +12,23 @@ import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class ChooseInstrumentViewModel extends ViewModel implements Instrument.OnClickListener {
+public class ChooseMainInstrumentViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
     @Inject
     Preferences preferences;
 
-    public ChooseInstrumentViewModel() {
+    public ChooseMainInstrumentViewModel() {
         AppInjector.inject(this);
     }
 
     @Override
-    public void onInstrumentClicked(@NonNull Instrument instrument) {
+    public void onInstrumentSelected(@NonNull Instrument instrument) {
         preferences.setMainInstrument(instrument);
+    }
+
+    @NonNull
+    public Instrument getMainInstrument() {
+        return preferences.getMainInstrument();
     }
 
     @NonNull

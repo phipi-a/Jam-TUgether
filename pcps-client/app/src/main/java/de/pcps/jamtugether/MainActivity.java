@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         NavGraph graph = navInflater.inflate(R.navigation.navigation);
 
         if (!preferences.userCompletedOnBoarding()) {
-            graph.setStartDestination(R.id.onboarding_fragment);
+            graph.setStartDestination(R.id.on_boarding_fragment);
         } else {
             graph.setStartDestination(R.id.menu_fragment);
         }

@@ -36,7 +36,7 @@ public class Preferences {
 
     @NonNull
     public Instrument getMainInstrument() {
-        String preferenceValue = sharedPreferences.getString(MAIN_INSTRUMENT_KEY, Instruments.FALLBACK.getPreferenceValue());
+        String preferenceValue = sharedPreferences.getString(MAIN_INSTRUMENT_KEY, Instruments.DEFAULT.getPreferenceValue());
         return Instruments.fromPreferences(preferenceValue);
     }
 
