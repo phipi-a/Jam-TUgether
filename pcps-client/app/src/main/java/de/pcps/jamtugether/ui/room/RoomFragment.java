@@ -91,6 +91,11 @@ public class RoomFragment extends TabLayoutFragment {
                 return position == 0 ? R.string.soundtrack_over_view : R.string.musician_view;
             }
 
+            @Override
+            public int getInitialTabPosition() {
+                return roomViewModel.getInitialTabPosition();
+            }
+
             @NonNull
             @Override
             public Fragment createFragment(int position) {

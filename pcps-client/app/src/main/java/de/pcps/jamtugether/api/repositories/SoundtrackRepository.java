@@ -54,10 +54,7 @@ public class SoundtrackRepository {
     private CompositeSoundtrack previousCompositeSoundtrack;
 
     @NonNull
-    private final CompositeSoundtrack EMPTY_COMPOSITE_SOUNDTRACK = new CompositeSoundtrack(EMPTY_SOUNDTRACK_LIST);
-
-    @NonNull
-    private final MutableLiveData<CompositeSoundtrack> compositeSoundtrack = new MutableLiveData<>(EMPTY_COMPOSITE_SOUNDTRACK);
+    private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     @NonNull
     private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
@@ -91,12 +88,22 @@ public class SoundtrackRepository {
         this.soundtrackService = soundtrackService;
         this.roomRepository = roomRepository;
         this.context = context;
+        this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
+            CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
+            previousCompositeSoundtrack = newCompositeSoundtrack;
+            return newCompositeSoundtrack;
+        });
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
             if (!userInRoom) {
                 onUserLeftRoom();
             }
         });
+    }
+
+    public void getComposition(int roomID, @NonNull String token, JamCallback<Composition> callback) {
+        Call<Composition> call = soundtrackService.getComposition(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
     }
 
     private void getComposition(@NonNull JamCallback<Composition> callback) {
@@ -155,8 +162,11 @@ public class SoundtrackRepository {
         getComposition(new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
-                isFetchingComposition.setValue(false);
+                for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
+                    soundtrack.loadSounds(context);
+                }
                 allSoundtracks.setValue(response.getSoundtracks());
+                isFetchingComposition.setValue(false);
             }
 
             @Override
@@ -167,7 +177,7 @@ public class SoundtrackRepository {
         });
     }
 
-    public void onSoundtracksChanged(@NonNull List<SingleSoundtrack> soundtracks) {
+    public void setSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
     }
 
@@ -181,7 +191,6 @@ public class SoundtrackRepository {
         }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
-        compositeSoundtrack.setValue(EMPTY_COMPOSITE_SOUNDTRACK);
         isFetchingComposition.setValue(false);
         compositionNetworkError.setValue(null);
         countDownTimerMillis.setValue(-1L);
@@ -198,11 +207,7 @@ public class SoundtrackRepository {
 
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
-        return Transformations.map(allSoundtracks, soundtracks -> {
-            CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
-            previousCompositeSoundtrack = newCompositeSoundtrack;
-            return newCompositeSoundtrack;
-        });
+        return compositeSoundtrack;
     }
 
     @NonNull

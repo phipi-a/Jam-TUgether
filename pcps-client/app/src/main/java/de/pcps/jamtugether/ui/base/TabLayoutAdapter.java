@@ -18,4 +18,6 @@ public abstract class TabLayoutAdapter extends FragmentStateAdapter {
 
     @StringRes
     public abstract int getTabTitle(int position);
+
+    public abstract int getInitialTabPosition();
 }

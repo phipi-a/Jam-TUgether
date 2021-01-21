@@ -24,10 +24,11 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.utils.TimeUtils;
 
-public class OwnSoundtrackViewModel extends ViewModel implements Instrument.ClickListener {
+public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
     @Inject
     Application application;
@@ -70,7 +71,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     }
 
     @Override
-    public void onInstrumentClicked(@NonNull Instrument instrument) {
+    public void onInstrumentSelected(@NonNull Instrument instrument) {
         if (instrument != currentInstrument) {
             instrumentOnChangeCallback.onInstrumentChanged(instrument);
             updateHelpDialogData(instrument);
@@ -126,6 +127,11 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.Clic
     @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
+    }
+
+    @NonNull
+    public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
+        return soundtrackRepository.getCompositeSoundtrack();
     }
 
     @NonNull

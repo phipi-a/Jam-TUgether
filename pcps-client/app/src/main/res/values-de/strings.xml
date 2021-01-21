@@ -4,6 +4,10 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 
+    <string name="back">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="finish">Fertig</string>
+
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
@@ -43,7 +47,10 @@
     <string name="play_shaker_help">Schüttel dein Handy.</string>
 
     <string name="composite">Gesamt</string>
-    <string name="own_soundtrack">Eigener Soundtrack</string>
+    <string name="own_soundtrack">Eigene Tonspur</string>
+
+    <string name="composite_soundtrack_place_holder">Gesamte Tonspur</string>
+    <string name="own_soundtrack_place_holder">Eigene Tonspur</string>
 
     <string name="upload">Hochladen</string>
     <string name="play_with_composite_soundtrack">mit Tonspur</string>

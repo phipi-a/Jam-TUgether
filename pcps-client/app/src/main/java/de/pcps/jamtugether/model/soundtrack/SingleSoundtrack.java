@@ -32,40 +32,41 @@ public class SingleSoundtrack extends Soundtrack {
         }
     };
 
-    private final int userID;
+    private int userID;
 
-    @NonNull
-    private final String userName;
+    private String userName;
 
-    @NonNull
-    private final String instrument;
+    private Instrument instrument;
 
-    private final int number;
+    private int number;
 
-    @NonNull
-    private final List<Sound> soundSequence;
+    private List<Sound> soundSequence;
 
-    private transient final boolean representsOwnSoundtrack;
+    private transient boolean representsOwnSoundtrack;
 
     @Nullable
     private transient BaseSoundPool soundPool;
 
+    // only for Moshi
+    private SingleSoundtrack() {
+    }
+
     // soundtrack from server
-    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence) {
+    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number, @NonNull List<Sound> soundSequence) {
         this(userID, userName, instrument, number, soundSequence, false);
     }
 
     // empty soundtrack (never sent to server)
-    public SingleSoundtrack() {
-        this(-1, "", Instruments.FALLBACK.getServerString(), -1, new ArrayList<>(), true);
+    public SingleSoundtrack(String ignore) { // ignore only needed so there's no overlap with private constructor that Moshi uses
+        this(-1, "", Instruments.DEFAULT, -1, new ArrayList<>(), true);
     }
 
     // own soundtrack object (starts with empty array list)
-    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull String instrument, int number) {
+    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number) {
         this(userID, userName, instrument, number, new ArrayList<>(), true);
     }
 
-    private SingleSoundtrack(int userID, @NonNull String userName, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean representsOwnSoundtrack) {
+    private SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number, @NonNull List<Sound> soundSequence, boolean representsOwnSoundtrack) {
         super();
         this.userID = userID;
         this.userName = userName;
@@ -81,6 +82,19 @@ public class SingleSoundtrack extends Soundtrack {
 
     public void addSound(Sound sound) {
         soundSequence.add(sound);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "SingleSoundtrack{" +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", instrument='" + instrument + '\'' +
+                ", number=" + number +
+                ", soundSequence=" + soundSequence +
+                ", representsOwnSoundtrack=" + representsOwnSoundtrack +
+                '}';
     }
 
     @Override
@@ -140,7 +154,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public String getID() {
-        return String.valueOf(userID).concat(instrument).concat(String.valueOf(number));
+        return String.valueOf(userID).concat(instrument.getServerString()).concat(String.valueOf(number));
     }
 
     public int getUserID() {
@@ -154,7 +168,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public Instrument getInstrument() {
-        return Instruments.fromServer(instrument);
+        return instrument;
     }
 
     public int getNumber() {
