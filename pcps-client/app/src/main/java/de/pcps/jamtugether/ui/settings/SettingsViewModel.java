@@ -13,7 +13,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.storage.Preferences;
 
-public class SettingsViewModel extends ViewModel implements Instrument.OnClickListener {
+public class SettingsViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
     @Inject
     Preferences preferences;
@@ -23,7 +23,7 @@ public class SettingsViewModel extends ViewModel implements Instrument.OnClickLi
     }
 
     @Override
-    public void onInstrumentClicked(@NonNull Instrument instrument) {
+    public void onInstrumentSelected(@NonNull Instrument instrument) {
         preferences.setMainInstrument(instrument);
     }
 

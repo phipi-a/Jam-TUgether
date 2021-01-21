@@ -14,7 +14,7 @@ import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
-import de.pcps.jamtugether.ui.onboarding.instrument.ChooseInstrumentViewModel;
+import de.pcps.jamtugether.ui.onboarding.instrument.ChooseMainInstrumentViewModel;
 
 public class AppInjector {
 
@@ -32,8 +32,8 @@ public class AppInjector {
         appComponent.inject(onBoardingViewModel);
     }
 
-    public static void inject(@NonNull ChooseInstrumentViewModel chooseInstrumentViewModel) {
-        appComponent.inject(chooseInstrumentViewModel);
+    public static void inject(@NonNull ChooseMainInstrumentViewModel chooseMainInstrumentViewModel) {
+        appComponent.inject(chooseMainInstrumentViewModel);
     }
 
     public static void inject(@NonNull SettingsViewModel settingsViewModel) {

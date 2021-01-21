@@ -58,7 +58,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     // empty soundtrack (never sent to server)
     public SingleSoundtrack(String ignore) { // ignore only needed so there's no overlap with private constructor that Moshi uses
-        this(-1, "", Instruments.FALLBACK, -1, new ArrayList<>(), true);
+        this(-1, "", Instruments.DEFAULT, -1, new ArrayList<>(), true);
     }
 
     // own soundtrack object (starts with empty array list)
