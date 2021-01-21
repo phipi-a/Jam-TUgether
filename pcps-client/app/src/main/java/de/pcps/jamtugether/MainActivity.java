@@ -31,13 +31,11 @@ public class MainActivity extends AppCompatActivity {
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.navigation);
 
-        graph.setStartDestination(R.id.on_boarding_fragment);
-
-        /*if (!preferences.userCompletedOnBoarding()) {
-            graph.setStartDestination(R.id.onboarding_fragment);
+        if (!preferences.userCompletedOnBoarding()) {
+            graph.setStartDestination(R.id.on_boarding_fragment);
         } else {
             graph.setStartDestination(R.id.menu_fragment);
-        }*/
+        }
 
         navController.setGraph(graph);
     }
