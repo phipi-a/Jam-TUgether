@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const dbConfig = require('./db/database')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
+const RoomSchema = require('./model/room.model')
 require('dotenv').config()
 
 // Set port
@@ -76,3 +77,5 @@ app.use((err, req, res, next) => {
   if (!err.statusCode) err.statusCode = 500
   res.status(err.statusCode).send(err.message)
 })
+
+module.exports = app
