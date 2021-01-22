@@ -52,6 +52,12 @@ public abstract class InstrumentFragment extends BaseFragment {
                 viewModel.onNetworkErrorShown();
             }
         });
+        viewModel.getRepeatCompositeSoundtrack().observe(getViewLifecycleOwner(), repeat -> {
+            if (repeat) {
+               viewModel.repeatCompositeSoundtrack();
+               viewModel.onRepeatCompositeSoundtrack();
+            }
+        });
 
         return view;
     }
