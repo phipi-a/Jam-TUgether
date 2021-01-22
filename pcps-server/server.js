@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const dbConfig = require('./db/database')
+const RoomSchema = require('./model/room.model')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
