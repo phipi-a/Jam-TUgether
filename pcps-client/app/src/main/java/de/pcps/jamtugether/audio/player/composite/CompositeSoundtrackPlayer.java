@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -23,6 +24,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
  */
 @Singleton
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
+    private OnSoundtrackFinishedCallback repeatCallback;
 
     @NonNull
     private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
@@ -42,6 +44,10 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
                 soundtrackRepository.getCompositeSoundtrack().removeObserver(compositeSoundtrackObserver);
             }
         });
+    }
+
+    public void setRepeatCallback(OnSoundtrackFinishedCallback repeatCallback){
+        this.repeatCallback=repeatCallback;
     }
 
     @Nullable
@@ -110,6 +116,9 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getIDs());
+        }
+        if(repeatCallback!=null) {
+            repeatCallback.onSoundtrackFinished(thread);
         }
     }
 }
