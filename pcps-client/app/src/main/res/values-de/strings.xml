@@ -87,4 +87,5 @@
     <string name="room_number_limit_reached_error_message">Du kannst keine weiteren Räume erstellen, da die maximale Anzahl an Räumen bereits erreicht wurde.</string>
     <string name="generic_error_title">Fehler</string>
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
+    <string name="loop_record_with_composite_soundtrack">loop</string>
 </resources>
