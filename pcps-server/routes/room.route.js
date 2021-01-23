@@ -61,6 +61,8 @@ async function updateAdminAccess (roomID) {
  *     responses:
  *       201:
  *         description: roomID + JWToken
+ *       413:
+ *         description: Password too long
  *       503:
  *         description: Limit for number of rooms reached
  *       500:
