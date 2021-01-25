@@ -36,10 +36,10 @@ public class Metronome {
         soundPool = new MetronomeSoundPool(context);
     }
 
-    public void play() {
+    public void play(int sound) {
         if (soundPool != null && playing.getValue() != null && !playing.getValue()) {
             soundPool.stopAllSounds();
-            soundPool.playSoundRes(SOUND, -1);
+            soundPool.playSoundRes(sound, -1);
         }
     }
 
