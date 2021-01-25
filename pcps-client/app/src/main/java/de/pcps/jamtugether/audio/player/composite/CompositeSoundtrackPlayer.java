@@ -24,7 +24,7 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
  */
 @Singleton
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
-    private OnSoundtrackFinishedCallback repeatCallback;
+    private RepeatSoundtrackCallback repeatCallback;
 
     @NonNull
     private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         });
     }
 
-    public void setRepeatCallback(OnSoundtrackFinishedCallback repeatCallback){
+    public void setRepeatCallback(RepeatSoundtrackCallback repeatCallback){
         this.repeatCallback=repeatCallback;
     }
 
@@ -118,7 +118,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
             threadMap.remove(compositeSoundtrack.getIDs());
         }
         if(repeatCallback!=null) {
-            repeatCallback.onSoundtrackFinished(thread);
+            repeatCallback.onSoundtrackFinished();
         }
     }
 }

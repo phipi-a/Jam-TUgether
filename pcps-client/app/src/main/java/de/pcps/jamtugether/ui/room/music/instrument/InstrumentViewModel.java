@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
+import de.pcps.jamtugether.audio.player.composite.RepeatSoundtrackCallback;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
@@ -172,9 +174,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                     compositeSoundtrackPlayer.stop(compositeSoundtrack);
                     compositeSoundtrackPlayer.play(compositeSoundtrack);
                     if (playWithCompositeSoundtrackInLoop) {
-                        compositeSoundtrackPlayer.setRepeatCallback(thread ->
-                                repeatCompositeSoundtrack.postValue(true)
-                        );
+                        compositeSoundtrackPlayer.setRepeatCallback(() -> repeatCompositeSoundtrack.postValue(true));
                     } else {
                         compositeSoundtrackPlayer.setRepeatCallback(null);
                     }
