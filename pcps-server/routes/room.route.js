@@ -61,8 +61,6 @@ async function updateAdminAccess (roomID) {
  *     responses:
  *       201:
  *         description: roomID + JWToken
- *       413:
- *         description: Password too long
  *       503:
  *         description: Limit for number of rooms reached
  *       500:
@@ -124,7 +122,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 
 /**
  * @openapi
- * /api/delete-room:
+ * /api/room:
  *   delete:
  *     summary: Delete existing room.
  *     parameters:
