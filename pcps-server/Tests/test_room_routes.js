@@ -1,33 +1,19 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
-const expect = chai.expect
 const should = chai.should()
 chai.use(chaiHttp)
 const RoomSchema = require('../model/room.model')
 const app = require('../server')
 
 // Test routes
-// const requester = chai.request(app).keepOpen()
 function emptyDatabase (done) {
   RoomSchema.deleteMany({}, (err) => {
     if (err) console.log('ERROR: ' + err)
-    done()
+    return done()
   })
 }
 
 describe('JamTUgether Tests', () => {
-  before((done) => {
-    // Empty database
-    emptyDatabase(done)
-  })
-  afterEach((done) => {
-    // Empty database
-    RoomSchema.deleteMany({}, (err) => {
-      if (err) console.log('ERROR: ' + err)
-      done()
-    })
-  })
-
   /**
    * Test create-room
    */
@@ -41,17 +27,19 @@ describe('JamTUgether Tests', () => {
           password: '1234'
         })
         .end((err, res) => {
-          res.should.have.status(201)
+          res.should.have.status(404)
           res.body.should.be.a('object')
           res.body.should.have.property('roomID')
           res.body.should.have.property('token')
           res.body.should.have.property('userID')
+          res.body.should.have.property('TEADSFST')
           should.not.exist(err)
         })
       done()
     })
+
     it('should return status 413', (done) => { // password too long
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/create-room')
         .send({
           password: 'LgNvPuV971aqfLO_rbWZfh2Eju47Xpx0I'
@@ -73,10 +61,10 @@ describe('JamTUgether Tests', () => {
     // this.slow(300000)
     it('should return status 503', (done) => {
       // Create maximum number of rooms
-      const requester = chai.request(app).keepOpen()
+      const chai.request('http://localhost:3000') = chai.request(app).keepOpen()
       // Promise.all(
       for (let i = 0; i < 500; i++) {
-        requester
+        chai.request('http://localhost:3000')
           .post('/api/create-room')
           .send({
             "password": "1234"
@@ -87,7 +75,7 @@ describe('JamTUgether Tests', () => {
           })
       }
       // Create one to many rooms
-      requester
+      chai.request('http://localhost:3000')
         .post('/api/create-room')
         .send({
           "password": "1234"
@@ -98,7 +86,7 @@ describe('JamTUgether Tests', () => {
         })
 
       done()
-      requester.close()
+      chai.request('http://localhost:3000').close()
     })
   }) */
 
@@ -107,7 +95,7 @@ describe('JamTUgether Tests', () => {
    */
   describe('DELETE /room', () => {
     before((done) => {
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/create-room')
         .send({
           password: '1234'
@@ -120,9 +108,9 @@ describe('JamTUgether Tests', () => {
       console.log('Created room to delete')
       done()
     })
-
+/*
     it('should return status 200', (done) => {
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .delete('/api/room')
         .send({
           roomID: '1',
@@ -136,6 +124,7 @@ describe('JamTUgether Tests', () => {
         })
       done()
     })
+    */
   })
 
   /**
@@ -147,7 +136,7 @@ describe('JamTUgether Tests', () => {
       RoomSchema.deleteMany({}, (err) => {
         if (err) console.log('ERROR: ' + err)
       })
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/create-room')
         .send({
           password: '1234'
@@ -162,13 +151,13 @@ describe('JamTUgether Tests', () => {
 
     it('should return 201', (done) => {
       // does nothing
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/create-room')
         .send({
           password: '1234'
         })
 
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/login')
         .send({
           roomID: '1',
@@ -177,7 +166,7 @@ describe('JamTUgether Tests', () => {
         .end((err, res) => {
           console.log('response: ' + res.body.text)
           res.should.have.status(201)
-          res.body.should.be.a('object')
+          res.body.should.be.an('object')
           res.body.should.have.property('description')
           should.not.exist(err)
         })
@@ -186,7 +175,7 @@ describe('JamTUgether Tests', () => {
     })
 
     it('should return 401', (done) => {
-      chai.request(app)
+      chai.request('http://localhost:3000')
         .post('/api/login')
         .send({
           roomID: '9999',
@@ -195,6 +184,7 @@ describe('JamTUgether Tests', () => {
         .end((err, res) => {
           console.log('response: ' + res.body.text)
           res.should.have.status(401)
+          res.should.have.status(41)
           res.body.should.be.a('object')
           res.body.should.have.property('description')
           should.not.exist(err)
