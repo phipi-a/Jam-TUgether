@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.onboarding.instrument;
+package de.pcps.jamtugether.ui.onboarding.screens.instrument;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
