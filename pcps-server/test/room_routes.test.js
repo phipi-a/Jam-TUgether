@@ -97,7 +97,7 @@ describe('JamTUgether Tests', () => {
         done()
       })
     })
-    
+
     it('should return status 200', (done) => {
       chai.request(app)
         .post('/api/create-room')
