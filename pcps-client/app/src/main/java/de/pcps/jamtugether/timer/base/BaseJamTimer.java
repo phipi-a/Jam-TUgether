@@ -37,6 +37,7 @@ public abstract class BaseJamTimer implements Runnable {
         }
         callback.onTicked(currentMillis);
         if(currentMillis == stopMillis) {
+            stop();
             callback.onFinished();
         }
         currentMillis += interval;
@@ -54,6 +55,10 @@ public abstract class BaseJamTimer implements Runnable {
     public void stop() {
         running = false;
         stopped = true;
+    }
+
+    public void reset() {
+        currentMillis = startMillis;
     }
 
     public boolean isStopped() {

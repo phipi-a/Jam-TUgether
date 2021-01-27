@@ -27,7 +27,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
     @Override
     public int getItemViewType(int position) {
         SingleSoundtrack soundtrack = getItem(position);
-        if(soundtrack.getUserID() == userID) {
+        if (soundtrack.getUserID() == userID) {
             return DELETE_VIEW;
         }
         return REGULAR_VIEW;
@@ -36,7 +36,7 @@ public class RegularSoundtrackListAdapter extends SoundtrackListAdapter<BaseView
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == DELETE_VIEW) {
+        if (viewType == DELETE_VIEW) {
             return DeleteViewHolder.from(parent);
         }
         return RegularViewHolder.from(parent);

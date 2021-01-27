@@ -18,15 +18,16 @@ exports.receiveTrack = async function (req, res, roomID) {
 }
 
 exports.sendTracks = async function (req, res, room) {
-  res.status(200).json({ roomID: room.roomID, soundtracks: room.soundtracks })
+  res.status(200).json({ roomID: room.roomID, soundtracks: room.soundtracks , description: 'success' })
 }
 
 function prepareSoundtrack (soundtrack) {
   return {
-    _id: mongoose.Types.ObjectId(),
     userID: soundtrack[0].userID,
     instrument: soundtrack[0].instrument,
-    soundSequence: soundtrack[0].soundSequence
+    soundSequence: soundtrack[0].soundSequence,
+    userName: soundtrack[0].userName,
+    number: soundtrack[0].number
   }
 }
 // controls if newAdmin is needed
@@ -52,19 +53,15 @@ exports.deleteTracks = async function (req, res, roomID) {
   const soundTracks = await RoomSchema.find(query, { _id: 0, soundtracks: 1 })
   const s = soundTracks[0].soundtracks
 
-  s.forEach(element => {
-    if (element.userID === req.body.userID && element.instrument === req.body.instrument && element.number === req.body.number) {
-      element.soundSequence = []
-    }
-  })
+  const result = s.filter(element => !(element.userID === req.body.userID && element.instrument === req.body.instrument && element.number === req.body.number))
 
   const updateDocument = {
     $set: {
-      soundtracks: s
+      soundtracks: result
     }
   }
 
   await RoomSchema.updateMany(query, updateDocument)
 
-  res.status(200).json({ description: 'track deleted' })
+  res.status(200).json({ description: 'success' })
 }

@@ -11,6 +11,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.base.BaseViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
+import timber.log.Timber;
 
 public class DeleteViewHolder extends BaseViewHolder {
 

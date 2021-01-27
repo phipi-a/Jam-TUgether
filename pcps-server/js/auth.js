@@ -38,7 +38,9 @@ exports.verifyAdmin = async function (req, res, next) {
   if (!decodedToken) {
     res.status(401).send('Decoding problems')
   }
-  if (decodedToken.role !== 'Admin' || decodedToken.room.toString() !== req.body.roomID) {
+  console.log('is role admin: ' + decodedToken.role)
+  console.log('is room: ' + req.body.roomID)
+  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID) {
     return res.status(403).send('Not Admin of this room!')
   }
   // prevent old Admin to access

@@ -11,6 +11,7 @@ import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.soundtrack.adapters.holders.base.BaseViewHolder;
 import de.pcps.jamtugether.ui.soundtrack.views.SoundtrackContainer;
+import timber.log.Timber;
 
 public class RegularViewHolder extends BaseViewHolder {
 
@@ -24,6 +25,7 @@ public class RegularViewHolder extends BaseViewHolder {
 
     @Override
     public void bind(@NonNull SingleSoundtrack singleSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull SingleSoundtrack.OnDeleteListener onDeleteListener, @NonNull LifecycleOwner lifecycleOwner) {
+        binding.setSoundtrack(singleSoundtrack);
         binding.soundtrackControlsLayout.setSoundtrack(singleSoundtrack);
         binding.soundtrackControlsLayout.setOnChangeListener(onChangeCallback);
         binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);

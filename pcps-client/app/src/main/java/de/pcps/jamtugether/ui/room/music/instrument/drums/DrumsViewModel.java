@@ -1,14 +1,13 @@
 package de.pcps.jamtugether.ui.room.music.instrument.drums;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -17,8 +16,8 @@ public class DrumsViewModel extends InstrumentViewModel {
     @NonNull
     private static final Drums drums = Drums.getInstance();
 
-    public DrumsViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(drums, roomID, userID, token, callback);
+    public DrumsViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(drums, callback);
     }
 
     public void onSnareClicked() {
@@ -48,6 +47,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         int soundDuration = soundResource.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
+        SingleSoundtrack ownSoundtrack = this.ownSoundtrack;
         if(ownSoundtrack != null) {
             ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
         }
@@ -61,19 +61,10 @@ public class DrumsViewModel extends InstrumentViewModel {
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
-        private final int userID;
-
-        @NonNull
-        private final String token;
-
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
-            this.userID = userID;
-            this.token = token;
+        public Factory(@NonNull OnOwnSoundtrackChangedCallback callback) {
             this.callback = callback;
         }
 
@@ -82,7 +73,7 @@ public class DrumsViewModel extends InstrumentViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DrumsViewModel.class)) {
-                return (T) new DrumsViewModel(roomID, userID, token, callback);
+                return (T) new DrumsViewModel(callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

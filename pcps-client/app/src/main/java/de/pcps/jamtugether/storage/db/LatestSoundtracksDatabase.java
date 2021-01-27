@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
@@ -24,9 +25,15 @@ public class LatestSoundtracksDatabase {
     private SingleSoundtrack latestShakerSoundtrack;
 
     @Inject
-    public LatestSoundtracksDatabase() { }
+    public LatestSoundtracksDatabase(@NonNull RoomRepository roomRepository) {
+        roomRepository.getUserInRoom().observeForever(userInRoom -> {
+            if (!userInRoom) {
+                onUserLeftRoom();
+            }
+        });
+    }
 
-    public void onUserLeftRoom() {
+    private void onUserLeftRoom() {
         latestFluteSoundtrack = null;
         latestDrumsSoundtrack = null;
         latestShakerSoundtrack = null;
@@ -34,9 +41,9 @@ public class LatestSoundtracksDatabase {
 
     public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
         Instrument instrument = ownSoundtrack.getInstrument();
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             latestFluteSoundtrack = ownSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             latestDrumsSoundtrack = ownSoundtrack;
         } else {
             latestShakerSoundtrack = ownSoundtrack;
@@ -45,9 +52,9 @@ public class LatestSoundtracksDatabase {
 
     @Nullable
     public SingleSoundtrack getLatestSoundtrack(@NonNull Instrument instrument) {
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             return latestFluteSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             return latestDrumsSoundtrack;
         } else {
             return latestShakerSoundtrack;

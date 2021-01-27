@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
 import de.pcps.jamtugether.ui.base.TabLayoutFragment;
 import de.pcps.jamtugether.ui.base.views.JamTabView;
@@ -21,35 +22,21 @@ import de.pcps.jamtugether.utils.UiUtils;
 
 public class RoomFragment extends TabLayoutFragment {
 
-    private int roomID;
-    private int userID;
-
-    private String password;
-
-    private String token;
-
-    private boolean userIsAdmin;
-
     private RoomViewModel roomViewModel;
-
-    private CompositeSoundtrackViewModel compositeSoundtrackViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             RoomFragmentArgs args = RoomFragmentArgs.fromBundle(getArguments());
-            this.roomID = args.getRoomID();
-            this.userID = args.getUserID();
-            this.password = args.getPassword();
-            this.token = args.getToken();
-            this.userIsAdmin = args.getAdmin();
+            int roomID = args.getRoomID();
+            User user = args.getUser();
+            String password = args.getPassword();
+            String token = args.getToken();
+            boolean userIsAdmin = args.getAdmin();
 
-            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, token, userIsAdmin);
+            RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, password, user, token, userIsAdmin);
             roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
-
-            String currentToken = roomViewModel.getToken().getValue();
-            compositeSoundtrackViewModel = new ViewModelProvider(this, new CompositeSoundtrackViewModel.Factory(roomID, userID, currentToken)).get(CompositeSoundtrackViewModel.class);
         }
     }
 
@@ -57,8 +44,6 @@ public class RoomFragment extends TabLayoutFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        roomViewModel.getToken().observe(getViewLifecycleOwner(), token -> compositeSoundtrackViewModel.onTokenChanged(token));
 
         roomViewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
@@ -106,10 +91,15 @@ public class RoomFragment extends TabLayoutFragment {
                 return position == 0 ? R.string.soundtrack_over_view : R.string.musician_view;
             }
 
+            @Override
+            public int getInitialTabPosition() {
+                return roomViewModel.getInitialTabPosition();
+            }
+
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance(roomID, userID, password, token, userIsAdmin) : MusicianViewFragment.newInstance(roomID, userID, token);
+                return position == 0 ? SoundtrackOverviewFragment.newInstance() : MusicianViewFragment.newInstance();
             }
 
             @Override

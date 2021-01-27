@@ -1,6 +1,9 @@
 package de.pcps.jamtugether.model.soundtrack.base;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -38,9 +41,16 @@ public abstract class Soundtrack {
 
     public abstract boolean isEmpty();
 
+    @Nullable
+    public abstract String getLabel(@NonNull Context context);
+
     @NonNull
     public LiveData<State> getState() {
         return state;
+    }
+
+    public void setState(@NonNull State state) {
+        this.state.setValue(state);
     }
 
     public void postState(@NonNull State state) {
@@ -62,6 +72,11 @@ public abstract class Soundtrack {
 
     public int getProgressInMillis() {
         return progressInMillis;
+    }
+
+    public void setProgressInMillis(int progressInMillis) {
+        this.progressInMillis = progressInMillis;
+        this.progress.setValue(calculateProgress(progressInMillis));
     }
 
     public void postProgressInMillis(int progressInMillis) {

@@ -2,6 +2,7 @@ package de.pcps.jamtugether.api.services.room;
 
 import androidx.annotation.NonNull;
 
+import de.pcps.jamtugether.api.responses.room.AdminStatusResponse;
 import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
@@ -12,6 +13,7 @@ import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -33,5 +35,8 @@ public interface RoomService {
 
     @DELETE("room/{roomID}/admin")
     Call<RemoveAdminResponse> removeAdmin(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID);
+
+    @GET("room/{roomID}/admin")
+    Call<AdminStatusResponse> getAdminStatus(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID);
 }
 

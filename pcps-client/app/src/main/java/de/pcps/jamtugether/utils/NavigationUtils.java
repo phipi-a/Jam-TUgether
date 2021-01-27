@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 
+import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomFragmentDirections;
-import de.pcps.jamtugether.ui.welcome.WelcomeFragmentDirections;
+import de.pcps.jamtugether.ui.onboarding.OnBoardingFragmentDirections;
 
 public class NavigationUtils {
 
@@ -18,7 +19,7 @@ public class NavigationUtils {
     }
 
     public static void navigateToMenu(@NonNull NavController nc) {
-        nc.navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMenuFragment());
+        nc.navigate(OnBoardingFragmentDirections.actionOnBoardingFragmentToMenuFragment());
     }
 
     public static void navigateToSettings(@NonNull NavController nc) {
@@ -33,12 +34,12 @@ public class NavigationUtils {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToJoinRoomFragment());
     }
 
-    public static void navigateToRoomAsRegular(@NonNull NavController nc, int roomID, int userID, @NonNull String password, @NonNull String token) {
-        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRoomFragment(roomID, userID, password, token, false));
+    public static void navigateToRoomAsRegular(@NonNull NavController nc, int roomID, @NonNull User user, @NonNull String password, @NonNull String token) {
+        nc.navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToRoomFragment(roomID, user, password, token, false));
     }
 
-    public static void navigateToRoomAsAdmin(@NonNull NavController nc, int roomID, int userID, @NonNull String password, @NonNull String token) {
-        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToRoomFragment(roomID, userID, password, token, true));
+    public static void navigateToRoomAsAdmin(@NonNull NavController nc, int roomID, @NonNull User user, @NonNull String password, @NonNull String token) {
+        nc.navigate(CreateRoomFragmentDirections.actionCreateRoomFragmentToRoomFragment(roomID, user, password, token, true));
     }
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {

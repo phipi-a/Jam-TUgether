@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.model.sound.Sound;
 import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -34,8 +35,8 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     @NonNull
     private final MutableLiveData<Boolean> lockOrientation = new MutableLiveData<>(false);
 
-    public ShakerViewModel(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-        super(shaker, roomID, userID, token, callback);
+    public ShakerViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
+        super(shaker, callback);
         this.vibrator = (Vibrator) application.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -66,12 +67,13 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
 
     private void onShake(float intensity) {
         playSound();
         shakeIntensity.setValue(intensity);
-        if(intensity > 0) {
+        if (intensity > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot((int) (50 * intensity), VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
@@ -93,6 +95,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         int soundDuration = SoundResource.SHAKER.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
+        SingleSoundtrack ownSoundtrack = this.ownSoundtrack;
         if (ownSoundtrack != null) {
             ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, -1));
         }
@@ -117,19 +120,10 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
 
     static class Factory implements ViewModelProvider.Factory {
 
-        private final int roomID;
-        private final int userID;
-
-        @NonNull
-        private final String token;
-
         @NonNull
         private final OnOwnSoundtrackChangedCallback callback;
 
-        public Factory(int roomID, int userID, @NonNull String token, @NonNull OnOwnSoundtrackChangedCallback callback) {
-            this.roomID = roomID;
-            this.userID = userID;
-            this.token = token;
+        public Factory(@NonNull OnOwnSoundtrackChangedCallback callback) {
             this.callback = callback;
         }
 
@@ -138,7 +132,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ShakerViewModel.class)) {
-                return (T) new ShakerViewModel(roomID, userID, token, callback);
+                return (T) new ShakerViewModel(callback);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

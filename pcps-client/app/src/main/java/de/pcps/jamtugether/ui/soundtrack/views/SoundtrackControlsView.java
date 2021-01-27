@@ -50,14 +50,13 @@ public class SoundtrackControlsView extends ConstraintLayout {
         int stopIconMarginStart = UiUtils.getPixels(getContext(), R.dimen.soundtrack_stop_icon_margin_start);
         int stopIconWidth = UiUtils.getPixels(getContext(), R.dimen.soundtrack_stop_icon_width);
         int stopIconMarginEnd = UiUtils.getPixels(getContext(), R.dimen.soundtrack_stop_icon_margin_end);
-        int clearButtonWidth = UiUtils.getPixels(getContext(), R.dimen.soundtrack_item_clear_button_width);
 
         int availableWidthSlider =
                 this.getWidth() - (
                         muteIconWidth + volumeSliderMarginStart + volumeUpIconMarginStart + volumeUpIconWidth +
                                 fastRewindIconMarginStart + fastRewindIconWidth + playPauseIconMarginStart +
                                 playPauseIconWidth + fastForwardIconMarginStart + fastForwardIconWidth +
-                                stopIconMarginStart + stopIconWidth + stopIconMarginEnd + clearButtonWidth
+                                stopIconMarginStart + stopIconWidth + stopIconMarginEnd
                 );
 
         int maxSliderWidth = UiUtils.getPixels(getContext(), R.dimen.volume_slider_max_width);

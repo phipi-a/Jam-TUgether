@@ -1,10 +1,12 @@
 package de.pcps.jamtugether.audio.player;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -21,9 +23,16 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
     private final CompositeSoundtrackPlayer compositeSoundtrackPlayer;
 
     @Inject
-    public SoundtrackController(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer) {
+    public SoundtrackController(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer, @NonNull RoomRepository roomRepository) {
         this.singleSoundtrackPlayer = singleSoundtrackPlayer;
         this.compositeSoundtrackPlayer = compositeSoundtrackPlayer;
+
+        roomRepository.getUserInRoom().observeForever(userInRoom -> {
+            if(!userInRoom) {
+                singleSoundtrackPlayer.stop();
+                compositeSoundtrackPlayer.stop();
+            }
+        });
     }
 
     @Override
@@ -69,10 +78,5 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
         } else {
             compositeSoundtrackPlayer.stop((CompositeSoundtrack) soundtrack);
         }
-    }
-
-    public void stopPlayers() {
-        singleSoundtrackPlayer.stop();
-        compositeSoundtrackPlayer.stop();
     }
 }

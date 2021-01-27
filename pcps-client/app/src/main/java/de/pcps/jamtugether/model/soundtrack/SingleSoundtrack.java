@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
@@ -30,43 +32,48 @@ public class SingleSoundtrack extends Soundtrack {
         }
     };
 
-    private final int userID;
+    private int userID;
 
-    @NonNull
-    private final String instrument;
+    private String userName;
 
-    private final int number;
+    private Instrument instrument;
 
-    @NonNull
-    private final List<Sound> soundSequence;
+    private int number;
 
-    private transient final boolean isOwnSoundtrack;
+    private List<Sound> soundSequence;
+
+    private transient boolean representsOwnSoundtrack;
 
     @Nullable
     private transient BaseSoundPool soundPool;
 
+    // only for Moshi
+    private SingleSoundtrack() {
+    }
+
     // soundtrack from server
-    public SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence) {
-        this(userID, instrument, number, soundSequence, false);
+    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number, @NonNull List<Sound> soundSequence) {
+        this(userID, userName, instrument, number, soundSequence, false);
     }
 
     // empty soundtrack (never sent to server)
-    public SingleSoundtrack() {
-        this(-1, Instruments.FALLBACK.getServerString(), -1, new ArrayList<>());
+    public SingleSoundtrack(String ignore) { // ignore only needed so there's no overlap with private constructor that Moshi uses
+        this(-1, "", Instruments.DEFAULT, -1, new ArrayList<>(), true);
     }
 
     // own soundtrack object (starts with empty array list)
-    public SingleSoundtrack(int userID, @NonNull String instrument, int number) {
-        this(userID, instrument, number, new ArrayList<>(), true);
+    public SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number) {
+        this(userID, userName, instrument, number, new ArrayList<>(), true);
     }
 
-    private SingleSoundtrack(int userID, @NonNull String instrument, int number, @NonNull List<Sound> soundSequence, boolean isOwnSoundtrack) {
+    private SingleSoundtrack(int userID, @NonNull String userName, @NonNull Instrument instrument, int number, @NonNull List<Sound> soundSequence, boolean representsOwnSoundtrack) {
         super();
         this.userID = userID;
+        this.userName = userName;
         this.instrument = instrument;
         this.number = number;
         this.soundSequence = soundSequence;
-        this.isOwnSoundtrack = isOwnSoundtrack;
+        this.representsOwnSoundtrack = representsOwnSoundtrack;
     }
 
     public void loadSounds(@NonNull Context context) {
@@ -77,14 +84,38 @@ public class SingleSoundtrack extends Soundtrack {
         soundSequence.add(sound);
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "SingleSoundtrack{" +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", instrument='" + instrument + '\'' +
+                ", number=" + number +
+                ", soundSequence=" + soundSequence +
+                ", representsOwnSoundtrack=" + representsOwnSoundtrack +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SingleSoundtrack that = (SingleSoundtrack) o;
+        return getID().equals(that.getID()) && soundSequence.equals(that.soundSequence);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, userName, instrument, number, soundSequence, representsOwnSoundtrack, soundPool);
+    }
+
     @Override
     public int getLength() {
         if (isEmpty()) {
             return 0;
         }
-        Sound firstSound = soundSequence.get(0);
-        Sound lastSound = soundSequence.get(soundSequence.size() - 1);
-        return lastSound.getEndTime() - firstSound.getStartTime();
+        return soundSequence.get(soundSequence.size() - 1).getEndTime();
     }
 
     @Override
@@ -92,8 +123,13 @@ public class SingleSoundtrack extends Soundtrack {
         return soundSequence.isEmpty();
     }
 
-    public boolean isOwnSoundtrack() {
-        return isOwnSoundtrack;
+    @Nullable
+    @Override
+    public String getLabel(@NonNull Context context) {
+        if (representsOwnSoundtrack) {
+            return context.getString(R.string.own_soundtrack);
+        }
+        return userName;
     }
 
     @NonNull
@@ -118,7 +154,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public String getID() {
-        return String.valueOf(userID).concat(instrument).concat(String.valueOf(number));
+        return String.valueOf(userID).concat(instrument.getServerString()).concat(String.valueOf(number));
     }
 
     public int getUserID() {
@@ -126,8 +162,13 @@ public class SingleSoundtrack extends Soundtrack {
     }
 
     @NonNull
+    public String getUserName() {
+        return userName;
+    }
+
+    @NonNull
     public Instrument getInstrument() {
-        return Instruments.fromServer(instrument);
+        return instrument;
     }
 
     public int getNumber() {
@@ -146,7 +187,7 @@ public class SingleSoundtrack extends Soundtrack {
 
     @NonNull
     public SingleSoundtrack clone(@NonNull Context context) {
-        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.instrument, -1, this.soundSequence);
+        SingleSoundtrack cloned = new SingleSoundtrack(-1, this.userName, this.instrument, -1, this.soundSequence);
         cloned.loadSounds(context);
         return cloned;
     }

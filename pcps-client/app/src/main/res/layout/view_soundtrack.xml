@@ -3,6 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="SpUsage, ContentDescription">
 
+    <data>
+
+        <import type="android.view.View" />
+        <import type="de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack" />
+
+        <variable
+            name="soundtrack"
+            type="de.pcps.jamtugether.model.soundtrack.base.Soundtrack" />
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,18 +21,52 @@
         android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/soundtrack_controls_layout"
-            layout="@layout/view_soundtrack_controls" />
-
-        <!-- "margin top" = "0dp" in order to look exactly like view_soundtrack_admin-->
-        <include
-            android:id="@+id/soundtrack_container"
-            layout="@layout/view_soundtrack_container"
+        <TextView
+            android:id="@+id/empty_soundtrack_place_holder_text_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/soundtrack_view_height"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp" />
+            android:background="@drawable/bg_button_border"
+            android:fontFamily="30dp"
+            android:gravity="center"
+            android:text="@{(soundtrack instanceof CompositeSoundtrack) ? @string/composite_soundtrack_place_holder : @string/own_soundtrack }"
+            android:textColor="@color/primaryTextColor"
+            android:visibility="@{soundtrack.isEmpty() ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="@{soundtrack.isEmpty() ? View.GONE : View.VISIBLE}">
+
+            <include
+                android:id="@+id/soundtrack_controls_layout"
+                layout="@layout/view_soundtrack_controls" />
+
+            <TextView
+                android:id="@+id/soundtrack_user_name_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/soundtrack_item_clear_button_width"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:text="@{soundtrack.getLabel(soundtrackUserNameTextView.getContext())}"
+                android:textColor="@color/primaryTextColor"
+                android:visibility="@{soundtrack.getLabel(soundtrackUserNameTextView.getContext()) == null ? View.GONE : View.VISIBLE}" />
+
+            <!-- "margin top" of container = "0dp" in order to look exactly like view_soundtrack_admin-->
+
+            <include
+                android:id="@+id/soundtrack_container"
+                layout="@layout/view_soundtrack_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/soundtrack_view_height"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="10dp" />
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

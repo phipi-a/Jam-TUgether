@@ -5,17 +5,17 @@
     android:id="@+id/navigation"
     tools:ignore="InvalidNavigation">
     <fragment
-        android:id="@+id/welcome_fragment"
-        android:name="de.pcps.jamtugether.ui.welcome.WelcomeFragment"
-        tools:layout="@layout/fragment_welcome">
+        android:id="@+id/on_boarding_fragment"
+        android:name="de.pcps.jamtugether.ui.onboarding.OnBoardingFragment"
+        tools:layout="@layout/fragment_on_boarding">
         <action
-            android:id="@+id/action_welcome_fragment_to_menu_fragment"
+            android:id="@+id/action_on_boarding_fragment_to_menu_fragment"
             app:destination="@id/menu_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right"
-            app:popUpTo="@id/welcome_fragment"
+            app:popUpTo="@id/on_boarding_fragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -78,8 +78,8 @@
             android:name="roomID"
             app:argType="integer" />
         <argument
-            android:name="userID"
-            app:argType="integer" />
+            android:name="user"
+            app:argType="de.pcps.jamtugether.model.User" />
         <argument
             android:name="password"
             app:argType="string" />
@@ -89,6 +89,7 @@
         <argument
             android:name="admin"
             app:argType="boolean" />
+
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"

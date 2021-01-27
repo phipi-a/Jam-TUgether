@@ -68,9 +68,9 @@ async function updateAdminAccess (roomID) {
  */
 roomRoute.post('/create-room', async (req, res, next) => {
   try {
-    // Check if the number of rooms is below limit (limit: 10)
+    // Check if the number of rooms is below limit (limit: 10) TODO TESTING 50
     const numberOfRooms = await RoomSchema.countDocuments().exec()
-    if ((Number(numberOfRooms) + 1) > 10) {
+    if ((Number(numberOfRooms) + 1) > 500) {
       throw ROOM_LIMIT_ERROR
     }
 
@@ -141,7 +141,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *               type: string
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success          
  *       401:
  *         description: Wrong password or roomID
  *       408:
@@ -205,6 +205,8 @@ roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
  *         description: Success + JWToken
  *       401:
  *         description: Wrong password or roomID
+ *       410:
+ *         description: Wrong roomID
  *       500:
  *         description: Failure
  */
@@ -215,7 +217,7 @@ roomRoute.post('/login', async (req, res) => {
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
-      return res.status(401).json({ description: 'No room with matching roomId found' })
+      return res.status(410).json({ description: 'No room with matching roomId found' })
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
@@ -226,7 +228,7 @@ roomRoute.post('/login', async (req, res) => {
       const update = { numberOfUser: userID }
       await room.updateOne(update)
       // create default sound for new user
-      await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
+      // await room.updateOne({ $push: { soundtracks: { userID: userID, soundseq: [], volume: 1 } } })
       res.status(201).send(createJSON(req.body.roomID.toString(), token, userID.toString()))
     } else {
       res.status(401).json({ description: 'Wrong Password.' })
@@ -235,7 +237,7 @@ roomRoute.post('/login', async (req, res) => {
     if (err === PwErr) {
       res.status(413).json({ description: 'Password too large.' })
     } else {
-      res.status(500).json({ description: 'Couldn\'t create room.' })
+      res.status(500).json({ description: 'Couldn\'t log in room.' })
     }
   }
 })
@@ -262,7 +264,7 @@ roomRoute.post('/login', async (req, res) => {
 roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     sendTracks(req, res, room)
@@ -291,7 +293,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
 roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     receiveTrack(req, res, req.params.id)
@@ -317,10 +319,10 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
+roomRoute.delete('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   } else {
     await updateRoom(req.params.id)
     deleteTracks(req, res, req.params.id)
@@ -352,13 +354,14 @@ roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
 roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
-    res.status(500).json({ description: 'Room does not exist!' })
+    res.status(410).json({ description: 'Room does not exist!' })
   }
   await updateRoom(room.roomID)
   const priviliges = await whoAmI(req, res, room)
   if (priviliges === 'Admin') {
     await updateAdminAccess(room.roomID)
-    res.status(202).json(priviliges)
+    const answer = { description: priviliges }
+    res.status(202).json(answer)
   } else {
     const answer = await checkAdmin(room.lastAccessAdmin, room.roomID)
     answer.description = answer.flag ? 'new Admin' : 'Not Admin'
