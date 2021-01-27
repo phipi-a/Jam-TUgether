@@ -1,6 +1,8 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
@@ -30,6 +33,7 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -62,6 +66,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @Inject
     protected LatestSoundtracksDatabase latestSoundtracksDatabase;
+
+    @Inject
+    protected Preferences preferences;
 
     @NonNull
     private final Instrument instrument;
@@ -115,6 +122,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             uploadButtonVisibility = new MutableLiveData<>(View.GONE);
         }
     }
+
 
     public void observeAllSoundtracks(@NonNull LifecycleOwner lifecycleOwner) {
         soundtrackRepository.getAllSoundtracks().observe(lifecycleOwner, allSoundtracks -> {
@@ -176,7 +184,15 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     });
 
+
+
+    private boolean firstStart= true;
+
     public void onCreateSoundtrackButtonClicked() {
+        if(preferences.getFirstStart() == true) {
+            showUploadDialog.setValue(true);
+            preferences.setFirstStart(false);
+        }
         if (startedSoundtrackCreation()) {
             if (countDownTimer.isStopped()) {
                 finishSoundtrack();
@@ -208,12 +224,29 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected void onTimerStarted() {
     }
 
+
+    //
+    @NonNull
+    private final MutableLiveData<Boolean> showUploadDialog = new MutableLiveData<>(false);
+    @NonNull
+    public LiveData<Boolean> getShowUploadDialog() {
+        return showUploadDialog;
+    }
+    public void onUploadDialogShown() {
+        showUploadDialog.setValue(false);
+    }
+
     public void onUploadButtonClicked() {
+        /*if(showUploadDialog.getValue()==false){
+            showUploadDialog.setValue(true);
+
+        }*/
+
         User user = roomRepository.getUser();
         if (ownSoundtrack == null || user == null) {
             return;
         }
-
+    //
         SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);

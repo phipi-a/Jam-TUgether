@@ -18,16 +18,33 @@ public class Preferences {
     private static final String USER_COMPLETED_ON_BOARDING_KEY = "pref_key_user_completed_on_boarding";
     private static final String MAIN_INSTRUMENT_KEY = "pref_key_main_instrument";
 
+    private static final String USER_STARTS_FIRST_TIME_KEY = "pref_key_user_first_start";
+
+
+
+
     @NonNull
     private final SharedPreferences sharedPreferences;
+
+    public boolean getFirstStart(){
+        return sharedPreferences.getBoolean(USER_STARTS_FIRST_TIME_KEY, true);
+    }
+
+    public void setFirstStart(boolean value){
+        sharedPreferences.edit().putBoolean(USER_STARTS_FIRST_TIME_KEY, value).apply();
+    }
+
 
     @Inject
     public Preferences(@NonNull SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
     }
 
+
+
+
     public boolean userCompletedOnBoarding() {
-        return sharedPreferences.getBoolean(USER_COMPLETED_ON_BOARDING_KEY, false);
+        return sharedPreferences.getBoolean(USER_COMPLETED_ON_BOARDING_KEY, true);
     }
 
     public void setUserCompletedOnBoarding(boolean value) {
@@ -43,4 +60,5 @@ public class Preferences {
     public void setMainInstrument(@NonNull Instrument mainInstrument) {
         sharedPreferences.edit().putString(MAIN_INSTRUMENT_KEY, mainInstrument.getPreferenceValue()).apply();
     }
+
 }

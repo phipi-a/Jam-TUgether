@@ -71,6 +71,7 @@ public class AppInjector {
     public static void inject(@NonNull InstrumentViewModel instrumentViewModel) {
         appComponent.inject(instrumentViewModel);
     }
+
 }
 
 
