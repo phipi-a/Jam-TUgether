@@ -10,21 +10,19 @@ public class PlaySoundThread extends Thread {
     private final BaseSoundPool soundPool;
 
     private final int soundID;
-    private final float pitch;
 
     @NonNull
     private final OnSoundPlayedCallback callback;
 
-    public PlaySoundThread(@NonNull BaseSoundPool soundPool, int soundID, float pitch, @NonNull OnSoundPlayedCallback callback) {
+    public PlaySoundThread(@NonNull BaseSoundPool soundPool, int soundID, @NonNull OnSoundPlayedCallback callback) {
         this.soundPool = soundPool;
         this.soundID = soundID;
-        this.pitch = pitch;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        int streamID = soundPool.play(soundID, pitch);
+        int streamID = soundPool.play(soundID);
         callback.onSoundPlayed(streamID);
     }
 
