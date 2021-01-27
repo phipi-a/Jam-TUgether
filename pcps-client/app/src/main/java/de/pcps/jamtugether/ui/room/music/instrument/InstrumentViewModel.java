@@ -281,7 +281,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             if (millis == -1L) {
                 return "";
             }
-            return TimeUtils.formatTimerSecondMinutes(millis);
+            return TimeUtils.formatToMinutesSeconds(millis);
         });
     }
 
@@ -291,7 +291,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             if (millis == -1L) {
                 return "";
             }
-            return TimeUtils.formatTimerSecondsSimple(millis);
+            return TimeUtils.formatToSeconds(millis);
         });
     }
 
