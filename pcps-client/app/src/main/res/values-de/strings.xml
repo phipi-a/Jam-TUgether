@@ -88,6 +88,7 @@
     <string name="generic_error_title">Fehler</string>
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
     <string name="onboarding_welcome_message">Willkommen zu \nJam TUgether</string>
+
     <string name="shaker_functionality_text">Bewege dein Handy so, als würdest du eine Rassel spielen</string>
     <string name="shaker_functionality_title">Funktionsweise</string>
     <string name="join_room_title">Raum betreten</string>
@@ -96,24 +97,24 @@
     <string name="create_room_title">Raum erstellen</string>
     <string name="ready_to_upload_warning_text">Bevor Du einen neuen Soundtrack aufnimmst, musst du den alten Track hochladen, damit er zum gesamten Stück hinzugefügt wird. Klicke hierfür einfach auf Hochladen</string>
     <string name="ready_to_upload_warning_title">Achtung</string>
-    <string name="musician_overview_title">Hier kannst du dir alle Spuren anhören und deine eigenen auch löschen. Als Admin kannst du alle Spuren oder gleich den ganzen Raum löschen</string>
+    <string name="musician_overview_title">Im Übersichtsbildschirm kannst du dir alle Spuren anhören und deine eigenen auch löschen. Als Admin kannst du alle Spuren oder gleich den ganzen Raum löschen</string>
     <string name="musician_overview_text">Übersicht</string>
-    <string name="update_text">Das ganze Stück aktualisiert sich immer wieder, wenn sich der rote Kreis schließt</string>
+    <string name="update_text">Die gesamte Tonspur aktualisiert sich immer automatisch, wenn sich der rote Kreis schließt</string>
     <string name="update_title">Aktualisierung</string>
-    <string name="record_with_soundtrack_text">Hier kannst du entscheiden ob du während der Aufnahme das komplette Stück hören willst</string>
-    <string name="record_with_soundtrack_title">mit Tonspur</string>
-    <string name="soundtracks_text">Hier erscheint nach deiner ersten Aufnahme die gesamte bzw eigene Tonspur</string>
+    <string name="record_with_soundtrack_text">Du kannst dir aussuchen, ob du während der Aufnahme die gesamte Tonspur hören möchtest</string>
+    <string name="record_with_soundtrack_title">Mit Tonspur</string>
+    <string name="soundtracks_text">nach deiner ersten Aufnahme erscheinen hier die gesamte und die eigene Tonspur</string>
     <string name="soundtracks_title">Tonspuren</string>
     <string name="change_instrument_text">Du kannst das Instrument oben rechts bei \'Flöte\' wechseln</string>
     <string name="change_instrument_title">Instrument wechseln</string>
-    <string name="start_record_text">zum Aufnahme starten oder beenden den roten Knopf drücken</string>
+    <string name="start_record_text">Drücke den roten Knopf, um die Aufnahme zu starten und zu beenden</string>
     <string name="start_record_title">Aufnahme starten</string>
-    <string name="room_id_text">Oben links findest du die Raum ID, teile diese mit deinen Freunden um gemeinsam musizieren zu können</string>
+    <string name="room_id_text">Oben links findest du die Raum ID. Teile diese mit deinen Freunden, um gemeinsam musizieren zu können</string>
     <string name="room_id_title">Raum ID</string>
-    <string name="flute_functionality_text">Puste in dein Mikrofon um einen Ton zu erzeugen und veränder die Tohnhöhe durchs sliden auf der Flöte</string>
+    <string name="flute_functionality_text">Puste in dein Mikrofon um einen Ton zu erzeugen. Um die Tonhöhe zu verändern, musst du den Slider bewegen</string>
     <string name="flute_functionality_title">Funktionsweise</string>
-    <string name="flute_warning_text">Um die Flöte zu spielen musst du Kopfhörer tragen!</string>
+    <string name="flute_warning_text">Du musst Kopfhörer tragen, um die Flöte zu spielen!</string>
     <string name="flute_warning_title">Achtung</string>
-    <string name="drums_functionality_text">Tippe auf die Trommeln um sie zu spielen</string>
+    <string name="drums_functionality_text">Tippe auf die Symbole, um die Trommeln zu spielen</string>
     <string name="drums_functionality_title">Funktionsweise</string>
 </resources>
