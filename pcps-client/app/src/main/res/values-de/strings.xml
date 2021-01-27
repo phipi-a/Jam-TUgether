@@ -88,7 +88,7 @@
     <string name="generic_error_title">Fehler</string>
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
     <string name="room_does_not_exist_error_title">Raum</string>
-    <string name="room_does_not_exist_error_message">Dieser Raum existiert nicht</string>
+    <string name="room_does_not_exist_error_message">Dieser Raum existiert nicht mehr</string>
 
     <string name="music_note_c">C</string>
     <string name="music_note_c_sharp">C#</string>
