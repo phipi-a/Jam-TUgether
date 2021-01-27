@@ -11,9 +11,9 @@
     <de.pcps.jamtugether.ui.room.music.instrument.flute.FluteView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <!-- the height is being calculated later -->
+        <!-- the margins are being calculated later -->
 
         <ImageView
             android:id="@+id/iv_flute"
@@ -22,8 +22,10 @@
             android:adjustViewBounds="true"
             android:scaleType="fitStart"
             android:src="@drawable/flute"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:touchListener="@{viewModel}" />
 
         <ImageView
@@ -42,8 +44,8 @@
         <LinearLayout
             android:id="@+id/note_labels_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_flute"
