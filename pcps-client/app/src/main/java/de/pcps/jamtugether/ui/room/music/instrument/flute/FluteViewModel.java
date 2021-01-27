@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,7 +32,8 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     private int startTimeMillis = -1;
 
-    private int pitch = FluteSound.DEFAULT.getPitch();
+    @NonNull
+    private final MutableLiveData<Integer> pitch = new MutableLiveData<>(FluteSound.DEFAULT.getPitch());
 
     public FluteViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
         super(flute, callback);
@@ -70,8 +72,8 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
-            if (!soundIsPlaying) {
-                flute.play(pitch, streamID -> {
+            if (!soundIsPlaying && pitch.getValue() != null) {
+                flute.play(pitch.getValue(), streamID -> {
                     soundIsPlaying = streamID != 0;
 
                     if (startedSoundtrackCreation() && soundIsPlaying) {
@@ -86,18 +88,21 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
         if (startTimeMillis != -1) {
             int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-            if (ownSoundtrack != null) {
-                ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
+            if (ownSoundtrack != null && pitch.getValue() != null) {
+                ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch.getValue()));
             }
             startTimeMillis = -1;
         }
         soundIsPlaying = false;
     }
 
-    public void onPitchChanged(int pitch) {
-        this.pitch = pitch;
-    }
+    public void onPitchPercentageChanged(float pitchPercentage) {
+        int pitch = (int) Math.floor((FluteSound.values().length - 1) * pitchPercentage);
 
+        if (pitch >= FluteSound.C.getPitch() && pitch <= FluteSound.C_HIGH.getPitch()) {
+            this.pitch.setValue(pitch);
+        }
+    }
 
     private void stopRecording() {
         if (fluteRecordingThread != null) {
@@ -111,6 +116,11 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     protected void onCleared() {
         super.onCleared();
         stopRecording();
+    }
+
+    @NonNull
+    public LiveData<Integer> getPitchLevel() {
+        return Transformations.map(pitch, pitch -> (int) (pitch / (double) (FluteSound.values().length - 1) * 10000));
     }
 
     static class Factory implements ViewModelProvider.Factory {

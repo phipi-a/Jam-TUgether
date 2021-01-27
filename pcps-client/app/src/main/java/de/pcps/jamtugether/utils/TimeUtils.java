@@ -16,16 +16,16 @@ public class TimeUtils {
     private static final String TIME_FORMAT_MINUTES_SECONDS = "%02d:%02d";
 
     @NonNull
+    public static String formatToSeconds(long millis) {
+        int seconds = (int) ((millis / ONE_SECOND) % 60);
+        return String.format(Locale.getDefault(), TIME_FORMAT_SECONDS, seconds);
+    }
+
+    @NonNull
     public static String formatToMinutesSeconds(long millis) {
         int minutes = (int) ((millis / ONE_SECOND) / 60);
         int seconds = (int) ((millis / ONE_SECOND) % 60);
 
         return String.format(Locale.getDefault(), TIME_FORMAT_MINUTES_SECONDS, minutes, seconds);
-    }
-
-    @NonNull
-    public static String formatToSeconds(long millis) {
-        int seconds = (int) ((millis / ONE_SECOND) % 60);
-        return String.format(Locale.getDefault(), TIME_FORMAT_SECONDS, seconds);
     }
 }

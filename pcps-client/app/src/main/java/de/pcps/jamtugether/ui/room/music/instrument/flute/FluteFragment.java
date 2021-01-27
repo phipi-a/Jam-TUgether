@@ -40,8 +40,8 @@ public class FluteFragment extends InstrumentFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
         FluteViewModel fluteViewModel = (FluteViewModel) viewModel;
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setViewModel(fluteViewModel);
+        binding.fluteView.setLifecycleOwner(getViewLifecycleOwner());
+        binding.fluteView.setViewModel(fluteViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(viewModel);
 
