@@ -73,8 +73,7 @@ public class FluteView extends ConstraintLayout {
         constraintSet.connect(R.id.iv_flute, ConstraintSet.END, R.id.note_labels_layout, ConstraintSet.END);
         constraintSet.connect(R.id.note_labels_layout, ConstraintSet.TOP, this.getId(), ConstraintSet.TOP);
         constraintSet.connect(R.id.note_labels_layout, ConstraintSet.BOTTOM, this.getId(), ConstraintSet.BOTTOM);
-        constraintSet.connect(R.id.note_labels_layout, ConstraintSet.START, this.getId(), ConstraintSet.START);
-        constraintSet.connect(R.id.note_labels_layout, ConstraintSet.END, this.getId(), ConstraintSet.END);
+        constraintSet.connect(R.id.note_labels_layout, ConstraintSet.START, R.id.note_labels_layout, ConstraintSet.START);
         constraintSet.applyTo(this);
 
     }

@@ -15,7 +15,7 @@
 
         <!-- the height is being calculated later -->
 
-         <ImageView
+        <ImageView
             android:id="@+id/iv_flute"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -46,6 +46,7 @@
             android:layout_marginStart="20dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_flute"
             app:layout_constraintTop_toTopOf="parent" />
 
     </de.pcps.jamtugether.ui.room.music.instrument.flute.FluteView>
