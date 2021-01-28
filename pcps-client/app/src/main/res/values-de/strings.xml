@@ -53,6 +53,9 @@
     <string name="own_soundtrack_place_holder">Eigene Tonspur</string>
 
     <string name="upload">Hochladen</string>
+    <string name="upload_reminder_dialog_title">Erinnerung</string>
+    <string name="upload_reminder_dialog_message">Vergiss nicht deine Tonspur hochzuladen!</string>
+
     <string name="play_with_composite_soundtrack">mit Tonspur</string>
 
     <string name="room_format">Raum %d</string>

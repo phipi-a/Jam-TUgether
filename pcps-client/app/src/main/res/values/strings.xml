@@ -54,6 +54,9 @@
     <string name="own_soundtrack_place_holder">Own soundtrack</string>
 
     <string name="upload">Upload</string>
+    <string name="upload_reminder_dialog_title">Reminder</string>
+    <string name="upload_reminder_dialog_message">Don\'t forget to upload your soundtrack!</string>
+
     <string name="play_with_composite_soundtrack">with soundtrack</string>
 
     <string name="room_format">Room %d</string>
