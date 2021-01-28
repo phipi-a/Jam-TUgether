@@ -2,7 +2,9 @@ package de.pcps.jamtugether.ui.room.music.soundtrack;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -60,6 +62,9 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Boolean> soundtracksExpanded = new MutableLiveData<>(false);
+
     public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback) {
         AppInjector.inject(this);
         this.instrumentOnChangeCallback = instrumentOnChangeCallback;
@@ -89,6 +94,13 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
 
     public void onHelpButtonClicked() {
         showHelpDialog.setValue(true);
+    }
+
+    public void onExpandButtonClicked() {
+        if(soundtracksExpanded.getValue() == null) {
+            return;
+        }
+        soundtracksExpanded.setValue(!soundtracksExpanded.getValue());
     }
 
     public void onHelpDialogShown() {
@@ -127,6 +139,16 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     public LiveData<Boolean> getShowHelpDialog() {
         return showHelpDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getSoundtracksExpanded() {
+        return soundtracksExpanded;
+    }
+
+    @NonNull
+    public LiveData<Integer> getSoundtracksVisibility() {
+        return Transformations.map(soundtracksExpanded, soundtracksExpanded -> soundtracksExpanded ? View.VISIBLE : View.GONE);
     }
 
     @NonNull

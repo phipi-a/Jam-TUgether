@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
