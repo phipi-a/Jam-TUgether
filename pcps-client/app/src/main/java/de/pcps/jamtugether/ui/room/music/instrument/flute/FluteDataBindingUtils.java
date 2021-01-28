@@ -14,18 +14,17 @@ public class FluteDataBindingUtils {
     @BindingAdapter("touchListener")
     public static void setTouchListener(@NonNull View self, @NonNull FluteViewModel viewModel) {
         self.setOnTouchListener((view, event) -> {
-            float soundPitchPercentage;
             int[] location = new int[2];
             view.getLocationInWindow(location);
-            soundPitchPercentage = (event.getRawY() - location[1]) / view.getHeight();
-            viewModel.onPitchChanged(soundPitchPercentage);
+            float pitchPercentage = 1 - (event.getRawY() - location[1]) / view.getHeight();
+            viewModel.onPitchPercentageChanged(pitchPercentage);
             return true;
         });
     }
 
-    @BindingAdapter("pitchPercentage")
-    public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, float pitchPercentage) {
+    @BindingAdapter("pitchLevel")
+    public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, int pitchLevel) {
         ClipDrawable clipDrawable = (ClipDrawable) fluteFillImageView.getDrawable();
-        clipDrawable.setLevel((int) (10000 * pitchPercentage));
+        clipDrawable.setLevel(pitchLevel);
     }
 }
