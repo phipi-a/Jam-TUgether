@@ -81,7 +81,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
                 flute.play(pitchPercentage * 100, streamID -> {
                     soundIsPlaying = streamID != 0;
 
-                    if (startedSoundtrackCreation() && soundIsPlaying) {
+                    if (recordingSoundtrack() && soundIsPlaying) {
                         currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                         currentPitch = (int) (pitchPercentage * 100);
                     }

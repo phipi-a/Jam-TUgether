@@ -1,8 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
@@ -77,7 +74,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final OnOwnSoundtrackChangedCallback callback;
 
     @NonNull
-    protected final MutableLiveData<Boolean> startedSoundtrackCreation = new MutableLiveData<>(false);
+    protected final MutableLiveData<Boolean> recordingSoundtrack = new MutableLiveData<>(false);
 
     @NonNull
     protected final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
@@ -96,6 +93,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Integer> uploadButtonVisibility;
+
+    @NonNull
+    private final MutableLiveData<Boolean> showUploadReminderDialog = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
@@ -122,7 +122,6 @@ public abstract class InstrumentViewModel extends ViewModel {
             uploadButtonVisibility = new MutableLiveData<>(View.GONE);
         }
     }
-
 
     public void observeAllSoundtracks(@NonNull LifecycleOwner lifecycleOwner) {
         soundtrackRepository.getAllSoundtracks().observe(lifecycleOwner, allSoundtracks -> {
@@ -185,22 +184,18 @@ public abstract class InstrumentViewModel extends ViewModel {
     });
 
 
-
-    private boolean firstStart= true;
-
-    public void onCreateSoundtrackButtonClicked() {
-        if(preferences.getFirstStart() == true) {
-            showUploadDialog.setValue(true);
-            preferences.setFirstStart(false);
-        }
-        if (startedSoundtrackCreation()) {
+    public void onRecordSoundtrackButtonClicked() {
+        if (recordingSoundtrack()) {
             if (countDownTimer.isStopped()) {
                 finishSoundtrack();
                 timer.stop();
             } else {
                 countDownTimer.stop();
                 countDownTimerMillis.setValue(-1L);
-                startedSoundtrackCreation.setValue(false);
+                recordingSoundtrack.setValue(false);
+            }
+            if (!preferences.userSawUploadReminderDialog()) {
+                showUploadReminderDialog.setValue(true);
             }
         } else {
             timerMillis.setValue(-1L);
@@ -216,7 +211,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument, soundtrackNumber);
             ownSoundtrack.loadSounds(application.getApplicationContext());
 
-            startedSoundtrackCreation.setValue(true);
+            recordingSoundtrack.setValue(true);
             countDownTimer.start();
         }
     }
@@ -224,29 +219,17 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected void onTimerStarted() {
     }
 
-
-    //
-    @NonNull
-    private final MutableLiveData<Boolean> showUploadDialog = new MutableLiveData<>(false);
-    @NonNull
-    public LiveData<Boolean> getShowUploadDialog() {
-        return showUploadDialog;
-    }
     public void onUploadDialogShown() {
-        showUploadDialog.setValue(false);
+        preferences.setUserSawUploadReminderDialog(false);
+        showUploadReminderDialog.setValue(false);
     }
 
     public void onUploadButtonClicked() {
-        /*if(showUploadDialog.getValue()==false){
-            showUploadDialog.setValue(true);
-
-        }*/
-
         User user = roomRepository.getUser();
         if (ownSoundtrack == null || user == null) {
             return;
         }
-    //
+
         SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         progressBarVisibility.setValue(View.VISIBLE);
@@ -284,11 +267,11 @@ public abstract class InstrumentViewModel extends ViewModel {
             uploadButtonEnabled.setValue(true);
             uploadButtonVisibility.setValue(View.VISIBLE);
         }
-        startedSoundtrackCreation.setValue(false);
+        recordingSoundtrack.setValue(false);
     }
 
-    protected boolean startedSoundtrackCreation() {
-        Boolean started = startedSoundtrackCreation.getValue();
+    protected boolean recordingSoundtrack() {
+        Boolean started = recordingSoundtrack.getValue();
         return started != null && started;
     }
 
@@ -298,14 +281,14 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        if (startedSoundtrackCreation()) {
+        if (recordingSoundtrack()) {
             finishSoundtrack();
         }
     }
 
     @NonNull
-    public LiveData<Boolean> getStartedSoundtrackCreation() {
-        return startedSoundtrackCreation;
+    public LiveData<Boolean> getRecordingSoundtrack() {
+        return recordingSoundtrack;
     }
 
     @NonNull
@@ -336,6 +319,11 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     public LiveData<Integer> getUploadButtonVisibility() {
         return uploadButtonVisibility;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowUploadReminderDialog() {
+        return showUploadReminderDialog;
     }
 
     @NonNull
