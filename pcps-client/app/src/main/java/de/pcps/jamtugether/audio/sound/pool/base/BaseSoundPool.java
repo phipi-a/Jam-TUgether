@@ -17,6 +17,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
 import de.pcps.jamtugether.audio.sound.PlaySoundThread;
 import de.pcps.jamtugether.audio.sound.StopSoundThread;
+import de.pcps.jamtugether.model.sound.SoundResource;
 
 /**
  * A simple sound pool wrapper
@@ -40,7 +41,7 @@ public abstract class BaseSoundPool {
 
     protected float volume = 1;
 
-    public BaseSoundPool(@NonNull Context context, int maxStreams, @NonNull Integer... soundResIDs) {
+    public BaseSoundPool(@NonNull Context context, int maxStreams, @NonNull SoundResource[] soundResources) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -55,24 +56,26 @@ public abstract class BaseSoundPool {
         this.streamIDs = Collections.synchronizedList(new ArrayList<>());
         this.soundResMap = new HashMap<>();
 
-        for (Integer soundResID : soundResIDs) {
-            int soundID = soundPool.load(context, soundResID, 1);
-            soundResMap.put(soundResID, soundID);
+        for (SoundResource soundRes : soundResources) {
+            int soundID = soundPool.load(context, soundRes.getResource(), 1);
+            soundResMap.put(soundRes.getResource(), soundID);
         }
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loadedSoundIDs.add(sampleId));
     }
 
-    public abstract int play(int soundID, float pitch);
+    public int play(int soundID) {
+        return soundPool.play(soundID, volume, volume, 0, 0, 1);
+    }
 
-    public void playSoundRes(int soundResID, float pitch, @Nullable OnSoundPlayedCallback callback) {
+    public void playSoundRes(int soundResID, @Nullable OnSoundPlayedCallback callback) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
             return;
         }
         if (soundIsLoaded(soundID)) {
 
-            new PlaySoundThread(this, soundID, pitch, streamID -> {
+            new PlaySoundThread(this, soundID, streamID -> {
                 if (!streamIDs.contains(streamID) && streamID != 0) {
                     streamIDs.add(streamID);
                 }
@@ -83,8 +86,8 @@ public abstract class BaseSoundPool {
         }
     }
 
-    public void playSoundRes(int soundResID, float pitch) {
-        playSoundRes(soundResID, pitch, null);
+    public void playSoundRes(int soundResID) {
+        playSoundRes(soundResID, null);
     }
 
     public void setVolume(float volume) {
@@ -110,8 +113,6 @@ public abstract class BaseSoundPool {
     public boolean soundIsLoaded(int soundID) {
         return loadedSoundIDs.contains(soundID);
     }
-
-    public abstract float calculatePitch(int pitchPercentage);
 
     @NonNull
     public static BaseSoundPool from(@NonNull String instrumentString, @NonNull Context context) {

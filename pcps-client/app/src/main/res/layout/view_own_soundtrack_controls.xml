@@ -51,12 +51,12 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.onCreateSoundtrackButtonClicked()}"
+                android:onClick="@{() -> viewModel.onRecordSoundtrackButtonClicked()}"
                 android:padding="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startedCreatingSoundtrack="@{viewModel.startedSoundtrackCreation}"
+                app:startedCreatingSoundtrack="@{viewModel.recordingSoundtrack}"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -83,18 +83,6 @@
                 app:layout_constraintTop_toTopOf="@id/timer_text_view" />
 
             <CheckBox
-                android:id="@+id/composite_soundtrack_check_box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:buttonTint="@color/iconColor"
-                android:onClick="@{() -> viewModel.onPlayWithCompositeSoundtrackClicked(compositeSoundtrackCheckBox.isChecked())}"
-                android:text="@string/play_with_composite_soundtrack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckBox
                 android:id="@+id/composite_soundtrack_loop_check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +94,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/composite_soundtrack_check_box"
                 app:layout_constraintTop_toTopOf="parent"
-                app:uncheck="@{viewModel.uncheckLoopCheckBox}"
+                app:uncheckLoop="@{viewModel.uncheckLoopCheckBox}"
+                app:viewModel="@{viewModel}" />
+
+            <CheckBox
+                android:id="@+id/composite_soundtrack_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:buttonTint="@color/iconColor"
+                android:enabled="@{viewModel.compositeSoundtrackCheckBoxIsEnabled}"
+                android:onClick="@{() -> viewModel.onPlayWithCompositeSoundtrackClicked(compositeSoundtrackCheckBox.isChecked())}"
+                android:text="@string/play_with_composite_soundtrack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:uncheckCompositeSoundtrack="@{viewModel.uncheckCompositeSoundtrackCheckBox}"
                 app:viewModel="@{viewModel}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

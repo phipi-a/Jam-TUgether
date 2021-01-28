@@ -68,14 +68,14 @@ public class OwnSoundtrackFragment extends BaseFragment {
                 if(helpDialogTitle == null || helpDialogMessage == null) {
                     return;
                 }
-                UiUtils.showInfoDialog(activity, helpDialogTitle, helpDialogMessage);
+                UiUtils.showInfoDialog(context, helpDialogTitle, helpDialogMessage);
                 viewModel.onHelpDialogShown();
             }
         });
 
         viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onSoundtrackRepositoryNetworkErrorShown();
             }
         });

@@ -141,7 +141,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *               type: string
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success          
  *       401:
  *         description: Wrong password or roomID
  *       408:
@@ -205,6 +205,8 @@ roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
  *         description: Success + JWToken
  *       401:
  *         description: Wrong password or roomID
+ *       410:
+ *         description: Wrong roomID
  *       500:
  *         description: Failure
  */
@@ -215,7 +217,7 @@ roomRoute.post('/login', async (req, res) => {
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
-      return res.status(401).json({ description: 'No room with matching roomId found' })
+      return res.status(410).json({ description: 'No room with matching roomId found' })
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {

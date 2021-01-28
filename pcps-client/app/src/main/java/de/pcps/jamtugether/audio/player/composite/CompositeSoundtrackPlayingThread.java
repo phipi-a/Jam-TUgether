@@ -32,7 +32,7 @@ public class CompositeSoundtrackPlayingThread extends SoundtrackPlayingThread {
                     continue;
                 }
                 int soundRes = instrument.getSoundResource(sound.getPitch());
-                soundPool.playSoundRes(soundRes, sound.getPitch(), streamID -> {
+                soundPool.playSoundRes(soundRes, streamID -> {
                     callback.onSoundPlayed(new SoundWithStreamID(sound, streamID));
                 });
             }

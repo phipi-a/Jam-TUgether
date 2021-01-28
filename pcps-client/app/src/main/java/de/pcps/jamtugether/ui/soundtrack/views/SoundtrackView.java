@@ -14,11 +14,13 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.sound.SoundResource;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.sound.drums.DrumsSound;
+import de.pcps.jamtugether.model.sound.flute.FluteSound;
+import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -67,7 +69,7 @@ public class SoundtrackView extends View {
     }
 
     @ColorRes
-    private int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
+    private static int getPaintColor(@NonNull SingleSoundtrack singleSoundtrack) {
         Instrument instrument = singleSoundtrack.getInstrument();
         if (instrument == Flute.getInstance()) {
             return R.color.soundtrackFluteColor;
@@ -76,6 +78,76 @@ public class SoundtrackView extends View {
             return R.color.soundtrackDrumsColor;
         }
         return R.color.soundtrackShakerColor;
+    }
+
+    private static int getFluteSoundHeightPercentage(@NonNull FluteSound fluteSound) {
+        switch (fluteSound) {
+            case C_SHARP:
+                return 15;
+            case D:
+                return 22;
+            case D_SHARP:
+                return 29;
+            case E:
+                return 36;
+            case F:
+                return 43;
+            case F_SHARP:
+                return 50;
+            case G:
+                return 57;
+            case G_SHARP:
+                return 64;
+            case A:
+                return 71;
+            case A_SHARP:
+                return 78;
+            case B:
+                return 85;
+            case C_HIGH:
+                return 92;
+            default:
+                return 8;
+        }
+    }
+
+    private static int getDrumsSoundHeightPercentage(@NonNull DrumsSound drumsSound) {
+        switch (drumsSound) {
+            case SNARE:
+                return 50;
+            case HAT:
+                return 70;
+            case CYMBAL:
+                return 90;
+            default:
+                return 30;
+        }
+    }
+
+    private static int getDrumsSoundHeight(@NonNull DrumsSound drumsSound, @NonNull Context context) {
+        switch (drumsSound) {
+            case SNARE:
+                return UiUtils.getPixels(context, R.dimen.soundtrack_view_drums_snare_height);
+            case HAT:
+                return UiUtils.getPixels(context, R.dimen.soundtrack_view_drums_hat_height);
+            case CYMBAL:
+                return UiUtils.getPixels(context, R.dimen.soundtrack_view_drums_cymbal_height);
+            default:
+                return UiUtils.getPixels(context, R.dimen.soundtrack_view_drums_kick_height);
+        }
+    }
+
+    private static long getDrumsSoundWidthInMillis(@NonNull DrumsSound drumsSound) {
+        switch (drumsSound) {
+            case SNARE:
+                return 125;
+            case HAT:
+                return 75;
+            case CYMBAL:
+                return DrumsSound.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
+            default:
+                return 100;
+        }
     }
 
     private void drawSingleSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
@@ -118,7 +190,8 @@ public class SoundtrackView extends View {
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
-            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - sound.getPitch());
+            FluteSound fluteSound = FluteSound.values()[sound.getPitch()];
+            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - getFluteSoundHeightPercentage(fluteSound));
             canvas.drawRect(xStart, y, xEnd, this.getY() + this.getHeight(), paint);
         }
     }
@@ -132,7 +205,8 @@ public class SoundtrackView extends View {
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
-            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - sound.getPitch());
+            FluteSound fluteSound = FluteSound.from(sound.getPitch());
+            float y = this.getY() + heightOfPitchOne * (Flute.MAX_PITCH - getFluteSoundHeightPercentage(fluteSound));
             if (lastX == xStart && lastY != -1) {
                 canvas.drawLine(xStart, lastY, xStart, y, paint);
             }
@@ -150,30 +224,14 @@ public class SoundtrackView extends View {
         float widthOfOneMilliSecond = this.getWidth() / (float) length;
         float heightOfPitchOne = this.getHeight() / (float) Drums.PITCH_RANGE;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
-            float height;
-            long millis;
-            int heightPercentage = sound.getPitch();
-            switch (sound.getPitch()) {
-                case Drums.SNARE_PITCH:
-                    millis = 125;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_snare_height);
-                    break;
-                case Drums.KICK_PITCH:
-                    millis = 100;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_kick_height);
-                    break;
-                case Drums.HAT_PITCH:
-                    millis = 75;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_hat_height);
-                    break;
-                default:
-                    millis = SoundResource.CYMBAL.getDuration() - TimeUtils.ONE_SECOND;
-                    height = UiUtils.getPixels(this.getContext(), R.dimen.soundtrack_view_drums_cymbal_height);
-                    break;
-            }
+            DrumsSound drumsSound = DrumsSound.from(sound.getPitch());
+            int heightPercentage = getDrumsSoundHeightPercentage(drumsSound);
+            int height = getDrumsSoundHeight(drumsSound, getContext());
+            long widthInMillis = getDrumsSoundWidthInMillis(drumsSound);
+
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float yStart = this.getY() + heightOfPitchOne * (Drums.MAX_PITCH - heightPercentage);
-            float xEnd = xStart + widthOfOneMilliSecond * millis;
+            float xEnd = xStart + widthOfOneMilliSecond * widthInMillis;
             float yEnd = yStart + height;
             canvas.drawRect(xStart, yStart, xEnd, yEnd, paint);
         }
@@ -190,7 +248,7 @@ public class SoundtrackView extends View {
         float borderSpace = (containerHeight - height) / 2;
         float yStart = this.getY() + borderSpace;
         float yEnd = this.getY() + this.getHeight() - borderSpace;
-        float millis = SoundResource.SHAKER.getDuration() / 1.5f;
+        float millis = ShakerSound.SHAKER.getDuration() / 1.5f;
         for (Sound sound : singleSoundtrack.getSoundSequence()) {
             float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
             float xEnd = xStart + widthOfOneMilliSecond * millis;

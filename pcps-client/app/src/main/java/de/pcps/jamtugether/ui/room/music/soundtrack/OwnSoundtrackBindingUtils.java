@@ -20,11 +20,19 @@ public class OwnSoundtrackBindingUtils {
         playPauseButton.setColorFilter(color);
     }
 
-    @BindingAdapter(value = {"uncheck", "viewModel"})
+    @BindingAdapter(value = {"uncheckLoop", "viewModel"})
     public static void uncheckLoopCheckBox(@NonNull CheckBox compositeSoundtrackLoopCheckBox, boolean uncheck, @NonNull InstrumentViewModel viewModel) {
         if (uncheck) {
             compositeSoundtrackLoopCheckBox.setChecked(false);
             viewModel.onLoopCheckBoxUnchecked();
+        }
+    }
+
+    @BindingAdapter(value = {"uncheckCompositeSoundtrack", "viewModel"})
+    public static void uncheckCompositeSoundtrackCheckBox(@NonNull CheckBox compositeSoundtrackCheckBox, boolean uncheck, @NonNull InstrumentViewModel viewModel) {
+        if (uncheck) {
+            compositeSoundtrackCheckBox.setChecked(false);
+            viewModel.onCompositeSoundtrackCheckBoxUnchecked();
         }
     }
 }

@@ -47,11 +47,11 @@ public class UiUtils {
         showConfirmationDialog(context, context.getString(title), context.getString(message), callback);
     }
 
-    public static int getPixels(@NonNull Context context, @DimenRes int dimension) {
-        return context.getResources().getDimensionPixelSize(dimension);
-    }
-
     public interface OnDialogPositiveButtonClickedCallback {
         void onPositiveButtonClicked();
+    }
+
+    public static int getPixels(@NonNull Context context, @DimenRes int dimension) {
+        return context.getResources().getDimensionPixelSize(dimension);
     }
 }

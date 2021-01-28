@@ -10,7 +10,7 @@ public class OnBoardingAdapter extends FragmentStateAdapter {
 
     public static final int ON_BOARDING_ITEM_COUNT = 1;
 
-    public OnBoardingAdapter(@NonNull Fragment fragment) {
+    public OnBoardingAdapter(@NonNull OnBoardingFragment fragment) {
         super(fragment);
     }
 
