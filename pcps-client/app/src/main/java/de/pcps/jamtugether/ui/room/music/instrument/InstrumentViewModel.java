@@ -1,7 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -26,7 +26,6 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
-import de.pcps.jamtugether.audio.player.composite.RepeatSoundtrackCallback;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
@@ -93,6 +92,12 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Integer> uploadButtonVisibility;
 
     @NonNull
+    private final MutableLiveData<Boolean> loopCheckBoxIsEnabled = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> uncheckLoopCheckBox = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
@@ -102,17 +107,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     private List<SingleSoundtrack> previousSoundtracks;
 
     private boolean playWithCompositeSoundtrack;
-
     private boolean playWithCompositeSoundtrackInLoop;
 
     protected long startedMillis;
-
-    @NonNull
-    private final MutableLiveData<Boolean> repeatCompositeSoundtrack = new MutableLiveData<>(false);
-
-    @NonNull
-    private final MutableLiveData<Boolean> loopCheckboxIsEnabled = new MutableLiveData<>(false);
-
 
     public InstrumentViewModel(@NonNull Instrument instrument, @NonNull OnOwnSoundtrackChangedCallback callback) {
         AppInjector.inject(this);
@@ -149,11 +146,18 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
         this.playWithCompositeSoundtrack = checked;
-        loopCheckboxIsEnabled.setValue(checked);
+        loopCheckBoxIsEnabled.setValue(checked);
+        if (!checked) {
+            uncheckLoopCheckBox.setValue(true);
+        }
     }
 
     public void onPlayWithCompositeSoundtrackInLoopClicked(boolean checked) {
         this.playWithCompositeSoundtrackInLoop = checked;
+    }
+
+    public void onLoopCheckBoxUnchecked() {
+        uncheckLoopCheckBox.setValue(false);
     }
 
     @NonNull
@@ -174,9 +178,12 @@ public abstract class InstrumentViewModel extends ViewModel {
                     compositeSoundtrackPlayer.stop(compositeSoundtrack);
                     compositeSoundtrackPlayer.play(compositeSoundtrack);
                     if (playWithCompositeSoundtrackInLoop) {
-                        compositeSoundtrackPlayer.setRepeatCallback(() -> repeatCompositeSoundtrack.postValue(true));
+                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback((soundtrackPlayingThread) -> {
+                            Handler mainThreadHandler = new Handler(application.getApplicationContext().getMainLooper());
+                            mainThreadHandler.post(() -> repeatCompositeSoundtrack());
+                        });
                     } else {
-                        compositeSoundtrackPlayer.setRepeatCallback(null);
+                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
                     }
                 }
             }
@@ -184,12 +191,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     });
 
-
-    public void onRepeatCompositeSoundtrack() {
-        repeatCompositeSoundtrack.setValue(false);
-    }
-
-    void repeatCompositeSoundtrack() {
+    private void repeatCompositeSoundtrack() {
         if (playWithCompositeSoundtrackInLoop) {
             onCreateSoundtrackButtonClicked();
             if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
@@ -198,7 +200,6 @@ public abstract class InstrumentViewModel extends ViewModel {
             onCreateSoundtrackButtonClicked();
         }
     }
-
 
     @NonNull
     protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
@@ -223,7 +224,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 countDownTimerMillis.setValue(-1L);
                 startedSoundtrackCreation.setValue(false);
             }
-            compositeSoundtrackPlayer.setRepeatCallback(null);
+            compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
         } else {
             timerMillis.setValue(-1L);
 
@@ -355,6 +356,16 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     @NonNull
+    public LiveData<Boolean> getLoopCheckBoxIsEnabled() {
+        return loopCheckBoxIsEnabled;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUncheckLoopCheckBox() {
+        return uncheckLoopCheckBox;
+    }
+
+    @NonNull
     public LiveData<Integer> getProgressBarVisibility() {
         return progressBarVisibility;
     }
@@ -363,15 +374,4 @@ public abstract class InstrumentViewModel extends ViewModel {
     public LiveData<Error> getNetworkError() {
         return networkError;
     }
-
-    @NonNull
-    public LiveData<Boolean> getLoopCheckboxIsEnabled() {
-        return loopCheckboxIsEnabled;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getRepeatCompositeSoundtrack() {
-        return repeatCompositeSoundtrack;
-    }
-
 }

@@ -24,15 +24,18 @@ import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
  */
 @Singleton
 public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
-    private RepeatSoundtrackCallback repeatCallback;
 
     @NonNull
     private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
+
+    @Nullable
+    private OnSoundtrackFinishedCallback onSoundtrackFinishedCallback;
 
     @Inject
     public CompositeSoundtrackPlayer(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
         Observer<CompositeSoundtrack> compositeSoundtrackObserver = compositeSoundtrack -> {
             if (isPlaying()) {
+                // todo this is not working if sound has to be resumed after being stopped
                 stop();
                 play(compositeSoundtrack);
             }
@@ -46,8 +49,8 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         });
     }
 
-    public void setRepeatCallback(RepeatSoundtrackCallback repeatCallback){
-        this.repeatCallback=repeatCallback;
+    public void setOnSoundtrackFinishedCallback(OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
+        this.onSoundtrackFinishedCallback = onSoundtrackFinishedCallback;
     }
 
     @Nullable
@@ -117,8 +120,8 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getIDs());
         }
-        if(repeatCallback!=null) {
-            repeatCallback.onSoundtrackFinished();
+        if (onSoundtrackFinishedCallback != null) {
+            onSoundtrackFinishedCallback.onSoundtrackFinished(thread);
         }
     }
 }
