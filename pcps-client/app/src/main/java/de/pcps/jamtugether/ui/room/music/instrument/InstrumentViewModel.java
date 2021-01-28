@@ -220,7 +220,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void onUploadDialogShown() {
-        preferences.setUserSawUploadReminderDialog(false);
+        preferences.setUserSawUploadReminderDialog(true);
         showUploadReminderDialog.setValue(false);
     }
 
