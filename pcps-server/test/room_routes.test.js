@@ -105,26 +105,86 @@ describe('JamTUgether Tests', () => {
           password: '1234'
         })
         .end((err, res) => {
-          console.log('res: ' + res.body)
           res.should.have.status(201)
           should.not.exist(err)
 
-          console.log('res.body: ' + res.body)
+          // console.log('res.body: ' + JSON.stringify(res.body))
 
           chai.request(app)
             .delete('/api/room')
+            .set({ authorization: 'Bearer ' + res.body.token })
             .send({
-              roomID: '1',
-              password: '1234',
-              token: res.body.token
+              roomID: res.body.roomID,
+              password: '1234'
             })
             .end((err, res) => {
+              // console.log('res in delete: ' + JSON.stringify(res))
               res.should.have.status(200)
               res.body.should.be.a('object')
               res.body.should.have.property('description')
               should.not.exist(err)
+              done()
             })
-          done()
+        })
+    })
+
+    it('should return status 401, because of wrong password', (done) => {
+      chai.request(app)
+        .post('/api/create-room')
+        .send({
+          password: '1234'
+        })
+        .end((err, res) => {
+          res.should.have.status(201)
+          should.not.exist(err)
+
+          // console.log('res.body: ' + JSON.stringify(res.body))
+
+          chai.request(app)
+            .delete('/api/room')
+            .set({ authorization: 'Bearer ' + res.body.token })
+            .send({
+              roomID: res.body.roomID,
+              password: '1adsfasdfasdf'
+            })
+            .end((err, res) => {
+              // console.log('res in delete: ' + JSON.stringify(res))
+              res.should.have.status(401)
+              res.body.should.be.a('object')
+              res.body.should.have.property('description')
+              should.not.exist(err)
+              done()
+            })
+        })
+    })
+
+    it('should return status 410, room does not exist', (done) => {
+      chai.request(app)
+        .post('/api/create-room')
+        .send({
+          password: '1234'
+        })
+        .end((err, res) => {
+          res.should.have.status(201)
+          should.not.exist(err)
+
+          // console.log('res.body: ' + JSON.stringify(res.body))
+
+          chai.request(app)
+            .delete('/api/room')
+            .set({ authorization: 'Bearer ' + res.body.token })
+            .send({
+              roomID: 666,
+              password: '1234'
+            })
+            .end((err, res) => {
+              // console.log('res in delete: ' + JSON.stringify(res))
+              res.should.have.status(410)
+              res.body.should.be.a('object')
+              res.body.should.have.property('description')
+              should.not.exist(err)
+              done()
+            })
         })
     })
   })
@@ -144,7 +204,6 @@ describe('JamTUgether Tests', () => {
           password: '1234'
         })
         .end((err, res) => {
-          console.log('res: ' + res.body)
           res.should.have.status(201)
           should.not.exist(err)
           done()
