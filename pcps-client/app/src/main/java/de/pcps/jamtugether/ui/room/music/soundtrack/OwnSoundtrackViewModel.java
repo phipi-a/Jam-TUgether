@@ -1,7 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.soundtrack;
 
 import android.app.Application;
-import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,11 +15,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.audio.instrument.drums.Drums;
+import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
@@ -53,17 +53,17 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MusicianViewViewModel musicianViewViewModel;
 
-    @Nullable
-    private String helpDialogTitle;
-
-    @Nullable
-    private String helpDialogMessage;
-
     @NonNull
     private Instrument currentInstrument;
 
     @NonNull
-    private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> showFluteHelpDialog = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> showShakerHelpDialog = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> showDrumsHelpDialog = new MutableLiveData<>(false);
 
     public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
@@ -72,7 +72,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
 
         Instrument mainInstrument = preferences.getMainInstrument();
         instrumentOnChangeCallback.onInstrumentChanged(mainInstrument);
-        updateHelpDialogData(mainInstrument);
         currentInstrument = mainInstrument;
     }
 
@@ -80,21 +79,18 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     public void onInstrumentSelected(@NonNull Instrument instrument) {
         if (instrument != currentInstrument) {
             instrumentOnChangeCallback.onInstrumentChanged(instrument);
-            updateHelpDialogData(instrument);
             currentInstrument = instrument;
         }
     }
 
-    private void updateHelpDialogData(@NonNull Instrument instrument) {
-        Context context = application.getApplicationContext();
-
-        String instrumentName = context.getString(instrument.getName());
-        helpDialogTitle = context.getString(R.string.play_instrument_format, instrumentName);
-        helpDialogMessage = context.getString(instrument.getHelpMessage());
-    }
-
     public void onHelpButtonClicked() {
-        showHelpDialog.setValue(true);
+        if (currentInstrument == Flute.getInstance()) {
+            showFluteHelpDialog.setValue(true);
+        } else if (currentInstrument == Drums.getInstance()) {
+            showDrumsHelpDialog.setValue(true);
+        } else {
+            showShakerHelpDialog.setValue(true);
+        }
     }
 
     public void onExpandButtonClicked() {
@@ -105,8 +101,16 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         musicianViewViewModel.setSoundtracksExpanded(!soundtracksExpanded);
     }
 
-    public void onHelpDialogShown() {
-        showHelpDialog.setValue(false);
+    public void onFluteHelpDialogShown() {
+        showFluteHelpDialog.setValue(false);
+    }
+
+    public void onShakerHelpDialogShown() {
+        showShakerHelpDialog.setValue(false);
+    }
+
+    public void onDrumsHelpDialogShown() {
+        showDrumsHelpDialog.setValue(false);
     }
 
     public void onSoundtrackRepositoryNetworkErrorShown() {
@@ -128,19 +132,19 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         return roomRepository.getRoomID();
     }
 
-    @Nullable
-    public String getHelpDialogTitle() {
-        return helpDialogTitle;
-    }
-
-    @Nullable
-    public String getHelpDialogMessage() {
-        return helpDialogMessage;
+    @NonNull
+    public LiveData<Boolean> getShowFluteHelpDialog() {
+        return showFluteHelpDialog;
     }
 
     @NonNull
-    public LiveData<Boolean> getShowHelpDialog() {
-        return showHelpDialog;
+    public LiveData<Boolean> getShowShakerHelpDialog() {
+        return showShakerHelpDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowDrumsHelpDialog() {
+        return showDrumsHelpDialog;
     }
 
     @NonNull

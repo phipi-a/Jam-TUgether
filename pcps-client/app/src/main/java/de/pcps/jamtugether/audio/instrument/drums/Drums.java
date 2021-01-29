@@ -23,7 +23,7 @@ public class Drums extends Instrument {
     private static Drums instance;
 
     public Drums() {
-        super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
+        super(1, R.string.instrument_drums, "drums", "drums");
     }
 
     @RawRes
