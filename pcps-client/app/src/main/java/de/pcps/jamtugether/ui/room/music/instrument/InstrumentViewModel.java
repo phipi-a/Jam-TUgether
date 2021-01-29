@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -31,9 +32,9 @@ import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
-import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
 import de.pcps.jamtugether.timer.JamTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
@@ -98,6 +99,18 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showUploadReminderDialog = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> compositeSoundtrackCheckBoxIsEnabled = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> uncheckCompositeSoundtrackCheckBox = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> loopCheckBoxIsEnabled = new MutableLiveData<>(false);
+
+    @NonNull
+    private final MutableLiveData<Boolean> uncheckLoopCheckBox = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
@@ -107,6 +120,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     private List<SingleSoundtrack> previousSoundtracks;
 
     private boolean playWithCompositeSoundtrack;
+    private boolean playWithCompositeSoundtrackInLoop;
 
     protected long startedMillis;
 
@@ -140,11 +154,35 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
-        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> this.compositeSoundtrack = compositeSoundtrack);
+        soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
+            this.compositeSoundtrack = compositeSoundtrack;
+            compositeSoundtrackCheckBoxIsEnabled.setValue(!compositeSoundtrack.isEmpty());
+            if (compositeSoundtrack.isEmpty()) {
+                uncheckCompositeSoundtrackCheckBox.setValue(true);
+                uncheckLoopCheckBox.setValue(true);
+                loopCheckBoxIsEnabled.setValue(false);
+            }
+        });
     }
 
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
         this.playWithCompositeSoundtrack = checked;
+        loopCheckBoxIsEnabled.setValue(checked);
+        if (!checked) {
+            uncheckLoopCheckBox.setValue(true);
+        }
+    }
+
+    public void onPlayWithCompositeSoundtrackInLoopClicked(boolean checked) {
+        this.playWithCompositeSoundtrackInLoop = checked;
+    }
+
+    public void onLoopCheckBoxUnchecked() {
+        uncheckLoopCheckBox.setValue(false);
+    }
+
+    public void onCompositeSoundtrackCheckBoxUnchecked() {
+        uncheckCompositeSoundtrackCheckBox.setValue(false);
     }
 
     @NonNull
@@ -164,11 +202,29 @@ public abstract class InstrumentViewModel extends ViewModel {
                 if (compositeSoundtrack != null) {
                     compositeSoundtrackPlayer.stop(compositeSoundtrack);
                     compositeSoundtrackPlayer.play(compositeSoundtrack);
+                    if (playWithCompositeSoundtrackInLoop) {
+                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback((soundtrackPlayingThread) -> {
+                            Handler mainThreadHandler = new Handler(application.getApplicationContext().getMainLooper());
+                            mainThreadHandler.post(() -> repeatCompositeSoundtrack());
+                        });
+                    } else {
+                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
+                    }
                 }
             }
             onTimerStarted();
         }
     });
+
+    private void repeatCompositeSoundtrack() {
+        if (playWithCompositeSoundtrackInLoop) {
+            onRecordSoundtrackButtonClicked();
+            if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
+                onUploadButtonClicked();
+            }
+            onRecordSoundtrackButtonClicked();
+        }
+    }
 
     @NonNull
     protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
@@ -183,7 +239,6 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     });
 
-
     public void onRecordSoundtrackButtonClicked() {
         if (recordingSoundtrack()) {
             if (countDownTimer.isStopped()) {
@@ -194,6 +249,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 countDownTimerMillis.setValue(-1L);
                 recordingSoundtrack.setValue(false);
             }
+            compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
             if (!preferences.userSawUploadReminderDialog()) {
                 showUploadReminderDialog.setValue(true);
             }
@@ -225,21 +281,28 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void onUploadButtonClicked() {
+        uploadTrack(true);
+    }
+
+    public void uploadTrack(boolean manualUpload) {
         User user = roomRepository.getUser();
         if (ownSoundtrack == null || user == null) {
             return;
         }
 
         SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
-
-        progressBarVisibility.setValue(View.VISIBLE);
+        if (manualUpload) {
+            progressBarVisibility.setValue(View.VISIBLE);
+        }
         uploadButtonEnabled.setValue(false);
 
         List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
         soundtrackRepository.uploadSoundtracks(soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
-                progressBarVisibility.setValue(View.INVISIBLE);
+                if (manualUpload) {
+                    progressBarVisibility.setValue(View.INVISIBLE);
+                }
                 soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
 
                 // add to local list in order to be visible immediately
@@ -252,7 +315,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Error error) {
-                progressBarVisibility.setValue(View.INVISIBLE);
+                if (manualUpload) {
+                    progressBarVisibility.setValue(View.INVISIBLE);
+                }
                 uploadButtonEnabled.setValue(true);
                 networkError.setValue(error);
             }
@@ -262,6 +327,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected void finishSoundtrack() {
         if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
+            if (playWithCompositeSoundtrack && playWithCompositeSoundtrackInLoop && compositeSoundtrack != null) {
+                ownSoundtrack.removeEnd(compositeSoundtrack.getLength());
+            }
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             latestSoundtracksDatabase.onOwnSoundtrackUpdated(ownSoundtrack);
             uploadButtonEnabled.setValue(true);
@@ -324,6 +392,26 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     public LiveData<Boolean> getShowUploadReminderDialog() {
         return showUploadReminderDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getCompositeSoundtrackCheckBoxIsEnabled() {
+        return compositeSoundtrackCheckBoxIsEnabled;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUncheckCompositeSoundtrackCheckBox() {
+        return uncheckCompositeSoundtrackCheckBox;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getLoopCheckBoxIsEnabled() {
+        return loopCheckBoxIsEnabled;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getUncheckLoopCheckBox() {
+        return uncheckLoopCheckBox;
     }
 
     @NonNull

@@ -59,6 +59,8 @@
 
     <string name="play_with_composite_soundtrack">with soundtrack</string>
 
+    <string name="loop_record_with_composite_soundtrack">loop</string>
+
     <string name="room_format">Room %d</string>
 
     <string name="leave_room">Leave room</string>
