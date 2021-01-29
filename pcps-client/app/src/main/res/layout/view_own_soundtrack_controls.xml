@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,12 +52,12 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.onCreateSoundtrackButtonClicked()}"
+                android:onClick="@{() -> viewModel.onRecordSoundtrackButtonClicked()}"
                 android:padding="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startedCreatingSoundtrack="@{viewModel.startedSoundtrackCreation}"
+                app:startedCreatingSoundtrack="@{viewModel.recordingSoundtrack}"
                 tools:ignore="ContentDescription" />
 
             <TextView

@@ -18,14 +18,17 @@ public class OnBoardingAdapter extends FragmentStateAdapter {
 
     public static final int ON_BOARDING_ITEM_COUNT = 9;
 
-    public OnBoardingAdapter(@NonNull Fragment fragment) {
+    // todo
+    //  replace screenshots with current version
+    //  add english screenshots
+
+    public OnBoardingAdapter(@NonNull OnBoardingFragment fragment) {
         super(fragment);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        // todo add fragments
         switch (position) {
             case 0:
                 return OnBoardingWelcomeFragment.newInstance();

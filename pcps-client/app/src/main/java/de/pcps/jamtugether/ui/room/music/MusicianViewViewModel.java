@@ -28,6 +28,9 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(EMPTY_OWN_SOUNDTRACK);
 
+    @NonNull
+    private final MutableLiveData<Boolean> soundtracksExpanded = new MutableLiveData<>(false);
+
     @Override
     public void onInstrumentChanged(@NonNull Instrument instrument) {
         ownSoundtrack.setValue(EMPTY_OWN_SOUNDTRACK);
@@ -43,6 +46,10 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @Override
     public void onOwnSoundtrackChanged(@NonNull SingleSoundtrack ownSoundtrack) {
         this.ownSoundtrack.setValue(ownSoundtrack);
+    }
+
+    public void setSoundtracksExpanded(boolean expanded) {
+        soundtracksExpanded.setValue(expanded);
     }
 
     public void onFluteFragmentShown() {
@@ -75,5 +82,10 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     public LiveData<SingleSoundtrack> getOwnSoundtrack() {
         return ownSoundtrack;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getSoundtracksExpanded() {
+        return soundtracksExpanded;
     }
 }

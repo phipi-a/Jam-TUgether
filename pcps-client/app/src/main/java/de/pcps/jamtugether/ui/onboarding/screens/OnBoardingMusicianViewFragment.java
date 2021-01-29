@@ -22,6 +22,6 @@ public class OnBoardingMusicianViewFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.onboarding_musician_view_fragment,container, false);
+        return inflater.inflate(R.layout.on_boarding_musician_view_fragment,container, false);
     }
 }

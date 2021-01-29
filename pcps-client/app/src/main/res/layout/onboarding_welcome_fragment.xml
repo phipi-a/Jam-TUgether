@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_height="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
             android:src="@drawable/ic_launcher" />
 
         <TextView
             style="@style/JamTugetherTitleStyle"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/onboarding_welcome_message" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/on_boarding_welcome_message" />
     </LinearLayout>
 </ScrollView>

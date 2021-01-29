@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="de.pcps.jamtugether.ui.room.music.instrument.flute.FluteViewModel" />
+
+        <variable
+            name="musicianViewViewModel"
+            type="de.pcps.jamtugether.ui.room.music.MusicianViewViewModel" />
+    </data>
+
+    <de.pcps.jamtugether.ui.room.music.instrument.flute.view.FluteView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:soundtracksExpanded="@{musicianViewViewModel.soundtracksExpanded}">
+
+        <!-- the margins are being calculated later -->
+
+        <ImageView
+            android:id="@+id/flute_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/flute"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:touchListener="@{viewModel}" />
+
+        <ImageView
+            android:id="@+id/flute_fill_image_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/flute_clip"
+            app:layout_constraintBottom_toBottomOf="@id/flute_image_view"
+            app:layout_constraintEnd_toEndOf="@id/flute_image_view"
+            app:layout_constraintStart_toStartOf="@id/flute_image_view"
+            app:layout_constraintTop_toTopOf="@id/flute_image_view"
+            app:pitchLevel="@{viewModel.pitchLevel}" />
+
+        <LinearLayout
+            android:id="@+id/note_labels_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@id/flute_image_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </de.pcps.jamtugether.ui.room.music.instrument.flute.view.FluteView>
+</layout>

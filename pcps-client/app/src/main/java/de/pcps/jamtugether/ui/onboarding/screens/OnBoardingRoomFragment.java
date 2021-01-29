@@ -22,6 +22,6 @@ public class OnBoardingRoomFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.onboarding_room_fragment,container, false);
+        return inflater.inflate(R.layout.on_boarding_room_fragment,container, false);
     }
 }

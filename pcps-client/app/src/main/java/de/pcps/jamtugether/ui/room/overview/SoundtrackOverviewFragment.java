@@ -77,7 +77,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 if (!viewModel.getCompositionNetworkErrorShown()) {
-                    UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                    UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                     viewModel.onCompositionNetworkErrorShown();
                 }
             }
@@ -85,21 +85,21 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
         });
 
         viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
             if (showSoundtrackDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
+                UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
                 viewModel.onSoundtrackDeletionConfirmDialogShown();
             }
         });
 
         viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
             if (showRoomDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(activity, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
+                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
                 viewModel.onRoomDeletionConfirmDialogShown();
             }
         });

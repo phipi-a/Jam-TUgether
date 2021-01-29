@@ -45,6 +45,20 @@
     <dimen name="soundtrack_view_drums_hat_height">2dp</dimen>
     <dimen name="soundtrack_view_drums_cymbal_height">3dp</dimen>
 
+    <dimen name="own_soundtrack_controls_margin_top">10dp</dimen>
+
+    <dimen name="flute_view_default_height">250dp</dimen>
+    <dimen name="shaker_view_default_height">250dp</dimen>
+
+    <dimen name="flute_view_margin_top">20dp</dimen>
+    <dimen name="flute_view_padding_bottom">20dp</dimen>
+
+    <dimen name="shaker_view_margin_top">20dp</dimen>
+    <dimen name="shaker_view_padding_bottom">20dp</dimen>
+
+    <dimen name="drums_view_margin_top">20dp</dimen>
+    <dimen name="drums_view_padding_bottom">20dp</dimen>
+
     <dimen name="drums_element_width_default">100dp</dimen>
     <dimen name="drums_element_padding">10dp</dimen>
     <dimen name="drums_element_margin">10dp</dimen>

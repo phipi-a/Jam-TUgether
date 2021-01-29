@@ -17,6 +17,7 @@ public class Preferences {
 
     private static final String USER_COMPLETED_ON_BOARDING_KEY = "pref_key_user_completed_on_boarding";
     private static final String MAIN_INSTRUMENT_KEY = "pref_key_main_instrument";
+    private static final String USER_SAW_UPLOAD_REMINDER_DIALOG = "pref_key_user_saw_upload_reminder_dialog";
 
     @NonNull
     private final SharedPreferences sharedPreferences;
@@ -32,6 +33,14 @@ public class Preferences {
 
     public void setUserCompletedOnBoarding(boolean value) {
         sharedPreferences.edit().putBoolean(USER_COMPLETED_ON_BOARDING_KEY, value).apply();
+    }
+
+    public boolean userSawUploadReminderDialog() {
+        return sharedPreferences.getBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, false);
+    }
+
+    public void setUserSawUploadReminderDialog(boolean value) {
+        sharedPreferences.edit().putBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, value).apply();
     }
 
     @NonNull

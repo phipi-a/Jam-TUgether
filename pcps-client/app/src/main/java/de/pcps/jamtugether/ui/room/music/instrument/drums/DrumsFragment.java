@@ -22,7 +22,7 @@ public class DrumsFragment extends InstrumentFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(onOwnSoundtrackChangedCallback);
+        DrumsViewModel.Factory drumsViewModelFactory = new DrumsViewModel.Factory(musicianViewViewModel);
         viewModel = new ViewModelProvider(this, drumsViewModelFactory).get(DrumsViewModel.class);
     }
 
