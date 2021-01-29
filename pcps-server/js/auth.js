@@ -10,7 +10,7 @@ const PwErr = new Error('too large')
 exports.PwErr = PwErr
 
 exports.checkPwdLen = function (password) {
-  if (password.length > 30) {
+  if (password.length > 30 || password.length < 1) {
     throw PwErr
   }
 }
