@@ -87,9 +87,8 @@ public class FluteView extends ConstraintLayout {
         noteLabelsLayoutParams.height = fluteViewHeight;
         noteLabelsLayout.setLayoutParams(noteLabelsLayoutParams);
 
-        // update constraints
         constraintSet.clone(this);
-        constraintSet.connect(R.id.note_labels_layout, ConstraintSet.TOP, this.getId(), ConstraintSet.TOP);
+        constraintSet.connect(R.id.note_labels_layout, ConstraintSet.TOP, R.id.flute_view, ConstraintSet.TOP);
         constraintSet.connect(R.id.note_labels_layout, ConstraintSet.START, R.id.flute_image_view, ConstraintSet.END);
         constraintSet.connect(R.id.flute_image_view, ConstraintSet.TOP, R.id.note_labels_layout, ConstraintSet.TOP, noteLabelHeight / 2);
         constraintSet.connect(R.id.flute_image_view, ConstraintSet.BOTTOM, R.id.note_labels_layout, ConstraintSet.BOTTOM, noteLabelHeight / 2);

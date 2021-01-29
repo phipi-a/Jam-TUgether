@@ -16,6 +16,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shaker_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -32,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.pcps.jamtugether.ui.room.music.instrument.shaker.view.ShakerView
-            android:id="@+id/iv_shaker"
+            android:id="@+id/shaker_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/shaker_view_margin_top"
