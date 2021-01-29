@@ -40,13 +40,13 @@ public class OwnSoundtrackFragment extends BaseFragment {
         AppInjector.inject(this);
 
         Fragment musicianFragment = getParentFragment();
-        if(musicianFragment == null) {
+        if (musicianFragment == null) {
             return;
         }
 
         musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
-        OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(musicianViewViewModel);
+        OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(musicianViewViewModel, musicianViewViewModel);
         viewModel = new ViewModelProvider(this, ownSoundtrackViewModelFactory).get(OwnSoundtrackViewModel.class);
     }
 
@@ -56,6 +56,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+        binding.setMusicianViewViewModel(musicianViewViewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
@@ -65,7 +66,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
             if (showHelpDialog) {
                 String helpDialogTitle = viewModel.getHelpDialogTitle();
                 String helpDialogMessage = viewModel.getHelpDialogMessage();
-                if(helpDialogTitle == null || helpDialogMessage == null) {
+                if (helpDialogTitle == null || helpDialogMessage == null) {
                     return;
                 }
                 UiUtils.showInfoDialog(context, helpDialogTitle, helpDialogMessage);

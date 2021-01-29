@@ -13,14 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public abstract class InstrumentFragment extends BaseFragment {
 
     protected InstrumentViewModel viewModel;
 
-    protected OnOwnSoundtrackChangedCallback onOwnSoundtrackChangedCallback;
+    protected MusicianViewViewModel musicianViewViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public abstract class InstrumentFragment extends BaseFragment {
             return;
         }
 
-        onOwnSoundtrackChangedCallback = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
+        musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
     }
 
     @Nullable

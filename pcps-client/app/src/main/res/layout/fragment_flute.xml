@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <include
             android:id="@+id/own_soundtrack_controls_layout"
@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/own_soundtrack_controls_margin_top"
             android:layout_marginEnd="@dimen/soundtrack_item_margin_start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +24,9 @@
             android:id="@+id/flute_view"
             layout="@layout/view_flute"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/flute_view_margin_top"
+            android:paddingBottom="@dimen/flute_view_padding_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout" />

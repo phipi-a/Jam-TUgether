@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
+import de.pcps.jamtugether.ui.room.music.instrument.flute.view.FluteView;
+import de.pcps.jamtugether.ui.room.music.instrument.shaker.view.ShakerView;
+
 public class FluteDataBindingUtils {
 
     @SuppressLint("ClickableViewAccessibility")
@@ -26,5 +29,10 @@ public class FluteDataBindingUtils {
     public static void setPitchPercentage(@NonNull ImageView fluteFillImageView, int pitchLevel) {
         ClipDrawable clipDrawable = (ClipDrawable) fluteFillImageView.getDrawable();
         clipDrawable.setLevel(pitchLevel);
+    }
+
+    @BindingAdapter("soundtracksExpanded")
+    public static void setSoundtracksExpanded(@NonNull FluteView fluteView, boolean soundtracksExpanded) {
+        fluteView.setSoundtracksExpanded(soundtracksExpanded);
     }
 }

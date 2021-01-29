@@ -2,6 +2,7 @@ package de.pcps.jamtugether.ui.room.music.soundtrack;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
+import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.utils.TimeUtils;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSelectionListener {
@@ -48,6 +50,9 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final Instrument.OnChangeCallback instrumentOnChangeCallback;
 
+    @NonNull
+    private final MusicianViewViewModel musicianViewViewModel;
+
     @Nullable
     private String helpDialogTitle;
 
@@ -60,9 +65,10 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MutableLiveData<Boolean> showHelpDialog = new MutableLiveData<>(false);
 
-    public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback) {
+    public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
         this.instrumentOnChangeCallback = instrumentOnChangeCallback;
+        this.musicianViewViewModel = musicianViewViewModel;
 
         Instrument mainInstrument = preferences.getMainInstrument();
         instrumentOnChangeCallback.onInstrumentChanged(mainInstrument);
@@ -89,6 +95,14 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
 
     public void onHelpButtonClicked() {
         showHelpDialog.setValue(true);
+    }
+
+    public void onExpandButtonClicked() {
+        Boolean soundtracksExpanded = musicianViewViewModel.getSoundtracksExpanded().getValue();
+        if (soundtracksExpanded == null) {
+            return;
+        }
+        musicianViewViewModel.setSoundtracksExpanded(!soundtracksExpanded);
     }
 
     public void onHelpDialogShown() {
@@ -130,6 +144,11 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     }
 
     @NonNull
+    public LiveData<Integer> getSoundtracksVisibility() {
+        return Transformations.map(musicianViewViewModel.getSoundtracksExpanded(), soundtracksExpanded -> soundtracksExpanded ? View.VISIBLE : View.GONE);
+    }
+
+    @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return soundtrackRepository.getCompositeSoundtrack();
     }
@@ -153,8 +172,12 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         @NonNull
         private final Instrument.OnChangeCallback instrumentOnChangeCallback;
 
-        public Factory(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback) {
+        @NonNull
+        private final MusicianViewViewModel musicianViewViewModel;
+
+        public Factory(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
             this.instrumentOnChangeCallback = instrumentOnChangeCallback;
+            this.musicianViewViewModel = musicianViewViewModel;
         }
 
         @SuppressWarnings("unchecked")
@@ -162,7 +185,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(OwnSoundtrackViewModel.class)) {
-                return (T) new OwnSoundtrackViewModel(instrumentOnChangeCallback);
+                return (T) new OwnSoundtrackViewModel(instrumentOnChangeCallback, musicianViewViewModel);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
