@@ -19,8 +19,8 @@
         android:id="@+id/shaker_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp">
+        android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+        android:layout_marginEnd="@dimen/soundtrack_item_margin_start">
 
         <include
             android:id="@+id/own_soundtrack_controls_layout"

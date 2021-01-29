@@ -22,6 +22,7 @@
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
+    <string name="instrument_piano">Piano</string>
 
     <string name="settings">Einstellungen</string>
     <string name="main_instrument">Hauptinstrument</string>
@@ -45,6 +46,7 @@
     <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
     <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
     <string name="play_shaker_help">Schüttel dein Handy.</string>
+    <string name="play_piano_help">Piano Help</string>
 
     <string name="composite">Gesamt</string>
     <string name="own_soundtrack">Eigene Tonspur</string>

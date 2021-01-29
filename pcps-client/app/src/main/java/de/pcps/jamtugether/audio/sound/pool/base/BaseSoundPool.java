@@ -41,6 +41,8 @@ public abstract class BaseSoundPool {
 
     protected float volume = 1;
 
+    protected int loop = 0;
+
     public BaseSoundPool(@NonNull Context context, int maxStreams, @NonNull SoundResource[] soundResources) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -65,7 +67,7 @@ public abstract class BaseSoundPool {
     }
 
     public int play(int soundID) {
-        return soundPool.play(soundID, volume, volume, 0, 0, 1);
+        return soundPool.play(soundID, volume, volume, 0, loop, 1);
     }
 
     public void playSoundRes(int soundResID, @Nullable OnSoundPlayedCallback callback) {

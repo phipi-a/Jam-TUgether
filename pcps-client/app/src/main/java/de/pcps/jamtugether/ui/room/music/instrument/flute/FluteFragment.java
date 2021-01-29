@@ -41,11 +41,11 @@ public class FluteFragment extends InstrumentFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         FragmentFluteBinding binding = FragmentFluteBinding.inflate(inflater, container, false);
         FluteViewModel fluteViewModel = (FluteViewModel) viewModel;
+        binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
+        binding.ownSoundtrackControlsLayout.setViewModel(viewModel);
         binding.fluteView.setLifecycleOwner(getViewLifecycleOwner());
         binding.fluteView.setViewModel(fluteViewModel);
         binding.fluteView.setMusicianViewViewModel(musicianViewViewModel);
-        binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
-        binding.ownSoundtrackControlsLayout.setViewModel(viewModel);
 
         if (savedInstanceState == null) {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -26,6 +27,9 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     private final MutableLiveData<Boolean> showShakerFragment = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> showPianoFragment = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<SingleSoundtrack> ownSoundtrack = new MutableLiveData<>(EMPTY_OWN_SOUNDTRACK);
 
     @NonNull
@@ -40,6 +44,8 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
             showDrumsFragment.setValue(true);
         } else if (instrument == Shaker.getInstance()) {
             showShakerFragment.setValue(true);
+        } else if(instrument == Piano.getInstance()) {
+            showPianoFragment.setValue(true);
         }
     }
 
@@ -64,6 +70,10 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
         showShakerFragment.setValue(false);
     }
 
+    public void onPianoFragmentShown() {
+        showPianoFragment.setValue(false);
+    }
+
     @NonNull
     public LiveData<Boolean> getShowFluteFragment() {
         return showFluteFragment;
@@ -77,6 +87,11 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
     @NonNull
     public LiveData<Boolean> getShowShakerFragment() {
         return showShakerFragment;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowPianoFragment() {
+        return showPianoFragment;
     }
 
     @NonNull

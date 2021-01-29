@@ -31,6 +31,15 @@ public class Sound {
     }
 
     @Override
+    public String toString() {
+        return "Sound{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", pitch=" + pitch +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(startTime, endTime, pitch);
     }

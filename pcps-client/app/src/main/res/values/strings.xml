@@ -23,6 +23,7 @@
     <string name="instrument_flute">Flute</string>
     <string name="instrument_drums">Drums</string>
     <string name="instrument_shaker">Shaker</string>
+    <string name="instrument_piano">Piano</string>
 
     <string name="settings">Settings</string>
     <string name="main_instrument">Main instrument</string>
@@ -46,6 +47,7 @@
     <string name="play_flute_help">Blow into you microphone and control the pitch level with the regulator.</string>
     <string name="play_shaker_help">Shake your phone.</string>
     <string name="play_drums_help">Click on the elements to create their respective sounds.</string>
+    <string name="play_piano_help">Piano Help</string>
 
     <string name="composite">Composite</string>
     <string name="own_soundtrack">Own soundtrack</string>

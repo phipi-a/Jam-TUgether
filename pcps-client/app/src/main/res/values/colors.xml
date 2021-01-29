@@ -18,6 +18,7 @@
     <color name="soundtrackFluteColor">@color/blue</color>
     <color name="soundtrackDrumsColor">@color/red</color>
     <color name="soundtrackShakerColor">@color/green</color>
+    <color name="soundtrackPianoColor">@color/white</color>
 
     <color name="soundtracksFetchingProgressBarColor">@color/red</color>
     <color name="soundtracksFetchingProgressBarBackgroundColor">@color/gray</color>
