@@ -43,6 +43,7 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
+            pagePosition.setValue(position);
             pageIndicators.setValue(PageIndicator.createList(OnBoardingAdapter.ON_BOARDING_ITEM_COUNT, position));
 
             if (position == 0) {

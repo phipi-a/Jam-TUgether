@@ -23,7 +23,7 @@ public class Flute extends Instrument {
     private static Flute instance;
 
     public Flute() {
-        super(0, R.string.instrument_flute, R.string.play_flute_help, "flute", "flute");
+        super(0, R.string.instrument_flute, "flute", "flute");
     }
 
     @RawRes

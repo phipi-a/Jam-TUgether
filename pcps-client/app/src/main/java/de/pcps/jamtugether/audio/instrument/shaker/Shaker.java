@@ -18,7 +18,7 @@ public class Shaker extends Instrument {
     private static Shaker instance;
 
     public Shaker() {
-        super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
+        super(2, R.string.instrument_shaker, "shaker", "shaker");
     }
 
     @RawRes

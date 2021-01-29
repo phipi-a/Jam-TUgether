@@ -16,9 +16,6 @@ public abstract class Instrument {
     @StringRes
     private final int name;
 
-    @StringRes
-    private final int helpMessage;
-
     @NonNull
     private final String preferenceValue;
 
@@ -28,10 +25,9 @@ public abstract class Instrument {
     @Nullable
     protected BaseSoundPool soundPool;
 
-    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
+    public Instrument(int ordinal, @StringRes int name, @NonNull String preferenceValue, @NonNull String serverString) {
         this.ordinal = ordinal;
         this.name = name;
-        this.helpMessage = helpMessage;
         this.preferenceValue = preferenceValue;
         this.serverString = serverString;
     }
@@ -59,11 +55,6 @@ public abstract class Instrument {
     @StringRes
     public int getName() {
         return name;
-    }
-
-    @StringRes
-    public int getHelpMessage() {
-        return helpMessage;
     }
 
     @NonNull
