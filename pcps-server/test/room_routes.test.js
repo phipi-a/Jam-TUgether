@@ -5,14 +5,6 @@ chai.use(chaiHttp)
 const RoomSchema = require('../model/room.model')
 const app = require('../server.js')
 
-// Test routes
-function emptyDatabase (done) {
-  RoomSchema.deleteMany({}, (err) => {
-    if (err) console.log('ERROR: ' + err)
-    return done()
-  })
-}
-
 describe('JamTUgether Tests', () => {
   /**
    * Test create-room
@@ -45,6 +37,21 @@ describe('JamTUgether Tests', () => {
           res.should.have.status(413)
           res.body.should.be.an('object')
           res.body.should.have.property('description').eql('Password too large.')
+          should.not.exist(err)
+          done()
+        })
+    })
+
+    it('should return status 413, no pw', (done) => { // no password send
+      chai.request(app)
+        .post('/api/create-room')
+        .send({
+          password: ''
+        })
+        .end((err, res) => {
+          res.should.have.status(413)
+          res.body.should.be.an('object')
+          // res.body.should.have.property('description').eql('Password too large.')
           should.not.exist(err)
           done()
         })

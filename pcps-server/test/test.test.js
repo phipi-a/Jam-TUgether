@@ -5,7 +5,7 @@ chai.use(chaiHttp)
 const should = chai.should()
 const app = require('../server.js')
 
-describe('JAMTUgether Tests', function () {
+describe('JAMTUgether Tests 2', function () {
   describe('POST /create-room', function () {
     it('should return status 201', function (done) { // one room successful
       chai.request(app)
