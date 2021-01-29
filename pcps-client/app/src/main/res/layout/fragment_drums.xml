@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
 
@@ -22,18 +22,17 @@
             layout="@layout/view_own_soundtrack_controls"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/own_soundtrack_controls_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.pcps.jamtugether.ui.room.music.instrument.drums.view.DrumsView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/drums_view_margin_top"
             android:orientation="horizontal"
-            android:paddingBottom="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingBottom="@dimen/drums_view_padding_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout">

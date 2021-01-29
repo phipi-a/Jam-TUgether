@@ -10,6 +10,10 @@
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel" />
 
+        <variable
+            name="musicianViewViewModel"
+            type="de.pcps.jamtugether.ui.room.music.MusicianViewViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,7 +73,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
             android:onClick="@{() -> viewModel.onExpandButtonClicked()}"
-            android:src="@{viewModel.soundtracksExpanded ? @drawable/ic_expand_less : @drawable/ic_expand_more}"
+            android:src="@{musicianViewViewModel.soundtracksExpanded ? @drawable/ic_expand_less : @drawable/ic_expand_more}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/room_id_text_view"
             app:tint="@color/iconColor" />

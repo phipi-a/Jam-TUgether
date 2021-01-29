@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
+import de.pcps.jamtugether.ui.room.music.instrument.flute.view.FluteView;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteFragment extends InstrumentFragment {
@@ -29,7 +30,7 @@ public class FluteFragment extends InstrumentFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(onOwnSoundtrackChangedCallback);
+        FluteViewModel.Factory fluteViewModelFactory = new FluteViewModel.Factory(musicianViewViewModel);
         viewModel = new ViewModelProvider(this, fluteViewModelFactory).get(FluteViewModel.class);
         getLifecycle().addObserver((FluteViewModel) viewModel);
     }
@@ -42,6 +43,7 @@ public class FluteFragment extends InstrumentFragment {
         FluteViewModel fluteViewModel = (FluteViewModel) viewModel;
         binding.fluteView.setLifecycleOwner(getViewLifecycleOwner());
         binding.fluteView.setViewModel(fluteViewModel);
+        binding.fluteView.setMusicianViewViewModel(musicianViewViewModel);
         binding.ownSoundtrackControlsLayout.setLifecycleOwner(getViewLifecycleOwner());
         binding.ownSoundtrackControlsLayout.setViewModel(viewModel);
 

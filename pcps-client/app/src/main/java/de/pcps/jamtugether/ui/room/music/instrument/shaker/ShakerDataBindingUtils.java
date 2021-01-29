@@ -7,14 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.ui.room.music.instrument.shaker.view.ShakerView;
 
 public class ShakerDataBindingUtils {
 
     @BindingAdapter(value = {"intensity", "viewModel"})
-    public static void setIntensity(@NonNull ImageView shakerImageView, float intensity, @NonNull ShakerViewModel shakerViewModel) {
+    public static void setIntensity(@NonNull ShakerView shakerView, float intensity, @NonNull ShakerViewModel shakerViewModel) {
         if (intensity > 0) {
-            shakerImageView.startAnimation(AnimationUtils.loadAnimation(shakerImageView.getContext(), R.anim.shake));
+            shakerView.startAnimation(AnimationUtils.loadAnimation(shakerView.getContext(), R.anim.shake));
             shakerViewModel.onShakeAnimationStarted();
         }
+    }
+
+    @BindingAdapter("soundtracksExpanded")
+    public static void setSoundtracksExpanded(@NonNull ShakerView shakerView, boolean soundtracksExpanded) {
+        shakerView.setSoundtracksExpanded(soundtracksExpanded);
     }
 }

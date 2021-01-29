@@ -9,11 +9,15 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerViewModel" />
+
+        <variable
+            name="musicianViewViewModel"
+            type="de.pcps.jamtugether.ui.room.music.MusicianViewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
 
@@ -22,25 +26,25 @@
             layout="@layout/view_own_soundtrack_controls"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/own_soundtrack_controls_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <de.pcps.jamtugether.ui.room.music.instrument.shaker.view.ShakerView
             android:id="@+id/iv_shaker"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/shaker_view_margin_top"
             android:adjustViewBounds="true"
+            android:paddingBottom="@dimen/shaker_view_padding_bottom"
             android:scaleType="fitStart"
             android:src="@drawable/shaker"
             app:intensity="@{viewModel.shakeIntensity}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout"
+            app:soundtracksExpanded="@{musicianViewViewModel.soundtracksExpanded}"
             app:viewModel="@{viewModel}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
