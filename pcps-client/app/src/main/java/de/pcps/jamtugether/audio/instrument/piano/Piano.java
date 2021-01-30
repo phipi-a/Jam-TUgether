@@ -22,7 +22,7 @@ public class Piano extends Instrument {
     private static Piano instance;
 
     public Piano() {
-        super(3, R.string.instrument_piano, R.string.play_piano_help, "piano", "piano");
+        super(3, R.string.instrument_piano, "piano", "piano");
     }
 
     @Override
