@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.ui.base.BaseDialogFragment;
 
-public class ShakerHelpFragment extends DialogFragment {
+public class ShakerHelpFragment extends BaseDialogFragment {
 
     @NonNull
     public static ShakerHelpFragment newInstance() {

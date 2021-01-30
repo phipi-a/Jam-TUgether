@@ -8,6 +8,8 @@
     <string name="next">Weiter</string>
     <string name="finish">Fertig</string>
 
+    <string name="confirm">Bestätigen</string>
+
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
@@ -23,6 +25,12 @@
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
     <string name="instrument_piano">Piano</string>
+
+    <string name="admin_settings">Admin-Einstellungen</string>
+
+    <string name="metronome">Metronom</string>
+    <string name="metronome_ticks_per_tact">Ticks</string>
+    <string name="metronome_tempo">Tempo</string>
 
     <string name="settings">Einstellungen</string>
     <string name="main_instrument">Hauptinstrument</string>
@@ -90,6 +98,10 @@
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
     <string name="room_does_not_exist_error_title">Raum</string>
     <string name="room_does_not_exist_error_message">Dieser Raum existiert nicht mehr</string>
+    <string name="old_admin_error_title">Keine Berechtigung</string>
+    <string name="old_admin_error_message">Du bist nicht mehr Admin. Du hast nicht die Berechtigung diese Aktion durchzuführen.</string>
+    <string name="not_admin_dialog_title">Keine Berechtigung</string>
+    <string name="not_admin_dialog_message">Auf die Admin-Einstellungen hast du keinen Zugriff.</string>
 
     <string name="music_note_c">C</string>
     <string name="music_note_c_sharp">C#</string>

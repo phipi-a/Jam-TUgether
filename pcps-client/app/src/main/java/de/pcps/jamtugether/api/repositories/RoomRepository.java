@@ -18,11 +18,14 @@ import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
+import de.pcps.jamtugether.api.responses.room.UpdateBeatResponse;
 import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
+import de.pcps.jamtugether.api.services.room.bodies.UpdateBeatBody;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.beat.Beat;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -75,7 +78,7 @@ public class RoomRepository {
 
     public void deleteRoom(@NonNull JamCallback<DeleteRoomResponse> callback) {
         String token = this.token.getValue();
-        if(roomID == null || password == null || token == null) {
+        if (roomID == null || password == null || token == null) {
             return;
         }
         DeleteRoomBody body = new DeleteRoomBody(roomID, password);
@@ -98,6 +101,16 @@ public class RoomRepository {
             return;
         }
         Call<AdminStatusResponse> call = roomService.getAdminStatus(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID);
+        call.enqueue(callback);
+    }
+
+    public void updateBeat(@NonNull Beat beat, @NonNull JamCallback<UpdateBeatResponse> callback) {
+        String token = this.token.getValue();
+        if (roomID == null || token == null) {
+            return;
+        }
+        UpdateBeatBody body = new UpdateBeatBody(roomID, beat);
+        Call<UpdateBeatResponse> call = roomService.updateBeat(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
         call.enqueue(callback);
     }
 

@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import timber.log.Timber;
-
 @Singleton
 public class MetronomePlayer {
 
@@ -18,7 +16,6 @@ public class MetronomePlayer {
 
     public void play() {
         if(thread != null) {
-            Timber.d("thread != null");
             thread.stopMetronome();
             thread = null;
         }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import javax.inject.Inject;
 
@@ -17,13 +16,12 @@ import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsFragment;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
-import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -83,13 +81,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null) {
-                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
-                viewModel.onNetworkErrorShown();
-            }
-        });
-
         viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
             if (showSoundtrackDeletionConfirmDialog) {
                 UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
@@ -97,17 +88,24 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
         });
 
-        viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
-            if (showRoomDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
-                viewModel.onRoomDeletionConfirmDialogShown();
+        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if (networkError != null) {
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
+                viewModel.onNetworkErrorShown();
             }
         });
 
-        viewModel.getNavigateBack().observe(getViewLifecycleOwner(), leaveRoom -> {
-            if (leaveRoom) {
-                NavigationUtils.navigateBack(NavHostFragment.findNavController(this));
-                viewModel.onNavigatedBack();
+        viewModel.getShowNotAdminDialog().observe(getViewLifecycleOwner(), showNotAdminDialog -> {
+            if (showNotAdminDialog) {
+                UiUtils.showInfoDialog(context, R.string.not_admin_dialog_title, R.string.not_admin_dialog_message);
+                viewModel.onNotAdminDialogShown();
+            }
+        });
+
+        viewModel.getShowAdminSettingsFragment().observe(getViewLifecycleOwner(), showAdminOptionsFragment -> {
+            if (showAdminOptionsFragment) {
+                AdminSettingsFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onAdminSettingsFragmentShown();
             }
         });
 
