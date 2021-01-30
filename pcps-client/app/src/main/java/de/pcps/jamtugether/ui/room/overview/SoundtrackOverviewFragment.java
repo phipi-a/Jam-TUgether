@@ -95,8 +95,15 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
         });
 
+        viewModel.getShowNotAdminDialog().observe(getViewLifecycleOwner(), showNotAdminDialog -> {
+            if (showNotAdminDialog) {
+                UiUtils.showInfoDialog(context, R.string.not_admin_dialog_title, R.string.not_admin_dialog_message);
+                viewModel.onNotAdminDialogShown();
+            }
+        });
+
         viewModel.getShowAdminSettingsFragment().observe(getViewLifecycleOwner(), showAdminOptionsFragment -> {
-            if(showAdminOptionsFragment) {
+            if (showAdminOptionsFragment) {
                 AdminSettingsFragment.newInstance().show(getChildFragmentManager(), "");
                 viewModel.onAdminSettingsFragmentShown();
             }

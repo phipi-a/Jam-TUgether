@@ -44,7 +44,7 @@ public interface RoomService {
     Call<AdminStatusResponse> getAdminStatus(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID);
 
     @NonNull
-    @POST("{roomID}/beat")
+    @POST("room/{roomID}/beat")
     Call<UpdateBeatResponse> updateBeat(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID, @Body @NonNull UpdateBeatBody body);
 }
 

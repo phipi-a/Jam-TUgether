@@ -48,7 +48,7 @@
             android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
             android:onClick="@{() -> viewModel.onAdminOptionsButtonClicked()}"
             android:src="@drawable/ic_admin_star"
-            android:visibility="@{viewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
+            app:isAdmin="@{viewModel.userIsAdmin}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 

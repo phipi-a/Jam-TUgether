@@ -173,7 +173,13 @@ public abstract class InstrumentViewModel extends ViewModel {
     public void observeCompositeSoundtrack(@NonNull LifecycleOwner lifecycleOwner) {
         soundtrackRepository.getCompositeSoundtrack().observe(lifecycleOwner, compositeSoundtrack -> {
             this.compositeSoundtrack = compositeSoundtrack;
-            compositeSoundtrackCheckBoxIsEnabled.setValue(!compositeSoundtrack.isEmpty());
+            // if composite soundtrack is not empty anymore while soundtrack is being recorded
+            // update checkbox after user is done recording
+            if (timer.isRunning()) {
+                lastCompositeSoundtrackCheckBoxIsEnabled = !compositeSoundtrack.isEmpty();
+            } else {
+                compositeSoundtrackCheckBoxIsEnabled.setValue(!compositeSoundtrack.isEmpty());
+            }
             if (compositeSoundtrack.isEmpty()) {
                 uncheckCompositeSoundtrackCheckBox.setValue(true);
                 uncheckLoopCheckBox.setValue(true);

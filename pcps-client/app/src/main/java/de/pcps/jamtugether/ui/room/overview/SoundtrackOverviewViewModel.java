@@ -43,6 +43,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final MutableLiveData<Boolean> showSoundtrackDeletionConfirmDialog = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> showNotAdminDialog = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> showAdminSettingsFragment = new MutableLiveData<>(false);
 
     @Nullable
@@ -90,7 +93,12 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onAdminOptionsButtonClicked() {
-        showAdminSettingsFragment.setValue(true);
+        Boolean isAdmin = getUserIsAdmin().getValue();
+        if(isAdmin != null && isAdmin) {
+            showAdminSettingsFragment.setValue(true);
+        } else {
+            showNotAdminDialog.setValue(true);
+        }
     }
 
     public void onSoundtrackDeletionConfirmButtonClicked() {
@@ -116,6 +124,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         showAdminSettingsFragment.setValue(false);
     }
 
+    public void onNotAdminDialogShown() {
+        showNotAdminDialog.setValue(false);
+    }
+
     @Nullable
     public Integer getRoomID() {
         return roomRepository.getRoomID();
@@ -130,6 +142,11 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     public LiveData<Boolean> getUserIsAdmin() {
         return roomRepository.getUserIsAdmin();
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowNotAdminDialog() {
+        return showNotAdminDialog;
     }
 
     @NonNull
