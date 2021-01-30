@@ -9,10 +9,14 @@
 * change to the directory *pcps-server*
 * type: ```npm i bcrypt express standard path nodemon dotenv jsonwebtoken mongoose swagger-jsdoc swagger-ui-express crypto --save``` in your terminal
 * then type ```node configure-script.js``` in your terminal
-
+# optional for testing
+type: ```npm i chai chai-http mocha --save```
 ## Executing
 
 * To start the server type: ```npm start```
+# optional if test dependencies installed
+To run tests: ```npm test```
+
 
 ## Example requests
 
