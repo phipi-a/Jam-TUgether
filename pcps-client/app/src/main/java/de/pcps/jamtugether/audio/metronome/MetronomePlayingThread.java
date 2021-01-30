@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.beat.Beat;
+import timber.log.Timber;
 
 public class MetronomePlayingThread extends Thread {
 
@@ -12,39 +13,28 @@ public class MetronomePlayingThread extends Thread {
 
     private long progressInMillis;
     private long lastMillis = -1;
-    private long lastProgressInMillis;
-    int counter = 0;
+    private long lastProgressInMillis = -1;
 
     @NonNull
     private static final Metronome metronome = Metronome.getInstance();
 
-    @NonNull
-    private final Beat beat = metronome.getBeat();
-
     @Override
     public void run() {
-        while (!stopped) {
-            metronome.play(R.raw.drum_cymbal);
-            if (counter % beat.getTicksPerTact() == 0) {
-                counter++;
-                lastProgressInMillis = progressInMillis;
-                metronome.play(R.raw.metronome_up);
-            } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {
-                if (progressInMillis != lastProgressInMillis) {
-                    counter++;
-                    lastProgressInMillis = progressInMillis;
-                    metronome.play(R.raw.metronome);
-                }
-            }
+        Beat beat = metronome.getBeat();
 
+        while (!stopped) {
+            if (progressInMillis != lastProgressInMillis) {
+                if (progressInMillis % beat.getMillisPerTact() == 0) {
+                    metronome.playSound(R.raw.metronome_up);
+                } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {
+                    metronome.playSound(R.raw.metronome);
+                }
+                lastProgressInMillis = progressInMillis;
+            }
 
             long millis = System.currentTimeMillis();
             this.progressInMillis += (int) (millis - lastMillis);
-            //soundtrack.postProgressInMillis(progressInMillis);
             this.lastMillis = millis;
-
-            // todo check milli seconds and play new sound if necessary
-            //  check SoundtrackPlayingThread
         }
     }
 
@@ -54,12 +44,12 @@ public class MetronomePlayingThread extends Thread {
             super.start();
             running = true;
         }
-        metronome.postPlaying(true);
+        metronome.setPlaying(true);
     }
 
     public void stopMetronome() {
         stopped = true;
         metronome.stop();
-        metronome.postPlaying(false);
+        metronome.setPlaying(false);
     }
 }

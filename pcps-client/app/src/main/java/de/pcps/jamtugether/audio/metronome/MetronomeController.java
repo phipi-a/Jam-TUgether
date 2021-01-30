@@ -14,16 +14,13 @@ import de.pcps.jamtugether.model.beat.Beat;
 public class MetronomeController {
 
     @NonNull
-    private static final Metronome metronome = Metronome.getInstance();
-
-    @NonNull
     private final MetronomePlayer metronomePlayer;
 
     @Inject
     public MetronomeController(@NonNull MetronomePlayer metronomePlayer, @NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
         this.metronomePlayer = metronomePlayer;
 
-        Observer<Beat> beatObserver = metronomePlayer::onBeatChanged;
+        Observer<Beat> beatObserver = Metronome.getInstance()::updateBeat;
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
             if(userInRoom) {
@@ -34,15 +31,11 @@ public class MetronomeController {
         });
     }
 
-    public void onPlayStopButtonClicked() {
-        Boolean playing = metronome.getPlaying().getValue();
-        if(playing == null) {
-            return;
-        }
-        if(playing) {
-            metronomePlayer.play();
-        } else {
-            metronomePlayer.stop();
-        }
+    public void onStartedRecordingSoundtrack() {
+        metronomePlayer.play();
+    }
+
+    public void onFinishedRecordingSoundtrack() {
+        metronomePlayer.stop();
     }
 }

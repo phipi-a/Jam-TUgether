@@ -4,17 +4,11 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RawRes;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.beat.Beat;
+import timber.log.Timber;
 
 public class Metronome {
-
-    @RawRes
-    public static final int SOUND = R.raw.metronome;
 
     @NonNull
     private Beat beat = Beat.DEFAULT;
@@ -25,20 +19,15 @@ public class Metronome {
     @Nullable
     private static Metronome instance;
 
-    @NonNull
-    private final MutableLiveData<Boolean> playing;
-
-    public Metronome() {
-        playing = new MutableLiveData<>(false);
-    }
+    private boolean playing;
 
     public void loadSounds(@NonNull Context context) {
         soundPool = new MetronomeSoundPool(context);
     }
 
-    public void play(int sound) {
-        if (soundPool != null && playing.getValue() != null && !playing.getValue()) {
-            soundPool.stopAllSounds();
+    public void playSound(int sound) {
+        Timber.d("playSound()");
+        if (soundPool != null) {
             soundPool.playSoundRes(sound);
         }
     }
@@ -50,11 +39,10 @@ public class Metronome {
     }
 
     public void updateBeat(@NonNull Beat beat) {
-        this.beat = beat;
-    }
-
-    public void postPlaying(boolean playing) {
-        this.playing.postValue(playing);
+        Timber.d("beat: %s", beat);
+        if (beat != null) {
+            this.beat = beat;
+        }
     }
 
     @NonNull
@@ -62,8 +50,11 @@ public class Metronome {
         return beat;
     }
 
-    @NonNull
-    public LiveData<Boolean> getPlaying() {
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public boolean isPlaying() {
         return playing;
     }
 
@@ -73,10 +64,5 @@ public class Metronome {
             instance = new Metronome();
         }
         return instance;
-    }
-
-    public interface OnClickListener {
-
-        void onPlayStopButtonClicked();
     }
 }

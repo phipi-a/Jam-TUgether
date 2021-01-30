@@ -39,12 +39,6 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         super(flute, callback);
     }
 
-    @Override
-    public void finishSoundtrack() {
-        finishSound();
-        super.finishSoundtrack();
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void onPause() {
         fragmentFocused = false;
@@ -98,6 +92,12 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
             startTimeMillis = -1;
         }
         soundIsPlaying = false;
+    }
+
+    @Override
+    protected void finishRecording() {
+        finishSound();
+        super.finishRecording();
     }
 
     public void onPitchPercentageChanged(float pitchPercentage) {

@@ -92,11 +92,10 @@
                 android:onClick="@{() -> viewModel.onMetronomeButtonClicked()}"
                 android:padding="12dp"
                 android:src="@drawable/metronome"
+                app:color="@{viewModel.metronomeColor}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/composite_soundtrack_check_box"
-                app:layout_constraintTop_toTopOf="parent"
-                app:metronomePlaying="@{viewModel.metronomePlaying}"
-                app:tint="@color/iconColor" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
                 android:id="@+id/composite_soundtrack_check_box"

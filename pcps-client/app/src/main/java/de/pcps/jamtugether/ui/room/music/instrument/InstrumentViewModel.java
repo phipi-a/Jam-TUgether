@@ -1,11 +1,13 @@
 package de.pcps.jamtugether.ui.room.music.instrument;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
@@ -74,9 +77,6 @@ public abstract class InstrumentViewModel extends ViewModel {
     protected MetronomeController metronomeController;
 
     @NonNull
-    private static final Metronome metronome = Metronome.getInstance();
-
-    @NonNull
     private final Instrument instrument;
 
     @NonNull
@@ -106,6 +106,11 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> showUploadReminderDialog = new MutableLiveData<>(false);
 
+    private boolean metronomeActive = true;
+
+    @NonNull
+    private final MutableLiveData<Integer> metronomeColor;
+
     @NonNull
     private final MutableLiveData<Boolean> compositeSoundtrackCheckBoxIsEnabled = new MutableLiveData<>(false);
 
@@ -127,6 +132,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     @Nullable
     private List<SingleSoundtrack> previousSoundtracks;
 
+    private boolean lastCompositeSoundtrackCheckBoxIsEnabled;
+    private boolean lastLoopCheckBoxIsEnabled;
+
     private boolean playWithCompositeSoundtrack;
     private boolean playWithCompositeSoundtrackInLoop;
 
@@ -136,6 +144,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         AppInjector.inject(this);
         this.instrument = instrument;
         this.callback = callback;
+        this.metronomeColor = new MutableLiveData<>(ContextCompat.getColor(application.getApplicationContext(), R.color.metronomeActiveColor));
         ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
@@ -174,7 +183,16 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void onMetronomeButtonClicked() {
-        metronomeController.onPlayStopButtonClicked();
+        if (timer.isRunning()) { // soundtrack is being recorded
+            return;
+        }
+        metronomeActive = !metronomeActive;
+        Context context = application.getApplicationContext();
+        if (metronomeActive) {
+            metronomeColor.setValue(ContextCompat.getColor(context, R.color.metronomeActiveColor));
+        } else {
+            metronomeColor.setValue(ContextCompat.getColor(context, R.color.metronomeInactiveColor));
+        }
     }
 
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
@@ -210,21 +228,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             countDownTimerMillis.setValue(-1L);
             startedMillis = System.currentTimeMillis();
             timer.start();
-            if (playWithCompositeSoundtrack) {
-                if (compositeSoundtrack != null) {
-                    compositeSoundtrackPlayer.stop(compositeSoundtrack);
-                    compositeSoundtrackPlayer.play(compositeSoundtrack);
-                    if (playWithCompositeSoundtrackInLoop) {
-                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback((soundtrackPlayingThread) -> {
-                            Handler mainThreadHandler = new Handler(application.getApplicationContext().getMainLooper());
-                            mainThreadHandler.post(() -> repeatCompositeSoundtrack());
-                        });
-                    } else {
-                        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
-                    }
-                }
-            }
-            onTimerStarted();
+            startRecording();
         }
     });
 
@@ -252,20 +256,15 @@ public abstract class InstrumentViewModel extends ViewModel {
     });
 
     public void onRecordSoundtrackButtonClicked() {
-        if (recordingSoundtrack()) {
+        if (recordingSoundtrack()) { // stop button clicked
             if (countDownTimer.isStopped()) {
-                finishSoundtrack();
-                timer.stop();
-            } else {
+                finishRecording();
+            } else { // stop button was clicked before count down timer finished
                 countDownTimer.stop();
                 countDownTimerMillis.setValue(-1L);
                 recordingSoundtrack.setValue(false);
             }
-            compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
-            if (!preferences.userSawUploadReminderDialog()) {
-                showUploadReminderDialog.setValue(true);
-            }
-        } else {
+        } else { // record button clicked
             timerMillis.setValue(-1L);
 
             int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
@@ -284,7 +283,47 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    protected void onTimerStarted() {
+    protected void startRecording() {
+        if (playWithCompositeSoundtrack) {
+            if (compositeSoundtrack != null) {
+                compositeSoundtrackPlayer.stop(compositeSoundtrack);
+                compositeSoundtrackPlayer.play(compositeSoundtrack);
+                if (playWithCompositeSoundtrackInLoop) {
+                    compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback((soundtrackPlayingThread) -> {
+                        Handler mainThreadHandler = new Handler(application.getApplicationContext().getMainLooper());
+                        mainThreadHandler.post(this::repeatCompositeSoundtrack);
+                    });
+                } else {
+                    compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
+                }
+            }
+        }
+        if (metronomeActive) {
+            metronomeController.onStartedRecordingSoundtrack();
+        }
+
+        lastCompositeSoundtrackCheckBoxIsEnabled = loopCheckBoxIsEnabled.getValue();
+        lastLoopCheckBoxIsEnabled = loopCheckBoxIsEnabled.getValue();
+        compositeSoundtrackCheckBoxIsEnabled.setValue(false);
+        loopCheckBoxIsEnabled.setValue(false);
+    }
+
+    protected void finishRecording() {
+        finishSoundtrack();
+        timer.stop();
+        compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
+        if (!preferences.userSawUploadReminderDialog()) {
+            showUploadReminderDialog.setValue(true);
+        }
+        if (metronomeActive) {
+            metronomeController.onFinishedRecordingSoundtrack();
+        }
+        if (lastLoopCheckBoxIsEnabled) {
+            loopCheckBoxIsEnabled.setValue(true);
+        }
+        if (lastCompositeSoundtrackCheckBoxIsEnabled) {
+            compositeSoundtrackCheckBoxIsEnabled.setValue(true);
+        }
     }
 
     public void onUploadDialogShown() {
@@ -407,8 +446,8 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getMetronomePlaying() {
-        return metronome.getPlaying();
+    public LiveData<Integer> getMetronomeColor() {
+        return metronomeColor;
     }
 
     @NonNull

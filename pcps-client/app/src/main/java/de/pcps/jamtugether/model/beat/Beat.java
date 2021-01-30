@@ -3,6 +3,7 @@ package de.pcps.jamtugether.model.beat;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public class Beat {
 
@@ -14,19 +15,29 @@ public class Beat {
     private final int tempo;
 
     /**
-     * <numerator> number of sounds should be
+     * <numerator> number of tick sounds should be
      * played evenly within these milliseconds
      */
     private transient final long millisPerTact;
 
     @NonNull
-    public static transient final Beat DEFAULT = new Beat(4, 60);
+    public static transient final Beat DEFAULT = new Beat(2, 60);
 
     public Beat(int ticksPerTact, int tempo) {
         this.ticksPerTact = ticksPerTact;
         this.tempo = tempo;
-        double tactNumberPerSecond = tempo / (double) TimeUtils.ONE_SECOND;
+        double tactNumberPerSecond = tempo / 60.0;
+        Timber.d("tactNumberPerSecond: %s", tactNumberPerSecond);
         this.millisPerTact = (long) (TimeUtils.ONE_SECOND / tactNumberPerSecond);
+    }
+
+    @Override
+    public String toString() {
+        return "Beat{" +
+                "ticksPerTact=" + ticksPerTact +
+                ", tempo=" + tempo +
+                ", millisPerTact=" + millisPerTact +
+                '}';
     }
 
     public int getTicksPerTact() {

@@ -40,13 +40,14 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     @Override
-    protected void onTimerStarted() {
+    protected void startRecording() {
+        super.startRecording();
         lockOrientation.setValue(true);
     }
 
     @Override
-    protected void finishSoundtrack() {
-        super.finishSoundtrack();
+    protected void finishRecording() {
+        super.finishRecording();
         lockOrientation.setValue(false);
     }
 
