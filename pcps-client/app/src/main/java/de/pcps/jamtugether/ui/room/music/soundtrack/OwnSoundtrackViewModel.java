@@ -21,6 +21,7 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
@@ -65,6 +66,9 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MutableLiveData<Boolean> showDrumsHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MutableLiveData<Boolean> showPianoHelpDialog = new MutableLiveData<>(false);
+
     public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
         this.instrumentOnChangeCallback = instrumentOnChangeCallback;
@@ -88,8 +92,10 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
             showFluteHelpDialog.setValue(true);
         } else if (currentInstrument == Drums.getInstance()) {
             showDrumsHelpDialog.setValue(true);
-        } else {
+        } else if(currentInstrument == Shaker.getInstance()){
             showShakerHelpDialog.setValue(true);
+        } else {
+            showPianoHelpDialog.setValue(true);
         }
     }
 
@@ -111,6 +117,10 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
 
     public void onDrumsHelpDialogShown() {
         showDrumsHelpDialog.setValue(false);
+    }
+
+    public void onPianoHelpDialogShown() {
+        showPianoHelpDialog.setValue(false);
     }
 
     public void onSoundtrackRepositoryNetworkErrorShown() {
@@ -145,6 +155,11 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     public LiveData<Boolean> getShowDrumsHelpDialog() {
         return showDrumsHelpDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowPianoHelpDialog() {
+        return showPianoHelpDialog;
     }
 
     @NonNull
