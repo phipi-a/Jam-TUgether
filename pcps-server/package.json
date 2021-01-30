@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha"
+    "test": "mocha --timeout 10000 --exit --recursive"
   },
   "repository": {
     "type": "git",

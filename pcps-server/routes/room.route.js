@@ -73,17 +73,13 @@ roomRoute.post('/create-room', async (req, res, next) => {
     if ((Number(numberOfRooms) + 1) > 500) {
       throw ROOM_LIMIT_ERROR
     }
-
     // Check password, limit to n characters
     checkPwdLen(req.body.password, res)
-
     // Create salt and hash password
     const salt = await bcrypt.genSalt()
     req.body.password = await bcrypt.hash(req.body.password, salt)
-
     // Generate roomID
     let newRoomID = 0
-    console.log('numberofrooms = ' + numberOfRooms)
     if (numberOfRooms === 0) {
       newRoomID = 1
       // Create db entry
@@ -333,19 +329,46 @@ roomRoute.delete('/room/:id', verify, async (req, res) => {
  *   get:
  *     summary: Returns "Admin" if admin else it returns "not Admin" with flag= true for new admin token or "not Admin" with flag = false
  *     description: Checks if user is Admin and if new Admin is needed. In case Admin is needed sends new Admin token
+ *     consumes:
+ *       - application/json
  *     parameters:
- *       - roomID: id
- *         in: path
- *         required: true
+ *       - in: body
+ *         name: roomID
+ *         description: Room ID
  *         schema:
- *           type: integer
- *           minimum: 1
+ *           type: object
+ *           required:
+ *             - roomID
+ *           properties:
+ *             roomID:
+ *               type: number
  *     responses:
  *       200:
- *         description: if flag true than token else no token
+ *         description: if flag true than token else no token and description Admin
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: new Admin
+ *             flag:
+ *               type: boolean
+ *             token:
+ *               type: string
+ *               description: Success
  *
  *       202:
- *         description: {description: Admin}
+ *         description: Not Admin
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: Not Admin
+ *             flag:
+ *               type: boolean
+ *               example: false
+ *               description: Success
  *       500:
  *         description: Failure
  */
@@ -356,6 +379,7 @@ roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   }
   await updateRoom(room.roomID)
   const priviliges = await whoAmI(req, res, room)
+  console.log(priviliges)
   if (priviliges === 'Admin') {
     await updateAdminAccess(room.roomID)
     const answer = { description: priviliges }
@@ -370,17 +394,30 @@ roomRoute.get('/room/:id/admin', verify, async (req, res) => {
  * @openapi
  * /api/room/:id/admin:
  *   delete:
- *     summary: Returns success if Admin left
- *     description: Updates DB such that new Admin is needed
+ *     summary: Admin leaves room.
+ *     consumes:
+ *       - application/json
  *     parameters:
- *       - roomID: id
- *         required: true
+ *       - in: body
+ *         name: roomID
+ *         description: Room ID
  *         schema:
- *           type: integer
- *           minimum: 1
+ *           type: object
+ *           required:
+ *             - roomID
+ *           properties:
+ *             roomID:
+ *               type: number
  *     responses:
  *       200:
- *         description: {description: "Success"}
+ *         description: Admin left successfully
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: Success
+ *               description: Success
  *       500:
  *         description: Failure
  */

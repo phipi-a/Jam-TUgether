@@ -18,7 +18,7 @@ POST  http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "roomID" : "1",
+  "roomID" : "3",
   "password" : "12"
 }
 
@@ -32,12 +32,12 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 }
 
 ###
-DELETE  http://localhost:3000/api/room/1/admin
+DELETE  http://localhost:3000/api/room/3/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImNhZjRmYWI4NzgwYjhlZTRmMGI3Iiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0Nzk3LCJleHAiOjE2MTAzMTY1OTd9.npXUKR4yDVhSDdoqYhNPsBD_K51I-qIj7bNgKkCz1R8 '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjdjMTI2NTIxZjJkNDBhZTZhZWRkIiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiaWF0IjoxNjExNzU0NjQwLCJleHAiOjE2MTE3NTY0NDB9.4bTsEWwYdTFohCZp7SpwO04LI6TmuhtcUb_ZbVqg0LE '
 
 {
-  "roomID": "1"
+  "roomID": "3"
 }
 ###
 POST   http://localhost:3000/api/room/1/
@@ -59,12 +59,12 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
   "number" : 1
 }
 ###
-GET http://localhost:3000/api/room/1/admin
+GET http://localhost:3000/api/room/3/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijk4ZDBjMWE0ZDc1MzgwZGNjZWMzIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0NTIyLCJleHAiOjE2MTAzMTYzMjJ9.KRu4fEY9yBmJd9Jv2VAVrTb6PSK7Qmew52C5PZn-XxA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjVhYTljYzA5MWQyOTgxNGNiODM3Iiwicm9vbSI6IjMiLCJyb2xlIjoiVXNlciIsImlhdCI6MTYxMTc1NDY4MSwiZXhwIjoxNjExNzU2NDgxfQ.3XAiRO5-Wrxi3HL-AD7gTLRIO0TYRVRqnCcXPDkHoWc '
 
 {
-  "roomID" : 1,
+  "roomID" : 3,
   "userID" : 1,
   "instrument" : "instrument123",
   "number" : 1

@@ -5,6 +5,7 @@ const RoomSchema = require('./model/room.model')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
+module.exports = app
 
 // Set port
 const PORT = process.env.PORT || 3000
