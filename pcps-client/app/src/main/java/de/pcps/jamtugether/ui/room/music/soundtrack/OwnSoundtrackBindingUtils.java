@@ -1,5 +1,6 @@
 package de.pcps.jamtugether.ui.room.music.soundtrack;
 
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
 public class OwnSoundtrackBindingUtils {
 
@@ -16,5 +18,21 @@ public class OwnSoundtrackBindingUtils {
         int color = ContextCompat.getColor(playPauseButton.getContext(), startedCreatingSoundtrack ? R.color.iconColor : R.color.recordButtonColor);
         playPauseButton.setImageResource(imageRes);
         playPauseButton.setColorFilter(color);
+    }
+
+    @BindingAdapter(value = {"uncheckLoop", "viewModel"})
+    public static void uncheckLoopCheckBox(@NonNull CheckBox compositeSoundtrackLoopCheckBox, boolean uncheck, @NonNull InstrumentViewModel viewModel) {
+        if (uncheck) {
+            compositeSoundtrackLoopCheckBox.setChecked(false);
+            viewModel.onLoopCheckBoxUnchecked();
+        }
+    }
+
+    @BindingAdapter(value = {"uncheckCompositeSoundtrack", "viewModel"})
+    public static void uncheckCompositeSoundtrackCheckBox(@NonNull CheckBox compositeSoundtrackCheckBox, boolean uncheck, @NonNull InstrumentViewModel viewModel) {
+        if (uncheck) {
+            compositeSoundtrackCheckBox.setChecked(false);
+            viewModel.onCompositeSoundtrackCheckBoxUnchecked();
+        }
     }
 }

@@ -41,7 +41,6 @@ exports.checkAdmin = async function (adminTime, roomID) {
     const newDate = new Date(Date.now())
     await RoomSchema.updateOne({ roomID: roomID }, { lastAccessAdmin: newDate }).exec()
     const token = await createToken('Admin', roomID)
-    console.log(token)
     return { description: '', flag: flag, token: token }
   }
   return { description: '', flag: flag }
@@ -64,4 +63,9 @@ exports.deleteTracks = async function (req, res, roomID) {
   await RoomSchema.updateMany(query, updateDocument)
 
   res.status(200).json({ description: 'success' })
+}
+
+exports.setBeat = async function (req, res) {
+  await RoomSchema.updateOne({ roomID: req.body.roomID }, { beat: req.body.beat }).exec()
+  res.status(200).json({ description: 'Success' })
 }

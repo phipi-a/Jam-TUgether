@@ -43,12 +43,6 @@
     <string name="room_invalid">This room is invalid.</string>
     <string name="password_input_empty">You have to enter a password.</string>
 
-    <string name="play_instrument_format">Playing %s</string>
-    <string name="play_flute_help">Blow into you microphone and control the pitch level with the regulator.</string>
-    <string name="play_shaker_help">Shake your phone.</string>
-    <string name="play_drums_help">Click on the elements to create their respective sounds.</string>
-    <string name="play_piano_help">Piano Help</string>
-
     <string name="composite">Composite</string>
     <string name="own_soundtrack">Own soundtrack</string>
 
@@ -60,6 +54,8 @@
     <string name="upload_reminder_dialog_message">Don\'t forget to upload your soundtrack!</string>
 
     <string name="play_with_composite_soundtrack">with soundtrack</string>
+
+    <string name="loop_record_with_composite_soundtrack">loop</string>
 
     <string name="room_format">Room %d</string>
 
@@ -110,5 +106,33 @@
     <string name="music_note_b">B</string>
     <string name="music_note_c_high">C</string>
 
-
+    <string name="on_boarding_welcome_message">Welcome to \nJam TUgether</string>
+    <string name="create_room_title">Create room</string>
+    <string name="create_room_text">Create a room and share your ID with your friends</string>
+    <string name="join_room_title">Enter room</string>
+    <string name="join_room_text">Got an ID of a friend? Then join the room</string>
+    <string name="ready_to_upload_warning_title">Attention</string>
+    <string name="ready_to_upload_warning_text">You have to upload your old soundtrack to add it to the composite track. Then you can record a new soundtrack</string>
+    <string name="musician_overview_title">In the overview screen you can listen to all tracks and delete your own too. As an admin you can delete all tracks or the whole room</string>
+    <string name="musician_overview_text">Overview</string>
+    <string name="update_title">Update</string>
+    <string name="update_text">The entire composite track is always updated automatically when the red circle is full</string>
+    <string name="record_with_soundtrack_title">With soundtrack</string>
+    <string name="record_with_soundtrack_text">You can choose whether you want to hear the entire soundtrack while recording</string>
+    <string name="soundtracks_title">Soundtracks</string>
+    <string name="soundtracks_text">After your first recording, the entire audio track and your own audio track appear here</string>
+    <string name="change_instrument_title">Change instrument</string>
+    <string name="change_instrument_text">You can change the instrument in the top right corner in the menu</string>
+    <string name="start_record_title">Start recording</string>
+    <string name="start_record_text">Press the red button to start and stop recording</string>
+    <string name="room_id_title">Room ID</string>
+    <string name="room_id_text">At the top left you will find the room ID. Share this with your friends to make music together</string>
+    <string name="flute_functionality_title">Functionality</string>
+    <string name="flute_functionality_text">Blow into your microphone to make a sound. To change the pitch, you have to move the slider</string>
+    <string name="flute_warning_title">Attention</string>
+    <string name="flute_warning_text">You have to wear headphones to play the flute!</string>
+    <string name="shaker_functionality_title">Functionality</string>
+    <string name="shaker_functionality_text">Shake your phone as if you were playing a shaker to make sounds</string>
+    <string name="drums_functionality_title">Functionality</string>
+    <string name="drums_functionality_text">Tap the icons to play the drums</string>
 </resources>

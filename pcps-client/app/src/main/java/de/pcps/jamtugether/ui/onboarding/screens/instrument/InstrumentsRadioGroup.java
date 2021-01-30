@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.onboarding.instrument;
+package de.pcps.jamtugether.ui.onboarding.screens.instrument;
 
 import android.content.Context;
 import android.util.AttributeSet;
