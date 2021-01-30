@@ -24,6 +24,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+module.exports = app
+
 // Documentation setup
 const swaggerOptions = {
   swaggerDefinition: {
@@ -77,3 +79,5 @@ app.use((err, req, res, next) => {
   if (!err.statusCode) err.statusCode = 500
   res.status(err.statusCode).send(err.message)
 })
+
+

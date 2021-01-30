@@ -244,22 +244,66 @@ roomRoute.post('/login', async (req, res) => {
 
 /**
  * @openapi
- * /api/room/:id:
- *   get:
- *     summary: Returns track of room with RoomID id
- *     description: Returns track of room
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: integer
- *           minimum: 1
- *     responses:
- *       200:
- *         description: A JSON array of our data structure
- *       500:
- *         description: Failure
+ * paths:
+ *   /api/room/:id:
+ *     get:
+ *       summary: Get tracks of room
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *               type: integer
+ *           required: true
+ *           description: id of room to get tracks from
+ *       responses:
+ *         200:
+ *           description: object containing roomID, soundtracks, description returned
+ *           schema:
+ *             type: object
+ *             properties:
+ *               roomID:
+ *                 type: number
+ *                 example: 1
+ *               soundtracks:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   userID:
+ *                     type: number
+ *                     example: 1
+ *                   instrument:
+ *                     type: string
+ *                     example: flute
+ *                   number:
+ *                     type: number
+ *                     example: 1
+ *                   soundsequence:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         starttime:
+ *                           type: number
+ *                           example: 4
+ *                         endtime:
+ *                           type: endtime
+ *                           example: 12
+ *                         pitch:
+ *                           type: number          
+ *                           example: 23
+ *               description:
+ *                 type: string
+ *                 example: success
+ *               
+ *         410:
+ *           description: room does not exist
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *                 example: Room does not exist! 
  */
 roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -275,20 +319,65 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  * @openapi
  * /api/room/:id:
  *   post:
- *     summary: Returns success if saved sent track
- *     description: Saves incoming tracks
+ *     summary: Sends tracks to room
+ *     consumes: 
+ *       -application/json
  *     parameters:
- *       - roomID: id
- *         in: path
- *         required: true
+ *       - in: body
+ *         name: soundtracks
+ *         description: soundtracks to send to room
  *         schema:
- *           type: integer
- *           minimum: 1
+ *           type: object
+ *           required:
+ *             - soundtracks
+ *           properties:
+ *             soundtracks:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   userID:
+ *                     type: number
+ *                     example: 1
+ *                   instrument:
+ *                     type: string
+ *                     example: flute
+ *                   number:
+ *                     type: number
+ *                     example: 1
+ *                   soundsequence:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         starttime:
+ *                           type: number
+ *                           example: 4
+ *                         endtime:
+ *                           type: endtime
+ *                           example: 12
+ *                         pitch:
+ *                           type: number          
+ *                           example: 23                      
  *     responses:
  *       200:
- *         description: soundtrackID
- *       500:
- *         description: Failure
+ *         description: soundtracks successfully sent to server
+ *         schema:
+ *           type: object
+ *           properties:
+ *             roomID:
+ *               type: number
+ *             description:
+ *               type: string
+ *               example: success      
+ *       410:
+ *         description: room does not exist
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: Room does not exist! 
  */
 roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -304,20 +393,51 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  * @openapi
  * /api/room/:id:
  *   delete:
- *     summary: Returns success if specified track has been deleted
- *     description: Deletes specified track
+ *     summary: Deletes specified track
+ *     description: Returns "success" if specified track has been deleted
+ *     consumes: 
+ *       -application/json
  *     parameters:
- *       - roomID: id
- *         in: path
- *         required: true
+ *       - in: body
+ *         name: specifyTrack
+ *         description: specifies which track to delete
  *         schema:
- *           type: integer
- *           minimum: 1
+ *           type: object
+ *           required:
+ *             - roomID
+ *             - userID
+ *             - instrument
+ *             - number
+ *           properties:
+ *             roomID:
+ *               type: number
+ *               example: 1
+ *             userID:
+ *               type: number
+ *               example: 1
+ *             instrument:
+ *               type: string
+ *               example: flute
+ *             number:
+ *               type: number
+ *               example: 1
  *     responses:
  *       200:
- *         description: success
- *       500:
- *         description: Failure
+ *         description: room is deleted
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: success      
+ *       410:
+ *         description: room does not exist
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: Room does not exist! 
  */
 roomRoute.delete('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -351,6 +471,8 @@ roomRoute.delete('/room/:id', verify, async (req, res) => {
  *       500:
  *         description: Failure
  */
+
+
 roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
