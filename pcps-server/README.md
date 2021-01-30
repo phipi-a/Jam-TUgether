@@ -15,7 +15,7 @@ type: ```npm i chai chai-http mocha --save```
 
 * To start the server type: ```npm start```
 ### optional if test dependencies installed
-To run tests: ```npm test```
+To run tests type: ```npm test```
 
 
 ## Example requests
