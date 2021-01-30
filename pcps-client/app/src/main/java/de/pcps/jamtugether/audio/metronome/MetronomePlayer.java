@@ -36,6 +36,7 @@ public class MetronomePlayer {
     public void onBeatChanged(@NonNull Beat beat) {
         if(thread != null) {
             thread.stopMetronome();
+            Metronome.getInstance().updateBeat(beat);
             thread = null;
         }
     }

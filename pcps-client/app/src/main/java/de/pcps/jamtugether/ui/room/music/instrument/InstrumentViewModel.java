@@ -25,6 +25,8 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.metronome.Metronome;
+import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
@@ -67,6 +69,12 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     @Inject
     protected Preferences preferences;
+
+    @Inject
+    protected MetronomeController metronomeController;
+
+    @NonNull
+    private static final Metronome metronome = Metronome.getInstance();
 
     @NonNull
     private final Instrument instrument;
@@ -163,6 +171,10 @@ public abstract class InstrumentViewModel extends ViewModel {
                 loopCheckBoxIsEnabled.setValue(false);
             }
         });
+    }
+
+    public void onMetronomeButtonClicked() {
+        metronomeController.onPlayStopButtonClicked();
     }
 
     public void onPlayWithCompositeSoundtrackClicked(boolean checked) {
@@ -392,6 +404,11 @@ public abstract class InstrumentViewModel extends ViewModel {
     @NonNull
     public LiveData<Boolean> getShowUploadReminderDialog() {
         return showUploadReminderDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getMetronomePlaying() {
+        return metronome.getPlaying();
     }
 
     @NonNull

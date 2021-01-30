@@ -21,8 +21,6 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
-import de.pcps.jamtugether.audio.metronome.Metronome;
-import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
@@ -48,12 +46,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
 
     @Inject
     SoundtrackController soundtrackController;
-
-    @Inject
-    MetronomeController metronomeController;
-
-    @NonNull
-    private static final Metronome metronome = Metronome.getInstance();
 
     @NonNull
     private final Instrument.OnChangeCallback instrumentOnChangeCallback;
@@ -89,10 +81,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
             instrumentOnChangeCallback.onInstrumentChanged(instrument);
             currentInstrument = instrument;
         }
-    }
-
-    public void onMetronomeButtonClicked() {
-        metronomeController.onPlayStopButtonClicked();
     }
 
     public void onHelpButtonClicked() {
@@ -142,11 +130,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @Nullable
     public Integer getRoomID() {
         return roomRepository.getRoomID();
-    }
-
-    @NonNull
-    public LiveData<Boolean> getMetronomePlaying() {
-        return metronome.getPlaying();
     }
 
     @NonNull

@@ -75,9 +75,7 @@ public class Metronome {
         return instance;
     }
 
-    public interface OnChangeCallback {
-
-        void onBeatChanged(@NonNull Beat beat);
+    public interface OnClickListener {
 
         void onPlayStopButtonClicked();
     }

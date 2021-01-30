@@ -106,18 +106,5 @@
                 android:layout_marginTop="@dimen/soundtrack_item_margin_top"
                 android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/metronome"
-            android:layout_width="@dimen/soundtrack_play_pause_icon_width"
-            android:layout_height="@dimen/soundtrack_play_pause_icon_width"
-            android:layout_marginStart="@dimen/soundtrack_play_pause_icon_margin_start"
-            android:onClick="@{() -> viewModel.onMetronomeButtonClicked()}"
-            android:src="@drawable/flash"
-            app:layout_constraintBottom_toBottomOf="@id/room_id_text_view"
-            app:layout_constraintEnd_toStartOf="@+id/help_button"
-            app:layout_constraintTop_toTopOf="@+id/help_button"
-            app:metronomePlaying="@{viewModel.metronomePlaying}"
-            app:tint="@color/iconColor" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
