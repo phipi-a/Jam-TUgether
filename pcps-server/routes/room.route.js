@@ -408,9 +408,17 @@ roomRoute.delete('/room/:id/admin', verifyAdmin, async (req, res) => {
  *           type: object
  *           required:
  *             - roomID
+ *             - beat
  *           properties:
  *             roomID:
  *               type: number
+ *             beat:
+ *               type: object
+ *               properties:
+ *                 ticksPerTact:
+ *                   type: number
+ *                 tempo:
+ *                   type: number
  *     responses:
  *       200:
  *         description: Successfully updated room's beat
