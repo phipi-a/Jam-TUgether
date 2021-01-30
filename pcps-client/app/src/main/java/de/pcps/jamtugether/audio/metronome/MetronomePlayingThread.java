@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.beat.Beat;
-import timber.log.Timber;
 
 public class MetronomePlayingThread extends Thread {
 
@@ -44,12 +43,10 @@ public class MetronomePlayingThread extends Thread {
             super.start();
             running = true;
         }
-        metronome.setPlaying(true);
     }
 
     public void stopMetronome() {
         stopped = true;
         metronome.stop();
-        metronome.setPlaying(false);
     }
 }

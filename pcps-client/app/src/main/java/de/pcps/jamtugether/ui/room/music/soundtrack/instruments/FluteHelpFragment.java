@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.ui.base.BaseDialogFragment;
 
-public class FluteHelpFragment extends DialogFragment {
+public class FluteHelpFragment extends BaseDialogFragment {
 
     @NonNull
     public static FluteHelpFragment newInstance() {

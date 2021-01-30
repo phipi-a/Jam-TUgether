@@ -7,9 +7,11 @@ import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
+import de.pcps.jamtugether.api.responses.room.UpdateBeatResponse;
 import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
+import de.pcps.jamtugether.api.services.room.bodies.UpdateBeatBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -31,12 +33,18 @@ public interface RoomService {
 
     @NonNull
     @HTTP(method = "DELETE", path = "room", hasBody = true)
-    Call<DeleteRoomResponse> deleteRoom(@Header ("Authorization") @NonNull String token, @Body @NonNull DeleteRoomBody body);
+    Call<DeleteRoomResponse> deleteRoom(@Header("Authorization") @NonNull String token, @Body @NonNull DeleteRoomBody body);
 
+    @NonNull
     @DELETE("room/{roomID}/admin")
     Call<RemoveAdminResponse> removeAdmin(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID);
 
+    @NonNull
     @GET("room/{roomID}/admin")
     Call<AdminStatusResponse> getAdminStatus(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID);
+
+    @NonNull
+    @POST("{roomID}/beat")
+    Call<UpdateBeatResponse> updateBeat(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID, @Body @NonNull UpdateBeatBody body);
 }
 

@@ -41,15 +41,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
-        <TextView
-            android:id="@+id/delete_room_text_view"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
             android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
-            android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
-            android:text="@string/delete_room"
-            android:textSize="16dp"
+            android:onClick="@{() -> viewModel.onAdminOptionsButtonClicked()}"
+            android:src="@drawable/ic_admin_star"
             android:visibility="@{viewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />

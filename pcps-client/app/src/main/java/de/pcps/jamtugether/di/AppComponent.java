@@ -14,6 +14,7 @@ import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
+import de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
 
 @Singleton
@@ -37,6 +38,8 @@ public interface AppComponent {
     void inject(SoundtrackOverviewFragment soundtrackOverviewFragment);
 
     void inject(SoundtrackOverviewViewModel soundtrackOverviewViewModel);
+
+    void inject(AdminSettingsViewModel adminSettingsViewModel);
 
     void inject(OwnSoundtrackFragment ownSoundtrackFragment);
 
