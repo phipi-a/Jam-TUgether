@@ -21,7 +21,7 @@ public class Beat {
     private transient final long millisPerTact;
 
     @NonNull
-    public static transient final Beat DEFAULT = new Beat(2, 60);
+    public static transient final Beat DEFAULT = new Beat(4, 60);
 
     public Beat(int ticksPerTact, int tempo) {
         this.ticksPerTact = ticksPerTact;
