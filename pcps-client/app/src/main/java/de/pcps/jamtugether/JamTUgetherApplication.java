@@ -8,6 +8,7 @@ import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.log.JamTimberTree;
 import de.pcps.jamtugether.model.sound.drums.DrumsSound;
 import de.pcps.jamtugether.model.sound.flute.FluteSound;
+import de.pcps.jamtugether.model.sound.piano.PianoSound;
 import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 import de.pcps.jamtugether.utils.SoundUtils;
 import timber.log.Timber;
@@ -38,6 +39,11 @@ public class JamTUgetherApplication extends Application {
         }
 
         for (ShakerSound soundResource : ShakerSound.values()) {
+            int duration = SoundUtils.getSoundDuration(soundResource.getResource(), this.getApplicationContext());
+            soundResource.setDuration(duration);
+        }
+
+        for (PianoSound soundResource : PianoSound.values()) {
             int duration = SoundUtils.getSoundDuration(soundResource.getResource(), this.getApplicationContext());
             soundResource.setDuration(duration);
         }

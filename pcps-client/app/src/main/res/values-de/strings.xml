@@ -22,6 +22,7 @@
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
+    <string name="instrument_piano">Piano</string>
 
     <string name="settings">Einstellungen</string>
     <string name="main_instrument">Hauptinstrument</string>

@@ -17,6 +17,6 @@ public class DrumsSoundPool extends BaseSoundPool {
     private static final int SOUND_POOL_MAX_STREAMS = 100;
 
     public DrumsSoundPool(@NonNull Context context) {
-        super(context, SOUND_POOL_MAX_STREAMS, DrumsSound.values());
+        super(context, SOUND_POOL_MAX_STREAMS, DrumsSound.values(), 0);
     }
 }
