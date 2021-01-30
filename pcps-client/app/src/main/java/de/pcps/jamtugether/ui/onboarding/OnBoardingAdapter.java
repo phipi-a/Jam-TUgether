@@ -6,6 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingDrumsFragment;
 import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingOverviewViewFragment;
+import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingPianoFragment;
 import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingReadyToUploadFragment;
 import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingShakerFragment;
 import de.pcps.jamtugether.ui.onboarding.screens.instrument.ChooseMainInstrumentFragment;
@@ -16,11 +17,7 @@ import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingWelcomeFragment;
 
 public class OnBoardingAdapter extends FragmentStateAdapter {
 
-    public static final int ON_BOARDING_ITEM_COUNT = 9;
-
-    // todo
-    //  replace screenshots with current version
-    //  add english screenshots
+    public static final int ON_BOARDING_ITEM_COUNT = 10;
 
     public OnBoardingAdapter(@NonNull OnBoardingFragment fragment) {
         super(fragment);
@@ -39,14 +36,16 @@ public class OnBoardingAdapter extends FragmentStateAdapter {
             case 3:
                 return OnBoardingFluteFragment.newInstance();
             case 4:
-                return OnBoardingShakerFragment.newInstance();
-            case 5:
                 return OnBoardingDrumsFragment.newInstance();
+            case 5:
+                return OnBoardingShakerFragment.newInstance();
             case 6:
-                return OnBoardingReadyToUploadFragment.newInstance();
+                return OnBoardingPianoFragment.newInstance();
             case 7:
-                return OnBoardingOverviewViewFragment.newInstance();
+                return OnBoardingReadyToUploadFragment.newInstance();
             case 8:
+                return OnBoardingOverviewViewFragment.newInstance();
+            case 9:
                 return ChooseMainInstrumentFragment.newInstance();
         }
         return OnBoardingWelcomeFragment.newInstance();

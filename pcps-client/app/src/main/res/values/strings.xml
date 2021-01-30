@@ -146,5 +146,7 @@
     <string name="shaker_functionality_title">Functionality</string>
     <string name="shaker_functionality_text">Shake your phone as if you were playing a shaker to make sounds</string>
     <string name="drums_functionality_title">Functionality</string>
-    <string name="drums_functionality_text">Tap the icons to play the drums</string>
+    <string name="drums_functionality_text">Tap on the icons to play the drums</string>
+    <string name="piano_functionality_title">Functionality</string>
+    <string name="piano_functionality_text">Tap on the keys to play the notes</string>
 </resources>

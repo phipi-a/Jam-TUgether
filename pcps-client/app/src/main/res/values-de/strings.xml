@@ -146,4 +146,6 @@
     <string name="shaker_functionality_text">Bewege dein Handy so, als würdest du eine Rassel spielen</string>
     <string name="drums_functionality_title">Funktionsweise</string>
     <string name="drums_functionality_text">Tippe auf die Symbole, um das Schlagzeug zu spielen</string>
+    <string name="piano_functionality_title">Funktionsweise</string>
+    <string name="piano_functionality_text">Drücke auf die Tasten um die entsprechenden Töne zu spielen.</string>
 </resources>

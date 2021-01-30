@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -20,6 +19,7 @@ import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.DrumsHelpFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.FluteHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.PianoHelpFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.ShakerHelpFragment;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -84,6 +84,13 @@ public class OwnSoundtrackFragment extends BaseFragment {
             if (showHelpDialog) {
                 ShakerHelpFragment.newInstance().show(getChildFragmentManager(), "");
                 viewModel.onShakerHelpDialogShown();
+            }
+        });
+
+        viewModel.getShowPianoHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
+            if (showHelpDialog) {
+                PianoHelpFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onPianoHelpDialogShown();
             }
         });
 
