@@ -13,19 +13,19 @@ import de.pcps.jamtugether.model.sound.SoundResource;
 
 public enum PianoSound implements SoundResource {
 
-    C(R.raw.flute_c, R.string.music_note_c),
-    C_SHARP(R.raw.flute_c_sharp, R.string.music_note_c_sharp),
-    D(R.raw.flute_d, R.string.music_note_d),
-    D_SHARP(R.raw.flute_d_sharp, R.string.music_note_d_sharp),
-    E(R.raw.flute_e, R.string.music_note_e),
-    F(R.raw.flute_f, R.string.music_note_f),
-    F_SHARP(R.raw.flute_f_sharp, R.string.music_note_f_sharp),
-    G(R.raw.flute_g, R.string.music_note_g),
-    G_SHARP(R.raw.flute_g_sharp, R.string.music_note_g_sharp),
-    A(R.raw.flute_a, R.string.music_note_a),
-    A_SHARP(R.raw.flute_a_sharp, R.string.music_note_a_sharp),
-    B(R.raw.flute_b, R.string.music_note_b),
-    C_HIGH(R.raw.flute_c_high, R.string.music_note_c_high);
+    C(R.raw.piano_c, R.string.music_note_c),
+    C_SHARP(R.raw.piano_c_sharp, R.string.music_note_c_sharp),
+    D(R.raw.piano_d, R.string.music_note_d),
+    D_SHARP(R.raw.piano_d_sharp, R.string.music_note_d_sharp),
+    E(R.raw.piano_e, R.string.music_note_e),
+    F(R.raw.piano_f, R.string.music_note_f),
+    F_SHARP(R.raw.piano_f_sharp, R.string.music_note_f_sharp),
+    G(R.raw.piano_g, R.string.music_note_g),
+    G_SHARP(R.raw.piano_g_sharp, R.string.music_note_g_sharp),
+    A(R.raw.piano_a, R.string.music_note_a),
+    A_SHARP(R.raw.piano_a_sharp, R.string.music_note_a_sharp),
+    B(R.raw.piano_b, R.string.music_note_b),
+    C_HIGH(R.raw.piano_c_high, R.string.music_note_c_high);
 
     @NonNull
     public static final PianoSound[] WHITE_TILE_SOUNDS = {C, D, E, F, G, A, B, C_HIGH};

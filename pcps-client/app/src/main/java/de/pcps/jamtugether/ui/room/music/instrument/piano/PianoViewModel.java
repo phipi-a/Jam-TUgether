@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.sound.flute.FluteSound;
+import de.pcps.jamtugether.model.sound.piano.PianoSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 import timber.log.Timber;
@@ -44,8 +46,12 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
         if (streamID != null) {
             piano.stopSound(streamID.getID());
             pitchStreamIDsMap.remove(pitch);
-            int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
             if (ownSoundtrack != null) {
+                int stoppedEndTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                int completeSoundEndTimeMillis = streamID.getStartTime() + PianoSound.from(pitch).getDuration();
+                int endTimeMillis = Math.min(stoppedEndTimeMillis, completeSoundEndTimeMillis);
+                // todo remove above code after loop issue is fixed
+                // int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                 Sound sound = new Sound(streamID.getStartTime(), endTimeMillis, pitch);
                 ownSoundtrack.addSound(sound);
             }

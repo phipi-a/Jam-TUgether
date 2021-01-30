@@ -39,11 +39,11 @@ public abstract class BaseSoundPool {
     @NonNull
     private final HashMap<Integer, Integer> soundResMap;
 
+    protected final int loop;
+
     protected float volume = 1;
 
-    protected int loop = 0;
-
-    public BaseSoundPool(@NonNull Context context, int maxStreams, @NonNull SoundResource[] soundResources) {
+    public BaseSoundPool(@NonNull Context context, int maxStreams, @NonNull SoundResource[] soundResources, int loop) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -57,6 +57,7 @@ public abstract class BaseSoundPool {
         this.loadedSoundIDs = new ArrayList<>();
         this.streamIDs = Collections.synchronizedList(new ArrayList<>());
         this.soundResMap = new HashMap<>();
+        this.loop = loop;
 
         for (SoundResource soundRes : soundResources) {
             int soundID = soundPool.load(context, soundRes.getResource(), 1);

@@ -10,6 +10,7 @@ import de.pcps.jamtugether.model.sound.flute.FluteSound;
 public class FluteSoundPool extends BaseSoundPool {
 
     public FluteSoundPool(@NonNull Context context) {
-        super(context, 1, FluteSound.values());
+        super(context, 1, FluteSound.values(), 0);
+        // todo change loop to -1
     }
 }
