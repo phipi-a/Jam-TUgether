@@ -8,11 +8,9 @@ import java.util.HashMap;
 
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
 import de.pcps.jamtugether.model.sound.piano.PianoSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
-import timber.log.Timber;
 
 public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyListener {
 
@@ -59,9 +57,9 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
     }
 
     @Override
-    public void finishSoundtrack() {
+    protected void finishRecording() {
         finishSound();
-        super.finishSoundtrack();
+        super.finishRecording();
     }
 
     private void finishSound() {

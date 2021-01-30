@@ -106,6 +106,5 @@
                 android:layout_marginTop="@dimen/soundtrack_item_margin_top"
                 android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -23,6 +23,9 @@
     <color name="soundtracksFetchingProgressBarColor">@color/red</color>
     <color name="soundtracksFetchingProgressBarBackgroundColor">@color/gray</color>
 
+    <color name="metronomeActiveColor">@color/red</color>
+    <color name="metronomeInactiveColor">@color/gray</color>
+
     <!-- light mode -->
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryVariant">@color/black</color>
