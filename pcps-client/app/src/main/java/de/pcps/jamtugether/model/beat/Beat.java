@@ -6,8 +6,6 @@ import de.pcps.jamtugether.utils.TimeUtils;
 
 public class Beat {
 
-    // todo put in composition model
-
     private final int ticksPerTact;
 
     /**
@@ -19,10 +17,10 @@ public class Beat {
      * <numerator> number of sounds should be
      * played evenly within these milliseconds
      */
-    private final long millisPerTact;
+    private transient final long millisPerTact;
 
     @NonNull
-    public static final Beat DEFAULT = new Beat(4, 60);
+    public static transient final Beat DEFAULT = new Beat(4, 60);
 
     public Beat(int ticksPerTact, int tempo) {
         this.ticksPerTact = ticksPerTact;

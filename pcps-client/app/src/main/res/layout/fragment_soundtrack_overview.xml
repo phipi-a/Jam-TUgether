@@ -9,17 +9,26 @@
         <import type="android.view.View" />
 
         <variable
-            name="soundtrackOverviewViewModel"
+            name="viewModel"
             type="de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel" />
 
-        <variable
-            name="roomViewModel"
-            type="de.pcps.jamtugether.ui.room.RoomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/count_down_progress_bar"
+            android:layout_width="@dimen/count_down_progress_bar_width"
+            android:layout_height="@dimen/count_down_progress_bar_width"
+            android:layout_marginTop="10dp"
+            android:indeterminateOnly="false"
+            android:progress="@{viewModel.countDownProgress}"
+            android:progressDrawable="@drawable/progress_bar_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/room_id_text_view"
@@ -27,10 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/room_id_text_view_margin_start"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
-            android:text="@{@string/room_format(soundtrackOverviewViewModel.roomID)}"
+            android:text="@{@string/room_format(viewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
         <TextView
             android:id="@+id/delete_room_text_view"
@@ -38,12 +47,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/room_id_text_view_margin_top"
             android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
-            android:onClick="@{() -> soundtrackOverviewViewModel.onDeleteRoomButtonClicked()}"
+            android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
             android:text="@string/delete_room"
             android:textSize="16dp"
-            android:visibility="@{roomViewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.userIsAdmin ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
         <include
             android:id="@+id/composite_soundtrack_layout"
@@ -51,7 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/composite_soundtrack_margin_top"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,16 +75,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/composite_soundtrack_layout" />
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/iconColor"
-            android:visibility="@{soundtrackOverviewViewModel.progressBarVisibility}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

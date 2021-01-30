@@ -8,6 +8,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 
 public class Instruments {
@@ -22,13 +23,16 @@ public class Instruments {
     public static final Shaker SHAKER = Shaker.getInstance();
 
     @NonNull
-    public static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER};
+    public static final Piano PIANO = Piano.getInstance();
+
+    @NonNull
+    public static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER, PIANO};
 
     @NonNull
     public static final List<Instrument> LIST = Arrays.asList(ARRAY);
 
     @NonNull
-    public static final Instrument FALLBACK = FLUTE; // todo maybe replace fallback with error
+    public static final Instrument DEFAULT = FLUTE;
 
     @NonNull
     private static final HashMap<String, Instrument> preferenceMap = new HashMap<>();
@@ -46,12 +50,12 @@ public class Instruments {
     @NonNull
     public static Instrument fromPreferences(@NonNull String preferenceValue) {
         Instrument instrument = preferenceMap.get(preferenceValue);
-        return instrument != null ? instrument : FALLBACK;
+        return instrument != null ? instrument : DEFAULT;
     }
 
     @NonNull
     public static Instrument fromServer(@NonNull String serverString) {
         Instrument instrument = serverMap.get(serverString);
-        return instrument != null ? instrument : FALLBACK;
+        return instrument != null ? instrument : DEFAULT;
     }
 }

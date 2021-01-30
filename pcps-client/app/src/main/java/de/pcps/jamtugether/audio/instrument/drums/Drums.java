@@ -10,8 +10,8 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
 import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
-import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
-import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.drums.DrumsSound;
 
 public class Drums extends Instrument {
 
@@ -22,44 +22,19 @@ public class Drums extends Instrument {
     @Nullable
     private static Drums instance;
 
-    @RawRes
-    public static final int SNARE = SoundResource.SNARE.getResource();
-    public static final int SNARE_PITCH = 50;
-
-    @RawRes
-    public static final int KICK = SoundResource.KICK.getResource();
-    public static final int KICK_PITCH = 30;
-
-    @RawRes
-    public static final int HAT = SoundResource.HAT.getResource();
-    public static final int HAT_PITCH = 70;
-
-    @RawRes
-    public static final int CYMBAL = SoundResource.CYMBAL.getResource();
-    public static final int CYMBAL_PITCH = 90;
-
     public Drums() {
-        super(1, R.string.instrument_drums, R.string.play_drums_help, "drums", "drums");
+        super(1, R.string.instrument_drums, "drums", "drums");
     }
 
     @RawRes
     @Override
     public int getSoundResource(int pitch) {
-        switch (pitch) {
-            case SNARE_PITCH:
-                return SNARE;
-            case KICK_PITCH:
-                return KICK;
-            case HAT_PITCH:
-                return HAT;
-            default:
-                return CYMBAL;
-        }
+        return DrumsSound.from(pitch).getResource();
     }
 
     @NonNull
     @Override
-    public InstrumentSoundPool createSoundPool(@NonNull Context context) {
+    public BaseSoundPool createSoundPool(@NonNull Context context) {
         return new DrumsSoundPool(context);
     }
 
@@ -75,25 +50,25 @@ public class Drums extends Instrument {
 
     public void playSnare() {
         if (soundPool != null) {
-            soundPool.playSoundRes(SNARE, 1);
+            soundPool.playSoundRes(DrumsSound.SNARE.getResource());
         }
     }
 
     public void playKick() {
         if (soundPool != null) {
-            soundPool.playSoundRes(KICK, 1);
+            soundPool.playSoundRes(DrumsSound.KICK.getResource());
         }
     }
 
     public void playHat() {
         if (soundPool != null) {
-            soundPool.playSoundRes(HAT, 1);
+            soundPool.playSoundRes(DrumsSound.HAT.getResource());
         }
     }
 
     public void playCymbal() {
         if (soundPool != null) {
-            soundPool.playSoundRes(CYMBAL, 1);
+            soundPool.playSoundRes(DrumsSound.CYMBAL.getResource());
         }
     }
 

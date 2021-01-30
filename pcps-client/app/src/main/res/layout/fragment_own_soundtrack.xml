@@ -9,11 +9,28 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel" />
+
+        <variable
+            name="musicianViewViewModel"
+            type="de.pcps.jamtugether.ui.room.music.MusicianViewViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/count_down_progress_bar"
+            android:layout_width="@dimen/count_down_progress_bar_width"
+            android:layout_height="@dimen/count_down_progress_bar_width"
+            android:layout_marginTop="10dp"
+            android:indeterminateOnly="false"
+            android:progress="@{viewModel.countDownProgress}"
+            android:progressDrawable="@drawable/progress_bar_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/room_id_text_view"
@@ -24,7 +41,7 @@
             android:text="@{@string/room_format(viewModel.roomID)}"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/count_down_progress_bar" />
 
         <Spinner
             android:id="@+id/instrument_spinner"
@@ -49,29 +66,46 @@
             app:layout_constraintTop_toTopOf="@id/room_id_text_view"
             app:tint="@color/iconColor" />
 
-        <include
-            android:id="@+id/composite_soundtrack_layout"
-            layout="@layout/view_soundtrack"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/composite_soundtrack_margin_top"
-            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+        <ImageView
+            android:id="@+id/expand_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
+            android:onClick="@{() -> viewModel.onExpandButtonClicked()}"
+            android:src="@{musicianViewViewModel.soundtracksExpanded ? @drawable/ic_expand_less : @drawable/ic_expand_more}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/room_id_text_view"
+            app:tint="@color/iconColor" />
 
-        <include
-            android:id="@+id/own_soundtrack_layout"
-            layout="@layout/view_soundtrack"
+        <LinearLayout
+            android:id="@+id/soundtracks_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/soundtrack_item_margin_top"
-            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.soundtracksVisibility}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/composite_soundtrack_layout" />
+            app:layout_constraintTop_toBottomOf="@id/expand_icon">
+
+            <include
+                android:id="@+id/composite_soundtrack_layout"
+                layout="@layout/view_soundtrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+                android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
+
+            <include
+                android:id="@+id/own_soundtrack_layout"
+                layout="@layout/view_soundtrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+                android:layout_marginTop="@dimen/soundtrack_item_margin_top"
+                android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/metronome"

@@ -62,7 +62,7 @@ public class CompositeSoundtrack extends Soundtrack {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompositeSoundtrack that = (CompositeSoundtrack) o;
-        return soundtracks.equals(that.soundtracks);
+        return soundtracks.equals(that.soundtracks) && this.getProgress().getValue().equals(that.getProgress().getValue()) && this.getState().getValue() == that.getState().getValue();
     }
 
     @Override

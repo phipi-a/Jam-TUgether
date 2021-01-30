@@ -4,6 +4,10 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 
+    <string name="back">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="finish">Fertig</string>
+
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
@@ -18,6 +22,7 @@
     <string name="instrument_flute">Flöte</string>
     <string name="instrument_drums">Schlagzeug</string>
     <string name="instrument_shaker">Rassel</string>
+    <string name="instrument_piano">Piano</string>
 
     <string name="settings">Einstellungen</string>
     <string name="main_instrument">Hauptinstrument</string>
@@ -37,15 +42,19 @@
     <string name="room_invalid">Dieser Raum ist ungültig.</string>
     <string name="password_input_empty">Du musst ein Passwort eingeben.</string>
 
-    <string name="play_instrument_format">%s spielen</string>
-    <string name="play_flute_help">Puste in dein Mikro und kontolliere die Tonhöhe mit dem Regler.</string>
-    <string name="play_drums_help">Drücke auf die Elemente um den entsprechenden Sound zu erzeugen.</string>
-    <string name="play_shaker_help">Schüttel dein Handy.</string>
-
     <string name="composite">Gesamt</string>
+    <string name="own_soundtrack">Eigene Tonspur</string>
+
+    <string name="composite_soundtrack_place_holder">Gesamte Tonspur</string>
+    <string name="own_soundtrack_place_holder">Eigene Tonspur</string>
 
     <string name="upload">Hochladen</string>
+    <string name="upload_reminder_dialog_title">Erinnerung</string>
+    <string name="upload_reminder_dialog_message">Vergiss nicht deine Tonspur hochzuladen!</string>
+
     <string name="play_with_composite_soundtrack">mit Tonspur</string>
+
+    <string name="loop_record_with_composite_soundtrack">loop</string>
 
     <string name="room_format">Raum %d</string>
 
@@ -79,4 +88,50 @@
     <string name="room_number_limit_reached_error_message">Du kannst keine weiteren Räume erstellen, da die maximale Anzahl an Räumen bereits erreicht wurde.</string>
     <string name="generic_error_title">Fehler</string>
     <string name="generic_error_message">Etwas ist schief gelaufen.</string>
+    <string name="room_does_not_exist_error_title">Raum</string>
+    <string name="room_does_not_exist_error_message">Dieser Raum existiert nicht mehr</string>
+
+    <string name="music_note_c">C</string>
+    <string name="music_note_c_sharp">C#</string>
+    <string name="music_note_d">D</string>
+    <string name="music_note_d_sharp">D#</string>
+    <string name="music_note_e">E</string>
+    <string name="music_note_f">F</string>
+    <string name="music_note_f_sharp">F#</string>
+    <string name="music_note_g">G</string>
+    <string name="music_note_g_sharp">G#</string>
+    <string name="music_note_a">A</string>
+    <string name="music_note_a_sharp">A#</string>
+    <string name="music_note_b">H</string>
+    <string name="music_note_c_high">C</string>
+
+    <string name="on_boarding_welcome_message">Willkommen zu \nJam TUgether</string>
+    <string name="create_room_title">Raum erstellen</string>
+    <string name="create_room_text">Erstelle einen Raum und teile die ID mit deinen Freunden</string>
+    <string name="join_room_title">Raum betreten</string>
+    <string name="join_room_text">Du hast eine ID von einem Freund erhalten? Dann trete dem Raum bei</string>
+    <string name="ready_to_upload_warning_title">Achtung</string>
+    <string name="ready_to_upload_warning_text">Bevor Du eine neue Tonspur aufnimmst, musst du die alte Tonspur hochladen, damit sie zum gesamten Stück hinzugefügt wird. Klicke hierfür einfach auf Hochladen</string>
+    <string name="musician_overview_title">Im Übersichtsbildschirm kannst du dir alle Tonspuren anhören und deine eigenen auch löschen. Als Admin kannst du alle Spuren oder den ganzen Raum löschen</string>
+    <string name="musician_overview_text">Übersicht</string>
+    <string name="update_title">Aktualisierung</string>
+    <string name="update_text">Die gesamte Tonspur aktualisiert sich immer automatisch, wenn sich der rote Kreis schließt</string>
+    <string name="record_with_soundtrack_title">Mit Tonspur</string>
+    <string name="record_with_soundtrack_text">Du kannst dir aussuchen, ob du während der Aufnahme die gesamte Tonspur hören möchtest</string>
+    <string name="soundtracks_title">Tonspuren</string>
+    <string name="soundtracks_text">nach deiner ersten Aufnahme erscheinen hier die gesamte und die eigene Tonspur</string>
+    <string name="change_instrument_title">Instrument wechseln</string>
+    <string name="change_instrument_text">Du kannst das Instrument oben rechts im Menü wechseln</string>
+    <string name="start_record_title">Aufnahme starten</string>
+    <string name="start_record_text">Drücke den roten Knopf, um die Aufnahme zu starten und zu beenden</string>
+    <string name="room_id_title">Raum ID</string>
+    <string name="room_id_text">Oben links findest du die Raum ID. Teile diese mit deinen Freunden, um gemeinsam musizieren zu können</string>
+    <string name="flute_functionality_title">Funktionsweise</string>
+    <string name="flute_functionality_text">Puste in dein Mikrofon um einen Ton zu erzeugen. Um die Tonhöhe zu verändern, musst du den Slider bewegen</string>
+    <string name="flute_warning_title">Achtung</string>
+    <string name="flute_warning_text">Du musst Kopfhörer tragen, um die Flöte zu spielen!</string>
+    <string name="shaker_functionality_title">Funktionsweise</string>
+    <string name="shaker_functionality_text">Bewege dein Handy so, als würdest du eine Rassel spielen</string>
+    <string name="drums_functionality_title">Funktionsweise</string>
+    <string name="drums_functionality_text">Tippe auf die Symbole, um das Schlagzeug zu spielen</string>
 </resources>

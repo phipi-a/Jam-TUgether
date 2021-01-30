@@ -3,7 +3,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const bcrypt = require('bcrypt')
 const { checkPwdLen, createToken, verify, verifyAdmin, PwErr, whoAmI } = require('../js/auth.js')
 const { jsonRoom, createJSON } = require('../js/prepareResponse.js')
-const { receiveTrack, sendTracks, checkAdmin, deleteTracks } = require('../js/room.js')
+const { receiveTrack, sendTracks, checkAdmin, deleteTracks, setBeat } = require('../js/room.js')
 const { fillRoom } = require('../js/prepareRoom.js')
 
 const app = express()
@@ -141,7 +141,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *               type: string
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success          
  *       401:
  *         description: Wrong password or roomID
  *       408:
@@ -205,6 +205,8 @@ roomRoute.delete('/room', verify, verifyAdmin, async (req, res) => {
  *         description: Success + JWToken
  *       401:
  *         description: Wrong password or roomID
+ *       410:
+ *         description: Wrong roomID
  *       500:
  *         description: Failure
  */
@@ -215,7 +217,7 @@ roomRoute.post('/login', async (req, res) => {
     const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
 
     if (!room) {
-      return res.status(401).json({ description: 'No room with matching roomId found' })
+      return res.status(410).json({ description: 'No room with matching roomId found' })
     }
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
@@ -317,7 +319,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *       500:
  *         description: Failure
  */
-roomRoute.delete('/room/:id', verify, verifyAdmin, async (req, res) => {
+roomRoute.delete('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
   if (room == null) {
     res.status(410).json({ description: 'Room does not exist!' })
@@ -389,6 +391,50 @@ roomRoute.delete('/room/:id/admin', verifyAdmin, async (req, res) => {
   const newDate = new Date(Date.now() - 18000000)
   await RoomSchema.updateOne({ roomID: req.body.roomID }, { lastAccessAdmin: newDate }).exec()
   res.status(200).json({ description: 'Success' })
+}
+)
+/**
+ * @openapi
+ * /api/:id/beat:
+ *   post:
+ *     summary: Updates room beat (only Admin).
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: roomID
+ *         description: Room ID
+ *         schema:
+ *           type: object
+ *           required:
+ *             - roomID
+ *             - beat
+ *           properties:
+ *             roomID:
+ *               type: number
+ *             beat:
+ *               type: object
+ *               properties:
+ *                 ticksPerTact:
+ *                   type: number
+ *                 tempo:
+ *                   type: number
+ *     responses:
+ *       200:
+ *         description: Successfully updated room's beat
+ *         schema:
+ *           type: object
+ *           properties:
+ *             description:
+ *               type: string
+ *               example: Success
+ *       403:
+ *         description: Not Admin of this room
+ *       408:
+ *         description: Old Admin, access denied
+ */
+roomRoute.post('/room/:id/beat', verifyAdmin, async (req, res) => {
+  setBeat(req, res)
 }
 )
 

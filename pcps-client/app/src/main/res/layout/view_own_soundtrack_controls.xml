@@ -8,8 +8,9 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel" />
+
         <variable
-            name="viewModel2"
+            name="ownSoundtrackViewModel"
             type="de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel" />
     </data>
 
@@ -21,10 +22,11 @@
             android:id="@+id/upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="@{viewModel.uploadPossible}"
+            android:enabled="@{viewModel.uploadButtonEnabled}"
             android:onClick="@{() -> viewModel.onUploadButtonClicked()}"
             android:text="@string/upload"
             android:textColor="@color/primaryTextColor"
+            android:visibility="@{viewModel.uploadButtonVisibility}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,13 +54,13 @@
                 android:id="@+id/record_stop_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:padding="12dp"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.onCreateSoundtrackButtonClicked()}"
+                android:onClick="@{() -> viewModel.onRecordSoundtrackButtonClicked()}"
+                android:padding="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startedCreatingSoundtrack="@{viewModel.startedSoundtrackCreation}"
+                app:startedCreatingSoundtrack="@{viewModel.recordingSoundtrack}"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -68,12 +70,12 @@
                 android:padding="12dp"
                 android:gravity="center"
                 android:layout_marginStart="0dp"
-                android:onClick="@{() -> viewModel2.onMetronomeButtonClicked()}"
+                android:onClick="@{() -> ownSoundtrackViewModel.onMetronomeButtonClicked()}"
                 android:src="@drawable/metronome"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/record_stop_button"
                 app:layout_constraintTop_toTopOf="parent"
-                app:metronomePlaying="@{viewModel2.metronomePlaying}"
+                app:metronomePlaying="@{ownSoundtrackViewModel.metronomePlaying}"
                 app:tint="@color/iconColor" />
 
             <TextView
@@ -100,16 +102,34 @@
                 app:layout_constraintTop_toTopOf="@id/timer_text_view" />
 
             <CheckBox
+                android:id="@+id/composite_soundtrack_loop_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:buttonTint="@color/iconColor"
+                android:enabled="@{viewModel.getLoopCheckBoxIsEnabled}"
+                android:onClick="@{() -> viewModel.onPlayWithCompositeSoundtrackInLoopClicked(compositeSoundtrackLoopCheckBox.isChecked())}"
+                android:text="@string/loop_record_with_composite_soundtrack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/composite_soundtrack_check_box"
+                app:layout_constraintTop_toTopOf="parent"
+                app:uncheckLoop="@{viewModel.uncheckLoopCheckBox}"
+                app:viewModel="@{viewModel}" />
+
+            <CheckBox
                 android:id="@+id/composite_soundtrack_check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:buttonTint="@color/iconColor"
+                android:enabled="@{viewModel.compositeSoundtrackCheckBoxIsEnabled}"
                 android:onClick="@{() -> viewModel.onPlayWithCompositeSoundtrackClicked(compositeSoundtrackCheckBox.isChecked())}"
                 android:text="@string/play_with_composite_soundtrack"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:uncheckCompositeSoundtrack="@{viewModel.uncheckCompositeSoundtrackCheckBox}"
+                app:viewModel="@{viewModel}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

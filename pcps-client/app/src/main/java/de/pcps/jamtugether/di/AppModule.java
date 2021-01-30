@@ -6,15 +6,20 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.squareup.moshi.Moshi;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.api.Constants;
+import de.pcps.jamtugether.api.adapters.InstrumentJsonAdapter;
 import de.pcps.jamtugether.api.interceptors.InternetConnectionInterceptor;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.room.RoomService;
+import de.pcps.jamtugether.audio.player.SoundtrackController;
+import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -52,13 +57,20 @@ public class AppModule {
     @Singleton
     @Provides
     @NonNull
-    public Retrofit provideRetrofit(@NonNull InternetConnectionInterceptor interceptor) {
+    public Moshi provideMoshi() {
+        return new Moshi.Builder().add(new InstrumentJsonAdapter()).build();
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    public Retrofit provideRetrofit(@NonNull InternetConnectionInterceptor interceptor, @NonNull Moshi moshi) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor).build();
 
         return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient()) // todo remove after response of soundtrack is fixed
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(client)
                 .build();
     }
@@ -75,5 +87,12 @@ public class AppModule {
     @NonNull
     public RoomService provideRoomService(@NonNull Retrofit retrofit) {
         return retrofit.create(RoomService.class);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    public Soundtrack.OnChangeCallback provideSoundtrackOnChangeCallback(@NonNull SoundtrackController soundtrackController) {
+        return soundtrackController;
     }
 }

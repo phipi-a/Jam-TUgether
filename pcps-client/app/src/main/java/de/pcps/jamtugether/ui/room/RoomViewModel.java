@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
@@ -13,16 +15,12 @@ import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
-import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.storage.db.LatestSoundtracksDatabase;
+import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
-import timber.log.Timber;
 
 public class RoomViewModel extends ViewModel {
-
-    @Inject
-    SoundtrackController soundtrackController;
 
     @Inject
     RoomRepository roomRepository;
@@ -33,11 +31,6 @@ public class RoomViewModel extends ViewModel {
     @Inject
     SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
-    @Inject
-    LatestSoundtracksDatabase latestSoundtracksDatabase;
-
-    private final int roomID;
-
     @NonNull
     private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
 
@@ -47,12 +40,12 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    public RoomViewModel(int roomID, @NonNull String token, boolean userIsAdmin) {
+    public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
-        this.roomID = roomID;
+        roomRepository.onUserEnteredRoom(roomID, password, user, token, userIsAdmin);
 
-        roomRepository.updateInfo(token, userIsAdmin);
-        roomRepository.fetchAdminStatus(roomID, token);
+        roomRepository.startFetchingAdminStatus();
+        soundtrackRepository.startFetchingComposition();
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -61,30 +54,22 @@ public class RoomViewModel extends ViewModel {
 
     public void onLeaveRoomConfirmationButtonClicked() {
         navigateBack.setValue(true);
-        onUserLeft();
+        onUserLeftRoom();
     }
 
-    private void onUserLeft() {
-        soundtrackController.stopPlayers();
+    private void onUserLeftRoom() {
+        roomRepository.onUserLeftRoom();
+
         Boolean userIsAdmin = getUserIsAdmin().getValue();
         if (userIsAdmin != null && userIsAdmin) {
             onAdminLeft();
         }
-        roomRepository.onUserLeftRoom();
-        soundtrackRepository.onUserLeftRoom();
-        soundtrackNumbersDatabase.onUserLeftRoom();
-        latestSoundtracksDatabase.onUserLeftRoom();
     }
 
     private void onAdminLeft() {
-        String token = roomRepository.getCurrentToken().getValue();
-        if (token == null) {
-            return;
-        }
-        roomRepository.removeAdmin(roomID, token, new JamCallback<RemoveAdminResponse>() {
+        roomRepository.removeAdmin(new JamCallback<RemoveAdminResponse>() {
             @Override
             public void onSuccess(@NonNull RemoveAdminResponse response) {
-                Timber.d("onSuccess()");
             }
 
             @Override
@@ -106,9 +91,21 @@ public class RoomViewModel extends ViewModel {
         this.navigateBack.setValue(false);
     }
 
+    /**
+     * @return 0 if musician view should be shown when user enters room
+     *         1 if soundtrack overview should be shown when user enters room
+     */
+    public int getInitialTabPosition() {
+        List<SingleSoundtrack> soundtracks = soundtrackRepository.getAllSoundtracks().getValue();
+        if (soundtracks != null && !soundtracks.isEmpty()) {
+            return 0;
+        }
+        return 1;
+    }
+
     @NonNull
     public LiveData<String> getToken() {
-        return roomRepository.getCurrentToken();
+        return roomRepository.getToken();
     }
 
     @NonNull
@@ -136,12 +133,20 @@ public class RoomViewModel extends ViewModel {
         private final int roomID;
 
         @NonNull
+        private final String password;
+
+        @NonNull
+        private final User user;
+
+        @NonNull
         private final String token;
 
         private final boolean userIsAdmin;
 
-        public Factory(int roomID, @NonNull String token, boolean userIsAdmin) {
+        public Factory(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
             this.roomID = roomID;
+            this.user = user;
+            this.password = password;
             this.token = token;
             this.userIsAdmin = userIsAdmin;
         }
@@ -151,7 +156,7 @@ public class RoomViewModel extends ViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RoomViewModel.class)) {
-                return (T) new RoomViewModel(roomID, token, userIsAdmin);
+                return (T) new RoomViewModel(roomID, password, user, token, userIsAdmin);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

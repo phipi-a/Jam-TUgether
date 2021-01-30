@@ -9,29 +9,27 @@ import androidx.annotation.RawRes;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.sound.pool.ShakerSoundPool;
-import de.pcps.jamtugether.audio.sound.pool.base.InstrumentSoundPool;
-import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 
 public class Shaker extends Instrument {
 
     @Nullable
     private static Shaker instance;
 
-    public static int SHAKER_SOUND = SoundResource.SHAKER.getResource();
-
     public Shaker() {
-        super(2, R.string.instrument_shaker, R.string.play_shaker_help, "shaker", "shaker");
+        super(2, R.string.instrument_shaker, "shaker", "shaker");
     }
 
     @RawRes
     @Override
-    public int getSoundResource(int element) {
-        return SHAKER_SOUND;
+    public int getSoundResource(int pitch) {
+        return ShakerSound.SHAKER.getResource();
     }
 
     @NonNull
     @Override
-    public InstrumentSoundPool createSoundPool(@NonNull Context context) {
+    public BaseSoundPool createSoundPool(@NonNull Context context) {
         return new ShakerSoundPool(context);
     }
 
@@ -47,7 +45,7 @@ public class Shaker extends Instrument {
 
     public void play() {
         if (soundPool != null) {
-            soundPool.playSoundRes(SHAKER_SOUND, 1);
+            soundPool.playSoundRes(ShakerSound.SHAKER.getResource());
         }
     }
 

@@ -23,14 +23,13 @@ public class MetronomePlayingThread extends Thread {
 
     @Override
     public void run() {
-        while(!stopped) {
+        while (!stopped) {
             metronome.play(R.raw.drum_cymbal);
-            if(counter%beat.getTicksPerTact()==0) {
+            if (counter % beat.getTicksPerTact() == 0) {
                 counter++;
                 lastProgressInMillis = progressInMillis;
                 metronome.play(R.raw.metronome_up);
-            }
-            else if(progressInMillis%(beat.getMillisPerTact()/beat.getTicksPerTact())==0){
+            } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {
                 if (progressInMillis != lastProgressInMillis) {
                     counter++;
                     lastProgressInMillis = progressInMillis;

@@ -4,11 +4,15 @@
     <dimen name="layout_margin_bottom">20dp</dimen>
     <dimen name="tab_layout_height">50dp</dimen>
 
+    <dimen name="page_indicator_width">7dp</dimen>
+
     <dimen name="soundtrack_view_height">60dp</dimen>
     <dimen name="volume_slider_max_width">200dp</dimen>
 
-    <dimen name="room_id_text_view_margin_top">25dp</dimen>
+    <dimen name="room_id_text_view_margin_top">10dp</dimen>
     <dimen name="room_id_text_view_margin_start">20dp</dimen>
+
+    <dimen name="count_down_progress_bar_width">35dp</dimen>
 
     <!-- soundtrack controls dimens for
          volume slider width calculation -->
@@ -26,7 +30,6 @@
     <dimen name="soundtrack_stop_icon_width">25dp</dimen>
     <dimen name="soundtrack_stop_icon_margin_end">10dp</dimen>
 
-    <dimen name="composite_soundtrack_margin_top">25dp</dimen>
     <dimen name="soundtrack_item_margin_top">20dp</dimen>
     <!-- margin_start is 20dp to account for the 10dp space that
          the right half of the clear button takes up -->
@@ -42,7 +45,26 @@
     <dimen name="soundtrack_view_drums_hat_height">2dp</dimen>
     <dimen name="soundtrack_view_drums_cymbal_height">3dp</dimen>
 
+    <dimen name="own_soundtrack_controls_margin_top">10dp</dimen>
+
+    <dimen name="flute_view_default_height">250dp</dimen>
+    <dimen name="shaker_view_default_height">250dp</dimen>
+
+    <dimen name="flute_view_margin_top">20dp</dimen>
+    <dimen name="flute_view_padding_bottom">20dp</dimen>
+
+    <dimen name="shaker_view_margin_top">20dp</dimen>
+    <dimen name="shaker_view_padding_bottom">20dp</dimen>
+
+    <dimen name="drums_view_margin_top">20dp</dimen>
+    <dimen name="drums_view_padding_bottom">20dp</dimen>
+
     <dimen name="drums_element_width_default">100dp</dimen>
     <dimen name="drums_element_padding">10dp</dimen>
     <dimen name="drums_element_margin">10dp</dimen>
+
+    <dimen name="piano_white_tile_height">150dp</dimen>
+    <dimen name="piano_black_tile_height">90dp</dimen>
+    <dimen name="piano_view_margin_top">20dp</dimen>
+    <dimen name="piano_view_padding_bottom">20dp</dimen>
 </resources>

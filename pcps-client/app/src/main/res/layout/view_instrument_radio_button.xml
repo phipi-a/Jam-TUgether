@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="instrument"
+            type="de.pcps.jamtugether.audio.instrument.base.Instrument" />
+
+        <variable
+            name="onSelectionListener"
+            type="de.pcps.jamtugether.audio.instrument.base.Instrument.OnSelectionListener" />
+    </data>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:buttonTint="@color/iconColor"
+        android:onClick="@{() -> onSelectionListener.onInstrumentSelected(instrument)}"
+        android:text="@{instrument.name}" />
+</layout>

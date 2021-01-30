@@ -7,8 +7,6 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 
 import com.google.android.material.textfield.TextInputLayout;
 
