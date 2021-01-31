@@ -18,7 +18,7 @@ exports.receiveTrack = async function (req, res, roomID) {
 }
 
 exports.sendTracks = async function (req, res, room) {
-  res.status(200).json({ roomID: room.roomID, soundtracks: room.soundtracks , description: 'success' })
+  res.status(200).json({ roomID: room.roomID, beat: room.beat, soundtracks: room.soundtracks, description: 'success' })
 }
 
 function prepareSoundtrack (soundtrack) {
