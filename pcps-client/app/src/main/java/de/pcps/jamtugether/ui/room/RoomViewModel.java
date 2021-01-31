@@ -69,7 +69,8 @@ public class RoomViewModel extends ViewModel {
                 return;
             }
             Boolean userInRoom = roomRepository.getUserInRoom().getValue();
-            if (roomRepository.getRoomDeleted() || (userInRoom != null && !userInRoom)) {
+            Boolean roomDeleted = roomRepository.getRoomDeleted();
+            if ((roomDeleted != null && roomDeleted) || (userInRoom != null && !userInRoom)) {
                 return;
             }
             if (userIsAdmin) {
