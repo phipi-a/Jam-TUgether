@@ -26,6 +26,9 @@
     "start": "nodemon server.js",
     "test": "mocha --timeout 10000 --exit --recursive"
   },
+  "directories": {
+    "test": "./test"
+  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.tubit.tu-berlin.de/tomer/PCPS.git"

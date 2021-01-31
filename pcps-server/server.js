@@ -4,6 +4,7 @@ const dbConfig = require('./db/database')
 const RoomSchema = require('./model/room.model')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
+const RoomSchema = require('./model/room.model')
 require('dotenv').config()
 
 // Set port
@@ -80,4 +81,4 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).send(err.message)
 })
 
-
+module.exports = app

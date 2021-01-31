@@ -122,7 +122,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
 
 /**
  * @openapi
- * /api/delete-room:
+ * /api/room:
  *   delete:
  *     summary: Delete existing room.
  *     parameters:
