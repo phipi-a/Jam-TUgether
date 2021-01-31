@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.model.sound.drums.DrumsSound;
 
 public class DrumsSoundPool extends BaseSoundPool {
 
@@ -17,16 +17,6 @@ public class DrumsSoundPool extends BaseSoundPool {
     private static final int SOUND_POOL_MAX_STREAMS = 100;
 
     public DrumsSoundPool(@NonNull Context context) {
-        super(context, SOUND_POOL_MAX_STREAMS, Drums.SNARE, Drums.KICK, Drums.HAT, Drums.CYMBAL);
-    }
-
-    @Override
-    public int play(int soundID, float pitch) {
-        return soundPool.play(soundID, volume, volume, 0, 0, calculatePitch((int) pitch));
-    }
-
-    @Override
-    public float calculatePitch(int pitchPercentage) {
-        return 1;
+        super(context, SOUND_POOL_MAX_STREAMS, DrumsSound.values(), 0);
     }
 }

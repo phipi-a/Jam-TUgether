@@ -161,5 +161,4 @@ public abstract class SoundtrackPlayingThread extends Thread {
     public Soundtrack getSoundtrack() {
         return soundtrack;
     }
-
 }

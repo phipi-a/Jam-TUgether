@@ -6,33 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
-import androidx.recyclerview.widget.DiffUtil;
 
 import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
 
 public abstract class Instrument {
 
-    @NonNull
-    public static final DiffUtil.ItemCallback<Instrument> DIFF_UTIL_CALLBACK = new DiffUtil.ItemCallback<Instrument>() {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
-            return oldItem == newItem;
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Instrument oldItem, @NonNull Instrument newItem) {
-            return true;
-        }
-    };
-
     private final int ordinal;
 
     @StringRes
     private final int name;
-
-    @StringRes
-    private final int helpMessage;
 
     @NonNull
     private final String preferenceValue;
@@ -43,10 +25,9 @@ public abstract class Instrument {
     @Nullable
     protected BaseSoundPool soundPool;
 
-    public Instrument(int ordinal, @StringRes int name, @StringRes int helpMessage, @NonNull String preferenceValue, @NonNull String serverString) {
+    public Instrument(int ordinal, @StringRes int name, @NonNull String preferenceValue, @NonNull String serverString) {
         this.ordinal = ordinal;
         this.name = name;
-        this.helpMessage = helpMessage;
         this.preferenceValue = preferenceValue;
         this.serverString = serverString;
     }
@@ -76,11 +57,6 @@ public abstract class Instrument {
         return name;
     }
 
-    @StringRes
-    public int getHelpMessage() {
-        return helpMessage;
-    }
-
     @NonNull
     public String getPreferenceValue() {
         return preferenceValue;
@@ -99,8 +75,8 @@ public abstract class Instrument {
 
     public abstract boolean soundsNeedToBeResumed();
 
-    public interface ClickListener {
-        void onInstrumentClicked(@NonNull Instrument instrument);
+    public interface OnSelectionListener {
+        void onInstrumentSelected(@NonNull Instrument instrument);
     }
 
     public interface OnChangeCallback {

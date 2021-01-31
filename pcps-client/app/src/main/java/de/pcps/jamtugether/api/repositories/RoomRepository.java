@@ -18,11 +18,14 @@ import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
+import de.pcps.jamtugether.api.responses.room.UpdateBeatResponse;
 import de.pcps.jamtugether.api.services.room.RoomService;
 import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.DeleteRoomBody;
 import de.pcps.jamtugether.api.services.room.bodies.JoinRoomBody;
+import de.pcps.jamtugether.api.services.room.bodies.UpdateBeatBody;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.beat.Beat;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -43,6 +46,9 @@ public class RoomRepository {
 
     @Nullable
     private User user;
+
+    @Nullable
+    private Boolean roomDeleted;
 
     @NonNull
     private final MutableLiveData<String> token = new MutableLiveData<>(null);
@@ -75,7 +81,7 @@ public class RoomRepository {
 
     public void deleteRoom(@NonNull JamCallback<DeleteRoomResponse> callback) {
         String token = this.token.getValue();
-        if(roomID == null || password == null || token == null) {
+        if (roomID == null || password == null || token == null) {
             return;
         }
         DeleteRoomBody body = new DeleteRoomBody(roomID, password);
@@ -101,6 +107,16 @@ public class RoomRepository {
         call.enqueue(callback);
     }
 
+    public void updateBeat(@NonNull Beat beat, @NonNull JamCallback<UpdateBeatResponse> callback) {
+        String token = this.token.getValue();
+        if (roomID == null || token == null) {
+            return;
+        }
+        UpdateBeatBody body = new UpdateBeatBody(roomID, beat);
+        Call<UpdateBeatResponse> call = roomService.updateBeat(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
+        call.enqueue(callback);
+    }
+
     public void onUserEnteredRoom(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         this.userInRoom.setValue(true);
         this.roomID = roomID;
@@ -108,6 +124,7 @@ public class RoomRepository {
         this.user = user;
         this.token.setValue(token);
         this.userIsAdmin.setValue(userIsAdmin);
+        this.roomDeleted = false;
     }
 
     public void onUserLeftRoom() {
@@ -121,6 +138,7 @@ public class RoomRepository {
         user = null;
         token.setValue(null);
         userIsAdmin.setValue(false);
+        roomDeleted = null;
     }
 
     public void startFetchingAdminStatus() {
@@ -180,6 +198,15 @@ public class RoomRepository {
     @Nullable
     public User getUser() {
         return user;
+    }
+
+    public void setRoomDeleted(boolean roomDeleted) {
+        this.roomDeleted = roomDeleted;
+    }
+
+    @Nullable
+    public Boolean getRoomDeleted() {
+        return roomDeleted;
     }
 
     @NonNull

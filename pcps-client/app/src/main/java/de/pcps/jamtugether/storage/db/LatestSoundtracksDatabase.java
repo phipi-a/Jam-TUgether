@@ -10,6 +10,7 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 @Singleton
@@ -24,10 +25,13 @@ public class LatestSoundtracksDatabase {
     @Nullable
     private SingleSoundtrack latestShakerSoundtrack;
 
+    @Nullable
+    private SingleSoundtrack latestPianoSoundtrack;
+
     @Inject
     public LatestSoundtracksDatabase(@NonNull RoomRepository roomRepository) {
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(!userInRoom) {
+            if (!userInRoom) {
                 onUserLeftRoom();
             }
         });
@@ -37,27 +41,32 @@ public class LatestSoundtracksDatabase {
         latestFluteSoundtrack = null;
         latestDrumsSoundtrack = null;
         latestShakerSoundtrack = null;
+        latestPianoSoundtrack = null;
     }
 
     public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
         Instrument instrument = ownSoundtrack.getInstrument();
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             latestFluteSoundtrack = ownSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             latestDrumsSoundtrack = ownSoundtrack;
-        } else {
+        } else if (instrument == Shaker.getInstance()) {
             latestShakerSoundtrack = ownSoundtrack;
+        } else {
+            latestPianoSoundtrack = ownSoundtrack;
         }
     }
 
     @Nullable
     public SingleSoundtrack getLatestSoundtrack(@NonNull Instrument instrument) {
-        if(instrument == Flute.getInstance()) {
+        if (instrument == Flute.getInstance()) {
             return latestFluteSoundtrack;
-        } else if(instrument == Drums.getInstance()) {
+        } else if (instrument == Drums.getInstance()) {
             return latestDrumsSoundtrack;
-        } else {
+        } else if (instrument == Shaker.getInstance()) {
             return latestShakerSoundtrack;
+        } else {
+            return latestPianoSoundtrack;
         }
     }
 }

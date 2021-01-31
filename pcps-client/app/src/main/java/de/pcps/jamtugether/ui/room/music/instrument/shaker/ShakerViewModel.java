@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -40,13 +40,14 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     @Override
-    protected void onTimerStarted() {
+    protected void startRecording() {
+        super.startRecording();
         lockOrientation.setValue(true);
     }
 
     @Override
-    protected void finishSoundtrack() {
-        super.finishSoundtrack();
+    protected void finishRecording() {
+        super.finishRecording();
         lockOrientation.setValue(false);
     }
 
@@ -91,11 +92,11 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
             return;
         }
 
-        int soundDuration = SoundResource.SHAKER.getDuration();
+        int soundDuration = ShakerSound.SHAKER.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
         if (ownSoundtrack != null) {
-            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, -1));
+            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, ShakerSound.SHAKER.getPitch()));
         }
     }
 

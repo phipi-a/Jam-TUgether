@@ -1,7 +1,5 @@
 package de.pcps.jamtugether.ui.room.overview;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -9,16 +7,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -45,10 +44,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     private final MutableLiveData<Boolean> showSoundtrackDeletionConfirmDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> showNotAdminDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> showAdminSettingsFragment = new MutableLiveData<>(false);
 
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
@@ -76,36 +75,36 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
             @Override
             public void onSuccess(@NonNull DeleteTrackResponse response) {
                 // delete from local list in order to be visible immediately
-                soundtracks.remove(soundtrack);
-                soundtrackRepository.onSoundtracksChanged(soundtracks);
+                List<SingleSoundtrack> list = new ArrayList<>();
+                for (SingleSoundtrack singleSoundtrack : soundtracks) {
+                    if (!singleSoundtrack.equals(soundtrack)) {
+                        list.add(singleSoundtrack);
+                    }
+                }
+                soundtrackRepository.setSoundtracks(list);
+                soundtrackToBeDeleted = null;
             }
 
             @Override
             public void onError(@NonNull Error error) {
                 networkError.setValue(error);
-            }
-        });
-
-        soundtrackToBeDeleted = null;
-    }
-
-    private void deleteRoom() {
-        roomRepository.deleteRoom(new JamCallback<DeleteRoomResponse>() {
-            @Override
-            public void onSuccess(@NonNull DeleteRoomResponse response) {
-                onRoomDeleted();
-                navigateBack.setValue(true);
-            }
-
-            @Override
-            public void onError(@NonNull Error error) {
-                networkError.setValue(error);
+                soundtrackToBeDeleted = null;
             }
         });
     }
 
-    public void onDeleteRoomButtonClicked() {
-        showRoomDeletionConfirmDialog.setValue(true);
+    public void onAdminOptionsButtonClicked() {
+        if (roomRepository.getRoomDeleted()) {
+            networkError.setValue(new RoomDeletedError());
+            return;
+        }
+
+        Boolean isAdmin = getUserIsAdmin().getValue();
+        if (isAdmin != null && isAdmin) {
+            showAdminSettingsFragment.setValue(true);
+        } else {
+            showNotAdminDialog.setValue(true);
+        }
     }
 
     public void onSoundtrackDeletionConfirmButtonClicked() {
@@ -114,33 +113,25 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         }
     }
 
-    public void onRoomDeletionConfirmButtonClicked() {
-        deleteRoom();
-    }
-
     public void onCompositionNetworkErrorShown() {
         soundtrackRepository.onCompositionNetworkErrorShown();
         compositionNetworkErrorShown = true;
-    }
-
-    public void onNetworkErrorShown() {
-        networkError.setValue(null);
     }
 
     public void onSoundtrackDeletionConfirmDialogShown() {
         showSoundtrackDeletionConfirmDialog.setValue(false);
     }
 
-    public void onRoomDeletionConfirmDialogShown() {
-        showRoomDeletionConfirmDialog.setValue(false);
+    public void onNetworkErrorShown() {
+        networkError.setValue(null);
     }
 
-    private void onRoomDeleted() {
-        roomRepository.onUserLeftRoom();
+    public void onAdminSettingsFragmentShown() {
+        showAdminSettingsFragment.setValue(false);
     }
 
-    public void onNavigatedBack() {
-        navigateBack.setValue(false);
+    public void onNotAdminDialogShown() {
+        showNotAdminDialog.setValue(false);
     }
 
     @Nullable
@@ -160,18 +151,18 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
+    public LiveData<Boolean> getShowNotAdminDialog() {
+        return showNotAdminDialog;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowAdminSettingsFragment() {
+        return showAdminSettingsFragment;
+    }
+
+    @NonNull
     public LiveData<Boolean> getShowSoundtrackDeletionConfirmDialog() {
         return showSoundtrackDeletionConfirmDialog;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getShowRoomDeletionConfirmDialog() {
-        return showRoomDeletionConfirmDialog;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getNavigateBack() {
-        return navigateBack;
     }
 
     @NonNull
@@ -185,18 +176,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Integer> getProgressBarVisibility() {
-        return Transformations.map(soundtrackRepository.getIsFetchingComposition(), isFetchingComposition -> isFetchingComposition ? View.VISIBLE : View.GONE);
+    public LiveData<Error> getNetworkError() {
+        return networkError;
     }
 
     @NonNull
     public LiveData<Error> getCompositionNetworkError() {
         return soundtrackRepository.getCompositionNetworkError();
-    }
-
-    @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
     }
 
     @NonNull

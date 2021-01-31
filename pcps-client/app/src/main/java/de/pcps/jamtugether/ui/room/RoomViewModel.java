@@ -1,20 +1,26 @@
 package de.pcps.jamtugether.ui.room;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
+import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 
 public class RoomViewModel extends ViewModel {
@@ -35,14 +41,43 @@ public class RoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> showUserBecameAdminSnackbar = new MutableLiveData<>();
+
+    @NonNull
+    private final MutableLiveData<Boolean> showUserBecameRegularSnackbar = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
+
+    private boolean roomDeletedSnackbarShown;
+
+    private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
         roomRepository.onUserEnteredRoom(roomID, password, user, token, userIsAdmin);
-
         roomRepository.startFetchingAdminStatus();
+
         soundtrackRepository.startFetchingComposition();
+    }
+
+    public void observeAdminStatus(@NonNull LifecycleOwner lifecycleOwner) {
+        initialAdminStatusReceived = false;
+        roomRepository.getUserInRoom().observe(lifecycleOwner, userIsAdmin -> {
+            if (!initialAdminStatusReceived) {     // don't show snackbar on initial live data update
+                initialAdminStatusReceived = true; // only if admin status changes
+                return;
+            }
+            Boolean userInRoom = roomRepository.getUserInRoom().getValue();
+            if (roomRepository.getRoomDeleted() || (userInRoom != null && !userInRoom)) {
+                return;
+            }
+            if (userIsAdmin) {
+                showUserBecameAdminSnackbar.setValue(true);
+            } else {
+                showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -66,13 +101,26 @@ public class RoomViewModel extends ViewModel {
     private void onAdminLeft() {
         roomRepository.removeAdmin(new JamCallback<RemoveAdminResponse>() {
             @Override
-            public void onSuccess(@NonNull RemoveAdminResponse response) { }
+            public void onSuccess(@NonNull RemoveAdminResponse response) {
+            }
 
             @Override
             public void onError(@NonNull Error error) {
                 networkError.setValue(error);
             }
         });
+    }
+
+    public void onUserBecameAdminSnackbarShown() {
+        showUserBecameAdminSnackbar.setValue(false);
+    }
+
+    public void onUserBecameRegularSnackbarShown() {
+        showUserBecameRegularSnackbar.setValue(false);
+    }
+
+    public void onRoomDeletedSnackbarShown() {
+        roomDeletedSnackbarShown = true;
     }
 
     public void handleBackPressed() {
@@ -85,6 +133,18 @@ public class RoomViewModel extends ViewModel {
 
     public void onNavigatedBack() {
         this.navigateBack.setValue(false);
+    }
+
+    /**
+     * @return 0 if musician view should be shown when user enters room
+     * 1 if soundtrack overview should be shown when user enters room
+     */
+    public int getInitialTabPosition() {
+        List<SingleSoundtrack> soundtracks = soundtrackRepository.getAllSoundtracks().getValue();
+        if (soundtracks != null && !soundtracks.isEmpty()) {
+            return 0;
+        }
+        return 1;
     }
 
     @NonNull
@@ -100,6 +160,21 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowUserBecameAdminSnackbar() {
+        return showUserBecameAdminSnackbar;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowUserBecameRegularSnackbar() {
+        return showUserBecameRegularSnackbar;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowRoomDeletedSnackbar() {
+        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
     }
 
     @NonNull

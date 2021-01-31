@@ -14,4 +14,6 @@ public class Constants {
 
     public static final long SOUNDTRACK_FETCHING_INTERVAL = TimeUtils.TEN_SECONDS;
     public static final long ADMIN_STATUS_FETCHING_INTERVAL = TimeUtils.TEN_SECONDS;
+
+    public static final long SOUNDTRACK_RECORDING_COUNT_DOWN = TimeUtils.ONE_SECOND * 3;
 }

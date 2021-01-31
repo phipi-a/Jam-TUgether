@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+        android:layout_marginEnd="@dimen/soundtrack_item_margin_start">
+
+        <include
+            android:id="@+id/own_soundtrack_controls_layout"
+            layout="@layout/view_own_soundtrack_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/own_soundtrack_controls_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/piano_view"
+            layout="@layout/view_piano"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/piano_view_margin_top"
+            android:paddingBottom="@dimen/piano_view_padding_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

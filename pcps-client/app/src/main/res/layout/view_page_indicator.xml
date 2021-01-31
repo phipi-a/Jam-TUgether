@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="pageIndicator"
+            type="de.pcps.jamtugether.ui.base.views.PageIndicator" />
+
+        <variable
+            name="onClickListener"
+            type="de.pcps.jamtugether.ui.base.views.PageIndicator.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:onClick="@{() -> onClickListener.onClicked(pageIndicator)}">
+
+        <View
+            android:layout_width="@dimen/page_indicator_width"
+            android:layout_height="@dimen/page_indicator_width"
+            android:background="@drawable/page_indicator_dot"
+            android:backgroundTint="@{pageIndicator.isActive() ? @color/pageIndicatorActiveColor : @color/pageIndicatorInactiveColor}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

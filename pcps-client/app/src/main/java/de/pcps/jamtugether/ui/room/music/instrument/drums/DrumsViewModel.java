@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.SoundResource;
+import de.pcps.jamtugether.model.sound.drums.DrumsSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -21,33 +21,33 @@ public class DrumsViewModel extends InstrumentViewModel {
 
     public void onSnareClicked() {
         drums.playSnare();
-        onElementPlayed(Drums.SNARE_PITCH, SoundResource.SNARE);
+        onElementPlayed(DrumsSound.SNARE);
     }
 
     public void onKickClicked() {
         drums.playKick();
-        onElementPlayed(Drums.KICK_PITCH, SoundResource.KICK);
+        onElementPlayed(DrumsSound.KICK);
     }
 
     public void onHatClicked() {
         drums.playHat();
-        onElementPlayed(Drums.HAT_PITCH, SoundResource.HAT);
+        onElementPlayed(DrumsSound.HAT);
     }
 
     public void onCymbalClicked() {
         drums.playCymbal();
-        onElementPlayed(Drums.CYMBAL_PITCH, SoundResource.CYMBAL);
+        onElementPlayed(DrumsSound.CYMBAL);
     }
 
-    private void onElementPlayed(int pitch, SoundResource soundResource) {
+    private void onElementPlayed(DrumsSound drumsSound) {
         if (!timer.isRunning()) {
             return;
         }
-        int soundDuration = soundResource.getDuration();
+        int soundDuration = drumsSound.getDuration();
         int startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
         int endTimeMillis = startTimeMillis + soundDuration;
-        if(ownSoundtrack != null) {
-            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch));
+        if (ownSoundtrack != null) {
+            ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, drumsSound.getPitch()));
         }
     }
 

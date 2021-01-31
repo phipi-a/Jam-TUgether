@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/piano_black_tile_height"
+    android:background="@drawable/bg_piano_black_tile"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center|bottom"
+    android:paddingBottom="10dp"
+    android:textColor="@color/white"
+    android:textSize="10dp"
+    tools:ignore="SpUsage"
+    tools:targetApi="m">
+
+</TextView>

@@ -59,12 +59,13 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
   "number" : 1
 }
 ###
-GET http://localhost:3000/api/room/1/admin
+POST http://localhost:3000/api/room/1/beat
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijk4ZDBjMWE0ZDc1MzgwZGNjZWMzIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzE0NTIyLCJleHAiOjE2MTAzMTYzMjJ9.KRu4fEY9yBmJd9Jv2VAVrTb6PSK7Qmew52C5PZn-XxA '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImJhYmViN2E0NjEwNWE1MWUzM2UzIiwicm9vbSI6IjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTYxMjAwNjI1OSwiZXhwIjoxNjEyMDA4MDU5fQ.4D_Gar3dM4GmUs3MW6sHdOlpWDxJ-BV5uFhiyP12OgQ '
 
 {
   "roomID" : 1,
+  "beat" : {"ticksPerTact" : 321, "tempo": 21}, 
   "userID" : 1,
   "instrument" : "instrument123",
   "number" : 1

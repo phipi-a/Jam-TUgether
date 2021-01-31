@@ -6,14 +6,16 @@ import dagger.Component;
 import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
+import de.pcps.jamtugether.ui.onboarding.OnBoardingViewModel;
+import de.pcps.jamtugether.ui.onboarding.screens.instrument.ChooseMainInstrumentViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
+import de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
-import de.pcps.jamtugether.ui.welcome.WelcomeViewModel;
 
 @Singleton
 @Component(modules = AppModule.class)
@@ -21,7 +23,9 @@ public interface AppComponent {
 
     void inject(MainActivity mainActivity);
 
-    void inject(WelcomeViewModel welcomeViewModel);
+    void inject(OnBoardingViewModel onBoardingViewModel);
+
+    void inject(ChooseMainInstrumentViewModel chooseMainInstrumentViewModel);
 
     void inject(SettingsViewModel settingsViewModel);
 
@@ -34,6 +38,8 @@ public interface AppComponent {
     void inject(SoundtrackOverviewFragment soundtrackOverviewFragment);
 
     void inject(SoundtrackOverviewViewModel soundtrackOverviewViewModel);
+
+    void inject(AdminSettingsViewModel adminSettingsViewModel);
 
     void inject(OwnSoundtrackFragment ownSoundtrackFragment);
 

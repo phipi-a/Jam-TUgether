@@ -9,6 +9,11 @@
         <variable
             name="viewModel"
             type="de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackViewModel" />
+
+        <variable
+            name="musicianViewViewModel"
+            type="de.pcps.jamtugether.ui.room.music.MusicianViewViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,6 +47,7 @@
             android:id="@+id/instrument_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:dropDownWidth="wrap_content"
             app:clickListener="@{viewModel}"
             app:currentInstrument="@{viewModel.currentInstrument}"
             app:instrumentList="@{viewModel.instruments}"
@@ -61,17 +67,45 @@
             app:layout_constraintTop_toTopOf="@id/room_id_text_view"
             app:tint="@color/iconColor" />
 
-        <include
-            android:id="@+id/own_soundtrack_layout"
-            layout="@layout/view_soundtrack"
+        <ImageView
+            android:id="@+id/expand_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/room_id_text_view_margin_start"
+            android:onClick="@{() -> viewModel.onExpandButtonClicked()}"
+            android:src="@{musicianViewViewModel.soundtracksExpanded ? @drawable/ic_expand_less : @drawable/ic_expand_more}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_id_text_view"
+            app:tint="@color/iconColor" />
+
+        <LinearLayout
+            android:id="@+id/soundtracks_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/soundtrack_item_margin_start"
-            android:layout_marginTop="@dimen/soundtrack_item_margin_top"
-            android:layout_marginEnd="@dimen/soundtrack_item_margin_end"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.soundtracksVisibility}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/room_id_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/expand_icon">
 
+            <include
+                android:id="@+id/composite_soundtrack_layout"
+                layout="@layout/view_soundtrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+                android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
+
+            <include
+                android:id="@+id/own_soundtrack_layout"
+                layout="@layout/view_soundtrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/soundtrack_item_margin_start"
+                android:layout_marginTop="@dimen/soundtrack_item_margin_top"
+                android:layout_marginEnd="@dimen/soundtrack_item_margin_end" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
