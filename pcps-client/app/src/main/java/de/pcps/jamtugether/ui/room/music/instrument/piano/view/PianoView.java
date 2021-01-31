@@ -20,7 +20,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class PianoView extends ConstraintLayout {

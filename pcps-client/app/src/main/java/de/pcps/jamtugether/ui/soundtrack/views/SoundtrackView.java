@@ -19,11 +19,11 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.drums.DrumsSound;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
-import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.instrument.drums.DrumsSound;
+import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
+import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -37,9 +37,6 @@ public class SoundtrackView extends View {
 
     @NonNull
     private final Paint paint = new Paint();
-
-    private boolean drawn;
-    private boolean mustDraw;
 
     public SoundtrackView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -56,16 +53,12 @@ public class SoundtrackView extends View {
 
     public void onSoundtrackChanged(@NonNull Soundtrack soundtrack) {
         this.soundtrack = soundtrack;
-        mustDraw = true;
         this.invalidate();
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        if (!mustDraw && drawn) {
-            return;
-        }
         if (soundtrack == null) {
             return;
         }
@@ -76,9 +69,6 @@ public class SoundtrackView extends View {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             drawCompositeSoundtrack(canvas, compositeSoundtrack);
         }
-
-        mustDraw = false;
-        drawn = true;
     }
 
     @ColorRes

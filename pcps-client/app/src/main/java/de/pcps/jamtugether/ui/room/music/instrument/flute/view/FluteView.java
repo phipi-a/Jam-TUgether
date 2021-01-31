@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Constraints;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
+import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteView extends ConstraintLayout {

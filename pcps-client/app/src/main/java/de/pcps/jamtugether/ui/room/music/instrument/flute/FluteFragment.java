@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
-import de.pcps.jamtugether.ui.room.music.instrument.flute.view.FluteView;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteFragment extends InstrumentFragment {

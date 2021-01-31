@@ -15,7 +15,7 @@ import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewViewModel;
 import de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsViewModel;
 import de.pcps.jamtugether.ui.settings.SettingsViewModel;
-import de.pcps.jamtugether.ui.onboarding.screens.instrument.ChooseMainInstrumentViewModel;
+import de.pcps.jamtugether.ui.onboarding.items.ChooseMainInstrumentViewModel;
 
 public class AppInjector {
 

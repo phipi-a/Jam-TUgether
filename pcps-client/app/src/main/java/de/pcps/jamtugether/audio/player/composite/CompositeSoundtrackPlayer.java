@@ -49,7 +49,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         });
     }
 
-    public void setOnSoundtrackFinishedCallback(OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
+    public void setOnSoundtrackFinishedCallback(@Nullable OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
         this.onSoundtrackFinishedCallback = onSoundtrackFinishedCallback;
     }
 

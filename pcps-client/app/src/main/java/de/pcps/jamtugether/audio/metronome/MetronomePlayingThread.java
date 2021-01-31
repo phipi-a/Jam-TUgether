@@ -3,8 +3,7 @@ package de.pcps.jamtugether.audio.metronome;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.beat.Beat;
-import timber.log.Timber;
+import de.pcps.jamtugether.model.Beat;
 
 public class MetronomePlayingThread extends Thread {
 
@@ -20,12 +19,10 @@ public class MetronomePlayingThread extends Thread {
 
     @Override
     public void run() {
-        Timber.d("run()");
         Beat beat = metronome.getBeat();
 
         while (!stopped) {
             if (progressInMillis != lastProgressInMillis) {
-                Timber.d("millis per tact: %d", beat.getMillisPerTact());
                 if (progressInMillis % beat.getMillisPerTact() == 0) {
                     metronome.playSound(R.raw.metronome_up);
                 } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {

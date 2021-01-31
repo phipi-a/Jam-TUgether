@@ -7,7 +7,7 @@ import de.pcps.jamtugether.MainActivity;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
 import de.pcps.jamtugether.ui.onboarding.OnBoardingViewModel;
-import de.pcps.jamtugether.ui.onboarding.screens.instrument.ChooseMainInstrumentViewModel;
+import de.pcps.jamtugether.ui.onboarding.items.ChooseMainInstrumentViewModel;
 import de.pcps.jamtugether.ui.room.RoomViewModel;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;

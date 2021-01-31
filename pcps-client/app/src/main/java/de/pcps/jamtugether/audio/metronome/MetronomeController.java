@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.model.beat.Beat;
+import de.pcps.jamtugether.model.Beat;
 
 @Singleton
 public class MetronomeController {

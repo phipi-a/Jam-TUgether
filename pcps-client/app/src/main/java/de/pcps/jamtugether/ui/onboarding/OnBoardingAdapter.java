@@ -4,16 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingDrumsFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingOverviewViewFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingPianoFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingReadyToUploadFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingShakerFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.instrument.ChooseMainInstrumentFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingFluteFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingMusicianViewFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingRoomFragment;
-import de.pcps.jamtugether.ui.onboarding.screens.OnBoardingWelcomeFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingDrumsFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingOverviewViewFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingPianoFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingReadyToUploadFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingShakerFragment;
+import de.pcps.jamtugether.ui.onboarding.items.ChooseMainInstrumentFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingFluteFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingMusicianViewFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingRoomFragment;
+import de.pcps.jamtugether.ui.onboarding.items.OnBoardingWelcomeFragment;
 
 public class OnBoardingAdapter extends FragmentStateAdapter {
 

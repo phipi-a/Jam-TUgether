@@ -19,14 +19,13 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
-import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
-import de.pcps.jamtugether.api.services.room.bodies.DeleteSoundtrackBody;
-import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
-import de.pcps.jamtugether.audio.metronome.Metronome;
+import de.pcps.jamtugether.api.requests.soundtrack.responses.UploadSoundtracksResponse;
+import de.pcps.jamtugether.api.requests.room.responses.DeleteTrackResponse;
+import de.pcps.jamtugether.api.requests.room.bodies.DeleteSoundtrackBody;
+import de.pcps.jamtugether.api.requests.soundtrack.SoundtrackService;
+import de.pcps.jamtugether.api.requests.soundtrack.bodies.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
-import de.pcps.jamtugether.model.beat.Beat;
+import de.pcps.jamtugether.model.Beat;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
@@ -180,7 +179,7 @@ public class SoundtrackRepository {
             public void onError(@NonNull Error error) {
                 isFetchingComposition.setValue(false);
                 compositionNetworkError.setValue(error);
-                if(error instanceof RoomDeletedError) {
+                if (error instanceof RoomDeletedError) {
                     roomRepository.setRoomDeleted(true);
                 }
             }
