@@ -94,7 +94,8 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onAdminOptionsButtonClicked() {
-        if (roomRepository.getRoomDeleted()) {
+        Boolean roomDeleted = roomRepository.getRoomDeleted();
+        if (roomDeleted != null && roomDeleted) {
             networkError.setValue(new RoomDeletedError());
             return;
         }
