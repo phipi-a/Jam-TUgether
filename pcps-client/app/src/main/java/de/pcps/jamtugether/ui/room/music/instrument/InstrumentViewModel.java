@@ -307,10 +307,13 @@ public abstract class InstrumentViewModel extends ViewModel {
             metronomeController.onStartedRecordingSoundtrack();
         }
 
-        lastCompositeSoundtrackCheckBoxIsEnabled = loopCheckBoxIsEnabled.getValue();
-        lastLoopCheckBoxIsEnabled = loopCheckBoxIsEnabled.getValue();
-        compositeSoundtrackCheckBoxIsEnabled.setValue(false);
-        loopCheckBoxIsEnabled.setValue(false);
+        Boolean compositeSoundtrackCheckBoxIsEnabled = this.compositeSoundtrackCheckBoxIsEnabled.getValue();
+        Boolean loopCheckBoxIsEnabled = this.loopCheckBoxIsEnabled.getValue();
+        lastCompositeSoundtrackCheckBoxIsEnabled = compositeSoundtrackCheckBoxIsEnabled != null && compositeSoundtrackCheckBoxIsEnabled;
+        lastLoopCheckBoxIsEnabled = loopCheckBoxIsEnabled != null && loopCheckBoxIsEnabled;
+
+        this.compositeSoundtrackCheckBoxIsEnabled.setValue(false);
+        this.loopCheckBoxIsEnabled.setValue(false);
     }
 
     protected void finishRecordingSoundtrack() {
@@ -365,6 +368,9 @@ public abstract class InstrumentViewModel extends ViewModel {
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
                     List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
                     allSoundtracks.add(toBePublished);
+                    for (SingleSoundtrack soundtrack : allSoundtracks) {
+                        soundtrack.loadSounds(application.getApplicationContext());
+                    }
                     soundtrackRepository.setSoundtracks(allSoundtracks);
                 }
             }
