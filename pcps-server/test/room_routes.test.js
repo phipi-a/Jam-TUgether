@@ -95,7 +95,7 @@ describe('JamTUgether Tests', () => {
 
   /**
    * TEST delete /room
-   */
+   *//*
   describe('DELETE /room', () => {
     before((done) => {
       // Empty database
@@ -194,7 +194,7 @@ describe('JamTUgether Tests', () => {
             })
         })
     })
-  })
+  })*/
 
   /**
    * TEST post /login
