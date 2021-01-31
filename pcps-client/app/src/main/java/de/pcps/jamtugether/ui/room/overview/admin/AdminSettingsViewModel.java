@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
+import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
 import de.pcps.jamtugether.api.responses.room.UpdateBeatResponse;
 import de.pcps.jamtugether.audio.metronome.Metronome;
@@ -25,6 +26,9 @@ public class AdminSettingsViewModel extends ViewModel {
 
     @Inject
     RoomRepository roomRepository;
+
+    @Inject
+    SoundtrackRepository soundtrackRepository;
 
     @NonNull
     private final MutableLiveData<Boolean> showRoomDeletionConfirmDialog = new MutableLiveData<>(false);
@@ -90,6 +94,7 @@ public class AdminSettingsViewModel extends ViewModel {
                 @Override
                 public void onSuccess(@NonNull UpdateBeatResponse response) {
                     progressBarVisibility.setValue(View.INVISIBLE);
+                    soundtrackRepository.setBeat(newBeat);
                 }
 
                 @Override

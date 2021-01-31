@@ -62,6 +62,7 @@ public class RoomViewModel extends ViewModel {
     }
 
     public void observeAdminStatus(@NonNull LifecycleOwner lifecycleOwner) {
+        initialAdminStatusReceived = false;
         roomRepository.getUserInRoom().observe(lifecycleOwner, userIsAdmin -> {
             if (!initialAdminStatusReceived) {     // don't show snackbar on initial live data update
                 initialAdminStatusReceived = true; // only if admin status changes

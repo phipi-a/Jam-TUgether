@@ -14,6 +14,8 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
+    <string name="room">Room</string>
+
     <string name="choose_main_instrument">Choose your main instrument</string>
     <string name="main_instrument_info">This instrument will be automatically chosen for you every time you enter a room. You can always change it in the settings.</string>
     <string name="join_room_info">Join your favorite room by entering the room ID</string>

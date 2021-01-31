@@ -1,6 +1,5 @@
 package de.pcps.jamtugether.ui.room.overview.admin;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
