@@ -119,7 +119,7 @@ describe('JamTUgether Tests', () => {
 
           chai.request(app)
             .delete('/api/room')
-            .set({ authorization: 'Bearer ' + res.body.token })
+            .set({ Authorization: 'Bearer ' + res.body.token })
             .send({
               roomID: res.body.roomID,
               password: '1234'
