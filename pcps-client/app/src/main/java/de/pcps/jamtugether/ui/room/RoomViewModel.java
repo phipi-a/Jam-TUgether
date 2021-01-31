@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.ui.room;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -13,7 +14,6 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
-import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -41,20 +41,42 @@ public class RoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> showUserBecameAdminSnackbar = new MutableLiveData<>();
+
+    @NonNull
+    private final MutableLiveData<Boolean> showUserBecameRegularSnackbar = new MutableLiveData<>(false);
+
+    @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    private final boolean userEnteredAsAdmin;
-
-    private boolean userBecameAdminSnackbarShown;
     private boolean roomDeletedSnackbarShown;
+
+    private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
         roomRepository.onUserEnteredRoom(roomID, password, user, token, userIsAdmin);
-        this.userEnteredAsAdmin = userIsAdmin;
-
         roomRepository.startFetchingAdminStatus();
+
         soundtrackRepository.startFetchingComposition();
+    }
+
+    public void observeAdminStatus(@NonNull LifecycleOwner lifecycleOwner) {
+        roomRepository.getUserInRoom().observe(lifecycleOwner, userIsAdmin -> {
+            if (!initialAdminStatusReceived) {     // don't show snackbar on initial live data update
+                initialAdminStatusReceived = true; // only if admin status changes
+                return;
+            }
+            Boolean userInRoom = roomRepository.getUserInRoom().getValue();
+            if (roomRepository.getRoomDeleted() || (userInRoom != null && !userInRoom)) {
+                return;
+            }
+            if (userIsAdmin) {
+                showUserBecameAdminSnackbar.setValue(true);
+            } else {
+                showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
     }
 
     public void onLeaveRoomConfirmationDialogShown() {
@@ -89,7 +111,11 @@ public class RoomViewModel extends ViewModel {
     }
 
     public void onUserBecameAdminSnackbarShown() {
-        userBecameAdminSnackbarShown = true;
+        showUserBecameAdminSnackbar.setValue(false);
+    }
+
+    public void onUserBecameRegularSnackbarShown() {
+        showUserBecameRegularSnackbar.setValue(false);
     }
 
     public void onRoomDeletedSnackbarShown() {
@@ -137,7 +163,12 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<Boolean> getShowUserBecameAdminSnackbar() {
-        return Transformations.map(getUserIsAdmin(), userIsAdmin -> userIsAdmin && !userEnteredAsAdmin && !userBecameAdminSnackbarShown);
+        return showUserBecameAdminSnackbar;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowUserBecameRegularSnackbar() {
+        return showUserBecameRegularSnackbar;
     }
 
     @NonNull

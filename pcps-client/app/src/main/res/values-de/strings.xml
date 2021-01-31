@@ -106,6 +106,7 @@
     <string name="not_admin_dialog_title">Keine Berechtigung</string>
     <string name="not_admin_dialog_message">Auf die Admin-Einstellungen hast du keinen Zugriff.</string>
     <string name="user_became_admin_snackbar_message">Du bist jetzt Admin!</string>
+    <string name="user_became_regular_snackbar_message">Du bist nicht mehr Admin!</string>
 
     <string name="music_note_c">C</string>
     <string name="music_note_c_sharp">C#</string>
