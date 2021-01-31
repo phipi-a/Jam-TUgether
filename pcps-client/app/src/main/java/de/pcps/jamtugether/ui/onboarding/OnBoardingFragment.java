@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import de.pcps.jamtugether.databinding.FragmentOnBoardingBinding;
+import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.base.views.PageIndicatorAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
-public class OnBoardingFragment extends Fragment {
+public class OnBoardingFragment extends BaseFragment {
 
     private OnBoardingViewModel viewModel;
 

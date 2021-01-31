@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/title_text_view"
+                style="@style/JamTugetherTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/admin_settings"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider_1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="50dp"
+                android:background="@color/iconColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_text_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/room"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/delete_room_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/delete_room_button"
+                tools:ignore="SpUsage" />
+
+            <TextView
+                android:id="@+id/delete_room_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_button_border"
+                android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
+                android:padding="5dp"
+                android:paddingBottom="2dp"
+                android:text="@string/delete_room"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+            <View
+                android:id="@+id/divider_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/iconColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/delete_room_button" />
+
+            <TextView
+                android:id="@+id/metronome_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/metronome"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_2"
+                tools:ignore="SpUsage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/metronome_ticks_per_tact"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@id/metronome_ticks_spinner"
+                app:layout_constraintEnd_toStartOf="@id/metronome_ticks_spinner"
+                app:layout_constraintTop_toTopOf="@id/metronome_ticks_spinner" />
+
+            <Spinner
+                android:id="@+id/metronome_ticks_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/primaryTextColor"
+                app:currentSelection="@{viewModel.geTicksSpinnerSelection()}"
+                app:items="@{viewModel.metronomeTicksOptions}"
+                app:layout_constraintStart_toStartOf="@id/metronome_tempo_spinner"
+                app:layout_constraintTop_toBottomOf="@id/metronome_text_view" />
+
+            <TextView
+                android:id="@+id/metronome_tempo_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/metronome_tempo"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@id/metronome_tempo_spinner"
+                app:layout_constraintEnd_toStartOf="@id/metronome_tempo_spinner"
+                app:layout_constraintTop_toTopOf="@id/metronome_tempo_spinner" />
+
+            <Spinner
+                android:id="@+id/metronome_tempo_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/primaryTextColor"
+                app:currentSelection="@{viewModel.tempoSpinnerSelection}"
+                app:items="@{viewModel.metronomeTempoOptions}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/metronome_ticks_spinner" />
+
+            <TextView
+                android:id="@+id/metronome_confirm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button_border"
+                android:onClick="@{() -> viewModel.onMetronomeConfirmButtonClicked(metronomeTicksSpinner.getSelectedItemPosition(), metronomeTempoSpinner.getSelectedItemPosition())}"
+                android:padding="5dp"
+                android:text="@string/confirm"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/metronome_tempo_spinner" />
+
+            <View
+                android:id="@+id/divider_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/iconColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/metronome_confirm_button" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/iconColor"
+                android:visibility="@{viewModel.progressBarVisibility}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

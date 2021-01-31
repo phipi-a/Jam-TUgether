@@ -12,11 +12,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
+import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.DrumsHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.FluteHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.PianoHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.ShakerHelpFragment;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -40,13 +46,13 @@ public class OwnSoundtrackFragment extends BaseFragment {
         AppInjector.inject(this);
 
         Fragment musicianFragment = getParentFragment();
-        if(musicianFragment == null) {
+        if (musicianFragment == null) {
             return;
         }
 
         musicianViewViewModel = new ViewModelProvider(musicianFragment).get(MusicianViewViewModel.class);
 
-        OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(musicianViewViewModel);
+        OwnSoundtrackViewModel.Factory ownSoundtrackViewModelFactory = new OwnSoundtrackViewModel.Factory(musicianViewViewModel, musicianViewViewModel);
         viewModel = new ViewModelProvider(this, ownSoundtrackViewModelFactory).get(OwnSoundtrackViewModel.class);
     }
 
@@ -56,26 +62,43 @@ public class OwnSoundtrackFragment extends BaseFragment {
         FragmentOwnSoundtrackBinding binding = FragmentOwnSoundtrackBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+        binding.setMusicianViewViewModel(musicianViewViewModel);
 
         SoundtrackDataBindingUtils.bindCompositeSoundtrack(binding.compositeSoundtrackLayout, viewModel.getCompositeSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
         SoundtrackDataBindingUtils.bindOwnSoundtrack(binding.ownSoundtrackLayout, musicianViewViewModel.getOwnSoundtrack(), onChangeCallback, getViewLifecycleOwner());
 
-        viewModel.getShowHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
+        viewModel.getShowFluteHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
             if (showHelpDialog) {
-                String helpDialogTitle = viewModel.getHelpDialogTitle();
-                String helpDialogMessage = viewModel.getHelpDialogMessage();
-                if(helpDialogTitle == null || helpDialogMessage == null) {
-                    return;
-                }
-                UiUtils.showInfoDialog(activity, helpDialogTitle, helpDialogMessage);
-                viewModel.onHelpDialogShown();
+                FluteHelpFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onFluteHelpDialogShown();
+            }
+        });
+
+        viewModel.getShowDrumsHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
+            if (showHelpDialog) {
+                DrumsHelpFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onDrumsHelpDialogShown();
+            }
+        });
+
+        viewModel.getShowShakerHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
+            if (showHelpDialog) {
+                ShakerHelpFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onShakerHelpDialogShown();
+            }
+        });
+
+        viewModel.getShowPianoHelpDialog().observe(getViewLifecycleOwner(), showHelpDialog -> {
+            if (showHelpDialog) {
+                PianoHelpFragment.newInstance().show(getChildFragmentManager(), "");
+                viewModel.onPianoHelpDialogShown();
             }
         });
 
         viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null) {
-                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+            if (networkError != null && !(networkError instanceof RoomDeletedError)) {
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onSoundtrackRepositoryNetworkErrorShown();
             }
         });

@@ -14,6 +14,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.drums.DrumsFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.flute.FluteFragment;
+import de.pcps.jamtugether.ui.room.music.instrument.piano.PianoFragment;
 import de.pcps.jamtugether.ui.room.music.instrument.shaker.ShakerFragment;
 import de.pcps.jamtugether.ui.room.music.soundtrack.OwnSoundtrackFragment;
 import de.pcps.jamtugether.databinding.FragmentMusicianViewBinding;
@@ -61,6 +62,13 @@ public class MusicianViewFragment extends BaseFragment {
             if (showShakerFragment) {
                 replaceInstrumentFragment(ShakerFragment.newInstance());
                 viewModel.onShakerFragmentShown();
+            }
+        });
+
+        viewModel.getShowPianoFragment().observe(getViewLifecycleOwner(), showPianoFragment -> {
+            if (showPianoFragment) {
+                replaceInstrumentFragment(PianoFragment.newInstance());
+                viewModel.onPianoFragmentShown();
             }
         });
 

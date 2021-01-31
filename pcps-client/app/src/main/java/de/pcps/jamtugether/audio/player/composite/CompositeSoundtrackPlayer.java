@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
+import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -27,10 +28,14 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     @NonNull
     private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
 
+    @Nullable
+    private OnSoundtrackFinishedCallback onSoundtrackFinishedCallback;
+
     @Inject
     public CompositeSoundtrackPlayer(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
         Observer<CompositeSoundtrack> compositeSoundtrackObserver = compositeSoundtrack -> {
             if (isPlaying()) {
+                // todo this is not working if sound has to be resumed after being stopped
                 stop();
                 play(compositeSoundtrack);
             }
@@ -42,6 +47,10 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
                 soundtrackRepository.getCompositeSoundtrack().removeObserver(compositeSoundtrackObserver);
             }
         });
+    }
+
+    public void setOnSoundtrackFinishedCallback(OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
+        this.onSoundtrackFinishedCallback = onSoundtrackFinishedCallback;
     }
 
     @Nullable
@@ -110,6 +119,9 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         if (soundtrack instanceof CompositeSoundtrack) {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             threadMap.remove(compositeSoundtrack.getIDs());
+        }
+        if (onSoundtrackFinishedCallback != null) {
+            onSoundtrackFinishedCallback.onSoundtrackFinished(thread);
         }
     }
 }

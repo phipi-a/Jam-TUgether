@@ -14,12 +14,15 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.room.JoinRoomResponse;
+import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.User;
@@ -144,6 +147,7 @@ public class JoinRoomViewModel extends ViewModel {
                         for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
                             soundtrack.loadSounds(application.getApplicationContext());
                         }
+                        soundtrackRepository.setBeat(response.getBeat());
                         soundtrackRepository.setSoundtracks(response.getSoundtracks());
                         navigateToRegularRoom.setValue(true);
                     }
@@ -178,7 +182,11 @@ public class JoinRoomViewModel extends ViewModel {
                 roomInputError.setValue(null);
                 passwordInputError.setValue(null);
 
-                networkError.setValue(error);
+                if (error instanceof RoomDeletedError) {
+                    networkError.setValue(new RoomDoesNotExistError());
+                } else {
+                    networkError.setValue(error);
+                }
             }
         });
     }

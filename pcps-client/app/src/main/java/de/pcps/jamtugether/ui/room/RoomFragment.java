@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.databinding.FragmentRoomBinding;
 import de.pcps.jamtugether.model.User;
-import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
-import de.pcps.jamtugether.ui.base.TabLayoutFragment;
-import de.pcps.jamtugether.ui.base.views.JamTabView;
-import de.pcps.jamtugether.ui.room.music.MusicianViewFragment;
-import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
+import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.base.views.JamTabLayout;
 import de.pcps.jamtugether.utils.UiUtils;
 
-public class RoomFragment extends TabLayoutFragment {
+public class RoomFragment extends BaseFragment {
 
-    private RoomViewModel roomViewModel;
+    private JamTabLayout tabLayout;
+
+    private RoomViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,76 +36,75 @@ public class RoomFragment extends TabLayoutFragment {
             boolean userIsAdmin = args.getAdmin();
 
             RoomViewModel.Factory roomViewModelFactory = new RoomViewModel.Factory(roomID, password, user, token, userIsAdmin);
-            roomViewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
+            viewModel = new ViewModelProvider(this, roomViewModelFactory).get(RoomViewModel.class);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        FragmentRoomBinding binding = FragmentRoomBinding.inflate(inflater, container, false);
 
-        roomViewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
+        tabLayout = binding.tabLayout;
+        tabLayout.setup(binding.viewPager, new RoomAdapter(this, viewModel, tabLayout));
+
+        viewModel.observeAdminStatus(getViewLifecycleOwner());
+
+        viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> roomViewModel.onLeaveRoomConfirmationButtonClicked());
-                roomViewModel.onLeaveRoomConfirmationDialogShown();
+                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
+                viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
 
-        roomViewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
-                roomViewModel.onNetworkErrorShown();
+                viewModel.onNetworkErrorShown();
             }
         });
 
-        roomViewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
+        viewModel.getShowUserBecameAdminSnackbar().observe(getViewLifecycleOwner(), showUserBecameAdminSnackbar -> {
+            if (showUserBecameAdminSnackbar) {
+                UiUtils.showSnackbar(binding.getRoot(), R.string.user_became_admin_snackbar_message, Snackbar.LENGTH_SHORT);
+                viewModel.onUserBecameAdminSnackbarShown();
+            }
+        });
+
+        viewModel.getShowUserBecameRegularSnackbar().observe(getViewLifecycleOwner(), showUserBecameRegularSnackbar -> {
+            if (showUserBecameRegularSnackbar) {
+                UiUtils.showSnackbar(binding.getRoot(), R.string.user_became_regular_snackbar_message, Snackbar.LENGTH_SHORT);
+                viewModel.onUserBecameRegularSnackbarShown();
+            }
+        });
+
+        viewModel.getShowRoomDeletedSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
+            if (showSnackbar) {
+                UiUtils.showSnackbar(binding.getRoot(), R.string.room_deleted_error_message, Snackbar.LENGTH_LONG);
+                viewModel.onRoomDeletedSnackbarShown();
+            }
+        });
+
+        viewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
             if (navigateBack) {
                 this.navigateBack();
-                roomViewModel.onNavigatedBack();
+                viewModel.onNavigatedBack();
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
     protected void handleOnBackPressed() {
-        roomViewModel.handleBackPressed();
+        viewModel.handleBackPressed();
     }
 
-    @NonNull
     @Override
-    protected TabLayoutAdapter createTabLayoutAdapter() {
-        return new TabLayoutAdapter(this) {
-
-            @NonNull
-            @Override
-            public JamTabView getTabView(int position) {
-                return JamTabView.from(tabLayout);
-            }
-
-            @StringRes
-            @Override
-            public int getTabTitle(int position) {
-                return position == 0 ? R.string.soundtrack_over_view : R.string.musician_view;
-            }
-
-            @Override
-            public int getInitialTabPosition() {
-                return roomViewModel.getInitialTabPosition();
-            }
-
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                return position == 0 ? SoundtrackOverviewFragment.newInstance() : MusicianViewFragment.newInstance();
-            }
-
-            @Override
-            public int getItemCount() {
-                return 2;
-            }
-        };
+    public void onDestroy() {
+        super.onDestroy();
+        if (tabLayout != null) {
+            tabLayout.unregisterOnPageChangeCallback();
+        }
     }
 }

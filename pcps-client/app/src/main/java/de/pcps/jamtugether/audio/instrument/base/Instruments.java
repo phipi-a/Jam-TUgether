@@ -8,6 +8,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 
 public class Instruments {
@@ -22,7 +23,10 @@ public class Instruments {
     public static final Shaker SHAKER = Shaker.getInstance();
 
     @NonNull
-    public static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER};
+    public static final Piano PIANO = Piano.getInstance();
+
+    @NonNull
+    public static final Instrument[] ARRAY = {FLUTE, DRUMS, SHAKER, PIANO};
 
     @NonNull
     public static final List<Instrument> LIST = Arrays.asList(ARRAY);

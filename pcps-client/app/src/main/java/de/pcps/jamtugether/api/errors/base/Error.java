@@ -7,7 +7,10 @@ import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.GenericError;
 import de.pcps.jamtugether.api.errors.InternalServerError;
 import de.pcps.jamtugether.api.errors.NoInternetConnectionError;
+import de.pcps.jamtugether.api.errors.OldAdminError;
 import de.pcps.jamtugether.api.errors.PageNotFoundError;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.RoomNumberLimitReachedError;
 import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
@@ -45,12 +48,16 @@ public abstract class Error {
                 return new ForbiddenAccessError();
             case 404:
                 return new PageNotFoundError();
+            case 408:
+                return new OldAdminError();
             case 413:
                 return new PasswordTooLargeError();
             case 500:
                 return new InternalServerError();
             case 503:
                 return new RoomNumberLimitReachedError();
+            case 410:
+                return new RoomDeletedError();
             default:
                 return new GenericError();
         }

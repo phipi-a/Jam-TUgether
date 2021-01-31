@@ -43,7 +43,7 @@ public class CreateRoomFragment extends BaseFragment {
 
         viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
-                UiUtils.showInfoDialog(activity, networkError.getTitle(), networkError.getMessage());
+                UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
             }
         });

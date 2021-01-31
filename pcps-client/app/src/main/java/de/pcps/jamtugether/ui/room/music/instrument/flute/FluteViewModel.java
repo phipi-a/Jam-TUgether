@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,21 +15,14 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
 import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.model.sound.flute.FluteSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
-
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_DEFAULT_PERCENTAGE;
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MAX_PERCENTAGE;
-import static de.pcps.jamtugether.audio.instrument.flute.Flute.PITCH_MIN_PERCENTAGE;
 
 public class FluteViewModel extends InstrumentViewModel implements LifecycleObserver, OnAmplitudeChangedCallback {
 
     @NonNull
     private static final Flute flute = Flute.getInstance();
-
-    @NonNull
-    private final MutableLiveData<Float> pitchPercentage = new MutableLiveData<>(PITCH_DEFAULT_PERCENTAGE);
 
     @Nullable
     private FluteRecordingThread fluteRecordingThread;
@@ -36,17 +30,13 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     private boolean fragmentFocused;
     private boolean soundIsPlaying;
 
-    private int currentStartTimeMillis = -1;
-    private int currentPitch = -1;
+    private int startTimeMillis = -1;
+
+    @NonNull
+    private final MutableLiveData<Integer> pitch = new MutableLiveData<>(FluteSound.DEFAULT.getPitch());
 
     public FluteViewModel(@NonNull OnOwnSoundtrackChangedCallback callback) {
         super(flute, callback);
-    }
-
-    @Override
-    public void finishSoundtrack() {
-        finishSound();
-        super.finishSoundtrack();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -76,14 +66,12 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
-            Float pitchPercentage = this.pitchPercentage.getValue();
-            if (!soundIsPlaying && pitchPercentage != null) {
-                flute.play(pitchPercentage * 100, streamID -> {
+            if (!soundIsPlaying && pitch.getValue() != null) {
+                flute.play(pitch.getValue(), streamID -> {
                     soundIsPlaying = streamID != 0;
 
-                    if (startedSoundtrackCreation() && soundIsPlaying) {
-                        currentStartTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-                        currentPitch = (int) (pitchPercentage * 100);
+                    if (recordingSoundtrack() && soundIsPlaying) {
+                        startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     }
                 });
             }
@@ -92,28 +80,33 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
 
     private void finishSound() {
         flute.stop();
-        if (currentStartTimeMillis != -1 && currentPitch != -1) {
-            int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-            SingleSoundtrack ownSoundtrack = this.ownSoundtrack;
-            if (ownSoundtrack != null) {
-                ownSoundtrack.addSound(new Sound(currentStartTimeMillis, endTimeMillis, currentPitch));
+        if (startTimeMillis != -1) {
+            if (ownSoundtrack != null && pitch.getValue() != null) {
+                int stoppedEndTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                int completeSoundEndTimeMillis = startTimeMillis + FluteSound.from(pitch.getValue()).getDuration();
+                int endTimeMillis = Math.min(stoppedEndTimeMillis, completeSoundEndTimeMillis);
+                // todo remove above after loop issue is fixed
+                // int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch.getValue()));
             }
-            currentStartTimeMillis = -1;
-            currentPitch = -1;
+            startTimeMillis = -1;
         }
         soundIsPlaying = false;
     }
 
-    public void onPitchChanged(float newPitch) {
-        if (newPitch < PITCH_MIN_PERCENTAGE) {
-            newPitch = PITCH_MIN_PERCENTAGE;
-        }
-        if (newPitch > PITCH_MAX_PERCENTAGE) {
-            newPitch = PITCH_MAX_PERCENTAGE;
-        }
-        pitchPercentage.setValue(newPitch);
+    @Override
+    protected void finishRecording() {
+        finishSound();
+        super.finishRecording();
     }
 
+    public void onPitchPercentageChanged(float pitchPercentage) {
+        int pitch = (int) Math.floor((FluteSound.values().length - 1) * pitchPercentage);
+
+        if (pitch >= FluteSound.C.getPitch() && pitch <= FluteSound.C_HIGH.getPitch()) {
+            this.pitch.setValue(pitch);
+        }
+    }
 
     private void stopRecording() {
         if (fluteRecordingThread != null) {
@@ -123,15 +116,15 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
     }
 
-    @NonNull
-    public LiveData<Float> getPitchPercentage() {
-        return pitchPercentage;
-    }
-
     @Override
     protected void onCleared() {
         super.onCleared();
         stopRecording();
+    }
+
+    @NonNull
+    public LiveData<Integer> getPitchLevel() {
+        return Transformations.map(pitch, pitch -> (int) (pitch / (double) (FluteSound.values().length - 1) * 10000));
     }
 
     static class Factory implements ViewModelProvider.Factory {

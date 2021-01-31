@@ -10,6 +10,7 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 @Singleton
@@ -24,6 +25,9 @@ public class LatestSoundtracksDatabase {
     @Nullable
     private SingleSoundtrack latestShakerSoundtrack;
 
+    @Nullable
+    private SingleSoundtrack latestPianoSoundtrack;
+
     @Inject
     public LatestSoundtracksDatabase(@NonNull RoomRepository roomRepository) {
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
@@ -37,6 +41,7 @@ public class LatestSoundtracksDatabase {
         latestFluteSoundtrack = null;
         latestDrumsSoundtrack = null;
         latestShakerSoundtrack = null;
+        latestPianoSoundtrack = null;
     }
 
     public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
@@ -45,8 +50,10 @@ public class LatestSoundtracksDatabase {
             latestFluteSoundtrack = ownSoundtrack;
         } else if (instrument == Drums.getInstance()) {
             latestDrumsSoundtrack = ownSoundtrack;
-        } else {
+        } else if (instrument == Shaker.getInstance()) {
             latestShakerSoundtrack = ownSoundtrack;
+        } else {
+            latestPianoSoundtrack = ownSoundtrack;
         }
     }
 
@@ -56,8 +63,10 @@ public class LatestSoundtracksDatabase {
             return latestFluteSoundtrack;
         } else if (instrument == Drums.getInstance()) {
             return latestDrumsSoundtrack;
-        } else {
+        } else if (instrument == Shaker.getInstance()) {
             return latestShakerSoundtrack;
+        } else {
+            return latestPianoSoundtrack;
         }
     }
 }

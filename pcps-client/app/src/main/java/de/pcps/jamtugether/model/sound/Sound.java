@@ -10,7 +10,7 @@ public class Sound {
     private final int startTime;
 
     @Json(name = "endtime")
-    private final int endTime;
+    private int endTime;
 
     private final int pitch;
 
@@ -31,6 +31,15 @@ public class Sound {
     }
 
     @Override
+    public String toString() {
+        return "Sound{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", pitch=" + pitch +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(startTime, endTime, pitch);
     }
@@ -41,6 +50,10 @@ public class Sound {
 
     public int getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(int endTime){
+        this.endTime=endTime;
     }
 
     public int getPitch() {

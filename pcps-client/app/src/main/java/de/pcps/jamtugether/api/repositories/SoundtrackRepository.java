@@ -17,13 +17,16 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
 import de.pcps.jamtugether.api.services.room.bodies.DeleteSoundtrackBody;
 import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.services.soundtrack.bodies.UploadSoundtracksBody;
+import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.model.Composition;
+import de.pcps.jamtugether.model.beat.Beat;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
@@ -46,6 +49,9 @@ public class SoundtrackRepository {
 
     @NonNull
     private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
+
+    @NonNull
+    private final MutableLiveData<Beat> beat = new MutableLiveData<>(Beat.DEFAULT);
 
     @NonNull
     private final MutableLiveData<List<SingleSoundtrack>> allSoundtracks = new MutableLiveData<>(EMPTY_SOUNDTRACK_LIST);
@@ -165,6 +171,7 @@ public class SoundtrackRepository {
                 for (SingleSoundtrack soundtrack : response.getSoundtracks()) {
                     soundtrack.loadSounds(context);
                 }
+                beat.setValue(response.getBeat());
                 allSoundtracks.setValue(response.getSoundtracks());
                 isFetchingComposition.setValue(false);
             }
@@ -173,12 +180,19 @@ public class SoundtrackRepository {
             public void onError(@NonNull Error error) {
                 isFetchingComposition.setValue(false);
                 compositionNetworkError.setValue(error);
+                if(error instanceof RoomDeletedError) {
+                    roomRepository.setRoomDeleted(true);
+                }
             }
         });
     }
 
     public void setSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
         allSoundtracks.setValue(soundtracks);
+    }
+
+    public void setBeat(@NonNull Beat beat) {
+        this.beat.setValue(beat);
     }
 
     private void onUserLeftRoom() {
@@ -198,6 +212,11 @@ public class SoundtrackRepository {
 
     public void onCompositionNetworkErrorShown() {
         compositionNetworkError.setValue(null);
+    }
+
+    @NonNull
+    public LiveData<Beat> getBeat() {
+        return beat;
     }
 
     @NonNull

@@ -16,6 +16,7 @@ import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
+import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
@@ -31,6 +32,9 @@ public class SoundtrackNumbersDatabase {
 
     @NonNull
     private final List<Integer> usedNumbersForShaker = new ArrayList<>();
+
+    @NonNull
+    private final List<Integer> usedNumbersForPiano = new ArrayList<>();
 
     @Nullable
     private List<SingleSoundtrack> previousSoundtracks;
@@ -62,6 +66,7 @@ public class SoundtrackNumbersDatabase {
         usedNumbersForFlute.clear();
         usedNumbersForDrums.clear();
         usedNumbersForShaker.clear();
+        usedNumbersForPiano.clear();
     }
 
     @NonNull
@@ -70,8 +75,10 @@ public class SoundtrackNumbersDatabase {
             return usedNumbersForFlute;
         } else if (instrument == Drums.getInstance()) {
             return usedNumbersForDrums;
+        } else if(instrument == Shaker.getInstance()) {
+            return usedNumbersForShaker;
         }
-        return usedNumbersForShaker;
+        return usedNumbersForPiano;
     }
 
     public void onSoundtrackCreated(@NonNull SingleSoundtrack ownSoundtrack) {
