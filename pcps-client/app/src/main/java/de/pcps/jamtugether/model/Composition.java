@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import de.pcps.jamtugether.model.beat.Beat;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 
 public class Composition {

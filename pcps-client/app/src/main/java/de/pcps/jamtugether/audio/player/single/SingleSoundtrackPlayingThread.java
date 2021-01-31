@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
 import de.pcps.jamtugether.audio.sound.OnSoundWithIDPlayedCallback;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.SoundWithStreamID;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.sound.model.SoundWithStreamID;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 

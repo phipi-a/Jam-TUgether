@@ -1,30 +1,19 @@
 package de.pcps.jamtugether;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.interceptors.InternetConnectionInterceptor;
-import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.repositories.RoomRepository_Factory;
-import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
-import de.pcps.jamtugether.api.services.room.RoomService;
-import de.pcps.jamtugether.api.services.room.bodies.CreateRoomBody;
-import de.pcps.jamtugether.api.services.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
+import de.pcps.jamtugether.api.requests.room.responses.CreateRoomResponse;
+import de.pcps.jamtugether.api.requests.room.RoomService;
+import de.pcps.jamtugether.api.requests.room.bodies.CreateRoomBody;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;

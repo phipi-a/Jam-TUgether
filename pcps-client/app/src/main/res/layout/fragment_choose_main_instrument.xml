@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title_text_view" />
 
-            <de.pcps.jamtugether.ui.onboarding.screens.instrument.InstrumentsRadioGroup
+            <de.pcps.jamtugether.ui.onboarding.items.ChooseMainInstrumentRadioGroup
                 android:id="@+id/instruments_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

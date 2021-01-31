@@ -7,8 +7,9 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.HashMap;
 
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
+import de.pcps.jamtugether.audio.sound.model.StreamID;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -42,7 +43,7 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
     private void stopSound(int pitch) {
         StreamID streamID = pitchStreamIDsMap.get(pitch);
         if (streamID != null) {
-            piano.stopSound(streamID.getID());
+            piano.stopSound(streamID.getStreamID());
             pitchStreamIDsMap.remove(pitch);
             if (ownSoundtrack != null) {
                 int stoppedEndTimeMillis = (int) (System.currentTimeMillis() - startedMillis);

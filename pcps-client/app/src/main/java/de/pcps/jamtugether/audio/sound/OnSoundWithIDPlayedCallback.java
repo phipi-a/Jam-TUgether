@@ -2,7 +2,7 @@ package de.pcps.jamtugether.audio.sound;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.model.sound.SoundWithStreamID;
+import de.pcps.jamtugether.audio.sound.model.SoundWithStreamID;
 
 public interface OnSoundWithIDPlayedCallback {
 

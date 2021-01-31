@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.utils.UiUtils;

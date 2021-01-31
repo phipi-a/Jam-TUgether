@@ -9,9 +9,7 @@ import androidx.annotation.RawRes;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 
-import de.pcps.jamtugether.audio.sound.pool.DrumsSoundPool;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.drums.DrumsSound;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
 
 public class Drums extends Instrument {
 

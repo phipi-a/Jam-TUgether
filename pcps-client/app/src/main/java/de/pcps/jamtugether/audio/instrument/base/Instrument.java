@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
 
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
 
 public abstract class Instrument {
 

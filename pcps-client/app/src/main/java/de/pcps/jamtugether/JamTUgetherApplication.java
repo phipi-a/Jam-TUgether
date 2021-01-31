@@ -7,11 +7,11 @@ import de.pcps.jamtugether.audio.instrument.base.Instruments;
 import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.log.JamTimberTree;
-import de.pcps.jamtugether.model.sound.drums.DrumsSound;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
-import de.pcps.jamtugether.model.sound.metronome.MetronomeSound;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
-import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
+import de.pcps.jamtugether.audio.instrument.drums.DrumsSound;
+import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
+import de.pcps.jamtugether.audio.metronome.MetronomeSound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
+import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
 import de.pcps.jamtugether.utils.SoundUtils;
 import timber.log.Timber;
 
