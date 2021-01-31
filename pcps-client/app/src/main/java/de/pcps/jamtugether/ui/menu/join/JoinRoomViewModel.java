@@ -14,6 +14,8 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
@@ -180,7 +182,11 @@ public class JoinRoomViewModel extends ViewModel {
                 roomInputError.setValue(null);
                 passwordInputError.setValue(null);
 
-                networkError.setValue(error);
+                if (error instanceof RoomDeletedError) {
+                    networkError.setValue(new RoomDoesNotExistError());
+                } else {
+                    networkError.setValue(error);
+                }
             }
         });
     }

@@ -12,6 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -42,6 +44,9 @@ public class RoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
     private final boolean userEnteredAsAdmin;
+
+    private boolean userBecameAdminSnackbarShown;
+    private boolean roomDeletedSnackbarShown;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
@@ -81,6 +86,14 @@ public class RoomViewModel extends ViewModel {
                 networkError.setValue(error);
             }
         });
+    }
+
+    public void onUserBecameAdminSnackbarShown() {
+        userBecameAdminSnackbarShown = true;
+    }
+
+    public void onRoomDeletedSnackbarShown() {
+        roomDeletedSnackbarShown = true;
     }
 
     public void handleBackPressed() {
@@ -124,7 +137,12 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<Boolean> getShowUserBecameAdminSnackbar() {
-        return Transformations.map(getUserIsAdmin(), userIsAdmin -> userIsAdmin && !userEnteredAsAdmin);
+        return Transformations.map(getUserIsAdmin(), userIsAdmin -> userIsAdmin && !userEnteredAsAdmin && !userBecameAdminSnackbarShown);
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowRoomDeletedSnackbar() {
+        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
     }
 
     @NonNull

@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
@@ -179,6 +180,9 @@ public class SoundtrackRepository {
             public void onError(@NonNull Error error) {
                 isFetchingComposition.setValue(false);
                 compositionNetworkError.setValue(error);
+                if(error instanceof RoomDeletedError) {
+                    roomRepository.setRoomDeleted(true);
+                }
             }
         });
     }
