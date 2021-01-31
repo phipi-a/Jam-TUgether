@@ -11,6 +11,8 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
@@ -56,6 +58,12 @@ public class RoomFragment extends TabLayoutFragment {
             if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 roomViewModel.onNetworkErrorShown();
+            }
+        });
+
+        roomViewModel.getShowUserBecameAdminSnackbar().observe(getViewLifecycleOwner(), showAdminSnackbar -> {
+            if (showAdminSnackbar) {
+                UiUtils.showSnackbar(view, R.string.user_became_admin_snackbar_message, Snackbar.LENGTH_LONG);
             }
         });
 

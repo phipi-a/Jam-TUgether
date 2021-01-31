@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -40,9 +41,12 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
+    private final boolean userEnteredAsAdmin;
+
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
         AppInjector.inject(this);
         roomRepository.onUserEnteredRoom(roomID, password, user, token, userIsAdmin);
+        this.userEnteredAsAdmin = userIsAdmin;
 
         roomRepository.startFetchingAdminStatus();
         soundtrackRepository.startFetchingComposition();
@@ -93,7 +97,7 @@ public class RoomViewModel extends ViewModel {
 
     /**
      * @return 0 if musician view should be shown when user enters room
-     *         1 if soundtrack overview should be shown when user enters room
+     * 1 if soundtrack overview should be shown when user enters room
      */
     public int getInitialTabPosition() {
         List<SingleSoundtrack> soundtracks = soundtrackRepository.getAllSoundtracks().getValue();
@@ -116,6 +120,11 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Error> getNetworkError() {
         return networkError;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowUserBecameAdminSnackbar() {
+        return Transformations.map(getUserIsAdmin(), userIsAdmin -> userIsAdmin && !userEnteredAsAdmin);
     }
 
     @NonNull
