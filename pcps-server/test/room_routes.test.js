@@ -95,7 +95,7 @@ describe('JamTUgether Tests', () => {
 
   /**
    * TEST delete /room
-   *//*
+   */
   describe('DELETE /room', () => {
     before((done) => {
       // Empty database
@@ -194,7 +194,7 @@ describe('JamTUgether Tests', () => {
             })
         })
     })
-  })*/
+  })
 
   /**
    * TEST post /login
@@ -242,7 +242,7 @@ describe('JamTUgether Tests', () => {
         })
     })
 
-    it('should return 401', (done) => {
+    it('should return 410', (done) => {
       chai.request(app)
         .post('/api/login')
         .send({
@@ -250,8 +250,7 @@ describe('JamTUgether Tests', () => {
           password: '1234'
         })
         .end((err, res) => {
-          res.should.have.status(401)
-          // res.should.have.status(41)
+          res.should.have.status(410)
           res.body.should.be.a('object')
           res.body.should.have.property('description')
           should.not.exist(err)
