@@ -16,5 +16,7 @@
     <color name="clearButtonColor">@color/black</color>
     <color name="clearButtonBackgroundColor">@color/white</color>
     <color name="soundtrackNavigationLineColor">@color/white</color>
+    <color name="snackbarBackgroundColor">@color/white</color>
+    <color name="snackbarTextColor">@color/black</color>
 
 </resources>
