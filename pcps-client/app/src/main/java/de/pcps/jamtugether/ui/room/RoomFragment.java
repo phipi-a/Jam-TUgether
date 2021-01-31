@@ -48,6 +48,8 @@ public class RoomFragment extends BaseFragment {
         tabLayout = binding.tabLayout;
         tabLayout.setup(binding.viewPager, new RoomAdapter(this, viewModel, tabLayout));
 
+        viewModel.observeAdminStatus(getViewLifecycleOwner());
+
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
                 UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
@@ -62,10 +64,17 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getShowUserBecameAdminSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
-                UiUtils.showSnackbar(binding.getRoot(), R.string.user_became_admin_snackbar_message, Snackbar.LENGTH_LONG);
+        viewModel.getShowUserBecameAdminSnackbar().observe(getViewLifecycleOwner(), showUserBecameAdminSnackbar -> {
+            if (showUserBecameAdminSnackbar) {
+                UiUtils.showSnackbar(binding.getRoot(), R.string.user_became_admin_snackbar_message, Snackbar.LENGTH_SHORT);
                 viewModel.onUserBecameAdminSnackbarShown();
+            }
+        });
+
+        viewModel.getShowUserBecameRegularSnackbar().observe(getViewLifecycleOwner(), showUserBecameRegularSnackbar -> {
+            if (showUserBecameRegularSnackbar) {
+                UiUtils.showSnackbar(binding.getRoot(), R.string.user_became_regular_snackbar_message, Snackbar.LENGTH_SHORT);
+                viewModel.onUserBecameRegularSnackbarShown();
             }
         });
 
