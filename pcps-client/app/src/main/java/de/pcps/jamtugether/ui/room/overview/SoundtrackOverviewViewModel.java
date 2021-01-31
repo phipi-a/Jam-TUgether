@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -93,8 +94,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onAdminOptionsButtonClicked() {
+        if (roomRepository.getRoomDeleted()) {
+            networkError.setValue(new RoomDeletedError());
+            return;
+        }
+
         Boolean isAdmin = getUserIsAdmin().getValue();
-        if(isAdmin != null && isAdmin) {
+        if (isAdmin != null && isAdmin) {
             showAdminSettingsFragment.setValue(true);
         } else {
             showNotAdminDialog.setValue(true);

@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.api.errors.RoomDeletedError;
+import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -73,7 +75,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         });
 
         viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null) {
+            if (networkError != null && !(networkError instanceof RoomDeletedError)) {
                 if (!viewModel.getCompositionNetworkErrorShown()) {
                     UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                     viewModel.onCompositionNetworkErrorShown();
