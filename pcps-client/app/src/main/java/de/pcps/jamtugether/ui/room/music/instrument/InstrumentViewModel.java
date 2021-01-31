@@ -28,7 +28,6 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.responses.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
@@ -234,7 +233,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             countDownTimerMillis.setValue(-1L);
             startedMillis = System.currentTimeMillis();
             timer.start();
-            startRecording();
+            startRecordingSoundtrack();
         }
     });
 
@@ -264,7 +263,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     public void onRecordSoundtrackButtonClicked() {
         if (recordingSoundtrack()) { // stop button clicked
             if (countDownTimer.isStopped()) {
-                finishRecording();
+                finishRecordingSoundtrack();
             } else { // stop button was clicked before count down timer finished
                 countDownTimer.stop();
                 countDownTimerMillis.setValue(-1L);
@@ -289,7 +288,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     }
 
-    protected void startRecording() {
+    protected void startRecordingSoundtrack() {
         if (playWithCompositeSoundtrack) {
             if (compositeSoundtrack != null) {
                 compositeSoundtrackPlayer.stop(compositeSoundtrack);
@@ -314,7 +313,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         loopCheckBoxIsEnabled.setValue(false);
     }
 
-    protected void finishRecording() {
+    protected void finishRecordingSoundtrack() {
         finishSoundtrack();
         timer.stop();
         compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);

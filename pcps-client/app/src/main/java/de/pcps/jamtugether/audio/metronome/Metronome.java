@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.model.beat.Beat;
+import timber.log.Timber;
 
 public class Metronome {
 
@@ -35,9 +36,8 @@ public class Metronome {
     }
 
     public void updateBeat(@NonNull Beat beat) {
-        if (beat != null) {
-            this.beat = beat;
-        }
+        Timber.d("beat: %d, %d", beat.getTempo(), beat.getTicksPerTact());
+        this.beat = beat;
     }
 
     @NonNull

@@ -49,7 +49,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         fragmentFocused = true;
     }
 
-    public void startRecording() {
+    public void startRecordingFlute() {
         fluteRecordingThread = new FluteRecordingThread(this);
         fluteRecordingThread.startRecording();
     }
@@ -95,9 +95,9 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     }
 
     @Override
-    protected void finishRecording() {
+    protected void finishRecordingSoundtrack() {
         finishSound();
-        super.finishRecording();
+        super.finishRecordingSoundtrack();
     }
 
     public void onPitchPercentageChanged(float pitchPercentage) {
