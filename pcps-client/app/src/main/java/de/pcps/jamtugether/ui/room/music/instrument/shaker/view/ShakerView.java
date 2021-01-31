@@ -24,9 +24,6 @@ public class ShakerView extends AppCompatImageView {
 
     private boolean soundtracksExpanded;
 
-    private boolean drawn;
-    private boolean mustDraw;
-
     public ShakerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.constraintSet = new ConstraintSet();
@@ -35,16 +32,12 @@ public class ShakerView extends AppCompatImageView {
 
     public void setSoundtracksExpanded(boolean soundtracksExpanded) {
         this.soundtracksExpanded = soundtracksExpanded;
-        mustDraw = true;
         this.invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!mustDraw && drawn) {
-            return;
-        }
 
         ConstraintLayout shakerFragmentView = (ConstraintLayout) this.getParent();
         View linearLayout = (View) shakerFragmentView.getParent().getParent();
@@ -79,8 +72,5 @@ public class ShakerView extends AppCompatImageView {
         constraintSet.connect(R.id.shaker_image_view, ConstraintSet.END, R.id.shaker_fragment_layout, ConstraintSet.END);
         constraintSet.connect(R.id.shaker_image_view, ConstraintSet.TOP, R.id.own_soundtrack_controls_layout, ConstraintSet.BOTTOM, shakerViewMarginTop);
         constraintSet.applyTo(shakerFragmentView);
-
-        drawn = true;
-        mustDraw = false;
     }
 }

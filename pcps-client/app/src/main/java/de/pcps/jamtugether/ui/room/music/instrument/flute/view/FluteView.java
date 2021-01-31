@@ -30,9 +30,6 @@ public class FluteView extends ConstraintLayout {
 
     private boolean soundtracksExpanded;
 
-    private boolean drawn;
-    private boolean mustDraw;
-
     public FluteView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.setWillNotDraw(false);
@@ -42,7 +39,6 @@ public class FluteView extends ConstraintLayout {
 
     public void setSoundtracksExpanded(boolean soundtracksExpanded) {
         this.soundtracksExpanded = soundtracksExpanded;
-        mustDraw = true;
         this.invalidate();
     }
 
@@ -60,9 +56,6 @@ public class FluteView extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(!mustDraw && drawn) {
-            return;
-        }
 
         View fluteFragmentView = (View) this.getParent();
         View linearLayout = (View) fluteFragmentView.getParent().getParent();
@@ -108,9 +101,6 @@ public class FluteView extends ConstraintLayout {
         constraintSet.applyTo(this);
 
         this.setPadding(0, 0, 0, fluteViewPaddingBottom);
-
-        mustDraw = false;
-        drawn = true;
     }
 
     @NonNull
