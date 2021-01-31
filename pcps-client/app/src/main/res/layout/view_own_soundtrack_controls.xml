@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/record_stop_button"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onRecordSoundtrackButtonClicked()}"
                 android:padding="12dp"
