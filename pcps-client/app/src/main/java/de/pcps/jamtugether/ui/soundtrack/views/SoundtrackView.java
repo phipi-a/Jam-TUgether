@@ -38,6 +38,9 @@ public class SoundtrackView extends View {
     @NonNull
     private final Paint paint = new Paint();
 
+    private boolean drawn;
+    private boolean mustDraw;
+
     public SoundtrackView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint.setStrokeWidth(5f);
@@ -53,12 +56,16 @@ public class SoundtrackView extends View {
 
     public void onSoundtrackChanged(@NonNull Soundtrack soundtrack) {
         this.soundtrack = soundtrack;
+        mustDraw = true;
         this.invalidate();
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
+        if (!mustDraw && drawn) {
+            return;
+        }
         if (soundtrack == null) {
             return;
         }
@@ -69,6 +76,9 @@ public class SoundtrackView extends View {
             CompositeSoundtrack compositeSoundtrack = (CompositeSoundtrack) soundtrack;
             drawCompositeSoundtrack(canvas, compositeSoundtrack);
         }
+
+        mustDraw = false;
+        drawn = true;
     }
 
     @ColorRes

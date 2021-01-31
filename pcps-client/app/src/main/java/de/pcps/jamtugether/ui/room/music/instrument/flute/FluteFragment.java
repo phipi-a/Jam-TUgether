@@ -51,7 +51,7 @@ public class FluteFragment extends InstrumentFragment {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
             } else {
-                fluteViewModel.startRecording();
+                fluteViewModel.startRecordingFlute();
             }
         }
 
@@ -63,7 +63,7 @@ public class FluteFragment extends InstrumentFragment {
         if (requestCode == REQUEST_MICROPHONE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 FluteViewModel fluteViewModel = (FluteViewModel) viewModel;
-                fluteViewModel.startRecording();
+                fluteViewModel.startRecordingFlute();
             } else {
                 UiUtils.showInfoDialog(context, R.string.no_permission_microphone_error_title, R.string.no_permission_microphone_error_message);
             }

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.constraintlayout.widget.Constraints;
 
 import com.google.android.material.slider.Slider;
 
@@ -21,9 +22,16 @@ public class SoundtrackControlsView extends ConstraintLayout {
     @NonNull
     private final ConstraintSet constraintSet;
 
+    @NonNull
+    private final ConstraintLayout.LayoutParams params;
+
+    private boolean drawn;
+
     public SoundtrackControlsView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.setWillNotDraw(false);
         this.constraintSet = new ConstraintSet();
+        this.params = new Constraints.LayoutParams(0, 0);
     }
 
     @Override
@@ -33,8 +41,11 @@ public class SoundtrackControlsView extends ConstraintLayout {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if(drawn) {
+            return;
+        }
 
         // all values necessary for calculating the available width of the volume slider
         int muteIconWidth = UiUtils.getPixels(getContext(), R.dimen.soundtrack_mute_icon_width);
@@ -62,12 +73,15 @@ public class SoundtrackControlsView extends ConstraintLayout {
         int maxSliderWidth = UiUtils.getPixels(getContext(), R.dimen.volume_slider_max_width);
         int sliderWidth = Math.min(availableWidthSlider, maxSliderWidth);
 
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(sliderWidth, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        volumeSlider.setLayoutParams(layoutParams);
+        params.width = sliderWidth;
+        params.height = LayoutParams.WRAP_CONTENT;
+        volumeSlider.setLayoutParams(params);
 
         // update constraints
         constraintSet.clone(this);
         constraintSet.connect(R.id.volume_slider, ConstraintSet.START, R.id.volume_mute_icon, ConstraintSet.END, volumeSliderMarginStart);
         constraintSet.applyTo(this);
+
+        drawn = true;
     }
 }

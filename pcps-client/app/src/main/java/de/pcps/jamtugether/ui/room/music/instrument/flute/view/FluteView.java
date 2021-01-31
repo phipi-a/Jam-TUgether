@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.constraintlayout.widget.Constraints;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.sound.flute.FluteSound;
@@ -20,20 +20,30 @@ import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteView extends ConstraintLayout {
 
-    private LinearLayout noteLabelsLayout;
-
     @NonNull
     private final ConstraintSet constraintSet;
 
-    private boolean soundtracksExpanded = true;
+    @NonNull
+    private final ConstraintLayout.LayoutParams noteLabelsLayoutParams;
+
+    private LinearLayout noteLabelsLayout;
+
+    private boolean soundtracksExpanded;
+
+    private boolean drawn;
+    private boolean mustDraw;
 
     public FluteView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.setWillNotDraw(false);
         this.constraintSet = new ConstraintSet();
+        this.noteLabelsLayoutParams = new Constraints.LayoutParams(0, 0);
     }
 
     public void setSoundtracksExpanded(boolean soundtracksExpanded) {
         this.soundtracksExpanded = soundtracksExpanded;
+        mustDraw = true;
+        this.invalidate();
     }
 
     @Override
@@ -48,8 +58,11 @@ public class FluteView extends ConstraintLayout {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if(!mustDraw && drawn) {
+            return;
+        }
 
         View fluteFragmentView = (View) this.getParent();
         View linearLayout = (View) fluteFragmentView.getParent().getParent();
@@ -83,7 +96,7 @@ public class FluteView extends ConstraintLayout {
             y += noteLabelHeight + labelDistance;
         }
 
-        ConstraintLayout.LayoutParams noteLabelsLayoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        noteLabelsLayoutParams.width = LayoutParams.WRAP_CONTENT;
         noteLabelsLayoutParams.height = fluteViewHeight;
         noteLabelsLayout.setLayoutParams(noteLabelsLayoutParams);
 
@@ -93,6 +106,11 @@ public class FluteView extends ConstraintLayout {
         constraintSet.connect(R.id.flute_image_view, ConstraintSet.TOP, R.id.note_labels_layout, ConstraintSet.TOP, noteLabelHeight / 2);
         constraintSet.connect(R.id.flute_image_view, ConstraintSet.BOTTOM, R.id.note_labels_layout, ConstraintSet.BOTTOM, noteLabelHeight / 2);
         constraintSet.applyTo(this);
+
+        this.setPadding(0, 0, 0, fluteViewPaddingBottom);
+
+        mustDraw = false;
+        drawn = true;
     }
 
     @NonNull

@@ -21,13 +21,19 @@ public class SoundtrackNavigationLine extends View {
     @Nullable
     private Soundtrack currentSoundtrack;
 
+    private boolean drawn;
+    private boolean mustDraw;
+
     public SoundtrackNavigationLine(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if(!mustDraw && drawn) {
+            return;
+        }
         SoundtrackContainer container = (SoundtrackContainer) getParent();
         SoundtrackView soundtrackView = container.getSoundtrackView();
         if(soundtrackView == null) {
@@ -35,6 +41,9 @@ public class SoundtrackNavigationLine extends View {
         }
         float onePercentWidth = (soundtrackView.getWidth() - this.getWidth()) / 100.0f;
         this.setX(soundtrackView.getX() + onePercentWidth * progress);
+
+        mustDraw = false;
+        drawn = true;
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
@@ -63,6 +72,7 @@ public class SoundtrackNavigationLine extends View {
             return;
         }
         this.progress = progress;
+        this.mustDraw = true;
         this.invalidate();
     }
 }

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.utils.UiUtils;
@@ -20,8 +21,11 @@ public class DrumsView extends LinearLayout {
     private ImageButton snareButton;
     private ImageButton cymbalButton;
 
+    private boolean drawn;
+
     public DrumsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.setWillNotDraw(false);
     }
 
     @Override
@@ -35,8 +39,11 @@ public class DrumsView extends LinearLayout {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (drawn) {
+            return;
+        }
 
         View view = (View) this.getParent();
         int parentWidth = view.getWidth();
@@ -44,6 +51,7 @@ public class DrumsView extends LinearLayout {
         int elementMargin = UiUtils.getPixels(getContext(), R.dimen.drums_element_margin);
         int elementPadding = UiUtils.getPixels(getContext(), R.dimen.drums_element_padding);
         int maxElementWidth = (int) ((parentWidth - elementMargin * 6 - elementPadding * 2) / 4.0);
+        int drumsViewPaddingBottom = UiUtils.getPixels(getContext(), R.dimen.drums_view_padding_bottom);
 
         int defaultElementWidth = UiUtils.getPixels(getContext(), R.dimen.drums_element_width_default);
         int elementWidth = Math.min(maxElementWidth, defaultElementWidth);
@@ -52,6 +60,10 @@ public class DrumsView extends LinearLayout {
         setSize(kickButton, elementWidth, elementMargin, elementMargin);
         setSize(snareButton, elementWidth, elementMargin, elementMargin);
         setSize(cymbalButton, elementWidth, elementMargin, 0);
+
+        this.setPadding(0, 0, 0, drumsViewPaddingBottom);
+
+        drawn = true;
     }
 
     private void setSize(@NonNull ImageButton elementButton, int width, int marginLeft, int marginRight) {
