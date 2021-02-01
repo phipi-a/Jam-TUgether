@@ -2,7 +2,7 @@ package de.pcps.jamtugether.api.requests.soundtrack.responses;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.api.requests.base.SimpleResponse;
+import de.pcps.jamtugether.api.requests.SimpleResponse;
 
 public class UploadSoundtracksResponse extends SimpleResponse {
 

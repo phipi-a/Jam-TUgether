@@ -2,6 +2,8 @@ package de.pcps.jamtugether.audio.sound;
 
 import androidx.annotation.NonNull;
 
+import de.pcps.jamtugether.audio.sound.model.SoundWithStreamID;
+
 public class PlaySoundThread extends Thread {
 
     @NonNull
@@ -26,5 +28,15 @@ public class PlaySoundThread extends Thread {
 
     public void playSound() {
         start();
+    }
+
+    public interface OnSoundPlayedCallback {
+
+        void onSoundPlayed(int streamID);
+    }
+
+    public interface OnSoundWithIDPlayedCallback {
+
+        void onSoundPlayed(@NonNull SoundWithStreamID soundWithStreamID);
     }
 }
