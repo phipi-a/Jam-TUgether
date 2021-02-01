@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.base.views.dialogs.InfoDialog;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -47,7 +48,7 @@ public abstract class InstrumentFragment extends BaseFragment {
 
         viewModel.getShowUploadReminderDialog().observe(getViewLifecycleOwner(), showUploadDialog -> {
             if (showUploadDialog) {
-                UiUtils.showInfoDialog(context, getResources().getString(R.string.upload_reminder_dialog_title), getResources().getString(R.string.upload_reminder_dialog_message));
+                UiUtils.showInfoDialog(context, R.string.upload_reminder_dialog_title, R.string.upload_reminder_dialog_message);
                 viewModel.onUploadDialogShown();
             }
         });

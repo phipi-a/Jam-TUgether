@@ -17,6 +17,7 @@ import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.base.views.dialogs.ConfirmationDialog;
 import de.pcps.jamtugether.ui.room.overview.admin.AdminSettingsFragment;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
@@ -84,7 +85,15 @@ public class SoundtrackOverviewFragment extends BaseFragment {
 
         viewModel.getShowSoundtrackDeletionConfirmDialog().observe(getViewLifecycleOwner(), showSoundtrackDeletionConfirmDialog -> {
             if (showSoundtrackDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, viewModel::onSoundtrackDeletionConfirmButtonClicked);
+                UiUtils.showConfirmationDialog(context, R.string.delete_soundtrack, R.string.delete_soundtrack_confirmation, new ConfirmationDialog.OnButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        viewModel.onSoundtrackDeletionConfirmButtonClicked();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked() { }
+                });
                 viewModel.onSoundtrackDeletionConfirmDialogShown();
             }
         });

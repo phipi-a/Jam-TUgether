@@ -15,6 +15,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentRoomBinding;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
+import de.pcps.jamtugether.ui.base.views.dialogs.ConfirmationDialog;
 import de.pcps.jamtugether.ui.base.views.tab.JamTabLayout;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -52,7 +53,15 @@ public class RoomFragment extends BaseFragment {
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, () -> viewModel.onLeaveRoomConfirmationButtonClicked());
+                UiUtils.showConfirmationDialog(context, R.string.leave_room, R.string.leave_room_confirmation, new ConfirmationDialog.OnButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        viewModel.onLeaveRoomConfirmationButtonClicked();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked() { }
+                });
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
