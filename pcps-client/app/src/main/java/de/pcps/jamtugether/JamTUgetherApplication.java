@@ -1,8 +1,6 @@
 package de.pcps.jamtugether;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
 
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
@@ -14,7 +12,7 @@ import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
 import de.pcps.jamtugether.audio.metronome.MetronomeSound;
 import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
 import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
-import de.pcps.jamtugether.network.NetworkManager;
+import de.pcps.jamtugether.network.NetworkMonitor;
 import de.pcps.jamtugether.utils.SoundUtils;
 import timber.log.Timber;
 
@@ -28,7 +26,7 @@ public class JamTUgetherApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new JamTimberTree());
         }
-        NetworkManager.getInstance().observeNetworks(this.getApplicationContext());
+        NetworkMonitor.getInstance().start(this.getApplicationContext());
 
         for (Instrument instrument : Instruments.LIST) {
             instrument.loadSounds(this.getApplicationContext());

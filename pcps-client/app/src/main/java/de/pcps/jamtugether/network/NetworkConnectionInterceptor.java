@@ -20,7 +20,7 @@ public class NetworkConnectionInterceptor implements Interceptor {
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        if (!NetworkManager.getInstance().isConnectedToInternet()) {
+        if (!NetworkMonitor.getInstance().isConnectedToInternet()) {
             throw new NoNetworkConnectionException();
         }
 
