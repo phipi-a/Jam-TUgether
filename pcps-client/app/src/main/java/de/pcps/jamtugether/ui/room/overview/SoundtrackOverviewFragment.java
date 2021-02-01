@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
-import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;

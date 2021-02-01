@@ -15,7 +15,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentRoomBinding;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.base.views.JamTabLayout;
+import de.pcps.jamtugether.ui.base.views.tab.JamTabLayout;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class RoomFragment extends BaseFragment {

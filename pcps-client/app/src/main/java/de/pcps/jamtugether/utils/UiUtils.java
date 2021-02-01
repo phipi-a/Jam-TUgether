@@ -28,6 +28,10 @@ public class UiUtils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public static int getPixels(@NonNull Context context, @DimenRes int dimension) {
+        return context.getResources().getDimensionPixelSize(dimension);
+    }
+
     public static void showInfoDialog(@NonNull Context context, @NonNull String title, @NonNull String message) {
         new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
@@ -72,9 +76,5 @@ public class UiUtils {
 
     public interface OnDialogPositiveButtonClickedCallback {
         void onPositiveButtonClicked();
-    }
-
-    public static int getPixels(@NonNull Context context, @DimenRes int dimension) {
-        return context.getResources().getDimensionPixelSize(dimension);
     }
 }

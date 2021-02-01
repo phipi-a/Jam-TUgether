@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:page="@{viewModel.pagePosition}" />
 
-        <de.pcps.jamtugether.ui.base.views.PageIndicatorsView
+        <de.pcps.jamtugether.ui.base.views.indicator.PageIndicatorsView
             android:id="@+id/page_indicators_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
