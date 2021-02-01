@@ -16,11 +16,11 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.responses.room.DeleteRoomResponse;
-import de.pcps.jamtugether.api.responses.room.UpdateBeatResponse;
+import de.pcps.jamtugether.api.requests.room.responses.DeleteRoomResponse;
+import de.pcps.jamtugether.api.requests.room.responses.UpdateBeatResponse;
 import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.di.AppInjector;
-import de.pcps.jamtugether.model.beat.Beat;
+import de.pcps.jamtugether.model.Beat;
 
 public class AdminSettingsViewModel extends ViewModel {
 

@@ -18,7 +18,7 @@ import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.responses.room.DeleteTrackResponse;
+import de.pcps.jamtugether.api.requests.room.responses.DeleteTrackResponse;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
@@ -94,7 +94,8 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onAdminOptionsButtonClicked() {
-        if (roomRepository.getRoomDeleted()) {
+        Boolean roomDeleted = roomRepository.getRoomDeleted();
+        if (roomDeleted != null && roomDeleted) {
             networkError.setValue(new RoomDeletedError());
             return;
         }

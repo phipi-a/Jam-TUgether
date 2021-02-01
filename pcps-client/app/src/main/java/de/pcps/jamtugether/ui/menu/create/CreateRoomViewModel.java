@@ -17,7 +17,7 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
-import de.pcps.jamtugether.api.responses.room.CreateRoomResponse;
+import de.pcps.jamtugether.api.requests.room.responses.CreateRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.utils.StringUtils;

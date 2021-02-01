@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -40,14 +40,14 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     @Override
-    protected void startRecording() {
-        super.startRecording();
+    protected void startRecordingSoundtrack() {
+        super.startRecordingSoundtrack();
         lockOrientation.setValue(true);
     }
 
     @Override
-    protected void finishRecording() {
-        super.finishRecording();
+    protected void finishRecordingSoundtrack() {
+        super.finishRecordingSoundtrack();
         lockOrientation.setValue(false);
     }
 

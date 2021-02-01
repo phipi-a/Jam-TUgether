@@ -26,8 +26,8 @@ public class SoundtrackNavigationLine extends View {
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         SoundtrackContainer container = (SoundtrackContainer) getParent();
         SoundtrackView soundtrackView = container.getSoundtrackView();
         if(soundtrackView == null) {

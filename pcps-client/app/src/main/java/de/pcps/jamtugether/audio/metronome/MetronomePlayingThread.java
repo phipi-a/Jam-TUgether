@@ -3,7 +3,7 @@ package de.pcps.jamtugether.audio.metronome;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.model.beat.Beat;
+import de.pcps.jamtugether.model.Beat;
 
 public class MetronomePlayingThread extends Thread {
 

@@ -4,8 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.metronome.MetronomeSound;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
 
 public class MetronomeSoundPool extends BaseSoundPool {
 

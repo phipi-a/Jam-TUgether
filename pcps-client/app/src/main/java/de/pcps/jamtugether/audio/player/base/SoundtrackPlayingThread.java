@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 
 import de.pcps.jamtugether.audio.sound.OnSoundWithIDPlayedCallback;
-import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.model.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
 

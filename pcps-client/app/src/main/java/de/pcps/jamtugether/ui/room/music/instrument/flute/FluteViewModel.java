@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
 import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
@@ -49,7 +49,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         fragmentFocused = true;
     }
 
-    public void startRecording() {
+    public void startRecordingFlute() {
         fluteRecordingThread = new FluteRecordingThread(this);
         fluteRecordingThread.startRecording();
     }
@@ -95,9 +95,9 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     }
 
     @Override
-    protected void finishRecording() {
+    protected void finishRecordingSoundtrack() {
         finishSound();
-        super.finishRecording();
+        super.finishRecordingSoundtrack();
     }
 
     public void onPitchPercentageChanged(float pitchPercentage) {

@@ -95,7 +95,7 @@ describe('JamTUgether Tests', () => {
 
   /**
    * TEST delete /room
-   *//*
+   */
   describe('DELETE /room', () => {
     before((done) => {
       // Empty database
@@ -194,7 +194,7 @@ describe('JamTUgether Tests', () => {
             })
         })
     })
-  })*/
+  })
 
   /**
    * TEST post /login
@@ -251,7 +251,6 @@ describe('JamTUgether Tests', () => {
         })
         .end((err, res) => {
           res.should.have.status(410)
-          // res.should.have.status(41)
           res.body.should.be.a('object')
           res.body.should.have.property('description')
           should.not.exist(err)

@@ -19,11 +19,11 @@ import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
 import de.pcps.jamtugether.audio.instrument.shaker.Shaker;
-import de.pcps.jamtugether.model.sound.Sound;
-import de.pcps.jamtugether.model.sound.drums.DrumsSound;
-import de.pcps.jamtugether.model.sound.flute.FluteSound;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
-import de.pcps.jamtugether.model.sound.shaker.ShakerSound;
+import de.pcps.jamtugether.model.Sound;
+import de.pcps.jamtugether.audio.instrument.drums.DrumsSound;
+import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
+import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -215,7 +215,7 @@ public class SoundtrackView extends View {
         } else if (singleSoundtrack.getInstrument() == Shaker.getInstance()) {
             drawShakerSoundtrack(canvas, singleSoundtrack, length);
         } else {
-            drawPianoInCompositeSoundtrack(canvas, singleSoundtrack, length);
+            drawPianoSoundtrack(canvas, singleSoundtrack, length);
         }
     }
 
@@ -298,18 +298,10 @@ public class SoundtrackView extends View {
     }
 
     private void drawPianoSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack) {
-        float widthOfOneMilliSecond = this.getWidth() / (float) singleSoundtrack.getLength();
-        float heightOfPitchOne = this.getHeight() / (float) Piano.PITCH_RANGE;
-        for (Sound sound : singleSoundtrack.getSoundSequence()) {
-            float xStart = this.getX() + widthOfOneMilliSecond * sound.getStartTime();
-            float xEnd = this.getX() + widthOfOneMilliSecond * sound.getEndTime();
-            PianoSound pianoSound = PianoSound.values()[sound.getPitch()];
-            float y = this.getY() + heightOfPitchOne * (Piano.MAX_PITCH - getPianoSoundHeightPercentage(pianoSound));
-            canvas.drawRect(xStart, y, xEnd, this.getY() + this.getHeight(), paint);
-        }
+        drawPianoSoundtrack(canvas, singleSoundtrack, singleSoundtrack.getLength());
     }
 
-    private void drawPianoInCompositeSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
+    private void drawPianoSoundtrack(@NonNull Canvas canvas, @NonNull SingleSoundtrack singleSoundtrack, int length) {
         float widthOfOneMilliSecond = this.getWidth() / (float) length;
         float heightOfPitchOne = this.getHeight() / (float) Piano.PITCH_RANGE;
         float lastX = -1;

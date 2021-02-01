@@ -27,20 +27,28 @@ public class Preferences {
         this.sharedPreferences = sharedPreferences;
     }
 
+    private void setBoolean(@NonNull String key, boolean value) {
+        sharedPreferences.edit().putBoolean(key, value).apply();
+    }
+
+    private boolean getBoolean(@NonNull String key, boolean defaultValue) {
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
     public boolean userCompletedOnBoarding() {
-        return sharedPreferences.getBoolean(USER_COMPLETED_ON_BOARDING_KEY, false);
+        return getBoolean(USER_COMPLETED_ON_BOARDING_KEY, false);
     }
 
     public void setUserCompletedOnBoarding(boolean value) {
-        sharedPreferences.edit().putBoolean(USER_COMPLETED_ON_BOARDING_KEY, value).apply();
+        setBoolean(USER_COMPLETED_ON_BOARDING_KEY, value);
     }
 
     public boolean userSawUploadReminderDialog() {
-        return sharedPreferences.getBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, false);
+        return getBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, false);
     }
 
     public void setUserSawUploadReminderDialog(boolean value) {
-        sharedPreferences.edit().putBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, value).apply();
+        setBoolean(USER_SAW_UPLOAD_REMINDER_DIALOG, value);
     }
 
     @NonNull

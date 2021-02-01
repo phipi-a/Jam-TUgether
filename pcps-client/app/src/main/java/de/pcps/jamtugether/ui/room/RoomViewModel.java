@@ -17,7 +17,7 @@ import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.responses.room.RemoveAdminResponse;
+import de.pcps.jamtugether.api.requests.room.responses.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -69,7 +69,8 @@ public class RoomViewModel extends ViewModel {
                 return;
             }
             Boolean userInRoom = roomRepository.getUserInRoom().getValue();
-            if (roomRepository.getRoomDeleted() || (userInRoom != null && !userInRoom)) {
+            Boolean roomDeleted = roomRepository.getRoomDeleted();
+            if ((roomDeleted != null && roomDeleted) || (userInRoom != null && !userInRoom)) {
                 return;
             }
             if (userIsAdmin) {

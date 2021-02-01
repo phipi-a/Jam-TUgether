@@ -13,8 +13,8 @@ import java.util.Objects;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.instrument.base.Instruments;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.Sound;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
+import de.pcps.jamtugether.model.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
 public class SingleSoundtrack extends Soundtrack {
@@ -82,19 +82,6 @@ public class SingleSoundtrack extends Soundtrack {
 
     public void addSound(Sound sound) {
         soundSequence.add(sound);
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "SingleSoundtrack{" +
-                "userID=" + userID +
-                ", userName='" + userName + '\'' +
-                ", instrument='" + instrument + '\'' +
-                ", number=" + number +
-                ", soundSequence=" + soundSequence +
-                ", representsOwnSoundtrack=" + representsOwnSoundtrack +
-                '}';
     }
 
     @Override

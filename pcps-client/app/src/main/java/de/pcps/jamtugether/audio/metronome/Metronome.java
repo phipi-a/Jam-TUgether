@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.pcps.jamtugether.model.beat.Beat;
+import de.pcps.jamtugether.model.Beat;
 
 public class Metronome {
 
@@ -35,9 +35,7 @@ public class Metronome {
     }
 
     public void updateBeat(@NonNull Beat beat) {
-        if (beat != null) {
-            this.beat = beat;
-        }
+        this.beat = beat;
     }
 
     @NonNull

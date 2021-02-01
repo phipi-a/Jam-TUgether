@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
-import de.pcps.jamtugether.audio.sound.pool.PianoSoundPool;
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
+import de.pcps.jamtugether.audio.sound.BaseSoundPool;
 
 public class Piano extends Instrument {
 

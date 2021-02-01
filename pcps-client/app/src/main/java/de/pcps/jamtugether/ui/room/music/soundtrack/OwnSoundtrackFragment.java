@@ -13,16 +13,15 @@ import androidx.lifecycle.ViewModelProvider;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
-import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.DrumsHelpFragment;
-import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.FluteHelpFragment;
-import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.PianoHelpFragment;
-import de.pcps.jamtugether.ui.room.music.soundtrack.instruments.ShakerHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.help.DrumsHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.help.FluteHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.help.PianoHelpFragment;
+import de.pcps.jamtugether.ui.room.music.soundtrack.help.ShakerHelpFragment;
 import de.pcps.jamtugether.ui.soundtrack.SoundtrackDataBindingUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 

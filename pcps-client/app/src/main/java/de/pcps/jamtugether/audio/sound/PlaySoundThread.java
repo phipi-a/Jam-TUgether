@@ -2,8 +2,6 @@ package de.pcps.jamtugether.audio.sound;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.audio.sound.pool.base.BaseSoundPool;
-
 public class PlaySoundThread extends Thread {
 
     @NonNull

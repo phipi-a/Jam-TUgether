@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,22 +16,23 @@ import de.pcps.jamtugether.utils.UiUtils;
 
 public class ShakerView extends AppCompatImageView {
 
-    private boolean soundtracksExpanded = true;
-
     @NonNull
     private final ConstraintSet constraintSet;
 
     @NonNull
     private final ConstraintLayout.LayoutParams layoutParams;
 
+    private boolean soundtracksExpanded;
+
     public ShakerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.constraintSet = new ConstraintSet();
-        this.layoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.layoutParams = new ConstraintLayout.LayoutParams(0, 0);
     }
 
     public void setSoundtracksExpanded(boolean soundtracksExpanded) {
         this.soundtracksExpanded = soundtracksExpanded;
+        this.invalidate();
     }
 
     @Override
@@ -61,9 +61,11 @@ public class ShakerView extends AppCompatImageView {
             shakerViewHeight = Math.max(availableHeight, shakerViewDefaultHeight);
         }
 
+        layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
         layoutParams.height = shakerViewHeight;
-        layoutParams.bottomMargin = shakerViewPaddingBottom;
         this.setLayoutParams(layoutParams);
+
+        this.setPadding(0, 0, 0, shakerViewPaddingBottom);
 
         constraintSet.clone(shakerFragmentView);
         constraintSet.connect(R.id.shaker_image_view, ConstraintSet.START, R.id.shaker_fragment_layout, ConstraintSet.START);

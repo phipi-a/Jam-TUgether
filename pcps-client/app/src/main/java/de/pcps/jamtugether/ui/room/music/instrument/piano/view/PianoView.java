@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,7 @@ import java.util.List;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.piano.Piano;
-import de.pcps.jamtugether.model.sound.piano.PianoSound;
+import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class PianoView extends ConstraintLayout {
@@ -35,6 +34,12 @@ public class PianoView extends ConstraintLayout {
     @NonNull
     private final int[] generatedBlackTileIDs = new int[PianoSound.BLACK_TILE_SOUNDS.length];
 
+    @NonNull
+    private final ConstraintSet constraintSet;
+
+    @NonNull
+    private final ViewGroup.LayoutParams blackTilesLayoutParams;
+
     @Nullable
     private List<View> tiles;
 
@@ -42,6 +47,9 @@ public class PianoView extends ConstraintLayout {
 
     public PianoView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.setWillNotDraw(false);
+        this.constraintSet = new ConstraintSet();
+        this.blackTilesLayoutParams = new ViewGroup.LayoutParams(0, 0);
     }
 
     public void setOnKeyListener(@NonNull Piano.OnKeyListener onKeyListener) {
@@ -75,10 +83,9 @@ public class PianoView extends ConstraintLayout {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-
-        if(drawn) {
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (drawn) {
             return;
         }
 
@@ -87,7 +94,8 @@ public class PianoView extends ConstraintLayout {
         int blackTileHeight = UiUtils.getPixels(getContext(), R.dimen.piano_black_tile_height);
         int pianoViewPaddingBottom = UiUtils.getPixels(getContext(), R.dimen.piano_view_padding_bottom);
 
-        ViewGroup.LayoutParams blackTileParams = new ViewGroup.LayoutParams(blackTileWidth, blackTileHeight);
+        blackTilesLayoutParams.width = blackTileWidth;
+        blackTilesLayoutParams.height = blackTileHeight;
         int index = 0;
         for (PianoSound pianoSound : PianoSound.BLACK_TILE_SOUNDS) {
             View blackTile = getBlackTile(pianoSound);
@@ -95,7 +103,7 @@ public class PianoView extends ConstraintLayout {
             int id = View.generateViewId();
             blackTile.setId(id);
             generatedBlackTileIDs[index++] = id;
-            this.addView(blackTile, blackTileParams);
+            this.addView(blackTile, blackTilesLayoutParams);
         }
 
         View cTile = findViewById(generatedWhiteTileIDs[0]);
@@ -128,7 +136,7 @@ public class PianoView extends ConstraintLayout {
             tiles.add(bTile);
             tiles.add(cHighTile);
 
-            for(PianoSound pianoSound : PianoSound.values()) {
+            for (PianoSound pianoSound : PianoSound.values()) {
                 View tile = tiles.get(pianoSound.ordinal());
                 tile.setOnTouchListener((v, event) -> {
                     switch (event.getAction()) {
@@ -147,7 +155,6 @@ public class PianoView extends ConstraintLayout {
 
         int blackTileMarginStart = whiteTileWidth - blackTileWidth / 2;
 
-        ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(this);
         constraintSet.connect(cSharpTile.getId(), ConstraintSet.START, cTile.getId(), ConstraintSet.START, blackTileMarginStart);
         constraintSet.connect(dSharpTile.getId(), ConstraintSet.START, dTile.getId(), ConstraintSet.START, blackTileMarginStart);
