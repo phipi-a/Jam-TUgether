@@ -59,10 +59,6 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         if (!fragmentFocused) {
             return;
         }
-        // ignore recorder when soundtracks are playing in order to avoid sound playing issues
-        if (singleSoundtrackPlayer.isPlaying() || compositeSoundtrackPlayer.isPlaying()) {
-            return;
-        }
         if (maxAmplitude < 10000) {
             finishSound();
         } else {
