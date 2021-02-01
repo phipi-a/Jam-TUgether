@@ -5,6 +5,8 @@ const RoomSchema = require('./model/room.model')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
+const fs = require('fs')
+const https = require('https')
 
 // Set port
 const PORT = process.env.PORT || 3000
@@ -64,7 +66,10 @@ deleteUnusedRooms()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Run Server on PORT
-const server = app.listen(PORT, () => {
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
 
@@ -79,5 +84,7 @@ app.use((err, req, res, next) => {
   if (!err.statusCode) err.statusCode = 500
   res.status(err.statusCode).send(err.message)
 })
+
+
 
 module.exports = app
