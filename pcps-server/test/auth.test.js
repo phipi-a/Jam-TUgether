@@ -5,7 +5,6 @@ chai.use(chaiHttp)
 const should = chai.should()
 const app = require('../server.js')
 
-
 describe('Test create-room, checkAdmin und login', () => {
   it('Should create room, check if admin is admin, then login as normal user and check if normaler user', function (done) {
     chai.request(app)
@@ -80,11 +79,14 @@ describe('Test create-room, checkAdmin und login', () => {
                         res.should.have.status(200)
                         done()
                       })
+                    done()
                   })
+                //done()
               })
-          }).timeout(630000)
+            done()
+          })//.timeout(630000)
+          done()
         })
-        done()
       })
   })
 })

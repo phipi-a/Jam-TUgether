@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --timeout 10000 --exit --recursive"
+    "test": "mocha --timeout 90000 --exit --recursive"
   },
   "directories": {
     "test": "./test"

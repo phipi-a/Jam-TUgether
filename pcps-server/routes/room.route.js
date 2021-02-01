@@ -137,7 +137,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
  *               type: string
  *     responses:
  *       200:
- *         description: Success          
+ *         description: Success
  *       401:
  *         description: Wrong password or roomID
  *       408:
@@ -286,12 +286,11 @@ roomRoute.post('/login', async (req, res) => {
  *                           type: endtime
  *                           example: 12
  *                         pitch:
- *                           type: number          
+ *                           type: number
  *                           example: 23
  *               description:
  *                 type: string
  *                 example: success
- *               
  *         410:
  *           description: room does not exist
  *           schema:
@@ -299,7 +298,7 @@ roomRoute.post('/login', async (req, res) => {
  *             properties:
  *               description:
  *                 type: string
- *                 example: Room does not exist! 
+ *                 example: Room does not exist!
  */
 roomRoute.get('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -316,7 +315,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  * /api/room/:id:
  *   post:
  *     summary: Sends tracks to room
- *     consumes: 
+ *     consumes:
  *       -application/json
  *     parameters:
  *       - in: body
@@ -353,8 +352,8 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  *                           type: endtime
  *                           example: 12
  *                         pitch:
- *                           type: number          
- *                           example: 23                      
+ *                           type: number
+ *                           example: 23
  *     responses:
  *       200:
  *         description: soundtracks successfully sent to server
@@ -365,7 +364,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  *               type: number
  *             description:
  *               type: string
- *               example: success      
+ *               example: success
  *       410:
  *         description: room does not exist
  *         schema:
@@ -373,7 +372,7 @@ roomRoute.get('/room/:id', verify, async (req, res) => {
  *           properties:
  *             description:
  *               type: string
- *               example: Room does not exist! 
+ *               example: Room does not exist!
  */
 roomRoute.post('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -391,7 +390,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *   delete:
  *     summary: Deletes specified track
  *     description: Returns "success" if specified track has been deleted
- *     consumes: 
+ *     consumes:
  *       -application/json
  *     parameters:
  *       - in: body
@@ -425,7 +424,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *           properties:
  *             description:
  *               type: string
- *               example: success      
+ *               example: success
  *       410:
  *         description: room does not exist
  *         schema:
@@ -433,7 +432,7 @@ roomRoute.post('/room/:id', verify, async (req, res) => {
  *           properties:
  *             description:
  *               type: string
- *               example: Room does not exist! 
+ *               example: Room does not exist!
  */
 roomRoute.delete('/room/:id', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
@@ -494,7 +493,6 @@ roomRoute.delete('/room/:id', verify, async (req, res) => {
  *       500:
  *         description: Failure
  */
-
 
 roomRoute.get('/room/:id/admin', verify, async (req, res) => {
   const room = await RoomSchema.findOne({ roomID: req.params.id }).exec()
