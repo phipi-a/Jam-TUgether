@@ -32,8 +32,8 @@ function prepareSoundtrack (soundtrack) {
 }
 // controls if newAdmin is needed
 exports.checkAdmin = async function (adminTime, roomID) {
-  // cast current Date - 1,5 minutes (90000 ms) to Date
-  const time = new Date(Date.now() - 90000)
+  // cast current Date - 1 minutes (60000 ms) to Date
+  const time = new Date(Date.now() - 60000)
   const flag = adminTime <= time
   // flag true means new Admin is needed
   if (flag) {
