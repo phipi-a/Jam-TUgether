@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api.requests.soundtrack.responses;
+package de.pcps.jamtugether.api.requests.soundtrack;
 
 import androidx.annotation.NonNull;
 

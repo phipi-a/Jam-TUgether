@@ -26,7 +26,7 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.soundtrack.responses.UploadSoundtracksResponse;
+import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;

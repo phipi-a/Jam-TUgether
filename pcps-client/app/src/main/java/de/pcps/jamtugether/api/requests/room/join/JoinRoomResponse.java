@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api.requests.room.responses;
+package de.pcps.jamtugether.api.requests.room.join;
 
 import androidx.annotation.NonNull;
 

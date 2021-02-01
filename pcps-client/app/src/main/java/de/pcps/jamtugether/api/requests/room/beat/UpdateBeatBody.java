@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api.requests.room.bodies;
+package de.pcps.jamtugether.api.requests.room.beat;
 
 import androidx.annotation.NonNull;
 
