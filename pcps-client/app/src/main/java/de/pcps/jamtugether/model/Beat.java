@@ -51,7 +51,7 @@ public class Beat {
     }
 
     /**
-     * <numerator> number of tick sounds should be
+     * <ticksPerTact> tick sounds should be
      * played evenly within these milliseconds
      */
     public long getMillisPerTact() {

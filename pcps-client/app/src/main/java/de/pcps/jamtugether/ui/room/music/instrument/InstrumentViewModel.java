@@ -239,10 +239,11 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     private void repeatCompositeSoundtrack() {
         if (playWithCompositeSoundtrackInLoop) {
-            onRecordSoundtrackButtonClicked();
+            onRecordSoundtrackButtonClicked(); // todo rename method
             if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
-                onUploadButtonClicked();
+                uploadTrack(false);
             }
+            // todo start recording after 1 tact
             onRecordSoundtrackButtonClicked();
         }
     }

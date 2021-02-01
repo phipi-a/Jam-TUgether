@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.squareup.moshi.Json;
 
-import de.pcps.jamtugether.api.requests.base.SimpleResponse;
+import de.pcps.jamtugether.api.requests.SimpleResponse;
 
 public class AdminStatusResponse extends SimpleResponse {
 

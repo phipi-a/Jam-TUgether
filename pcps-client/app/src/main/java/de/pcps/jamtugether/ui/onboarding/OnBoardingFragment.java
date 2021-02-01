@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import de.pcps.jamtugether.databinding.FragmentOnBoardingBinding;
 import de.pcps.jamtugether.ui.base.BaseFragment;
-import de.pcps.jamtugether.ui.base.views.PageIndicatorAdapter;
+import de.pcps.jamtugether.ui.base.views.indicator.PageIndicatorAdapter;
 import de.pcps.jamtugether.utils.NavigationUtils;
 
 public class OnBoardingFragment extends BaseFragment {

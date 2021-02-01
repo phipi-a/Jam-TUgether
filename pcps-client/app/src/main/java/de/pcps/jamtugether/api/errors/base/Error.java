@@ -10,9 +10,8 @@ import de.pcps.jamtugether.api.errors.NoInternetConnectionError;
 import de.pcps.jamtugether.api.errors.OldAdminError;
 import de.pcps.jamtugether.api.errors.PageNotFoundError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
-import de.pcps.jamtugether.api.errors.RoomDoesNotExistError;
 import de.pcps.jamtugether.api.errors.RoomNumberLimitReachedError;
-import de.pcps.jamtugether.api.exceptions.NoInternetConnectionException;
+import de.pcps.jamtugether.network.NoNetworkConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
 
@@ -65,7 +64,7 @@ public abstract class Error {
 
     @NonNull
     public static Error from(Throwable throwable) {
-        if (throwable instanceof NoInternetConnectionException) {
+        if (throwable instanceof NoNetworkConnectionException) {
             return new NoInternetConnectionError();
         }
         return new GenericError();

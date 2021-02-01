@@ -6,11 +6,11 @@
 
         <variable
             name="pageIndicator"
-            type="de.pcps.jamtugether.ui.base.views.PageIndicator" />
+            type="de.pcps.jamtugether.ui.base.views.indicator.PageIndicator" />
 
         <variable
             name="onClickListener"
-            type="de.pcps.jamtugether.ui.base.views.PageIndicator.OnClickListener" />
+            type="de.pcps.jamtugether.ui.base.views.indicator.PageIndicator.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

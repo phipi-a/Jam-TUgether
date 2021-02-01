@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.api.requests.base;
+package de.pcps.jamtugether.api.requests;
 
 import androidx.annotation.NonNull;
 

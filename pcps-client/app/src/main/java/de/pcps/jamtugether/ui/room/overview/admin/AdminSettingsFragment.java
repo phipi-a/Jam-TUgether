@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentAdminSettingsBinding;
 import de.pcps.jamtugether.ui.base.BaseDialogFragment;
+import de.pcps.jamtugether.ui.base.views.dialogs.ConfirmationDialog;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -47,7 +48,15 @@ public class AdminSettingsFragment extends BaseDialogFragment {
 
         viewModel.getShowRoomDeletionConfirmDialog().observe(getViewLifecycleOwner(), showRoomDeletionConfirmDialog -> {
             if (showRoomDeletionConfirmDialog) {
-                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, viewModel::onRoomDeletionConfirmButtonClicked);
+                UiUtils.showConfirmationDialog(context, R.string.delete_room, R.string.delete_room_confirmation, new ConfirmationDialog.OnButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        viewModel.onRoomDeletionConfirmButtonClicked();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked() { }
+                });
                 viewModel.onRoomDeletionConfirmDialogShown();
             }
         });

@@ -8,8 +8,8 @@ import androidx.annotation.RawRes;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
-import de.pcps.jamtugether.audio.sound.OnSoundPlayedCallback;
 import de.pcps.jamtugether.audio.sound.BaseSoundPool;
+import de.pcps.jamtugether.audio.sound.PlaySoundThread;
 
 public class Flute extends Instrument {
 
@@ -46,7 +46,7 @@ public class Flute extends Instrument {
         return true;
     }
 
-    public void play(int pitch, @NonNull OnSoundPlayedCallback callback) {
+    public void play(int pitch, @NonNull PlaySoundThread.OnSoundPlayedCallback callback) {
         if (soundPool != null) {
             soundPool.playSoundRes(getSoundResource(pitch), callback);
         } else {

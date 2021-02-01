@@ -12,6 +12,7 @@ import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
 import de.pcps.jamtugether.audio.metronome.MetronomeSound;
 import de.pcps.jamtugether.audio.instrument.piano.PianoSound;
 import de.pcps.jamtugether.audio.instrument.shaker.ShakerSound;
+import de.pcps.jamtugether.network.NetworkMonitor;
 import de.pcps.jamtugether.utils.SoundUtils;
 import timber.log.Timber;
 
@@ -25,6 +26,7 @@ public class JamTUgetherApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new JamTimberTree());
         }
+        NetworkMonitor.getInstance().start(this.getApplicationContext());
 
         for (Instrument instrument : Instruments.LIST) {
             instrument.loadSounds(this.getApplicationContext());

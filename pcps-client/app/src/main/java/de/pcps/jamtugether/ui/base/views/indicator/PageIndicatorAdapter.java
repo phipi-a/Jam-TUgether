@@ -1,4 +1,4 @@
-package de.pcps.jamtugether.ui.base.views;
+package de.pcps.jamtugether.ui.base.views.indicator;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
