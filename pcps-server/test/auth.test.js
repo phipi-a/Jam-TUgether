@@ -30,7 +30,7 @@ describe('Test create-room, checkAdmin und login', () => {
             }
             res.should.have.status(202)
           })
-        describe('Login and test if user becomes admin after 1 min', () => {
+        describe('Login and test if user becomes admin', () => {
           it('Test if admin changes', function (done) {
             chai.request(app)
               .post('/api/login')
@@ -55,7 +55,7 @@ describe('Test create-room, checkAdmin und login', () => {
                   })
                 // sleep for 1.5 minute should set Admin new
                 await new Promise(resolve => setTimeout(resolve, 61000))
-                chai.request(app)
+                await chai.request(app)
                   .get(apiEndpoint)
                   .set({ Authorization: `Bearer ${normalToken}` })
                   .send({ roomID: res.body.roomID })
@@ -79,12 +79,10 @@ describe('Test create-room, checkAdmin und login', () => {
                         res.should.have.status(200)
                         done()
                       })
-                    done()
                   })
-                //done()
               })
             done()
-          })//.timeout(630000)
+          })
           done()
         })
       })
