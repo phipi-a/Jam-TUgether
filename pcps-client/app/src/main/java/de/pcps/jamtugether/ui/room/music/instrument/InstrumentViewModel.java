@@ -366,6 +366,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                     progressBarVisibility.setValue(View.INVISIBLE);
                 }
                 soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
+                latestSoundtracksDatabase.onOwnSoundtrackUploaded(instrument);
 
                 // add to local list in order to be visible immediately
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
