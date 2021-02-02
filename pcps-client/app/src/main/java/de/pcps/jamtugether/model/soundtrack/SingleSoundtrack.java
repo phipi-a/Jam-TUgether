@@ -86,8 +86,10 @@ public class SingleSoundtrack extends Soundtrack {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         SingleSoundtrack that = (SingleSoundtrack) o;
         return getID().equals(that.getID()) && soundSequence.equals(that.soundSequence);
     }
@@ -95,6 +97,11 @@ public class SingleSoundtrack extends Soundtrack {
     @Override
     public int hashCode() {
         return Objects.hash(userID, userName, instrument, number, soundSequence, representsOwnSoundtrack, soundPool);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("volume: %s", this.getVolume());
     }
 
     @Override
@@ -144,16 +151,16 @@ public class SingleSoundtrack extends Soundtrack {
         return String.valueOf(userID).concat(instrument.getServerString()).concat(String.valueOf(number));
     }
 
-    public void removeEnd(int ms){
+    public void removeEnd(int ms) {
         List<Sound> deleteSoundSequence = new ArrayList<>();
-        for(Sound sound:soundSequence){
-            if(sound.getStartTime()>ms){
+        for (Sound sound : soundSequence) {
+            if (sound.getStartTime() > ms) {
                 deleteSoundSequence.add(sound);
-            }else if(sound.getEndTime()>ms){
+            } else if (sound.getEndTime() > ms) {
                 sound.setEndTime(ms);
             }
         }
-        for(Sound sound:deleteSoundSequence){
+        for (Sound sound : deleteSoundSequence) {
             soundSequence.remove(sound);
         }
     }

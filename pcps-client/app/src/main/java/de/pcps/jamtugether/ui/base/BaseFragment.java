@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
     private final OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
-            BaseFragment.this.handleOnBackPressed();
+            BaseFragment.this.onBackPressed();
         }
     };
 
@@ -50,7 +50,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     // fragments can override this method for custom logic
-    protected void handleOnBackPressed() {
+    protected void onBackPressed() {
         navigateBack();
     }
 

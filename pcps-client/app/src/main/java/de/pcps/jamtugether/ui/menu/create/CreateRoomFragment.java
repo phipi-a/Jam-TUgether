@@ -48,7 +48,7 @@ public class CreateRoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNavigateToAdminRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
+        viewModel.getNavigateToRoom().observe(getViewLifecycleOwner(), navigateToJamRoom -> {
             if (navigateToJamRoom) {
                 User user = viewModel.getUser();
                 String password = viewModel.getPassword();

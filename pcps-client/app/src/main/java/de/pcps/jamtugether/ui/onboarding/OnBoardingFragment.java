@@ -56,6 +56,6 @@ public class OnBoardingFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewPager.registerOnPageChangeCallback(viewModel.getOnPageChangeCallback());
+        viewPager.unregisterOnPageChangeCallback(viewModel.getOnPageChangeCallback());
     }
 }

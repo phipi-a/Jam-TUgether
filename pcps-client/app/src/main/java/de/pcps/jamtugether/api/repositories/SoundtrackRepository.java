@@ -28,11 +28,13 @@ import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.Beat;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
+import de.pcps.jamtugether.storage.db.SoundtrackVolumesDatabase;
 import de.pcps.jamtugether.timer.JamCountDownTimer;
 import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import de.pcps.jamtugether.utils.SoundtrackUtils;
 import de.pcps.jamtugether.utils.TimeUtils;
 import retrofit2.Call;
+import timber.log.Timber;
 
 @Singleton
 public class SoundtrackRepository {
@@ -42,6 +44,9 @@ public class SoundtrackRepository {
 
     @NonNull
     private final RoomRepository roomRepository;
+
+    @NonNull
+    private final SoundtrackVolumesDatabase soundtrackVolumesDatabase;
 
     @NonNull
     private final Context context;
@@ -89,11 +94,13 @@ public class SoundtrackRepository {
     private final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
 
     @Inject
-    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull Context context) {
+    public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull SoundtrackVolumesDatabase soundtrackVolumesDatabase, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
         this.roomRepository = roomRepository;
+        this.soundtrackVolumesDatabase = soundtrackVolumesDatabase;
         this.context = context;
         this.compositeSoundtrack = Transformations.map(allSoundtracks, soundtracks -> {
+            // todo volumes
             CompositeSoundtrack newCompositeSoundtrack = SoundtrackUtils.createCompositeSoundtrack(previousCompositeSoundtrack, soundtracks, context);
             previousCompositeSoundtrack = newCompositeSoundtrack;
             return newCompositeSoundtrack;
@@ -171,7 +178,7 @@ public class SoundtrackRepository {
                     soundtrack.loadSounds(context);
                 }
                 beat.setValue(response.getBeat());
-                allSoundtracks.setValue(response.getSoundtracks());
+                setSoundtracks(response.getSoundtracks());
                 isFetchingComposition.setValue(false);
             }
 
@@ -187,6 +194,10 @@ public class SoundtrackRepository {
     }
 
     public void setSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
+        for (SingleSoundtrack soundtrack : soundtracks) {
+            float volume = soundtrackVolumesDatabase.getVolumeOf(soundtrack);
+            soundtrack.setVolume(volume);
+        }
         allSoundtracks.setValue(soundtracks);
     }
 

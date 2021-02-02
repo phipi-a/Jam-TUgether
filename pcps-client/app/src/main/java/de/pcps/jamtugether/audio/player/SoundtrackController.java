@@ -11,6 +11,7 @@ import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
+import de.pcps.jamtugether.storage.db.SoundtrackVolumesDatabase;
 
 @Singleton
 public class SoundtrackController implements Soundtrack.OnChangeCallback {
@@ -21,13 +22,17 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
     @NonNull
     private final CompositeSoundtrackPlayer compositeSoundtrackPlayer;
 
+    @NonNull
+    private final SoundtrackVolumesDatabase soundtrackVolumesDatabase;
+
     @Inject
-    public SoundtrackController(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer, @NonNull RoomRepository roomRepository) {
+    public SoundtrackController(@NonNull SingleSoundtrackPlayer singleSoundtrackPlayer, @NonNull CompositeSoundtrackPlayer compositeSoundtrackPlayer, @NonNull SoundtrackVolumesDatabase soundtrackVolumesDatabase, @NonNull RoomRepository roomRepository) {
         this.singleSoundtrackPlayer = singleSoundtrackPlayer;
         this.compositeSoundtrackPlayer = compositeSoundtrackPlayer;
+        this.soundtrackVolumesDatabase = soundtrackVolumesDatabase;
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(!userInRoom) {
+            if (!userInRoom) {
                 singleSoundtrackPlayer.stop();
                 compositeSoundtrackPlayer.stop();
             }
@@ -37,8 +42,11 @@ public class SoundtrackController implements Soundtrack.OnChangeCallback {
     @Override
     public void onVolumeChanged(@NonNull Soundtrack soundtrack, float volume) {
         if (soundtrack instanceof SingleSoundtrack) {
-            singleSoundtrackPlayer.changeVolume((SingleSoundtrack) soundtrack, volume);
+            SingleSoundtrack singleSoundtrack = (SingleSoundtrack) soundtrack;
+            singleSoundtrackPlayer.changeVolume(soundtrack, volume);
+            soundtrackVolumesDatabase.onVolumeChanged(singleSoundtrack, volume);
         } else {
+            // todo volumes data base
             compositeSoundtrackPlayer.changeVolume((CompositeSoundtrack) soundtrack, volume);
         }
     }

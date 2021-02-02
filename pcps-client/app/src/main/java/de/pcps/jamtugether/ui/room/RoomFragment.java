@@ -105,8 +105,8 @@ public class RoomFragment extends BaseFragment {
     }
 
     @Override
-    protected void handleOnBackPressed() {
-        viewModel.handleBackPressed();
+    protected void onBackPressed() {
+        viewModel.onBackPressed();
     }
 
     @Override

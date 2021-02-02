@@ -48,7 +48,7 @@ public class JoinRoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
+        viewModel.getNavigateToRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if (navigateToRegularRoom) {
                 User user = viewModel.getUser();
                 String password = viewModel.getPassword();
