@@ -148,6 +148,8 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             uploadButtonVisibility = new MutableLiveData<>(View.VISIBLE);
+            boolean ownSoundtrackUploaded = latestSoundtracksDatabase.getLatestSoundtrackUploaded(instrument);
+            uploadButtonEnabled.setValue(!ownSoundtrackUploaded);
         } else {
             uploadButtonVisibility = new MutableLiveData<>(View.GONE);
         }
