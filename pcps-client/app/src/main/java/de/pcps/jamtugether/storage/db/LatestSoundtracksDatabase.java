@@ -67,8 +67,7 @@ public class LatestSoundtracksDatabase {
         }
     }
 
-    public void onOwnSoundtrackUploaded(@NonNull SingleSoundtrack ownSoundtrack) {
-        Instrument instrument = ownSoundtrack.getInstrument();
+    public void onOwnSoundtrackUploaded(@NonNull Instrument instrument) {
         if (instrument == Flute.getInstance()) {
             fluteSoundtrackUploaded = true;
         } else if (instrument == Drums.getInstance()) {
