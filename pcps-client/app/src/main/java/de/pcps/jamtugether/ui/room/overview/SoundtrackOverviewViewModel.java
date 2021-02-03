@@ -18,7 +18,7 @@ import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.room.responses.DeleteTrackResponse;
+import de.pcps.jamtugether.api.requests.room.soundtrack.DeleteSoundtrackResponse;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
@@ -71,9 +71,9 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         }
         soundtrackNumbersDatabase.onSoundtrackDeleted(soundtrack);
 
-        soundtrackRepository.deleteSoundtrack(soundtrack, new JamCallback<DeleteTrackResponse>() {
+        soundtrackRepository.deleteSoundtrack(soundtrack, new JamCallback<DeleteSoundtrackResponse>() {
             @Override
-            public void onSuccess(@NonNull DeleteTrackResponse response) {
+            public void onSuccess(@NonNull DeleteSoundtrackResponse response) {
                 // delete from local list in order to be visible immediately
                 List<SingleSoundtrack> list = new ArrayList<>();
                 for (SingleSoundtrack singleSoundtrack : soundtracks) {

@@ -13,13 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
 import de.pcps.jamtugether.audio.instrument.flute.FluteRecordingThread;
-import de.pcps.jamtugether.audio.instrument.flute.OnAmplitudeChangedCallback;
 import de.pcps.jamtugether.model.Sound;
 import de.pcps.jamtugether.audio.instrument.flute.FluteSound;
 import de.pcps.jamtugether.ui.room.music.OnOwnSoundtrackChangedCallback;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
-public class FluteViewModel extends InstrumentViewModel implements LifecycleObserver, OnAmplitudeChangedCallback {
+public class FluteViewModel extends InstrumentViewModel implements LifecycleObserver, FluteRecordingThread.OnAmplitudeChangedCallback {
 
     @NonNull
     private static final Flute flute = Flute.getInstance();

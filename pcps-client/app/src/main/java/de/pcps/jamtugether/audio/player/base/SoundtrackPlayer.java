@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 
-public abstract class SoundtrackPlayer implements OnSoundtrackFinishedCallback {
+public abstract class SoundtrackPlayer implements SoundtrackPlayingThread.OnSoundtrackFinishedCallback {
 
     public void playOrPause(@NonNull Soundtrack soundtrack) {
         if (soundtrack.isEmpty()) {

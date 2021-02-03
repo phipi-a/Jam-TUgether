@@ -26,7 +26,7 @@ import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.soundtrack.responses.UploadSoundtracksResponse;
+import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
 import de.pcps.jamtugether.audio.metronome.MetronomeController;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
@@ -148,6 +148,8 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (ownSoundtrack != null) {
             callback.onOwnSoundtrackChanged(ownSoundtrack);
             uploadButtonVisibility = new MutableLiveData<>(View.VISIBLE);
+            boolean ownSoundtrackUploaded = latestSoundtracksDatabase.getLatestSoundtrackUploaded(instrument);
+            uploadButtonEnabled.setValue(!ownSoundtrackUploaded);
         } else {
             uploadButtonVisibility = new MutableLiveData<>(View.GONE);
         }
@@ -239,10 +241,11 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     private void repeatCompositeSoundtrack() {
         if (playWithCompositeSoundtrackInLoop) {
-            onRecordSoundtrackButtonClicked();
+            onRecordSoundtrackButtonClicked(); // todo rename method
             if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
-                onUploadButtonClicked();
+                uploadTrack(false);
             }
+            // todo start recording after 1 tact
             onRecordSoundtrackButtonClicked();
         }
     }
@@ -363,6 +366,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                     progressBarVisibility.setValue(View.INVISIBLE);
                 }
                 soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
+                latestSoundtracksDatabase.onOwnSoundtrackUploaded(instrument);
 
                 // add to local list in order to be visible immediately
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {

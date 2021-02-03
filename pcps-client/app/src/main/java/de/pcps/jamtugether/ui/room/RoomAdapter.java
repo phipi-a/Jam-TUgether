@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.base.TabLayoutAdapter;
-import de.pcps.jamtugether.ui.base.views.JamTabView;
+import de.pcps.jamtugether.ui.base.views.tab.JamTabView;
 import de.pcps.jamtugether.ui.room.music.MusicianViewFragment;
 import de.pcps.jamtugether.ui.room.overview.SoundtrackOverviewFragment;
 

@@ -19,11 +19,11 @@ import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
-import de.pcps.jamtugether.api.requests.soundtrack.responses.UploadSoundtracksResponse;
-import de.pcps.jamtugether.api.requests.room.responses.DeleteTrackResponse;
-import de.pcps.jamtugether.api.requests.room.bodies.DeleteSoundtrackBody;
+import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
+import de.pcps.jamtugether.api.requests.room.soundtrack.DeleteSoundtrackResponse;
+import de.pcps.jamtugether.api.requests.room.soundtrack.DeleteSoundtrackBody;
 import de.pcps.jamtugether.api.requests.soundtrack.SoundtrackService;
-import de.pcps.jamtugether.api.requests.soundtrack.bodies.UploadSoundtracksBody;
+import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksBody;
 import de.pcps.jamtugether.model.Composition;
 import de.pcps.jamtugether.model.Beat;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -132,14 +132,14 @@ public class SoundtrackRepository {
         call.enqueue(callback);
     }
 
-    public void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<DeleteTrackResponse> callback) {
+    public void deleteSoundtrack(@NonNull SingleSoundtrack soundtrack, @NonNull JamCallback<DeleteSoundtrackResponse> callback) {
         Integer roomID = roomRepository.getRoomID();
         String token = roomRepository.getToken().getValue();
         if (roomID == null || token == null) {
             return;
         }
         DeleteSoundtrackBody body = new DeleteSoundtrackBody(roomID, soundtrack.getUserID(), soundtrack.getInstrument().getServerString(), soundtrack.getNumber());
-        Call<DeleteTrackResponse> call = soundtrackService.deleteSoundtrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
+        Call<DeleteSoundtrackResponse> call = soundtrackService.deleteSoundtrack(String.format(Constants.BEARER_TOKEN_FORMAT, token), roomID, body);
         call.enqueue(callback);
     }
 

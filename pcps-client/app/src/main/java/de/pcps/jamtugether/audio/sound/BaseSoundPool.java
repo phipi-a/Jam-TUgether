@@ -68,7 +68,7 @@ public abstract class BaseSoundPool {
         return soundPool.play(soundID, volume, volume, 0, loop, 1);
     }
 
-    public void playSoundRes(int soundResID, @Nullable OnSoundPlayedCallback callback) {
+    public void playSoundRes(int soundResID, @Nullable PlaySoundThread.OnSoundPlayedCallback callback) {
         Integer soundID = soundResMap.get(soundResID);
         if (soundID == null) {
             return;

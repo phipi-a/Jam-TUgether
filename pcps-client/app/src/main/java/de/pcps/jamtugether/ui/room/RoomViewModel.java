@@ -17,7 +17,7 @@ import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.room.responses.RemoveAdminResponse;
+import de.pcps.jamtugether.api.requests.room.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;

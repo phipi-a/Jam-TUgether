@@ -50,4 +50,9 @@ public class FluteRecordingThread extends Thread {
         soundRecorder.stop();
         soundRecorder.release();
     }
+
+    public interface OnAmplitudeChangedCallback {
+
+        void onAmplitudeChanged(int maxAmplitude);
+    }
 }

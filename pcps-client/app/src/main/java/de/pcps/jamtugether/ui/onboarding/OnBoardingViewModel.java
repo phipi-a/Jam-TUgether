@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.storage.Preferences;
-import de.pcps.jamtugether.ui.base.views.PageIndicator;
+import de.pcps.jamtugether.ui.base.views.indicator.PageIndicator;
 
 public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnClickListener {
 

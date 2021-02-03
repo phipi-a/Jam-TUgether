@@ -7,7 +7,7 @@
 * install mongodb
 * start mongodb
 * change to the directory *pcps-server*
-* type: ```npm i bcrypt express standard path nodemon dotenv jsonwebtoken mongoose swagger-jsdoc swagger-ui-express crypto --save``` in your terminal
+* type: ```npm i bcrypt express standard path nodemon dotenv jsonwebtoken mongoose swagger-jsdoc swagger-ui-express crypto https fs shelljs --save``` in your terminal
 * then type ```node configure-script.js``` in your terminal
 ### optional for testing
 type: ```npm i chai chai-http mocha --save```

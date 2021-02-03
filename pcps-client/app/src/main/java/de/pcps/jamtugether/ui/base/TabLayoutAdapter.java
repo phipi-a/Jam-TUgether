@@ -5,7 +5,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import de.pcps.jamtugether.ui.base.views.JamTabView;
+import de.pcps.jamtugether.ui.base.views.tab.JamTabView;
 
 public abstract class TabLayoutAdapter extends FragmentStateAdapter {
 

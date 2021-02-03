@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.pcps.jamtugether.ui.base.views.JamTabView xmlns:android="http://schemas.android.com/apk/res/android"
+<de.pcps.jamtugether.ui.base.views.tab.JamTabView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tab_view"
@@ -22,4 +22,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
 
-</de.pcps.jamtugether.ui.base.views.JamTabView>
+</de.pcps.jamtugether.ui.base.views.tab.JamTabView>

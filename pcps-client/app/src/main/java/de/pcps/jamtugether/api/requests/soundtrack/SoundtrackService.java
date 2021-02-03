@@ -2,10 +2,8 @@ package de.pcps.jamtugether.api.requests.soundtrack;
 
 import androidx.annotation.NonNull;
 
-import de.pcps.jamtugether.api.requests.room.responses.DeleteTrackResponse;
-import de.pcps.jamtugether.api.requests.soundtrack.responses.UploadSoundtracksResponse;
-import de.pcps.jamtugether.api.requests.room.bodies.DeleteSoundtrackBody;
-import de.pcps.jamtugether.api.requests.soundtrack.bodies.UploadSoundtracksBody;
+import de.pcps.jamtugether.api.requests.room.soundtrack.DeleteSoundtrackResponse;
+import de.pcps.jamtugether.api.requests.room.soundtrack.DeleteSoundtrackBody;
 import de.pcps.jamtugether.model.Composition;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -27,5 +25,5 @@ public interface SoundtrackService {
 
     @NonNull
     @HTTP(method = "DELETE", path = "room/{roomID}", hasBody = true)
-    Call<DeleteTrackResponse> deleteSoundtrack(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID, @Body @NonNull DeleteSoundtrackBody body);
+    Call<DeleteSoundtrackResponse> deleteSoundtrack(@Header("Authorization") @NonNull String token, @Path("roomID") int roomID, @Body @NonNull DeleteSoundtrackBody body);
 }

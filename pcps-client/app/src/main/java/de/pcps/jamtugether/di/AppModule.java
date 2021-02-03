@@ -15,7 +15,7 @@ import dagger.Provides;
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.adapters.InstrumentJsonAdapter;
-import de.pcps.jamtugether.api.interceptors.InternetConnectionInterceptor;
+import de.pcps.jamtugether.network.NetworkConnectionInterceptor;
 import de.pcps.jamtugether.api.requests.soundtrack.SoundtrackService;
 import de.pcps.jamtugether.api.requests.room.RoomService;
 import de.pcps.jamtugether.audio.player.SoundtrackController;
@@ -64,7 +64,7 @@ public class AppModule {
     @Singleton
     @Provides
     @NonNull
-    public Retrofit provideRetrofit(@NonNull InternetConnectionInterceptor interceptor, @NonNull Moshi moshi) {
+    public Retrofit provideRetrofit(@NonNull NetworkConnectionInterceptor interceptor, @NonNull Moshi moshi) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor).build();
 

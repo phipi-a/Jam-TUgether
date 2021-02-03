@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
+import de.pcps.jamtugether.ui.base.views.dialogs.InfoDialog;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
 import de.pcps.jamtugether.utils.UiUtils;
 

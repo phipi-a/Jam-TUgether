@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 
-import de.pcps.jamtugether.audio.sound.OnSoundWithIDPlayedCallback;
+import de.pcps.jamtugether.audio.sound.PlaySoundThread;
 import de.pcps.jamtugether.model.Sound;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
@@ -92,7 +92,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
      * @param finishSounds indicates whether sounds have to be finished after having been interrupted by pause
      *                     or fastRewind/fastForward
      */
-    public abstract void play(int millis, boolean finishSounds, @NonNull OnSoundWithIDPlayedCallback callback);
+    public abstract void play(int millis, boolean finishSounds, @NonNull PlaySoundThread.OnSoundWithIDPlayedCallback callback);
 
     public void play() {
         lastMillis = System.currentTimeMillis();
@@ -160,5 +160,9 @@ public abstract class SoundtrackPlayingThread extends Thread {
     @NonNull
     public Soundtrack getSoundtrack() {
         return soundtrack;
+    }
+
+    public interface OnSoundtrackFinishedCallback {
+        void onSoundtrackFinished(@NonNull SoundtrackPlayingThread thread);
     }
 }

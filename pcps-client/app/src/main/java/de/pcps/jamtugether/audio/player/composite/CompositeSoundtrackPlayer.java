@@ -12,7 +12,6 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.audio.player.base.OnSoundtrackFinishedCallback;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
@@ -29,7 +28,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     private final HashMap<List<String>, CompositeSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Nullable
-    private OnSoundtrackFinishedCallback onSoundtrackFinishedCallback;
+    private SoundtrackPlayingThread.OnSoundtrackFinishedCallback onSoundtrackFinishedCallback;
 
     @Inject
     public CompositeSoundtrackPlayer(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
@@ -49,7 +48,7 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
         });
     }
 
-    public void setOnSoundtrackFinishedCallback(@Nullable OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
+    public void setOnSoundtrackFinishedCallback(@Nullable SoundtrackPlayingThread.OnSoundtrackFinishedCallback onSoundtrackFinishedCallback) {
         this.onSoundtrackFinishedCallback = onSoundtrackFinishedCallback;
     }
 
