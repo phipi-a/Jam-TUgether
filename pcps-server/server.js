@@ -65,7 +65,7 @@ deleteUnusedRooms()
 // Documentation root
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-// Run Server on PORT
+// Read Certificate and Run Server
 const options = {
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.cert')
