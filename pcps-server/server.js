@@ -67,8 +67,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Run Server on PORT
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/fullchain.pem')
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
 }
 https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
