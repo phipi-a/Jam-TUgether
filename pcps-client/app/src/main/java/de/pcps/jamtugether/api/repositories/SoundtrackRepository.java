@@ -67,9 +67,6 @@ public class SoundtrackRepository {
     private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     @NonNull
-    private final MutableLiveData<Boolean> isFetchingComposition = new MutableLiveData<>(false);
-
-    @NonNull
     private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
 
     @NonNull
@@ -169,8 +166,6 @@ public class SoundtrackRepository {
     }
 
     public void fetchComposition() {
-        isFetchingComposition.setValue(true);
-
         getComposition(new JamCallback<Composition>() {
             @Override
             public void onSuccess(@NonNull Composition response) {
@@ -179,12 +174,10 @@ public class SoundtrackRepository {
                 }
                 beat.setValue(response.getBeat());
                 setSoundtracks(response.getSoundtracks());
-                isFetchingComposition.setValue(false);
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                isFetchingComposition.setValue(false);
                 compositionNetworkError.setValue(error);
                 if (error instanceof RoomDeletedError) {
                     roomRepository.setRoomDeleted(true);
@@ -194,10 +187,11 @@ public class SoundtrackRepository {
     }
 
     public void setSoundtracks(@NonNull List<SingleSoundtrack> soundtracks) {
-        for (SingleSoundtrack soundtrack : soundtracks) {
+        Timber.d("setSoundtracks()");
+        /*for (SingleSoundtrack soundtrack : soundtracks) {
             float volume = soundtrackVolumesDatabase.getVolumeOf(soundtrack);
             soundtrack.setVolume(volume);
-        }
+        }*/
         allSoundtracks.setValue(soundtracks);
     }
 
@@ -215,7 +209,6 @@ public class SoundtrackRepository {
         }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
-        isFetchingComposition.setValue(false);
         compositionNetworkError.setValue(null);
         countDownTimerMillis.setValue(-1L);
     }
@@ -237,11 +230,6 @@ public class SoundtrackRepository {
     @NonNull
     public LiveData<CompositeSoundtrack> getCompositeSoundtrack() {
         return compositeSoundtrack;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getIsFetchingComposition() {
-        return isFetchingComposition;
     }
 
     @NonNull
