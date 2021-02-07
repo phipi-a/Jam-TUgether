@@ -10,9 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.databinding.FragmentMenuBinding;
+import de.pcps.jamtugether.utils.UiUtils;
 
 public class MenuFragment extends BaseFragment {
 
@@ -21,8 +24,14 @@ public class MenuFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        if (getArguments() != null) {
+            MenuFragmentArgs args = MenuFragmentArgs.fromBundle(getArguments());
+            int errorMessage=args.getErrorMessage();
+            MenuViewModel.Factory menuViewModelFactory = new MenuViewModel.Factory(errorMessage);
+            viewModel = new ViewModelProvider(this,menuViewModelFactory).get(MenuViewModel.class);
+        }
     }
+
 
     @Nullable
     @Override
@@ -34,6 +43,12 @@ public class MenuFragment extends BaseFragment {
             if (navigateToSettings) {
                 NavigationUtils.navigateToSettings(NavHostFragment.findNavController(this));
                 viewModel.onNavigatedToSettings();
+            }
+        });
+        viewModel.getShowErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            if (errorMessage!=-1) {
+                UiUtils.showSnackbar(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG);
+                viewModel.onErrorMessageSnackbarShown();
             }
         });
 

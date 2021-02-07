@@ -22,6 +22,10 @@
         android:id="@+id/menu_fragment"
         android:name="de.pcps.jamtugether.ui.menu.MenuFragment"
         tools:layout="@layout/fragment_menu">
+        <argument
+            android:name="errorMessage"
+            app:argType="integer"
+            android:defaultValue="-1"/>
         <action
             android:id="@+id/action_menu_fragment_to_join_room_fragment"
             app:destination="@id/join_room_fragment"
@@ -89,6 +93,13 @@
         <argument
             android:name="admin"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_room_fragment_to_menu_fragment"
+            app:destination="@id/menu_fragment" >
+            <argument
+                android:name="errorMessage"
+                app:argType="integer"/>
+        </action>
 
     </fragment>
     <fragment

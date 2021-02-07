@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
@@ -48,9 +49,6 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
-
-    private boolean roomDeletedSnackbarShown;
-
     private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
@@ -120,10 +118,6 @@ public class RoomViewModel extends ViewModel {
         showUserBecameRegularSnackbar.setValue(false);
     }
 
-    public void onRoomDeletedSnackbarShown() {
-        roomDeletedSnackbarShown = true;
-    }
-
     public void handleBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
@@ -174,8 +168,13 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getShowRoomDeletedSnackbar() {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
+    public LiveData<Boolean> getNavigateToMenuRoomDeletedError () {
+        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToMenuUserForbiddenAccessError() {
+        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
     }
 
     @NonNull

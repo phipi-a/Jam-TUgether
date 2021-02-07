@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
@@ -181,6 +182,9 @@ public class SoundtrackRepository {
                 compositionNetworkError.setValue(error);
                 if (error instanceof RoomDeletedError) {
                     roomRepository.setRoomDeleted(true);
+                }
+                if (error instanceof ForbiddenAccessError) {
+                    roomRepository.onUserLeftRoom();
                 }
             }
         });
