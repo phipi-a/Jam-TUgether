@@ -131,8 +131,8 @@
     <string name="join_room_text">Du hast eine ID von einem Freund erhalten? Dann trete dem Raum bei</string>
     <string name="ready_to_upload_warning_title">Achtung</string>
     <string name="ready_to_upload_warning_text">Bevor Du eine neue Tonspur aufnimmst, musst du die alte Tonspur hochladen, damit sie zum gesamten Stück hinzugefügt wird. Klicke hierfür einfach auf Hochladen</string>
-    <string name="musician_overview_title">Im Übersichtsbildschirm kannst du dir alle Tonspuren anhören und deine eigenen auch löschen. Als Admin kannst du alle Spuren oder den ganzen Raum löschen</string>
-    <string name="musician_overview_text">Übersicht</string>
+    <string name="musician_overview_text">Im Übersichtsbildschirm kannst du dir alle Tonspuren anhören und deine eigenen auch löschen. Als Admin kannst du alle Spuren oder den ganzen Raum löschen</string>
+    <string name="musician_overview_title">Übersicht</string>
     <string name="update_title">Aktualisierung</string>
     <string name="update_text">Die gesamte Tonspur aktualisiert sich immer automatisch, wenn sich der rote Kreis schließt</string>
     <string name="record_with_soundtrack_title">Mit Tonspur</string>
@@ -155,4 +155,10 @@
     <string name="drums_functionality_text">Tippe auf die Symbole, um das Schlagzeug zu spielen</string>
     <string name="piano_functionality_title">Funktionsweise</string>
     <string name="piano_functionality_text">Drücke auf die Tasten um die entsprechenden Töne zu spielen.</string>
+    <string name="record_loop_title">Loop</string>
+    <string name="record_loop_text">Aktiviert wiederholende Aufnahme und lädt den Soudtrack automatisch hoch</string>
+    <string name="metronome_title">Metronom</string>
+    <string name="metronome_text">Klicke auf das Metronom um den Takt zu hören</string>
+    <string name="admin_title">Admin</string>
+    <string name="admin_text">Wenn du den gelben Stern siehst bist du Admin. Klicke auf ihn um den Rhythmus zu verändern oder den Raum zu löschen</string>
 </resources>
