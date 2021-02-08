@@ -99,9 +99,16 @@ public class SingleSoundtrack extends Soundtrack {
         return Objects.hash(userID, userName, instrument, number, soundSequence, representsOwnSoundtrack, soundPool);
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return String.format("volume: %s", this.getVolume());
+        return "SingleSoundtrack{" +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", instrument=" + instrument +
+                ", number=" + number +
+                ", volume=" + getVolume() +
+                '}';
     }
 
     @Override

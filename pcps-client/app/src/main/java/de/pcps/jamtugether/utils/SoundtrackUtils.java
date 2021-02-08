@@ -12,28 +12,21 @@ import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 public class SoundtrackUtils {
 
     @NonNull
     public static CompositeSoundtrack createCompositeSoundtrack(@Nullable CompositeSoundtrack previousCompositeSoundtrack, @NonNull List<SingleSoundtrack> soundtracks, @NonNull Context context) {
-        Timber.d("createCompositeSoundtrack()");
         CompositeSoundtrack newCompositeSoundtrack = CompositeSoundtrack.from(soundtracks, context);
         if (!newCompositeSoundtrack.equals(previousCompositeSoundtrack)) {
-            Timber.d("new != previous");
             if (previousCompositeSoundtrack != null) {
                 Soundtrack.State previousState = previousCompositeSoundtrack.getState().getValue();
                 int previousProgressInMillis = previousCompositeSoundtrack.getProgressInMillis();
-                float previousVolume = previousCompositeSoundtrack.getVolume();
                 if (previousState != null) {
                     newCompositeSoundtrack.setState(previousState);
                 }
                 newCompositeSoundtrack.setProgressInMillis(previousProgressInMillis);
-                newCompositeSoundtrack.setVolume(previousVolume);
             }
-        } else {
-            Timber.d("new == previous");
         }
         return newCompositeSoundtrack;
     }
