@@ -73,6 +73,10 @@ const options = {
 https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
+http.createServer(options, app).listen(3001, () => {
+  console.log('Server running on port: ' + 3001)
+})
+
 
 // Handle 404s (has to be at the bottom of the code)
 app.use((req, res, next) => {
