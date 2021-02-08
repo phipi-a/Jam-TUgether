@@ -15,7 +15,7 @@ exports.checkPwdLen = function (password) {
   }
 }
 
-exports.createToken = async function (permission, roomID) {
+exports.createToken = async function (permission, roomID, _id) {
   // random bytes
   const rndBytes = crypto.randomBytes(10).toString('hex')
   // save random bytes if user is admin
@@ -24,8 +24,8 @@ exports.createToken = async function (permission, roomID) {
     const update = { adminBytes: rndBytes }
     await room.updateOne(update)
   }
-  // For expires after half an hour (1800 s = 30 min)
-  return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+  // For expires after half an hour (86400 s = 1 day)
+  return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission, _id: _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
 }
 
 function decodeToken (token) {
@@ -48,7 +48,7 @@ exports.verifyAdmin = async function (req, res, next) {
 
   if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
-    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User', _id: room._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
     return res.status(408).send('Old Admin, new Token: ' + token)
   }
   next()
@@ -60,10 +60,11 @@ function getToken (req, res) {
   if (token == null) return res.sendStatus(401) // if there isn't any token
   return token
 }
-exports.verify = function (req, res, next) {
+exports.verify = async function (req, res, next) {
+  const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
   const token = getToken(req, res)
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
-    if (err) {
+    if (err || token._id !== room._id) {
       return res.sendStatus(403)
     }
     req.id = id
