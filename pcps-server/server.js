@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
 const fs = require('fs')
 const https = require('https')
+const http = require('http')
+
 
 // Set port
 const PORT = process.env.PORT || 3000
