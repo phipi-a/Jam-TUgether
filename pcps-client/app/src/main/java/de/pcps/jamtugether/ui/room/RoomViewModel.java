@@ -124,7 +124,7 @@ public class RoomViewModel extends ViewModel {
         roomDeletedSnackbarShown = true;
     }
 
-    public void handleBackPressed() {
+    public void onBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
 

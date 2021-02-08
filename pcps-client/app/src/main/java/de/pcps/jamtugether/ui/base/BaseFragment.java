@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -23,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
     private final OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
-            BaseFragment.this.handleOnBackPressed();
+            BaseFragment.this.onBackPressed();
         }
     };
 
@@ -50,12 +52,17 @@ public abstract class BaseFragment extends Fragment {
     }
 
     // fragments can override this method for custom logic
-    protected void handleOnBackPressed() {
+    protected void onBackPressed() {
         navigateBack();
     }
 
     protected void navigateBack() {
         onBackPressedCallback.setEnabled(false);
         fragmentActivity.getOnBackPressedDispatcher().onBackPressed();
+    }
+
+    @NonNull
+    public NavController getNavController() {
+        return NavHostFragment.findNavController(this);
     }
 }

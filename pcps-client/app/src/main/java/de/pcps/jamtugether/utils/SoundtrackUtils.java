@@ -22,12 +22,10 @@ public class SoundtrackUtils {
             if (previousCompositeSoundtrack != null) {
                 Soundtrack.State previousState = previousCompositeSoundtrack.getState().getValue();
                 int previousProgressInMillis = previousCompositeSoundtrack.getProgressInMillis();
-                float previousVolume = previousCompositeSoundtrack.getVolume();
                 if (previousState != null) {
                     newCompositeSoundtrack.setState(previousState);
                 }
                 newCompositeSoundtrack.setProgressInMillis(previousProgressInMillis);
-                newCompositeSoundtrack.setVolume(previousVolume);
             }
         }
         return newCompositeSoundtrack;

@@ -7,7 +7,7 @@ import de.pcps.jamtugether.utils.TimeUtils;
 public class Constants {
 
     @NonNull
-    public static final String BASE_URL = "https://vm4.sese.tu-berlin.de:3000/api/";
+    public static final String BASE_URL = "http://vm4.sese.tu-berlin.de:3001/api/";
 
     @NonNull
     public static final String BEARER_TOKEN_FORMAT = "Bearer %s";

@@ -54,7 +54,7 @@ public class JoinRoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showNameInfoDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> navigateToRegularRoom = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> navigateToRoom = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<String> nameInputError = new MutableLiveData<>(null);
@@ -148,13 +148,13 @@ public class JoinRoomViewModel extends ViewModel {
                         }
                         soundtrackRepository.setBeat(response.getBeat());
                         soundtrackRepository.setSoundtracks(response.getSoundtracks());
-                        navigateToRegularRoom.setValue(true);
+                        navigateToRoom.setValue(true);
                     }
 
                     @Override
                     public void onError(@NonNull Error error) {
                         progressBarVisibility.setValue(View.INVISIBLE);
-                        navigateToRegularRoom.setValue(true);
+                        navigateToRoom.setValue(true);
                     }
                 });
             }
@@ -199,7 +199,7 @@ public class JoinRoomViewModel extends ViewModel {
     }
 
     public void onNavigatedToRegularRoom() {
-        navigateToRegularRoom.setValue(false);
+        navigateToRoom.setValue(false);
     }
 
     public int getRoomID() {
@@ -227,8 +227,8 @@ public class JoinRoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getNavigateToRegularRoom() {
-        return navigateToRegularRoom;
+    public LiveData<Boolean> getNavigateToRoom() {
+        return navigateToRoom;
     }
 
     @NonNull
