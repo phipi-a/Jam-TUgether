@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.User;
@@ -48,7 +47,7 @@ public class JoinRoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNavigateToRegularRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
+        viewModel.getNavigateToRoom().observe(getViewLifecycleOwner(), navigateToRegularRoom -> {
             if (navigateToRegularRoom) {
                 User user = viewModel.getUser();
                 String password = viewModel.getPassword();
@@ -56,7 +55,7 @@ public class JoinRoomFragment extends BaseFragment {
                 if(user == null || password == null || token == null) {
                     return;
                 }
-                NavigationUtils.navigateToRoomAsRegular(NavHostFragment.findNavController(this), viewModel.getRoomID(), user, password, token);
+                NavigationUtils.navigateToRoomAsRegular(getNavController(), viewModel.getRoomID(), user, password, token);
                 UiUtils.hideKeyboard(activity, binding.getRoot());
                 viewModel.onNavigatedToRegularRoom();
             }

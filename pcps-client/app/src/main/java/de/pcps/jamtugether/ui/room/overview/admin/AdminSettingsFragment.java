@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentAdminSettingsBinding;
 import de.pcps.jamtugether.ui.base.BaseDialogFragment;
 import de.pcps.jamtugether.ui.base.views.dialogs.ConfirmationDialog;
+import de.pcps.jamtugether.ui.room.RoomFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
@@ -63,8 +63,11 @@ public class AdminSettingsFragment extends BaseDialogFragment {
 
         viewModel.getNavigateBack().observe(getViewLifecycleOwner(), leaveRoom -> {
             if (leaveRoom) {
-                NavigationUtils.navigateBack(NavHostFragment.findNavController(getParentFragment()));
-                viewModel.onNavigatedBack();
+                if(getParentFragment() instanceof RoomFragment) {
+                    RoomFragment roomFragment = (RoomFragment) getParentFragment();
+                    NavigationUtils.navigateBack(roomFragment.getNavController());
+                    viewModel.onNavigatedBack();
+                }
             }
         });
 

@@ -14,6 +14,7 @@ import de.pcps.jamtugether.api.errors.RoomNumberLimitReachedError;
 import de.pcps.jamtugether.network.NoNetworkConnectionException;
 import de.pcps.jamtugether.api.errors.PasswordTooLargeError;
 import de.pcps.jamtugether.api.errors.UnauthorizedAccessError;
+import timber.log.Timber;
 
 public abstract class Error {
 
@@ -49,14 +50,14 @@ public abstract class Error {
                 return new PageNotFoundError();
             case 408:
                 return new OldAdminError();
+            case 410:
+                return new RoomDeletedError();
             case 413:
                 return new PasswordTooLargeError();
             case 500:
                 return new InternalServerError();
             case 503:
                 return new RoomNumberLimitReachedError();
-            case 410:
-                return new RoomDeletedError();
             default:
                 return new GenericError();
         }

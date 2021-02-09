@@ -17,7 +17,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     private boolean running = false;
     private boolean stopped = false;
 
-    private boolean justForwarded = false;
+    private boolean justForwardedOrRewound = false;
     private boolean justResumed = false;
 
     private int progressInMillis;
@@ -66,13 +66,15 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
                 stopSounds(progressInMillis);
 
-                play(progressInMillis, justResumed || justForwarded, soundWithStreamID -> {
+                boolean finishSounds = justResumed || justForwardedOrRewound;
+
+                play(progressInMillis, finishSounds, soundWithStreamID -> {
                     streamIDsMap.put(soundWithStreamID.getSound(), soundWithStreamID.getStreamID());
                     if (justResumed) {
                         justResumed = false;
                     }
-                    if (justForwarded) {
-                        justForwarded = false;
+                    if (justForwardedOrRewound) {
+                        justForwardedOrRewound = false;
                     }
                 });
             }
@@ -119,13 +121,13 @@ public abstract class SoundtrackPlayingThread extends Thread {
 
     public void fastForward() {
         stopAllSounds();
-        justForwarded = true;
+        justForwardedOrRewound = true;
         setProgressInMillis(Math.min(progressInMillis + FAST_FORWARD_OFFSET, soundtrack.getLength()));
     }
 
     public void fastRewind() {
         stopAllSounds();
-        justForwarded = true;
+        justForwardedOrRewound = true;
         setProgressInMillis(Math.max(progressInMillis + FAST_REWIND_OFFSET, 0));
     }
 

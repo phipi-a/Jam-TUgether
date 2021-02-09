@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.utils.NavigationUtils;
@@ -32,21 +31,21 @@ public class MenuFragment extends BaseFragment {
 
         viewModel.getNavigateToSettings().observe(getViewLifecycleOwner(), navigateToSettings -> {
             if (navigateToSettings) {
-                NavigationUtils.navigateToSettings(NavHostFragment.findNavController(this));
+                NavigationUtils.navigateToSettings(getNavController());
                 viewModel.onNavigatedToSettings();
             }
         });
 
         viewModel.getNavigateToCreateRoom().observe(getViewLifecycleOwner(), navigateToCreateRoom -> {
             if (navigateToCreateRoom) {
-                NavigationUtils.navigateToCreateRoom(NavHostFragment.findNavController(this));
+                NavigationUtils.navigateToCreateRoom(getNavController());
                 viewModel.onNavigatedToCreateRoom();
             }
         });
 
         viewModel.getNavigateToJoinRoom().observe(getViewLifecycleOwner(), navigateToJoinRoom -> {
             if (navigateToJoinRoom) {
-                NavigationUtils.navigateToJoinRoom(NavHostFragment.findNavController(this));
+                NavigationUtils.navigateToJoinRoom(getNavController());
                 viewModel.onNavigatedToJoinRoom();
             }
         });
