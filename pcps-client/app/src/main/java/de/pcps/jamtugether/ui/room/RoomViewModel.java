@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,11 +12,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.room.responses.RemoveAdminResponse;
+import de.pcps.jamtugether.api.requests.room.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -127,7 +125,7 @@ public class RoomViewModel extends ViewModel {
         showUserBecameRegularSnackbar.setValue(false);
     }
 
-    public void handleBackPressed() {
+    public void onBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
 

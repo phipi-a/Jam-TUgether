@@ -51,11 +51,6 @@ public class SoundtrackRepository {
     private final Context context;
 
     @NonNull
-    public LiveData<Boolean> getRoomDeleted() {
-        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
-    }
-
-    @NonNull
     private final List<SingleSoundtrack> EMPTY_SOUNDTRACK_LIST = new ArrayList<>();
 
     @NonNull
@@ -239,6 +234,11 @@ public class SoundtrackRepository {
     @NonNull
     public LiveData<Error> getCompositionNetworkError() {
         return compositionNetworkError;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getRoomDeleted() {
+        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
     }
 
     @NonNull

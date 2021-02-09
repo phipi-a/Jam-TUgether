@@ -90,7 +90,6 @@ public class RoomFragment extends BaseFragment {
 
         viewModel.getShowRoomDeletedSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
             if (showSnackbar) {
-                viewModel.onNavigatedBack();
                 UiUtils.showSnackbar(binding.getRoot(), R.string.room_deleted_error_message, Snackbar.LENGTH_LONG);
             }
         });
