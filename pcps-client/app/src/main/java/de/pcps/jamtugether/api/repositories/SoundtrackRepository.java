@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
@@ -239,6 +240,11 @@ public class SoundtrackRepository {
     @NonNull
     public LiveData<Boolean> getRoomDeleted() {
         return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+    }
+
+    @NonNull
+    public LiveData<Boolean> getTokenExpired() {
+        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
     }
 
     @NonNull

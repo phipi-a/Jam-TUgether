@@ -94,12 +94,6 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     public void onAdminOptionsButtonClicked() {
-        Boolean roomDeleted = roomRepository.getRoomDeleted();
-        if (roomDeleted != null && roomDeleted) {
-            networkError.setValue(new RoomDeletedError());
-            return;
-        }
-
         Boolean isAdmin = getUserIsAdmin().getValue();
         if (isAdmin != null && isAdmin) {
             showAdminSettingsFragment.setValue(true);
