@@ -77,9 +77,16 @@ public class RoomViewModel extends ViewModel {
         });
     }
 
-    public void observeRoomDeletion(@NonNull LifecycleOwner lifecycleOwner) {
+    public void observeRoom(@NonNull LifecycleOwner lifecycleOwner) {
         soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
             if(roomDeleted) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
+            }
+        });
+
+        soundtrackRepository.getTokenExpired().observe(lifecycleOwner, tokenExpired -> {
+            if(tokenExpired) {
                 navigateBack.setValue(true);
                 onUserLeftRoom();
             }
@@ -177,6 +184,11 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     public LiveData<Boolean> getShowRoomDeletedSnackbar() {
         return soundtrackRepository.getRoomDeleted();
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowTokenExpiredSnackbar() {
+        return soundtrackRepository.getTokenExpired();
     }
 
     @NonNull

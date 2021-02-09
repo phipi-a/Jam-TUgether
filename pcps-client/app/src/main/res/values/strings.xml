@@ -105,6 +105,8 @@
     <string name="old_admin_error_message">You are not an admin anymore. You don\'t have permission to execute this action.</string>
     <string name="room_deleted_error_title">Room deleted</string>
     <string name="room_deleted_error_message">This room has been deleted!</string>
+    <string name="token_expired_error_title">Long inactivity</string>
+    <string name="token_expired_error_message">You were kicked out of the room due to long inactivity.</string>
 
     <string name="not_admin_dialog_title">No permission</string>
     <string name="not_admin_dialog_message">You don\'t have access to the admin settings</string>

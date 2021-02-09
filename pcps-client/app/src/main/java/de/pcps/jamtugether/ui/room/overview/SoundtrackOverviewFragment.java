@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
+import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
@@ -64,7 +65,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
-                    Timber.d("submitList: allSoundtracks: %s", allSoundtracks);
                     adapter.submitList(allSoundtracks, invalidateItemDecorations);
                 });
             } else {
@@ -79,7 +79,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         });
 
         viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null && !(networkError instanceof RoomDeletedError)) {
+            if (networkError != null && !(networkError instanceof RoomDeletedError) && !(networkError instanceof ForbiddenAccessError)) {
                 if (!viewModel.getCompositionNetworkErrorShown()) {
                     UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                     viewModel.onCompositionNetworkErrorShown();
