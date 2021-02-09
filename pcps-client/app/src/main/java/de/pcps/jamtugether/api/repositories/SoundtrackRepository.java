@@ -180,9 +180,6 @@ public class SoundtrackRepository {
             @Override
             public void onError(@NonNull Error error) {
                 compositionNetworkError.setValue(error);
-                if (error instanceof RoomDeletedError) {
-                    roomRepository.setRoomDeleted(true);
-                }
             }
         });
     }

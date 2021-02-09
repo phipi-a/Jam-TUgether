@@ -61,7 +61,8 @@ public class RoomFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
@@ -88,15 +89,15 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getShowRoomDeletedSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
-                UiUtils.showSnackbar(binding.getRoot(), R.string.room_deleted_error_message, Snackbar.LENGTH_LONG);
+        viewModel.getShowRoomDeletedDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
+                UiUtils.showInfoDialog(context, R.string.room_deleted_error_title, R.string.room_deleted_error_message);
             }
         });
 
-        viewModel.getShowTokenExpiredSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
-                UiUtils.showSnackbar(binding.getRoot(), R.string.token_expired_error_message, Snackbar.LENGTH_LONG);
+        viewModel.getShowTokenExpiredDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
+                UiUtils.showInfoDialog(context, R.string.token_expired_error_title, R.string.token_expired_error_message);
             }
         });
 

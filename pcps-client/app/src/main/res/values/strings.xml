@@ -134,8 +134,8 @@
     <string name="join_room_text">Got an ID of a friend? Then join the room</string>
     <string name="ready_to_upload_warning_title">Attention</string>
     <string name="ready_to_upload_warning_text">You have to upload your old soundtrack to add it to the composite track. Then you can record a new soundtrack</string>
-    <string name="musician_overview_title">In the overview screen you can listen to all tracks and delete your own too. As an admin you can delete all tracks or the whole room</string>
-    <string name="musician_overview_text">Overview</string>
+    <string name="musician_overview_text">In the overview screen you can listen to all tracks and delete your own too. As an admin you can delete all tracks or the whole room</string>
+    <string name="musician_overview_title">Overview</string>
     <string name="update_title">Update</string>
     <string name="update_text">The entire composite track is always updated automatically when the red circle is full</string>
     <string name="record_with_soundtrack_title">With soundtrack</string>
@@ -158,4 +158,10 @@
     <string name="drums_functionality_text">Tap on the icons to play the drums</string>
     <string name="piano_functionality_title">Functionality</string>
     <string name="piano_functionality_text">Tap on the keys to play the notes</string>
+    <string name="record_loop_title">Loop</string>
+    <string name="record_loop_text">Activates loop recording and auto uploading</string>
+    <string name="metronome_title">Metronome</string>
+    <string name="metronome_text">Tab on the metronome to hear a click at a regular interval</string>
+    <string name="admin_title">Admin</string>
+    <string name="admin_text">If you can see the yellow star, you are administrator and can change the rhythm or delete the room by clicking on it</string>
 </resources>

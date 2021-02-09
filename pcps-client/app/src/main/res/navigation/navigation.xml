@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/room_fragment"
         android:name="de.pcps.jamtugether.ui.room.RoomFragment"
-        tools:layout="@layout/fragment_tab_layout">
+        tools:layout="@layout/fragment_room">
         <argument
             android:name="roomID"
             app:argType="integer" />
@@ -89,7 +89,6 @@
         <argument
             android:name="admin"
             app:argType="boolean" />
-
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"

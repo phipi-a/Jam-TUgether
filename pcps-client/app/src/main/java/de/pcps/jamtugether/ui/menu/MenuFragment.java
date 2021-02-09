@@ -23,6 +23,7 @@ public class MenuFragment extends BaseFragment {
         viewModel = new ViewModelProvider(this).get(MenuViewModel.class);
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -65,8 +65,7 @@ public class RoomViewModel extends ViewModel {
                 return;
             }
             Boolean userInRoom = roomRepository.getUserInRoom().getValue();
-            Boolean roomDeleted = roomRepository.getRoomDeleted();
-            if ((roomDeleted != null && roomDeleted) || (userInRoom != null && !userInRoom)) {
+            if ((userInRoom != null && !userInRoom)) {
                 return;
             }
             if (userIsAdmin) {
@@ -182,12 +181,12 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getShowRoomDeletedSnackbar() {
+    public LiveData<Boolean> getShowRoomDeletedDialog() {
         return soundtrackRepository.getRoomDeleted();
     }
 
     @NonNull
-    public LiveData<Boolean> getShowTokenExpiredSnackbar() {
+    public LiveData<Boolean> getShowTokenExpiredDialog() {
         return soundtrackRepository.getTokenExpired();
     }
 
