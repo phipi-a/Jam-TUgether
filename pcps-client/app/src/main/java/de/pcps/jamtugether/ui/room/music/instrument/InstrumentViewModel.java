@@ -28,7 +28,10 @@ import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
 import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
 import de.pcps.jamtugether.audio.instrument.base.Instrument;
+import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.audio.metronome.MetronomeController;
+import de.pcps.jamtugether.audio.metronome.MetronomePlayer;
+import de.pcps.jamtugether.audio.metronome.MetronomePlayingThread;
 import de.pcps.jamtugether.audio.player.composite.CompositeSoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.single.SingleSoundtrackPlayer;
 import de.pcps.jamtugether.di.AppInjector;
@@ -75,6 +78,9 @@ public abstract class InstrumentViewModel extends ViewModel {
     @Inject
     protected MetronomeController metronomeController;
 
+    @Inject
+    protected MetronomePlayer metronomePlayer;
+
     @NonNull
     private final Instrument instrument;
 
@@ -106,6 +112,12 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showUploadReminderDialog = new MutableLiveData<>(false);
 
     private boolean metronomeActive = true;
+
+    /**
+     * number of tacts that started after
+     * soundtrack with finished
+     */
+    private int newTactCount;
 
     @NonNull
     private final MutableLiveData<Integer> metronomeColor;
@@ -190,10 +202,12 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void onMetronomeButtonClicked() {
+        // todo
         if (timer.isRunning()) { // soundtrack is being recorded
             return;
         }
         metronomeActive = !metronomeActive;
+        metronomeController.onMetronomeButtonClicked();
         Context context = application.getApplicationContext();
         if (metronomeActive) {
             metronomeColor.setValue(ContextCompat.getColor(context, R.color.metronomeActiveColor));
@@ -239,17 +253,6 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
     });
 
-    private void repeatCompositeSoundtrack() {
-        if (playWithCompositeSoundtrackInLoop) {
-            onRecordSoundtrackButtonClicked(); // todo rename method
-            if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
-                uploadTrack(false);
-            }
-            // todo start recording after 1 tact
-            onRecordSoundtrackButtonClicked();
-        }
-    }
-
     @NonNull
     protected final BaseJamTimer timer = new JamTimer(Soundtrack.MAX_TIME, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
         @Override
@@ -267,11 +270,19 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (recordingSoundtrack()) { // stop button clicked
             if (countDownTimer.isStopped()) {
                 finishRecordingSoundtrack();
+                if (lastLoopCheckBoxIsEnabled) {
+                    loopCheckBoxIsEnabled.setValue(true);
+                }
+                if (lastCompositeSoundtrackCheckBoxIsEnabled) {
+                    compositeSoundtrackCheckBoxIsEnabled.setValue(true);
+                }
+                recordingSoundtrack.setValue(false);
+                metronomeController.onFinishedRecordingSoundtrack();
             } else { // stop button was clicked before count down timer finished
                 countDownTimer.stop();
                 countDownTimerMillis.setValue(-1L);
-                recordingSoundtrack.setValue(false);
             }
+            recordingSoundtrack.setValue(false);
         } else { // record button clicked
             timerMillis.setValue(-1L);
 
@@ -306,10 +317,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                 }
             }
         }
-        if (metronomeActive) {
-            metronomeController.onStartedRecordingSoundtrack();
-        }
-
+        metronomeController.onStartedRecordingSoundtrack();
         Boolean compositeSoundtrackCheckBoxIsEnabled = this.compositeSoundtrackCheckBoxIsEnabled.getValue();
         Boolean loopCheckBoxIsEnabled = this.loopCheckBoxIsEnabled.getValue();
         lastCompositeSoundtrackCheckBoxIsEnabled = compositeSoundtrackCheckBoxIsEnabled != null && compositeSoundtrackCheckBoxIsEnabled;
@@ -326,15 +334,44 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (!preferences.userSawUploadReminderDialog()) {
             showUploadReminderDialog.setValue(true);
         }
-        if (metronomeActive) {
-            metronomeController.onFinishedRecordingSoundtrack();
+    }
+
+    private void repeatCompositeSoundtrack() {
+        finishRecordingSoundtrack();
+        if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
+            uploadTrack(false);
         }
-        if (lastLoopCheckBoxIsEnabled) {
-            loopCheckBoxIsEnabled.setValue(true);
+        int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
+
+        User user = roomRepository.getUser();
+        if (user == null) {
+            return;
         }
-        if (lastCompositeSoundtrackCheckBoxIsEnabled) {
-            compositeSoundtrackCheckBoxIsEnabled.setValue(true);
-        }
+
+        // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
+        ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument, soundtrackNumber);
+        ownSoundtrack.loadSounds(application.getApplicationContext());
+        metronomePlayer.setOnTickCallback(new MetronomePlayingThread.OnTickCallback() {
+            @Override
+            public void onNewTactTick(long millis) {
+                newTactCount++;
+                if (newTactCount == 1) {
+                    Handler mainThreadHandler = new Handler(application.getApplicationContext().getMainLooper());
+                    mainThreadHandler.post(() -> {
+                        startedMillis = System.currentTimeMillis();
+                        timer.start();
+                        startRecordingSoundtrack();
+                        recordingSoundtrack.setValue(true);
+                        newTactCount = 0;
+                        metronomePlayer.setOnTickCallback(null);
+                    });
+                }
+            }
+
+            @Override
+            public void onTick(long millis) {
+            }
+        });
     }
 
     public void onUploadDialogShown() {
@@ -401,7 +438,6 @@ public abstract class InstrumentViewModel extends ViewModel {
             uploadButtonEnabled.setValue(true);
             uploadButtonVisibility.setValue(View.VISIBLE);
         }
-        recordingSoundtrack.setValue(false);
     }
 
     protected boolean recordingSoundtrack() {
@@ -418,6 +454,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         if (recordingSoundtrack()) {
             finishSoundtrack();
         }
+        metronomePlayer.stop();
     }
 
     @NonNull
