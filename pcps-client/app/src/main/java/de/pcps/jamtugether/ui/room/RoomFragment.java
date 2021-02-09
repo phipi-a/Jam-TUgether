@@ -89,14 +89,14 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getShowRoomDeletedDialog().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
+        viewModel.getShowRoomDeletedDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
                 UiUtils.showInfoDialog(context, R.string.room_deleted_error_title, R.string.room_deleted_error_message);
             }
         });
 
-        viewModel.getShowTokenExpiredDialog().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
+        viewModel.getShowTokenExpiredDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
                 UiUtils.showInfoDialog(context, R.string.token_expired_error_title, R.string.token_expired_error_message);
             }
         });
