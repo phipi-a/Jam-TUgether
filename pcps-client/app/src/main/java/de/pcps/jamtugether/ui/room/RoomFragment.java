@@ -50,6 +50,7 @@ public class RoomFragment extends BaseFragment {
         tabLayout.setup(binding.viewPager, new RoomAdapter(this, viewModel, tabLayout));
 
         viewModel.observeAdminStatus(getViewLifecycleOwner());
+        viewModel.observeRoomDeletion(getViewLifecycleOwner());
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
@@ -90,7 +91,6 @@ public class RoomFragment extends BaseFragment {
         viewModel.getShowRoomDeletedSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
             if (showSnackbar) {
                 UiUtils.showSnackbar(binding.getRoot(), R.string.room_deleted_error_message, Snackbar.LENGTH_LONG);
-                viewModel.onRoomDeletedSnackbarShown();
             }
         });
 

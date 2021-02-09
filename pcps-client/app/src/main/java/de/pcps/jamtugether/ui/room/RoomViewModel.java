@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -49,8 +47,6 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    private boolean roomDeletedSnackbarShown;
-
     private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
@@ -77,6 +73,15 @@ public class RoomViewModel extends ViewModel {
                 showUserBecameAdminSnackbar.setValue(true);
             } else {
                 showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
+    }
+
+    public void observeRoomDeletion(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
+            if(roomDeleted) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
             }
         });
     }
@@ -118,10 +123,6 @@ public class RoomViewModel extends ViewModel {
 
     public void onUserBecameRegularSnackbarShown() {
         showUserBecameRegularSnackbar.setValue(false);
-    }
-
-    public void onRoomDeletedSnackbarShown() {
-        roomDeletedSnackbarShown = true;
     }
 
     public void onBackPressed() {
@@ -175,7 +176,7 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<Boolean> getShowRoomDeletedSnackbar() {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
+        return soundtrackRepository.getRoomDeleted();
     }
 
     @NonNull

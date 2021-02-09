@@ -237,6 +237,11 @@ public class SoundtrackRepository {
     }
 
     @NonNull
+    public LiveData<Boolean> getRoomDeleted() {
+        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+    }
+
+    @NonNull
     public LiveData<Long> getCountDownTimerMillis() {
         return countDownTimerMillis;
     }
