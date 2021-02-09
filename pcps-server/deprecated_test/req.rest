@@ -1,13 +1,13 @@
-DELETE  http://localhost:3000/api/room
+DELETE  http://vm4.sese.tu-berlin.de:3001/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6Ijg0MmI1MzViYTMyOWExYzhiYjllIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjA5NzEyMTY4LCJleHAiOjE2MDk3MTM5Njh9.GsdfRxw2oDCfLke1fj4O5xzlFHcF83eVnZ_LoSs5AEw '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjA2MWVmZjdkZTg4N2MxMmUwMTU2Iiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEyNzkyNjYyLCJleHAiOjE2MTI3OTQ0NjJ9.K7TV3_QgHQdsl9q9FsfBcF50Ar5Tx9whJ6glzVcebfI '
 
 {
-  "roomID" : "1",
+  "roomID" : "4",
   "password" : "12"
 }
 ###
-POST http://localhost:3000/api/create-room
+POST http://vm4.sese.tu-berlin.de:3001/api/create-room/
 Content-Type: application/json
 
 {
@@ -23,9 +23,9 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3000/api/room/1/
+GET  https://vm4.sese.tu-berlin.de:3000/api/room/2/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQ5NTc3MzBjYjAxOGM3NDg5N2RlIiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEwMzY0NDk1LCJleHAiOjE2MTAzNjYyOTV9.jmnocng_X6icxN7yy78sFe2fVkDus9kuGZbOIwhBp-U '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQzMjhhMTdjNTFlYzA2YmM0OGI5Iiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEyNzg5MTIyLCJleHAiOjE2MTI3OTA5MjJ9.S9-kOYNtpJBQjLou0tIPBQ8r8Gf3nwVwkFjgHCkz_cs '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "retinstrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
@@ -59,14 +59,6 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
   "number" : 1
 }
 ###
-<<<<<<< HEAD:pcps-server/deprecated_test/req.rest
-GET http://localhost:3000/api/room/3/admin
-Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjVhYTljYzA5MWQyOTgxNGNiODM3Iiwicm9vbSI6IjMiLCJyb2xlIjoiVXNlciIsImlhdCI6MTYxMTc1NDY4MSwiZXhwIjoxNjExNzU2NDgxfQ.3XAiRO5-Wrxi3HL-AD7gTLRIO0TYRVRqnCcXPDkHoWc '
-
-{
-  "roomID" : 3,
-=======
 POST http://localhost:3000/api/room/1/beat
 Content-Type: application/json
 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6ImJhYmViN2E0NjEwNWE1MWUzM2UzIiwicm9vbSI6IjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTYxMjAwNjI1OSwiZXhwIjoxNjEyMDA4MDU5fQ.4D_Gar3dM4GmUs3MW6sHdOlpWDxJ-BV5uFhiyP12OgQ '
@@ -74,7 +66,6 @@ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6
 {
   "roomID" : 1,
   "beat" : {"ticksPerTact" : 321, "tempo": 21}, 
->>>>>>> f79d4e86ca3d16de7b26291ad367603af64d2721:pcps-server/test/req.rest
   "userID" : 1,
   "instrument" : "instrument123",
   "number" : 1
