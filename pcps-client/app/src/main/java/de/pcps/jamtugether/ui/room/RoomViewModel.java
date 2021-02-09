@@ -17,7 +17,7 @@ import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
-import de.pcps.jamtugether.api.requests.room.RemoveAdminResponse;
+import de.pcps.jamtugether.api.requests.room.responses.RemoveAdminResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
@@ -49,8 +49,6 @@ public class RoomViewModel extends ViewModel {
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
 
-    private boolean roomDeletedSnackbarShown;
-
     private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
@@ -77,6 +75,15 @@ public class RoomViewModel extends ViewModel {
                 showUserBecameAdminSnackbar.setValue(true);
             } else {
                 showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
+    }
+
+    public void observeRoomDeletion(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
+            if(roomDeleted) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
             }
         });
     }
@@ -120,11 +127,7 @@ public class RoomViewModel extends ViewModel {
         showUserBecameRegularSnackbar.setValue(false);
     }
 
-    public void onRoomDeletedSnackbarShown() {
-        roomDeletedSnackbarShown = true;
-    }
-
-    public void onBackPressed() {
+    public void handleBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
 
@@ -175,7 +178,7 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     public LiveData<Boolean> getShowRoomDeletedSnackbar() {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
+        return soundtrackRepository.getRoomDeleted();
     }
 
     @NonNull
