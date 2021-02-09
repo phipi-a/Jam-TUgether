@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import de.pcps.jamtugether.databinding.FragmentOnBoardingBinding;
@@ -45,7 +44,7 @@ public class OnBoardingFragment extends BaseFragment {
 
         viewModel.getNavigateToMenu().observe(getViewLifecycleOwner(), navigateToMenu -> {
             if (navigateToMenu) {
-                NavigationUtils.navigateToMenu(NavHostFragment.findNavController(this));
+                NavigationUtils.navigateToMenu(getNavController());
                 viewModel.onNavigatedToMenu();
             }
         });
@@ -56,6 +55,6 @@ public class OnBoardingFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewPager.registerOnPageChangeCallback(viewModel.getOnPageChangeCallback());
+        viewPager.unregisterOnPageChangeCallback(viewModel.getOnPageChangeCallback());
     }
 }

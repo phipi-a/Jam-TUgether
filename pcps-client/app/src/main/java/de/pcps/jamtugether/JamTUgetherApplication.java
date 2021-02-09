@@ -26,11 +26,13 @@ public class JamTUgetherApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new JamTimberTree());
         }
+
         NetworkMonitor.getInstance().start(this.getApplicationContext());
 
         for (Instrument instrument : Instruments.LIST) {
             instrument.loadSounds(this.getApplicationContext());
         }
+
         Metronome.getInstance().loadSounds(this.getApplicationContext());
 
         for (FluteSound soundResource : FluteSound.values()) {

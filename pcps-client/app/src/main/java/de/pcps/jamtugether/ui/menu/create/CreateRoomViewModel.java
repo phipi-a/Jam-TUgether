@@ -21,6 +21,7 @@ import de.pcps.jamtugether.api.requests.room.create.CreateRoomResponse;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.utils.StringUtils;
+import timber.log.Timber;
 
 public class CreateRoomViewModel extends ViewModel {
 
@@ -45,7 +46,7 @@ public class CreateRoomViewModel extends ViewModel {
     private final MutableLiveData<Boolean> showNameInfoDialog = new MutableLiveData<>(false);
 
     @NonNull
-    private final MutableLiveData<Boolean> navigateToAdminRoom = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> navigateToRoom = new MutableLiveData<>(false);
 
     @NonNull
     private final MutableLiveData<String> nameInputError = new MutableLiveData<>(null);
@@ -112,7 +113,7 @@ public class CreateRoomViewModel extends ViewModel {
 
                 token = response.getToken();
 
-                navigateToAdminRoom.setValue(true);
+                navigateToRoom.setValue(true);
             }
 
             @Override
@@ -141,7 +142,7 @@ public class CreateRoomViewModel extends ViewModel {
     }
 
     public void onNavigatedToAdminRoom() {
-        navigateToAdminRoom.setValue(false);
+        navigateToRoom.setValue(false);
     }
 
     public int getRoomID() {
@@ -169,8 +170,8 @@ public class CreateRoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getNavigateToAdminRoom() {
-        return navigateToAdminRoom;
+    public LiveData<Boolean> getNavigateToRoom() {
+        return navigateToRoom;
     }
 
     @NonNull

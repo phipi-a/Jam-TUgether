@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,8 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -49,6 +46,7 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
+
     private boolean initialAdminStatusReceived;
 
     public RoomViewModel(int roomID, @NonNull String password, @NonNull User user, @NonNull String token, boolean userIsAdmin) {
@@ -67,14 +65,29 @@ public class RoomViewModel extends ViewModel {
                 return;
             }
             Boolean userInRoom = roomRepository.getUserInRoom().getValue();
-            Boolean roomDeleted = roomRepository.getRoomDeleted();
-            if ((roomDeleted != null && roomDeleted) || (userInRoom != null && !userInRoom)) {
+            if ((userInRoom != null && !userInRoom)) {
                 return;
             }
             if (userIsAdmin) {
                 showUserBecameAdminSnackbar.setValue(true);
             } else {
                 showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
+    }
+
+    public void observeRoom(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
+            if(roomDeleted) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
+            }
+        });
+
+        soundtrackRepository.getTokenExpired().observe(lifecycleOwner, tokenExpired -> {
+            if(tokenExpired) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
             }
         });
     }
@@ -118,7 +131,7 @@ public class RoomViewModel extends ViewModel {
         showUserBecameRegularSnackbar.setValue(false);
     }
 
-    public void handleBackPressed() {
+    public void onBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
 
@@ -168,13 +181,13 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getNavigateToMenuRoomDeletedError () {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+    public LiveData<Boolean> getShowRoomDeletedDialog() {
+        return soundtrackRepository.getRoomDeleted();
     }
 
     @NonNull
-    public LiveData<Boolean> getNavigateToMenuUserForbiddenAccessError() {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
+    public LiveData<Boolean> getShowTokenExpiredDialog() {
+        return soundtrackRepository.getTokenExpired();
     }
 
     @NonNull

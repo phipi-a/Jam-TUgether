@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,7 +17,6 @@ import de.pcps.jamtugether.model.User;
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.ui.base.views.dialogs.ConfirmationDialog;
 import de.pcps.jamtugether.ui.base.views.tab.JamTabLayout;
-import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class RoomFragment extends BaseFragment {
@@ -52,6 +50,7 @@ public class RoomFragment extends BaseFragment {
         tabLayout.setup(binding.viewPager, new RoomAdapter(this, viewModel, tabLayout));
 
         viewModel.observeAdminStatus(getViewLifecycleOwner());
+        viewModel.observeRoom(getViewLifecycleOwner());
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
@@ -62,7 +61,8 @@ public class RoomFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
@@ -89,15 +89,15 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNavigateToMenuRoomDeletedError().observe(getViewLifecycleOwner(), navigateToMenu -> {
-            if (navigateToMenu) {
-                NavigationUtils.navigateToMenuError(NavHostFragment.findNavController(this), R.string.room_deleted_error_message);
+        viewModel.getShowRoomDeletedDialog().observe(getViewLifecycleOwner(), showSnackbar -> {
+            if (showSnackbar) {
+                UiUtils.showInfoDialog(context, R.string.room_deleted_error_title, R.string.room_deleted_error_message);
             }
         });
 
-        viewModel.getNavigateToMenuUserForbiddenAccessError().observe(getViewLifecycleOwner(), navigateToMenu -> {
-            if (navigateToMenu) {
-                NavigationUtils.navigateToMenuError(NavHostFragment.findNavController(this), R.string.forbidden_access_error_message);
+        viewModel.getShowTokenExpiredDialog().observe(getViewLifecycleOwner(), showSnackbar -> {
+            if (showSnackbar) {
+                UiUtils.showInfoDialog(context, R.string.token_expired_error_title, R.string.token_expired_error_message);
             }
         });
 
@@ -112,8 +112,8 @@ public class RoomFragment extends BaseFragment {
     }
 
     @Override
-    protected void handleOnBackPressed() {
-        viewModel.handleBackPressed();
+    protected void onBackPressed() {
+        viewModel.onBackPressed();
     }
 
     @Override

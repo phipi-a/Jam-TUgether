@@ -97,7 +97,7 @@ public class OwnSoundtrackFragment extends BaseFragment {
         });
 
         viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null && !(networkError instanceof RoomDeletedError)&& !(networkError instanceof ForbiddenAccessError)) {
+            if (networkError != null && !(networkError instanceof RoomDeletedError) && !(networkError instanceof ForbiddenAccessError)) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onSoundtrackRepositoryNetworkErrorShown();
             }

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.JamTUgetherApplication;
 import de.pcps.jamtugether.MainActivity;
-import de.pcps.jamtugether.ui.menu.MenuViewModel;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomViewModel;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomViewModel;
 import de.pcps.jamtugether.ui.onboarding.OnBoardingViewModel;
@@ -76,9 +75,6 @@ public class AppInjector {
 
     public static void inject(@NonNull InstrumentViewModel instrumentViewModel) {
         appComponent.inject(instrumentViewModel);
-    }
-    public static void inject(@NonNull MenuViewModel menuViewModel) {
-        appComponent.inject(menuViewModel);
     }
 }
 

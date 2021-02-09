@@ -104,6 +104,8 @@
     <string name="old_admin_error_message">Du bist nicht mehr Admin. Du hast nicht die Berechtigung diese Aktion durchzuführen.</string>
     <string name="room_deleted_error_title">Raum gelöscht</string>
     <string name="room_deleted_error_message">Dieser Raum wurde gelöscht!</string>
+    <string name="token_expired_error_title">Zu lange inaktiv</string>
+    <string name="token_expired_error_message">Du wurdest aufgrund von zu langer Inaktivät aus dem Raum geworfen.</string>
 
     <string name="not_admin_dialog_title">Keine Berechtigung</string>
     <string name="not_admin_dialog_message">Auf die Admin-Einstellungen hast du keinen Zugriff.</string>

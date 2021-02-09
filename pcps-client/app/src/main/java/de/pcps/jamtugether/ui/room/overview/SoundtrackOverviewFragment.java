@@ -25,6 +25,7 @@ import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.UiUtils;
+import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -63,7 +64,9 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             if (admin) {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
+                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
+                    adapter.submitList(allSoundtracks, invalidateItemDecorations);
+                });
             } else {
                 Integer userID = viewModel.getUserID();
                 if (userID == null) {
@@ -76,7 +79,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
         });
 
         viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null && !(networkError instanceof RoomDeletedError)&& !(networkError instanceof ForbiddenAccessError)) {
+            if (networkError != null && !(networkError instanceof RoomDeletedError) && !(networkError instanceof ForbiddenAccessError)) {
                 if (!viewModel.getCompositionNetworkErrorShown()) {
                     UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                     viewModel.onCompositionNetworkErrorShown();
