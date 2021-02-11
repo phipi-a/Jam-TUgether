@@ -19,7 +19,7 @@
             android:id="@+id/upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="@{viewModel.uploadButtonEnabled}"
+            android:enabled="@{viewModel.uploadButtonIsEnabled}"
             android:onClick="@{() -> viewModel.onUploadButtonClicked()}"
             android:text="@string/upload"
             android:textColor="@color/primaryTextColor"
@@ -57,7 +57,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/composite_soundtrack_loop_check_box"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/composite_soundtrack_check_box"
-                app:startedCreatingSoundtrack="@{viewModel.recordingSoundtrack}"
+                app:recordButtonColor="@{viewModel.recordButtonColor}"
+                app:recordButtonImage="@{viewModel.recordButtonImage}"
                 tools:ignore="ContentDescription" />
 
             <TextView

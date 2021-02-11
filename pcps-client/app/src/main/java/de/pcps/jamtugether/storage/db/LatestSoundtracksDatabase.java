@@ -54,7 +54,7 @@ public class LatestSoundtracksDatabase {
         pianoSoundtrackUploaded = false;
     }
 
-    public void onOwnSoundtrackUpdated(@NonNull SingleSoundtrack ownSoundtrack) {
+    public void onLatestSoundtrackChanged(@NonNull SingleSoundtrack ownSoundtrack) {
         Instrument instrument = ownSoundtrack.getInstrument();
         if (instrument == Flute.getInstance()) {
             latestFluteSoundtrack = ownSoundtrack;
@@ -67,7 +67,7 @@ public class LatestSoundtracksDatabase {
         }
     }
 
-    public void onOwnSoundtrackUploaded(@NonNull Instrument instrument) {
+    public void onLatestSoundtrackUploaded(@NonNull Instrument instrument) {
         if (instrument == Flute.getInstance()) {
             fluteSoundtrackUploaded = true;
         } else if (instrument == Drums.getInstance()) {
@@ -76,6 +76,18 @@ public class LatestSoundtracksDatabase {
             shakerSoundtrackUploaded = true;
         } else {
             pianoSoundtrackUploaded = true;
+        }
+    }
+
+    public void onLatestSoundtrackDeleted(@NonNull Instrument instrument) {
+        if (instrument == Flute.getInstance()) {
+            fluteSoundtrackUploaded = false;
+        } else if (instrument == Drums.getInstance()) {
+            drumsSoundtrackUploaded = false;
+        } else if (instrument == Shaker.getInstance()) {
+            shakerSoundtrackUploaded = false;
+        } else {
+            pianoSoundtrackUploaded = false;
         }
     }
 
@@ -92,7 +104,7 @@ public class LatestSoundtracksDatabase {
         }
     }
 
-    public boolean getLatestSoundtrackUploaded(@NonNull Instrument instrument) {
+    public boolean latestSoundtrackWasUploaded(@NonNull Instrument instrument) {
         if (instrument == Flute.getInstance()) {
             return fluteSoundtrackUploaded;
         } else if (instrument == Drums.getInstance()) {

@@ -40,7 +40,7 @@ public class DrumsViewModel extends InstrumentViewModel {
     }
 
     private void onElementPlayed(DrumsSound drumsSound) {
-        if (!timer.isRunning()) {
+        if (!recordingSoundtrack) {
             return;
         }
         int soundDuration = drumsSound.getDuration();
@@ -49,6 +49,12 @@ public class DrumsViewModel extends InstrumentViewModel {
         if (ownSoundtrack != null) {
             ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, drumsSound.getPitch()));
         }
+    }
+
+    @Override
+    protected void finishRecordingSoundtrack(boolean loop) {
+        super.finishRecordingSoundtrack(loop);
+        drums.stop();
     }
 
     @Override

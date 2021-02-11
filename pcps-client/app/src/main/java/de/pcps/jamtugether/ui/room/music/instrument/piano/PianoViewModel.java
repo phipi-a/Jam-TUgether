@@ -58,9 +58,9 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
     }
 
     @Override
-    protected void finishRecordingSoundtrack() {
+    protected void finishRecordingSoundtrack(boolean loop) {
         finishSound();
-        super.finishRecordingSoundtrack();
+        super.finishRecordingSoundtrack(loop);
     }
 
     private void finishSound() {

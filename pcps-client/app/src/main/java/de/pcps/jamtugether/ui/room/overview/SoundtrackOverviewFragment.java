@@ -24,7 +24,6 @@ import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -64,7 +63,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
-                    Timber.d("submitList: allSoundtracks: %s", allSoundtracks);
                     adapter.submitList(allSoundtracks, invalidateItemDecorations);
                 });
             } else {
@@ -96,7 +94,8 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onSoundtrackDeletionConfirmDialogShown();
             }

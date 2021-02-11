@@ -79,10 +79,6 @@ public class MetronomePlayingThread extends Thread {
         metronome.stop();
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
     public interface OnTickCallback {
 
         void onNewTactTick(long millis);
