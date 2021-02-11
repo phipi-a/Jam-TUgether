@@ -65,7 +65,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
                 flute.play(pitch.getValue(), streamID -> {
                     soundIsPlaying = streamID != 0;
 
-                    if (recordingSoundtrack() && soundIsPlaying) {
+                    if (recordingSoundtrack && soundIsPlaying) {
                         startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     }
                 });
@@ -90,9 +90,9 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     }
 
     @Override
-    protected void finishRecordingSoundtrack() {
+    protected void finishRecordingSoundtrack(boolean loop) {
         finishSound();
-        super.finishRecordingSoundtrack();
+        super.finishRecordingSoundtrack(loop);
     }
 
     public void onPitchPercentageChanged(float pitchPercentage) {

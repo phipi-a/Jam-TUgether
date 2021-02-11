@@ -31,6 +31,11 @@ public class MetronomeController {
         });
     }
 
+    public void onMetronomeButtonClicked() {
+        boolean active = !metronomePlayer.isActive();
+        metronomePlayer.setActive(active);
+    }
+
     public void onStartedRecordingSoundtrack() {
         metronomePlayer.play();
     }

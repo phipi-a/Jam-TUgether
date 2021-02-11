@@ -25,7 +25,6 @@ import de.pcps.jamtugether.ui.soundtrack.SoundtrackItemDecoration;
 import de.pcps.jamtugether.ui.soundtrack.adapters.AdminSoundtrackListAdapter;
 import de.pcps.jamtugether.ui.soundtrack.adapters.RegularSoundtrackListAdapter;
 import de.pcps.jamtugether.utils.UiUtils;
-import timber.log.Timber;
 
 public class SoundtrackOverviewFragment extends BaseFragment {
 
@@ -96,7 +95,8 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onSoundtrackDeletionConfirmDialogShown();
             }
