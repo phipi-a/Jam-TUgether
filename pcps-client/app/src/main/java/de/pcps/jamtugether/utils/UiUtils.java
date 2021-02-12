@@ -28,6 +28,10 @@ public class UiUtils {
         new InfoDialog(context, title, message).show();
     }
 
+    public static void showInfoDialog(@NonNull Context context, @StringRes int title, @StringRes int message, @StringRes int positiveButtonText, @NonNull InfoDialog.OnButtonClickListener onButtonClickListener) {
+        new InfoDialog(context, title, message, positiveButtonText, onButtonClickListener).show();
+    }
+
     public static void showConfirmationDialog(@NonNull Context context, @StringRes int title, @StringRes int message, @NonNull ConfirmationDialog.OnButtonClickListener callback) {
         new ConfirmationDialog(context, title, message, callback).show();
     }

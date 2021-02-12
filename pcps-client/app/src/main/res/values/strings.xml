@@ -79,7 +79,7 @@
     <string name="delete_room_confirmation">Are you sure that you want to delete this room?</string>
 
     <string name="no_permission_microphone_error_title">Missing permission</string>
-    <string name="no_permission_microphone_error_message">The app does not have permission to access your microphone!</string>
+    <string name="no_permission_microphone_error_message">The app does not have permission to access your microphone! You can change this in the settings</string>
 
     <string name="unauthorized_access_error_title">Authentication failed</string>
     <string name="unauthorized_access_error_message">The authentication failed.</string>
