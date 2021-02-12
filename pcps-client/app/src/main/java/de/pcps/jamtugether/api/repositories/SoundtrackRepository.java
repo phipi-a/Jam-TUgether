@@ -174,7 +174,10 @@ public class SoundtrackRepository {
                     soundtrack.loadSounds(context);
                 }
                 beat.setValue(response.getBeat());
-                setSoundtracks(response.getSoundtracks());
+                List<SingleSoundtrack> previousSoundtracks = allSoundtracks.getValue();
+                if(!previousSoundtracks.equals(response.getSoundtracks())) {
+                    setSoundtracks(response.getSoundtracks());
+                }
             }
 
             @Override

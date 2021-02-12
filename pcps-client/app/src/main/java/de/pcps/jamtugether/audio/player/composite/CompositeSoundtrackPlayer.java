@@ -16,7 +16,6 @@ import de.pcps.jamtugether.audio.player.base.SoundtrackPlayer;
 import de.pcps.jamtugether.audio.player.base.SoundtrackPlayingThread;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
-import timber.log.Timber;
 
 /**
  * This player is responsible for playing every single soundtrack of the app
@@ -34,11 +33,9 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     @Inject
     public CompositeSoundtrackPlayer(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
         Observer<CompositeSoundtrack> compositeSoundtrackObserver = compositeSoundtrack -> {
-            Timber.d("new composite soundtrack");
             if (isPlaying()) {
-                // todo this is not working if sound has to be resumed after being stopped
                 stop();
-                play(compositeSoundtrack);
+                play(compositeSoundtrack, true);
             }
         };
         roomRepository.getUserInRoom().observeForever(userInRoom -> {

@@ -96,8 +96,9 @@ public abstract class SoundtrackPlayingThread extends Thread {
      */
     public abstract void play(int millis, boolean finishSounds, @NonNull PlaySoundThread.OnSoundWithIDPlayedCallback callback);
 
-    public void play() {
+    public void play(boolean justResumed) {
         lastMillis = System.currentTimeMillis();
+        this.justResumed = justResumed;
         if (!running) {
             if (soundtrackIsFinished()) {
                 setProgressInMillis(0);
@@ -115,8 +116,7 @@ public abstract class SoundtrackPlayingThread extends Thread {
     }
 
     public void resumeSoundtrack() {
-        justResumed = true;
-        play();
+        play(true);
     }
 
     public void fastForward() {
