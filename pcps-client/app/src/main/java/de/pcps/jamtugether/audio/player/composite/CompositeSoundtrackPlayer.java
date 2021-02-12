@@ -34,9 +34,8 @@ public class CompositeSoundtrackPlayer extends SoundtrackPlayer {
     public CompositeSoundtrackPlayer(@NonNull RoomRepository roomRepository, @NonNull SoundtrackRepository soundtrackRepository) {
         Observer<CompositeSoundtrack> compositeSoundtrackObserver = compositeSoundtrack -> {
             if (isPlaying()) {
-                // todo this is not working if sound has to be resumed after being stopped
                 stop();
-                play(compositeSoundtrack);
+                play(compositeSoundtrack, true);
             }
         };
         roomRepository.getUserInRoom().observeForever(userInRoom -> {

@@ -243,10 +243,11 @@ public abstract class InstrumentViewModel extends ViewModel {
             if (recordingSoundtrack) {
                 finishRecordingSoundtrack(false);
             } else { // stop button was clicked before count down timer finished
-                countDownTimer.stop();
+                if (countDownTimer != null) {
+                    countDownTimer.stop();
+                }
                 countDownTimerMillis.setValue(-1L);
             }
-
             recordButtonImage.setValue(R.drawable.ic_record);
         } else { // record button clicked
             timerMillis.setValue(-1L);
@@ -303,7 +304,9 @@ public abstract class InstrumentViewModel extends ViewModel {
             recordingSoundtrack = false;
         }
 
-        timer.stop();
+        if (timer != null) {
+            timer.stop();
+        }
 
         compositeSoundtrackPlayer.setOnSoundtrackFinishedCallback(null);
         if (playWithCompositeSoundtrack && compositeSoundtrack != null) {
@@ -334,13 +337,8 @@ public abstract class InstrumentViewModel extends ViewModel {
             }
             uploadButtonVisibility.setValue(View.VISIBLE);
         } else {
-            if (!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument)) {
-                ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
-                uploadButtonIsEnabled.setValue(true);
-            } else {
-                ownSoundtrack = null;
-                uploadButtonIsEnabled.setValue(false);
-            }
+            ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
+            uploadButtonIsEnabled.setValue(!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument));
         }
     }
 
@@ -373,7 +371,7 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     private void uploadTrack(boolean loop) {
         User user = roomRepository.getUser();
-        if (ownSoundtrack == null || ownSoundtrack.isEmpty() || user == null) {
+        if  (ownSoundtrack == null || ownSoundtrack.isEmpty() || user == null) {
             return;
         }
         SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());

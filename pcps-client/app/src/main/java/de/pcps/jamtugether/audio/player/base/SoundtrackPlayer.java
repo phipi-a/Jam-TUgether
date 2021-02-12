@@ -32,9 +32,13 @@ public abstract class SoundtrackPlayer implements SoundtrackPlayingThread.OnSoun
     }
 
     public void play(@NonNull Soundtrack soundtrack) {
+        play(soundtrack, false);
+    }
+
+    public void play(@NonNull Soundtrack soundtrack, boolean justResumed) {
         SoundtrackPlayingThread thread = getThread(soundtrack);
         if (thread != null) {
-            thread.play();
+            thread.play(justResumed);
         }
     }
 

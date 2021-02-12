@@ -55,16 +55,17 @@ public class AdminSettingsFragment extends BaseDialogFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onRoomDeletionConfirmDialogShown();
             }
         });
 
-        viewModel.getNavigateBack().observe(getViewLifecycleOwner(), leaveRoom -> {
-            if (leaveRoom) {
-                if(getParentFragment() instanceof RoomFragment) {
-                    RoomFragment roomFragment = (RoomFragment) getParentFragment();
+        viewModel.getNavigateBack().observe(getViewLifecycleOwner(), navigateBack -> {
+            if (navigateBack) {
+                if (getParentFragment() != null && getParentFragment().getParentFragment() instanceof RoomFragment) {
+                    RoomFragment roomFragment = (RoomFragment) getParentFragment().getParentFragment();
                     NavigationUtils.navigateBack(roomFragment.getNavController());
                     viewModel.onNavigatedBack();
                 }

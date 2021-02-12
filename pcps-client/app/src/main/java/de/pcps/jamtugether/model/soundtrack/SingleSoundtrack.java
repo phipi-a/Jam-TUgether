@@ -107,7 +107,7 @@ public class SingleSoundtrack extends Soundtrack {
                 ", userName='" + userName + '\'' +
                 ", instrument=" + instrument +
                 ", number=" + number +
-                ", volume=" + getVolume() +
+                ", soundSequence=" + soundSequence +
                 '}';
     }
 
