@@ -21,6 +21,7 @@ import de.pcps.jamtugether.api.requests.room.beat.UpdateBeatResponse;
 import de.pcps.jamtugether.audio.metronome.Metronome;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.Beat;
+import timber.log.Timber;
 
 public class AdminSettingsViewModel extends ViewModel {
 
@@ -61,6 +62,7 @@ public class AdminSettingsViewModel extends ViewModel {
         roomRepository.deleteRoom(new JamCallback<DeleteRoomResponse>() {
             @Override
             public void onSuccess(@NonNull DeleteRoomResponse response) {
+                Timber.d("onSuccess()");
                 progressBarVisibility.setValue(View.INVISIBLE);
                 onRoomDeleted();
                 navigateBack.setValue(true);
@@ -68,6 +70,7 @@ public class AdminSettingsViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Error error) {
+                Timber.d("onError()");
                 progressBarVisibility.setValue(View.INVISIBLE);
                 networkError.setValue(error);
             }
