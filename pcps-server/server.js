@@ -70,7 +70,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 // Read Certificate and Run Server
 const options = {
   key: fs.readFileSync('../../key.pem'),
-  cert: fs.readFileSync('../../../etc/ssl/ca-certificates.crt')
+  cert: fs.readFileSync('../../../../etc/ssl/ca-certificates.crt')
 }
 https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
