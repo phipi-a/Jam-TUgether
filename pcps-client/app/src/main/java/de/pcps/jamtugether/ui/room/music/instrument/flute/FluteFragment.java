@@ -16,6 +16,7 @@ import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.databinding.FragmentFluteBinding;
 import de.pcps.jamtugether.ui.base.views.dialogs.InfoDialog;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentFragment;
+import de.pcps.jamtugether.utils.NavigationUtils;
 import de.pcps.jamtugether.utils.UiUtils;
 
 public class FluteFragment extends InstrumentFragment {
@@ -65,7 +66,12 @@ public class FluteFragment extends InstrumentFragment {
                 FluteViewModel fluteViewModel = (FluteViewModel) viewModel;
                 fluteViewModel.startRecordingFlute();
             } else {
-                UiUtils.showInfoDialog(context, R.string.no_permission_microphone_error_title, R.string.no_permission_microphone_error_message);
+                UiUtils.showInfoDialog(context, R.string.no_permission_microphone_error_title, R.string.no_permission_microphone_error_message, R.string.settings, new InfoDialog.OnButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        NavigationUtils.navigateToAppDetailsSettings(activity);
+                    }
+                });
             }
         }
     }

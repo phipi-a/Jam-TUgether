@@ -78,7 +78,7 @@
     <string name="delete_room_confirmation">Bist du dir sicher, dass du diesen Raum löschen willst?</string>
 
     <string name="no_permission_microphone_error_title">Fehlende Berechtigung</string>
-    <string name="no_permission_microphone_error_message">Die App hat keine Berechtigung auf dein Mikrofon zuzugreifen!</string>
+    <string name="no_permission_microphone_error_message">Die App hat keine Berechtigung auf dein Mikrofon zuzugreifen! Dies kannst du in den Einstellungen ändern</string>
 
     <string name="unauthorized_access_error_title">Authentifizierung fehlgeschlagen</string>
     <string name="unauthorized_access_error_message">Die Authentifizierung ist fehlgeschlagen.</string>

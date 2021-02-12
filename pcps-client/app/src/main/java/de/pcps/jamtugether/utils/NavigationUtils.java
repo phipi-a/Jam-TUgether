@@ -1,5 +1,10 @@
 package de.pcps.jamtugether.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -44,5 +49,12 @@ public class NavigationUtils {
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
         fragmentManager.beginTransaction().replace(layout, fragment).commit();
+    }
+
+    public static void navigateToAppDetailsSettings(@NonNull Activity activity) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivity(intent);
     }
 }

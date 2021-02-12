@@ -19,9 +19,25 @@ public class InfoDialog {
         alertDialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                .setNeutralButton(R.string.ok, (dialog, which) -> {
                 }).create();
 
+    }
+
+    public InfoDialog(@NonNull Context context, String title, @NonNull String message, @NonNull String positiveButtonText, @NonNull OnButtonClickListener onButtonClickListener) {
+        alertDialog = new MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButtonText, ((dialog, which) -> {
+                    onButtonClickListener.onPositiveButtonClicked();
+                }))
+                .setNeutralButton(R.string.ok, (dialog, which) -> {
+                }).create();
+
+    }
+
+    public InfoDialog(@NonNull Context context, @StringRes int title, @StringRes int message, @StringRes int positiveButtonText, @NonNull OnButtonClickListener onButtonClickListener) {
+        this(context, context.getString(title), context.getString(message), context.getString(positiveButtonText), onButtonClickListener);
     }
 
     public InfoDialog(@NonNull Context context, @StringRes int title, @StringRes int message) {
@@ -30,5 +46,9 @@ public class InfoDialog {
 
     public void show() {
         alertDialog.show();
+    }
+
+    public interface OnButtonClickListener {
+        void onPositiveButtonClicked();
     }
 }
