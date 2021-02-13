@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -30,6 +31,7 @@ import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
@@ -69,10 +71,22 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MutableLiveData<Boolean> showPianoHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MediatorLiveData<Error> showNetworkErrorMediator = new MediatorLiveData<>();
+
+    private boolean soundtrackRepositoryErrorShown;
+
     public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
         this.instrumentOnChangeCallback = instrumentOnChangeCallback;
         this.musicianViewViewModel = musicianViewViewModel;
+
+        showNetworkErrorMediator.addSource(soundtrackRepository.getShowNetworkError(), networkError -> {
+            if (networkError != null && !soundtrackRepositoryErrorShown) {
+                showNetworkErrorMediator.setValue(networkError);
+                soundtrackRepositoryErrorShown = true;
+            }
+        });
 
         Instrument mainInstrument = preferences.getMainInstrument();
         instrumentOnChangeCallback.onInstrumentChanged(mainInstrument);
@@ -92,7 +106,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
             showFluteHelpDialog.setValue(true);
         } else if (currentInstrument == Drums.getInstance()) {
             showDrumsHelpDialog.setValue(true);
-        } else if(currentInstrument == Shaker.getInstance()){
+        } else if (currentInstrument == Shaker.getInstance()) {
             showShakerHelpDialog.setValue(true);
         } else {
             showPianoHelpDialog.setValue(true);
@@ -123,8 +137,13 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         showPianoHelpDialog.setValue(false);
     }
 
-    public void onSoundtrackRepositoryNetworkErrorShown() {
-        soundtrackRepository.onCompositionNetworkErrorShown();
+    public void onNetworkErrorShown() {
+        soundtrackRepository.onNetworkErrorShown();
+    }
+
+    @Override
+    protected void onCleared() {
+        showNetworkErrorMediator.removeSource(soundtrackRepository.getShowNetworkError());
     }
 
     @NonNull
@@ -173,8 +192,8 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     }
 
     @NonNull
-    public LiveData<Error> getSoundtrackRepositoryNetworkError() {
-        return soundtrackRepository.getCompositionNetworkError();
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkErrorMediator;
     }
 
     @NonNull

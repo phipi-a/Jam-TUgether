@@ -68,7 +68,7 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getShowNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();

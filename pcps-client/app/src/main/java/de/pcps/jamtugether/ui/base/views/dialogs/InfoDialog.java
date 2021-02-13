@@ -19,7 +19,7 @@ public class InfoDialog {
         alertDialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setNeutralButton(R.string.ok, (dialog, which) -> {
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
                 }).create();
 
     }

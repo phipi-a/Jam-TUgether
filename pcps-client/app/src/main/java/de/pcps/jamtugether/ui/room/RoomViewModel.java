@@ -33,7 +33,7 @@ public class RoomViewModel extends ViewModel {
     SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
@@ -118,7 +118,7 @@ public class RoomViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Error error) {
-                networkError.setValue(error);
+                showNetworkError.setValue(error);
             }
         });
     }
@@ -136,7 +136,7 @@ public class RoomViewModel extends ViewModel {
     }
 
     public void onNetworkErrorShown() {
-        networkError.setValue(null);
+        showNetworkError.setValue(null);
     }
 
     public void onNavigatedBack() {
@@ -166,8 +166,8 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 
     @NonNull

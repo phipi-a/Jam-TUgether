@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
 
         <variable
@@ -60,13 +59,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:selectableItemBackground"
                 android:onClick="@{() -> viewModel.onDeleteRoomButtonClicked()}"
                 android:padding="5dp"
-                android:paddingBottom="2dp"
                 android:text="@string/delete_room"
                 android:textColor="@color/primaryTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_1" />
+                app:layout_constraintTop_toBottomOf="@id/divider_1"
+                tools:ignore="UnusedAttribute" />
 
             <View
                 android:id="@+id/divider_2"
@@ -139,13 +139,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:selectableItemBackground"
                 android:onClick="@{() -> viewModel.onMetronomeConfirmButtonClicked(metronomeTicksSpinner.getSelectedItemPosition(), metronomeTempoSpinner.getSelectedItemPosition())}"
                 android:padding="5dp"
                 android:text="@string/confirm"
                 android:textColor="@color/primaryTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/metronome_tempo_spinner" />
+                app:layout_constraintTop_toBottomOf="@id/metronome_tempo_spinner"
+                tools:ignore="UnusedAttribute" />
 
             <View
                 android:id="@+id/divider_3"

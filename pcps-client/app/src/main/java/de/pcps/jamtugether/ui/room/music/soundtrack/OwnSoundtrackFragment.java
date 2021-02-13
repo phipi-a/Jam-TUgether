@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.databinding.FragmentOwnSoundtrackBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -96,10 +94,10 @@ public class OwnSoundtrackFragment extends BaseFragment {
             }
         });
 
-        viewModel.getSoundtrackRepositoryNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null && !(networkError instanceof RoomDeletedError) && !(networkError instanceof ForbiddenAccessError)) {
+        viewModel.getShowNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+            if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
-                viewModel.onSoundtrackRepositoryNetworkErrorShown();
+                viewModel.onNetworkErrorShown();
             }
         });
 

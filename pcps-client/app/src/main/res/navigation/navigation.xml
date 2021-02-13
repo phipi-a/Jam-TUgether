@@ -93,5 +93,13 @@
     <fragment
         android:id="@+id/settings_fragment"
         android:name="de.pcps.jamtugether.ui.settings.SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_fragment_to_on_boarding_fragment"
+            app:destination="@id/on_boarding_fragment"
+            app:enterAnim="@anim/slide_in_from_bottom"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_to_bottom" />
+    </fragment>
 </navigation>

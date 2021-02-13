@@ -3,6 +3,7 @@ package de.pcps.jamtugether.ui.room.overview;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -14,7 +15,6 @@ import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -25,6 +25,7 @@ import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -38,7 +39,10 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
+
+    @NonNull
+    private final MediatorLiveData<Error> showNetworkErrorMediator = new MediatorLiveData<>();
 
     @NonNull
     private final MutableLiveData<Boolean> showSoundtrackDeletionConfirmDialog = new MutableLiveData<>(false);
@@ -52,10 +56,17 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @Nullable
     private SingleSoundtrack soundtrackToBeDeleted;
 
-    private boolean compositionNetworkErrorShown;
+    private boolean soundtrackRepositoryErrorShown;
 
     public SoundtrackOverviewViewModel() {
         AppInjector.inject(this);
+        showNetworkErrorMediator.addSource(showNetworkError, showNetworkErrorMediator::setValue);
+        showNetworkErrorMediator.addSource(soundtrackRepository.getShowNetworkError(), networkError -> {
+            if (networkError != null && !soundtrackRepositoryErrorShown) {
+                showNetworkErrorMediator.setValue(networkError);
+                soundtrackRepositoryErrorShown = true;
+            }
+        });
     }
 
     @Override
@@ -87,7 +98,7 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
             @Override
             public void onError(@NonNull Error error) {
-                networkError.setValue(error);
+                showNetworkError.setValue(error);
                 soundtrackToBeDeleted = null;
             }
         });
@@ -108,17 +119,13 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
         }
     }
 
-    public void onCompositionNetworkErrorShown() {
-        soundtrackRepository.onCompositionNetworkErrorShown();
-        compositionNetworkErrorShown = true;
-    }
-
     public void onSoundtrackDeletionConfirmDialogShown() {
         showSoundtrackDeletionConfirmDialog.setValue(false);
     }
 
     public void onNetworkErrorShown() {
-        networkError.setValue(null);
+        showNetworkError.setValue(null);
+        soundtrackRepository.onNetworkErrorShown();
     }
 
     public void onAdminSettingsFragmentShown() {
@@ -127,6 +134,12 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     public void onNotAdminDialogShown() {
         showNotAdminDialog.setValue(false);
+    }
+
+    @Override
+    protected void onCleared() {
+        showNetworkErrorMediator.removeSource(showNetworkError);
+        showNetworkErrorMediator.removeSource(soundtrackRepository.getShowNetworkError());
     }
 
     @Nullable
@@ -171,13 +184,8 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
-    }
-
-    @NonNull
-    public LiveData<Error> getCompositionNetworkError() {
-        return soundtrackRepository.getCompositionNetworkError();
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkErrorMediator;
     }
 
     @NonNull
@@ -187,9 +195,5 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
 
     private int calculateProgress(long millis) {
         return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
-    }
-
-    public boolean getCompositionNetworkErrorShown() {
-        return compositionNetworkErrorShown;
     }
 }

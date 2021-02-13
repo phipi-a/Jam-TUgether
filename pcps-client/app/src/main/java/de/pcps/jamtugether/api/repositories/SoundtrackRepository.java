@@ -67,7 +67,7 @@ public class SoundtrackRepository {
     private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     @NonNull
-    private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @NonNull
     private final Handler handler = new Handler();
@@ -175,14 +175,16 @@ public class SoundtrackRepository {
                 }
                 beat.setValue(response.getBeat());
                 List<SingleSoundtrack> previousSoundtracks = allSoundtracks.getValue();
-                if(!previousSoundtracks.equals(response.getSoundtracks())) {
+                if (!previousSoundtracks.equals(response.getSoundtracks())) {
                     setSoundtracks(response.getSoundtracks());
                 }
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                compositionNetworkError.setValue(error);
+                if (!(error instanceof RoomDeletedError) && !(error instanceof ForbiddenAccessError)) {
+                    showNetworkError.setValue(error);
+                }
             }
         });
     }
@@ -209,12 +211,12 @@ public class SoundtrackRepository {
         }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
-        compositionNetworkError.setValue(null);
+        showNetworkError.setValue(null);
         countDownTimerMillis.setValue(-1L);
     }
 
-    public void onCompositionNetworkErrorShown() {
-        compositionNetworkError.setValue(null);
+    public void onNetworkErrorShown() {
+        showNetworkError.setValue(null);
     }
 
     @NonNull
@@ -233,18 +235,18 @@ public class SoundtrackRepository {
     }
 
     @NonNull
-    public LiveData<Error> getCompositionNetworkError() {
-        return compositionNetworkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 
     @NonNull
     public LiveData<Boolean> getRoomDeleted() {
-        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+        return Transformations.map(getShowNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
     }
 
     @NonNull
     public LiveData<Boolean> getTokenExpired() {
-        return Transformations.map(getCompositionNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
+        return Transformations.map(getShowNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
     }
 
     @NonNull

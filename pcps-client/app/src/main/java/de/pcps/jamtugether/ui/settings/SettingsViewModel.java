@@ -2,6 +2,8 @@ package de.pcps.jamtugether.ui.settings;
 
 import androidx.annotation.NonNull;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
@@ -18,13 +20,24 @@ public class SettingsViewModel extends ViewModel implements Instrument.OnSelecti
     @Inject
     Preferences preferences;
 
+    @NonNull
+    private final MutableLiveData<Boolean> navigateToOnBoarding = new MutableLiveData<>(false);
+
     public SettingsViewModel() {
         AppInjector.inject(this);
+    }
+
+    public void onBoardingButtonClicked() {
+        navigateToOnBoarding.setValue(true);
     }
 
     @Override
     public void onInstrumentSelected(@NonNull Instrument instrument) {
         preferences.setMainInstrument(instrument);
+    }
+
+    public void onNavigatedToOnBoarding() {
+        navigateToOnBoarding.setValue(false);
     }
 
     @NonNull
@@ -35,5 +48,10 @@ public class SettingsViewModel extends ViewModel implements Instrument.OnSelecti
     @NonNull
     public List<Instrument> getInstruments() {
         return Instruments.LIST;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToOnBoarding() {
+        return navigateToOnBoarding;
     }
 }

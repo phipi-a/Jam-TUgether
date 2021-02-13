@@ -44,7 +44,7 @@ public class AdminSettingsViewModel extends ViewModel {
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
@@ -72,7 +72,7 @@ public class AdminSettingsViewModel extends ViewModel {
             public void onError(@NonNull Error error) {
                 Timber.d("onError()");
                 progressBarVisibility.setValue(View.INVISIBLE);
-                networkError.setValue(error);
+                showNetworkError.setValue(error);
             }
         });
     }
@@ -103,7 +103,7 @@ public class AdminSettingsViewModel extends ViewModel {
                 @Override
                 public void onError(@NonNull Error error) {
                     progressBarVisibility.setValue(View.INVISIBLE);
-                    networkError.setValue(error);
+                    showNetworkError.setValue(error);
                     Beat currentBeat = Metronome.getInstance().getBeat();
                     ticksSpinnerSelection.setValue(currentBeat.getTicksPerTact() - 1);
                     tempoSpinnerSelection.setValue(currentBeat.getTempo() - 1);
@@ -121,7 +121,7 @@ public class AdminSettingsViewModel extends ViewModel {
     }
 
     public void onNetworkErrorShown() {
-        networkError.setValue(null);
+        showNetworkError.setValue(null);
     }
 
     public void onNavigatedBack() {
@@ -159,8 +159,8 @@ public class AdminSettingsViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 
     @NonNull
