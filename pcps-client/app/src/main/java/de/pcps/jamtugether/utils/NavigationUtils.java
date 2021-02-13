@@ -16,6 +16,7 @@ import de.pcps.jamtugether.ui.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.ui.onboarding.OnBoardingFragmentDirections;
+import de.pcps.jamtugether.ui.settings.SettingsFragmentDirections;
 
 public class NavigationUtils {
 
@@ -29,6 +30,10 @@ public class NavigationUtils {
 
     public static void navigateToSettings(@NonNull NavController nc) {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToSettingsFragment());
+    }
+
+    public static void navigateToOnBoarding(@NonNull NavController nc) {
+        nc.navigate(SettingsFragmentDirections.actionSettingsFragmentToOnBoardingFragment());
     }
 
     public static void navigateToCreateRoom(@NonNull NavController nc) {

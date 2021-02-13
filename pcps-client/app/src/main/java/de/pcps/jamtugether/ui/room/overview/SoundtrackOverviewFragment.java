@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.R;
-import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.databinding.FragmentSoundtrackOverviewBinding;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.base.Soundtrack;
@@ -63,9 +61,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             if (admin) {
                 AdminSoundtrackListAdapter adapter = new AdminSoundtrackListAdapter(onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
-                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> {
-                    adapter.submitList(allSoundtracks, invalidateItemDecorations);
-                });
+                viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
             } else {
                 Integer userID = viewModel.getUserID();
                 if (userID == null) {
@@ -74,15 +70,6 @@ public class SoundtrackOverviewFragment extends BaseFragment {
                 RegularSoundtrackListAdapter adapter = new RegularSoundtrackListAdapter(userID, onChangeCallback, viewModel, getViewLifecycleOwner());
                 binding.allSoundtracksRecyclerView.setAdapter(adapter);
                 viewModel.getAllSoundtracks().observe(getViewLifecycleOwner(), allSoundtracks -> adapter.submitList(allSoundtracks, invalidateItemDecorations));
-            }
-        });
-
-        viewModel.getCompositionNetworkError().observe(getViewLifecycleOwner(), networkError -> {
-            if (networkError != null && !(networkError instanceof RoomDeletedError) && !(networkError instanceof ForbiddenAccessError)) {
-                if (!viewModel.getCompositionNetworkErrorShown()) {
-                    UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
-                    viewModel.onCompositionNetworkErrorShown();
-                }
             }
         });
 
@@ -102,7 +89,7 @@ public class SoundtrackOverviewFragment extends BaseFragment {
             }
         });
 
-        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getShowNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();

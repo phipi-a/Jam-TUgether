@@ -49,6 +49,13 @@ public class OnBoardingFragment extends BaseFragment {
             }
         });
 
+        viewModel.getNavigateToSettings().observe(getViewLifecycleOwner(), navigateToSettings -> {
+            if (navigateToSettings) {
+                NavigationUtils.navigateBack(getNavController());
+                viewModel.onNavigatedToSettings();
+            }
+        });
+
         return binding.getRoot();
     }
 

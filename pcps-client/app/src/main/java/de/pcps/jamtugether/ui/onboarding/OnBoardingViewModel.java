@@ -40,6 +40,9 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     private final MutableLiveData<Boolean> navigateToMenu = new MutableLiveData<>(false);
 
     @NonNull
+    private final MutableLiveData<Boolean> navigateToSettings = new MutableLiveData<>(false);
+
+    @NonNull
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
@@ -83,12 +86,20 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     }
 
     public void onFinishButtonClicked() {
-        preferences.setUserCompletedOnBoarding(true);
-        navigateToMenu.setValue(true);
+        if(preferences.userCompletedOnBoarding()) { // user watched on boarding again from settings
+            navigateToSettings.setValue(true);
+        } else { // user watched on boarding for the first time
+            preferences.setUserCompletedOnBoarding(true);
+            navigateToMenu.setValue(true);
+        }
     }
 
     public void onNavigatedToMenu() {
         navigateToMenu.setValue(false);
+    }
+
+    public void onNavigatedToSettings() {
+        navigateToSettings.setValue(false);
     }
 
     @NonNull
@@ -124,5 +135,10 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     @NonNull
     public LiveData<Boolean> getNavigateToMenu() {
         return navigateToMenu;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getNavigateToSettings() {
+        return navigateToSettings;
     }
 }

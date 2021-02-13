@@ -132,7 +132,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     private final MutableLiveData<Integer> progressBarVisibility = new MutableLiveData<>(View.INVISIBLE);
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @Nullable
     private JamCountDownTimer countDownTimer;
@@ -409,7 +409,7 @@ public abstract class InstrumentViewModel extends ViewModel {
                     progressBarVisibility.setValue(View.INVISIBLE);
                 }
                 uploadButtonIsEnabled.setValue(true);
-                networkError.setValue(error);
+                showNetworkError.setValue(error);
             }
         });
     }
@@ -420,7 +420,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     public void onNetworkErrorShown() {
-        networkError.setValue(null);
+        showNetworkError.setValue(null);
     }
 
     @NonNull
@@ -538,7 +538,7 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 }

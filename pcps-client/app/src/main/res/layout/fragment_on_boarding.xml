@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -56,42 +57,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:background="@drawable/bg_button_border"
+                android:foreground="?android:selectableItemBackground"
                 android:onClick="@{() -> viewModel.onBackButtonClicked()}"
+                android:padding="10dp"
                 android:text="@string/back"
                 android:textAllCaps="true"
                 android:textColor="@color/primaryTextColor"
                 android:visibility="@{viewModel.backButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_button_border"
+                android:foreground="?android:selectableItemBackground"
                 android:onClick="@{() -> viewModel.onNextButtonClicked()}"
+                android:padding="10dp"
                 android:text="@string/next"
                 android:textAllCaps="true"
                 android:textColor="@color/primaryTextColor"
                 android:visibility="@{viewModel.nextButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/finish_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_button_border"
+                android:foreground="?android:selectableItemBackground"
                 android:onClick="@{() -> viewModel.onFinishButtonClicked()}"
+                android:padding="10dp"
                 android:text="@string/finish"
                 android:textAllCaps="true"
                 android:textColor="@color/primaryTextColor"
                 android:visibility="@{viewModel.finishButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

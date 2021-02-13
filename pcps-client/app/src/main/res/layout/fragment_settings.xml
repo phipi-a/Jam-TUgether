@@ -84,6 +84,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/settings_layout_1" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/watch_on_boarding_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:onClick="@{() -> viewModel.onBoardingButtonClicked()}"
+            android:text="@string/watch_on_boarding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
