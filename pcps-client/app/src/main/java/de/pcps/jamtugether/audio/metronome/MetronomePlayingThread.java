@@ -23,6 +23,8 @@ public class MetronomePlayingThread extends Thread {
 
     private boolean active;
 
+    private int counter;
+
     public MetronomePlayingThread(boolean active) {
         this.active = active;
     }
@@ -38,24 +40,27 @@ public class MetronomePlayingThread extends Thread {
     @Override
     public void run() {
         Beat beat = metronome.getBeat();
-
         while (!stopped) {
             if (progressInMillis != lastProgressInMillis) {
-                if (progressInMillis % beat.getMillisPerTact() == 0) {
-                    if (active) {
-                        metronome.playSound(R.raw.metronome_up);
+                if (progressInMillis % Math.round(beat.getMillisPerTact() / (double) beat.getTicksPerTact()) == 0) {
+                    if (counter % beat.getTicksPerTact() == 0) {
+                        if (active) {
+                            metronome.playSound(R.raw.metronome_up);
+                        }
+                        if (onTickCallback != null) {
+                            onTickCallback.onNewTactTick(progressInMillis);
+                            onTickCallback.onTick(progressInMillis);
+                        }
+                    } else {
+                        if (active) {
+                            metronome.playSound(R.raw.metronome);
+                        }
+                        if (onTickCallback != null) {
+                            onTickCallback.onTick(progressInMillis);
+                        }
                     }
-                    if (onTickCallback != null) {
-                        onTickCallback.onNewTactTick(progressInMillis);
-                        onTickCallback.onTick(progressInMillis);
-                    }
-                } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {
-                    if (active) {
-                        metronome.playSound(R.raw.metronome);
-                    }
-                    if (onTickCallback != null) {
-                        onTickCallback.onTick(progressInMillis);
-                    }
+                    counter++;
+
                 }
                 lastProgressInMillis = progressInMillis;
             }

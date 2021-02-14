@@ -3,6 +3,7 @@ package de.pcps.jamtugether.model;
 import androidx.annotation.NonNull;
 
 import de.pcps.jamtugether.utils.TimeUtils;
+import timber.log.Timber;
 
 public class Beat {
 
@@ -10,12 +11,12 @@ public class Beat {
     public static transient final Beat DEFAULT = new Beat(4, 60);
 
     private static transient final int MIN_TICKS = 1;
-    private static transient final int MAX_TICKS = 10;
+    private static transient final int MAX_TICKS = 8;
 
     public static final Integer[] TICKS_OPTIONS = new Integer[MAX_TICKS - MIN_TICKS + 1];
 
     private static transient final int MIN_TEMPO = 1;
-    private static transient final int MAX_TEMPO = 300;
+    private static transient final int MAX_TEMPO = 180;
 
     public static final Integer[] TEMPO_OPTIONS = new Integer[MAX_TEMPO - MIN_TEMPO + 1];
 
@@ -54,8 +55,8 @@ public class Beat {
      * <ticksPerTact> tick sounds should be
      * played evenly within these milliseconds
      */
-    public long getMillisPerTact() {
+    public double getMillisPerTact() {
         double tactNumberPerSecond = tempo / 60.0;
-        return (long) (TimeUtils.ONE_SECOND / tactNumberPerSecond);
+        return TimeUtils.ONE_SECOND / tactNumberPerSecond;
     }
 }
