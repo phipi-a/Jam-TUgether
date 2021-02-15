@@ -59,9 +59,10 @@ function getToken (req, res) {
 }
 exports.verify = async function (req, res, next) {
   const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
-  const token = decodeToken(getToken(req, res))
+  const token = getToken(req, res)
+  const decodedToken = decodeToken(token)
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
-    if (err || token._id !== room._id.toString()) {
+    if (err || decodedToken._id !== room._id.toString()) {
       return res.sendStatus(403)
     }
     req.id = id
