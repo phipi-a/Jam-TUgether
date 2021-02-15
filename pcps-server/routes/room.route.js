@@ -101,7 +101,8 @@ roomRoute.post('/create-room', async (req, res, next) => {
     }
     // sleep for 0.1 milisecond
     await new Promise(resolve => setTimeout(resolve, 0.1))
-    const token = await createToken('Admin', newRoomID)
+    const room = await RoomSchema.findOne({ roomID: newRoomID }).exec()
+    const token = await createToken('Admin', newRoomID, room._id)
     const userID = 1
     res.status(201).send(createJSON(newRoomID.toString(), token, userID.toString()))
   } catch (err) {
@@ -218,7 +219,7 @@ roomRoute.post('/login', async (req, res) => {
     checkPwdLen(req.body.password, res)
     if (await bcrypt.compare(req.body.password, room.password)) {
       await updateRoom(req.body.roomID)
-      const token = await createToken('User', req.body.roomID)
+      const token = await createToken('User', req.body.roomID, room._id)
       // update number of user
       const userID = room.numberOfUser + 1
       const update = { numberOfUser: userID }
