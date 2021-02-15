@@ -24,11 +24,7 @@ exports.createToken = async function (permission, roomID, _id) {
     const update = { adminBytes: rndBytes }
     await room.updateOne(update)
   }
-<<<<<<< Updated upstream
-  // For expires after half an hour (86400 s = 1 day)
-=======
   // For expires after a day (86400 s = 1 day)
->>>>>>> Stashed changes
   return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission, _id: _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
 }
 
@@ -63,15 +59,10 @@ function getToken (req, res) {
 }
 exports.verify = async function (req, res, next) {
   const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
-  const token = getToken(req, res)
+  const token = decodeToken(getToken(req, res))
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
-<<<<<<< Updated upstream
-    if (err || token._id !== room._id) {
+    if (err || token._id !== room._id.toString()) {
       return res.sendStatus(403)
-=======
-    if (err) {
-      return res.sendStatus(401)
->>>>>>> Stashed changes
     }
     req.id = id
     next()
