@@ -45,7 +45,7 @@ exports.verifyAdmin = async function (req, res, next) {
   // prevent old access
   if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
-    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User', _id: room._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User', _id: room._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
     return res.status(408).send('Old Admin, new Token: ' + token)
   }
   next()
