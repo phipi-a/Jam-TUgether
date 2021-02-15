@@ -15,7 +15,7 @@ exports.checkPwdLen = function (password) {
   }
 }
 
-exports.createToken = async function (permission, roomID) {
+exports.createToken = async function (permission, roomID, _id) {
   // random bytes
   const rndBytes = crypto.randomBytes(10).toString('hex')
   // save random bytes if user is admin
@@ -24,8 +24,8 @@ exports.createToken = async function (permission, roomID) {
     const update = { adminBytes: rndBytes }
     await room.updateOne(update)
   }
-  // For expires after half an hour (1800 s = 30 min)
-  return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+  // For expires after a day (86400 s = 1 day)
+  return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission, _id: _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
 }
 
 function decodeToken (token) {
@@ -36,19 +36,16 @@ function decodeToken (token) {
 exports.verifyAdmin = async function (req, res, next) {
   const decodedToken = decodeToken(getToken(req, res))
   if (!decodedToken) {
-    res.status(401).send('Decoding problems')
+    res.status(400).send('Decoding problems')
   }
-  console.log('is role admin: ' + decodedToken.role)
-  console.log('is room: ' + req.body.roomID)
-  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID) {
+  const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID || decodedToken._id !== room._id.toString()) {
     return res.status(403).send('Not Admin of this room!')
   }
-  // prevent old Admin to access
-  const room = await RoomSchema.findOne({ roomID: decodedToken.room }).exec()
-
+  // prevent old access
   if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
-    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
+    const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User', _id: room._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
     return res.status(408).send('Old Admin, new Token: ' + token)
   }
   next()
@@ -60,10 +57,11 @@ function getToken (req, res) {
   if (token == null) return res.sendStatus(401) // if there isn't any token
   return token
 }
-exports.verify = function (req, res, next) {
-  const token = getToken(req, res)
+exports.verify = async function (req, res, next) {
+  const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+  const token = decodeToken(getToken(req, res))
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
-    if (err) {
+    if (err || token._id !== room._id.toString()) {
       return res.sendStatus(403)
     }
     req.id = id
