@@ -1,4 +1,3 @@
-'use strict'
 const mongoose = require('mongoose')
 const dbConfig = require('./db/database')
 const RoomSchema = require('./model/room.model')
@@ -67,7 +66,7 @@ deleteUnusedRooms()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Read Certificate and Run Server
-/*
+
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/fullchain.pem')
@@ -76,7 +75,6 @@ const options = {
 https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
-*/
 http.createServer(app).listen(3001, () => {
   console.log('Server running on port: ' + 3001)
 })
