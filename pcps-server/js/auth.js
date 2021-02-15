@@ -24,7 +24,11 @@ exports.createToken = async function (permission, roomID, _id) {
     const update = { adminBytes: rndBytes }
     await room.updateOne(update)
   }
+<<<<<<< Updated upstream
   // For expires after half an hour (86400 s = 1 day)
+=======
+  // For expires after a day (86400 s = 1 day)
+>>>>>>> Stashed changes
   return jwt.sign({ rndmPayload: '' + rndBytes, room: roomID, role: permission, _id: _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '86400s' }) + ''
 }
 
@@ -36,16 +40,13 @@ function decodeToken (token) {
 exports.verifyAdmin = async function (req, res, next) {
   const decodedToken = decodeToken(getToken(req, res))
   if (!decodedToken) {
-    res.status(401).send('Decoding problems')
+    res.status(400).send('Decoding problems')
   }
-  console.log('is role admin: ' + decodedToken.role)
-  console.log('is room: ' + req.body.roomID)
-  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID) {
+  const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+  if (decodedToken.role !== 'Admin' || decodedToken.room !== req.body.roomID || decodedToken._id !== room._id.toString()) {
     return res.status(403).send('Not Admin of this room!')
   }
-  // prevent old Admin to access
-  const room = await RoomSchema.findOne({ roomID: decodedToken.room }).exec()
-
+  // prevent old access
   if (decodedToken.rndmPayload !== room.adminBytes) {
     // create new Token for old Admin
     const token = jwt.sign({ rndmPayload: '' + decodedToken.rndBytes, room: decodedToken.roomID, role: 'User', _id: room._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' }) + ''
@@ -64,8 +65,13 @@ exports.verify = async function (req, res, next) {
   const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
   const token = getToken(req, res)
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, id) => {
+<<<<<<< Updated upstream
     if (err || token._id !== room._id) {
       return res.sendStatus(403)
+=======
+    if (err) {
+      return res.sendStatus(401)
+>>>>>>> Stashed changes
     }
     req.id = id
     next()

@@ -101,7 +101,7 @@ roomRoute.post('/create-room', async (req, res, next) => {
     }
     // sleep for 0.1 milisecond
     await new Promise(resolve => setTimeout(resolve, 0.1))
-    const room = await RoomSchema.findOne({ roomID: req.body.roomID }).exec()
+    const room = await RoomSchema.findOne({ roomID: newRoomID }).exec()
     const token = await createToken('Admin', newRoomID, room._id)
     const userID = 1
     res.status(201).send(createJSON(newRoomID.toString(), token, userID.toString()))

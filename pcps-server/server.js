@@ -1,4 +1,4 @@
-const express = require('express')
+'use strict'
 const mongoose = require('mongoose')
 const dbConfig = require('./db/database')
 const RoomSchema = require('./model/room.model')
@@ -6,10 +6,9 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
 const fs = require('fs')
-const https = require('https')
-const http = require('http')
-
-
+//const https = require('https')
+//const http = require('http')
+const express = require('express')
 // Set port
 const PORT = process.env.PORT || 3000
 
@@ -68,17 +67,17 @@ deleteUnusedRooms()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Read Certificate and Run Server
-const options = {
+/*const options = {
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.cert')
-}
-https.createServer(options, app).listen(PORT, () => {
+}*/
+
+/*https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
-http.createServer(options, app).listen(3001, () => {
+http.createServer(app).listen(3001, () => {
   console.log('Server running on port: ' + 3001)
-})
-
+})*/
 
 // Handle 404s (has to be at the bottom of the code)
 app.use((req, res, next) => {
@@ -92,6 +91,6 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).send(err.message)
 })
 
-
+app.set('port', PORT)
 
 module.exports = app
