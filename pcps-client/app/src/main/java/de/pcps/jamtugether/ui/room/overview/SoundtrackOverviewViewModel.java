@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
@@ -24,8 +22,6 @@ import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.db.SoundtrackNumbersDatabase;
 import de.pcps.jamtugether.di.AppInjector;
 import de.pcps.jamtugether.model.soundtrack.SingleSoundtrack;
-import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoundtrack.OnDeleteListener {
 
@@ -186,14 +182,5 @@ public class SoundtrackOverviewViewModel extends ViewModel implements SingleSoun
     @NonNull
     public LiveData<Error> getShowNetworkError() {
         return showNetworkErrorMediator;
-    }
-
-    @NonNull
-    public LiveData<Integer> getCountDownProgress() {
-        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
-    }
-
-    private int calculateProgress(long millis) {
-        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
     }
 }

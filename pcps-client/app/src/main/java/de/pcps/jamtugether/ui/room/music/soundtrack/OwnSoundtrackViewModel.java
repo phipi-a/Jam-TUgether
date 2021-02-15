@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -30,8 +29,6 @@ import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.utils.TimeUtils;
-import timber.log.Timber;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
@@ -194,15 +191,6 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     public LiveData<Error> getShowNetworkError() {
         return showNetworkErrorMediator;
-    }
-
-    @NonNull
-    public LiveData<Integer> getCountDownProgress() {
-        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
-    }
-
-    private int calculateProgress(long millis) {
-        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
     }
 
     static class Factory implements ViewModelProvider.Factory {

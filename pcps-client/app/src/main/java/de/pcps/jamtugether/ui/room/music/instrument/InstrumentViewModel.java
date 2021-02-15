@@ -264,8 +264,7 @@ public abstract class InstrumentViewModel extends ViewModel {
         }
 
         int soundtrackNumber = soundtrackNumbersDatabase.getUnusedNumberFor(instrument);
-        // set userID to -1 so this soundtrack isn't linked to published soundtrack of this user
-        ownSoundtrack = new SingleSoundtrack(-1, user.getName(), instrument, soundtrackNumber);
+        ownSoundtrack = new SingleSoundtrack(user.getID(), user.getName(), instrument, soundtrackNumber);
         ownSoundtrack.loadSounds(application.getApplicationContext());
 
         if (playWithCompositeSoundtrack && compositeSoundtrack != null) {
@@ -337,8 +336,10 @@ public abstract class InstrumentViewModel extends ViewModel {
             }
             uploadButtonVisibility.setValue(View.VISIBLE);
         } else {
-            ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
-            uploadButtonIsEnabled.setValue(!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument));
+            if(!loop) {
+                ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
+                uploadButtonIsEnabled.setValue(!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument));
+            }
         }
     }
 
@@ -371,10 +372,9 @@ public abstract class InstrumentViewModel extends ViewModel {
 
     private void uploadTrack(boolean loop) {
         User user = roomRepository.getUser();
-        if  (ownSoundtrack == null || ownSoundtrack.isEmpty() || user == null) {
+        if (ownSoundtrack == null || ownSoundtrack.isEmpty() || user == null) {
             return;
         }
-        SingleSoundtrack toBePublished = new SingleSoundtrack(user.getID(), user.getName(), instrument, ownSoundtrack.getNumber(), ownSoundtrack.getSoundSequence());
 
         if (!loop) {
             progressBarVisibility.setValue(View.VISIBLE);
@@ -382,20 +382,20 @@ public abstract class InstrumentViewModel extends ViewModel {
 
         uploadButtonIsEnabled.setValue(false);
 
-        List<SingleSoundtrack> soundtracks = Collections.singletonList(toBePublished);
+        List<SingleSoundtrack> soundtracks = Collections.singletonList(ownSoundtrack);
         soundtrackRepository.uploadSoundtracks(soundtracks, new JamCallback<UploadSoundtracksResponse>() {
             @Override
             public void onSuccess(@NonNull UploadSoundtracksResponse response) {
                 if (!loop) {
                     progressBarVisibility.setValue(View.INVISIBLE);
                 }
-                soundtrackNumbersDatabase.onSoundtrackCreated(toBePublished);
+                soundtrackNumbersDatabase.onSoundtrackCreated(ownSoundtrack);
                 latestSoundtracksDatabase.onLatestSoundtrackUploaded(instrument);
 
                 // add to local list in order to be visible immediately
                 if (soundtrackRepository.getAllSoundtracks().getValue() != null) {
                     List<SingleSoundtrack> allSoundtracks = new ArrayList<>(soundtrackRepository.getAllSoundtracks().getValue());
-                    allSoundtracks.add(toBePublished);
+                    allSoundtracks.add(ownSoundtrack);
                     for (SingleSoundtrack soundtrack : allSoundtracks) {
                         soundtrack.loadSounds(application.getApplicationContext());
                     }

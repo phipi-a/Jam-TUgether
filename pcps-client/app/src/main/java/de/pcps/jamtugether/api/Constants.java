@@ -12,7 +12,7 @@ public class Constants {
     @NonNull
     public static final String BEARER_TOKEN_FORMAT = "Bearer %s";
 
-    public static final long SOUNDTRACK_FETCHING_INTERVAL = TimeUtils.TEN_SECONDS;
+    public static final long SOUNDTRACK_FETCHING_INTERVAL = TimeUtils.ONE_SECOND;
     public static final long ADMIN_STATUS_FETCHING_INTERVAL = TimeUtils.TEN_SECONDS;
 
     public static final long SOUNDTRACK_RECORDING_COUNT_DOWN = TimeUtils.ONE_SECOND * 3;
