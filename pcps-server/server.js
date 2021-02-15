@@ -91,6 +91,5 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).send(err.message)
 })
 
-app.set('port', PORT)
 
 module.exports = app
