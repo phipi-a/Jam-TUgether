@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage, ContentDescription">
+    tools:ignore="SpUsage, ContentDescription, UnusedAttribute">
 
     <data>
 
@@ -38,11 +38,12 @@
             app:layout_constraintTop_toBottomOf="@id/own_soundtrack_controls_layout">
 
             <!-- width and height of these buttons are calculated later based on screen width -->
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/hat_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
@@ -50,11 +51,12 @@
                 app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_hat" />
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/kick_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
@@ -62,11 +64,12 @@
                 app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_kick" />
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/snare_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"
@@ -74,11 +77,12 @@
                 app:elementTouchListener="@{viewModel}"
                 app:srcCompat="@drawable/drum_snare" />
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/cymbal_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_border"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="@dimen/drums_element_padding"
                 android:scaleType="fitCenter"
                 android:tint="@color/iconColor"

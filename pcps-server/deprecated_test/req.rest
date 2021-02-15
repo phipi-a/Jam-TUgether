@@ -1,13 +1,13 @@
-DELETE  http://vm4.sese.tu-berlin.de:3001/api/room
+DELETE  http://localhost:3001/api/room
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjA2MWVmZjdkZTg4N2MxMmUwMTU2Iiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEyNzkyNjYyLCJleHAiOjE2MTI3OTQ0NjJ9.K7TV3_QgHQdsl9q9FsfBcF50Ar5Tx9whJ6glzVcebfI '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjExMjlmNjk1YzZlODdlNDdiMDk1Iiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiX2lkIjoiNjAyMzk1MTI0M2E1ZGU1MjI0YzJlYWNlIiwiaWF0IjoxNjEyOTQ0NjU4LCJleHAiOjE2MTMwMzEwNTh9.mnmeNZik2E18wublmTVDqrGmx1MNnRNguFaGgp2uI_U '
 
 {
-  "roomID" : "4",
+  "roomID" : 3,
   "password" : "12"
 }
 ###
-POST http://vm4.sese.tu-berlin.de:3001/api/create-room/
+POST http://localhost:3001/api/create-room
 Content-Type: application/json
 
 {
@@ -18,21 +18,21 @@ POST  http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "roomID" : "1",
+  "roomID" : 1,
   "password" : "12"
 }
 
 ###
-GET  https://vm4.sese.tu-berlin.de:3000/api/room/2/admin
+GET  http://localhost:3001/api/room/1/admin
 Content-Type: application/json
-Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjQzMjhhMTdjNTFlYzA2YmM0OGI5Iiwicm9vbSI6Miwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEyNzg5MTIyLCJleHAiOjE2MTI3OTA5MjJ9.S9-kOYNtpJBQjLou0tIPBQ8r8Gf3nwVwkFjgHCkz_cs '
+Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjBjNWExOTFjMGU5MWNmZGJlZmEwIiwicm9vbSI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjEyOTQzNTQ3LCJleHAiOjE2MTI5NDUzNDd9.jAmibOgj9v9YlRH1BeGPH9tyLSum2DbOiy9BSddT-K8 '
 
 {
   "soundtracks": [{"userID" : "1", "instrument" : "retinstrument123", "soundSequence":[{"starttime" : "4", "endtime": "12", "pitch":"23"}]}]
 }
 
 ###
-DELETE  http://localhost:3000/api/room/3/admin
+DELETE  http://localhost:3001/api/room/3/admin
 Content-Type: application/json
 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybmRtUGF5bG9hZCI6IjdjMTI2NTIxZjJkNDBhZTZhZWRkIiwicm9vbSI6Mywicm9sZSI6IkFkbWluIiwiaWF0IjoxNjExNzU0NjQwLCJleHAiOjE2MTE3NTY0NDB9.4bTsEWwYdTFohCZp7SpwO04LI6TmuhtcUb_ZbVqg0LE '
 

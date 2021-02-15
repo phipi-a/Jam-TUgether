@@ -49,8 +49,6 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
                 int stoppedEndTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                 int completeSoundEndTimeMillis = streamID.getStartTime() + PianoSound.from(pitch).getDuration();
                 int endTimeMillis = Math.min(stoppedEndTimeMillis, completeSoundEndTimeMillis);
-                // todo remove above code after loop issue is fixed
-                // int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                 Sound sound = new Sound(streamID.getStartTime(), endTimeMillis, pitch);
                 ownSoundtrack.addSound(sound);
             }
@@ -58,9 +56,9 @@ public class PianoViewModel extends InstrumentViewModel implements Piano.OnKeyLi
     }
 
     @Override
-    protected void finishRecordingSoundtrack() {
+    protected void finishRecordingSoundtrack(boolean loop) {
         finishSound();
-        super.finishRecordingSoundtrack();
+        super.finishRecordingSoundtrack(loop);
     }
 
     private void finishSound() {

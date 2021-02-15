@@ -50,6 +50,7 @@ public class RoomFragment extends BaseFragment {
         tabLayout.setup(binding.viewPager, new RoomAdapter(this, viewModel, tabLayout));
 
         viewModel.observeAdminStatus(getViewLifecycleOwner());
+        viewModel.observeRoom(getViewLifecycleOwner());
 
         viewModel.getShowLeaveRoomConfirmationDialog().observe(getViewLifecycleOwner(), showLeaveRoomConfirmationDialog -> {
             if (showLeaveRoomConfirmationDialog) {
@@ -60,13 +61,14 @@ public class RoomFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() { }
+                    public void onNegativeButtonClicked() {
+                    }
                 });
                 viewModel.onLeaveRoomConfirmationDialogShown();
             }
         });
 
-        viewModel.getNetworkError().observe(getViewLifecycleOwner(), networkError -> {
+        viewModel.getShowNetworkError().observe(getViewLifecycleOwner(), networkError -> {
             if (networkError != null) {
                 UiUtils.showInfoDialog(context, networkError.getTitle(), networkError.getMessage());
                 viewModel.onNetworkErrorShown();
@@ -87,10 +89,15 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        viewModel.getShowRoomDeletedSnackbar().observe(getViewLifecycleOwner(), showSnackbar -> {
-            if (showSnackbar) {
-                UiUtils.showSnackbar(binding.getRoot(), R.string.room_deleted_error_message, Snackbar.LENGTH_LONG);
-                viewModel.onRoomDeletedSnackbarShown();
+        viewModel.getShowRoomDeletedDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
+                UiUtils.showInfoDialog(context, R.string.room_deleted_error_title, R.string.room_deleted_error_message);
+            }
+        });
+
+        viewModel.getShowTokenExpiredDialog().observe(getViewLifecycleOwner(), showDialog -> {
+            if (showDialog) {
+                UiUtils.showInfoDialog(context, R.string.token_expired_error_title, R.string.token_expired_error_message);
             }
         });
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.pcps.jamtugether.ui.base.BaseFragment;
 import de.pcps.jamtugether.databinding.FragmentSettingsBinding;
+import de.pcps.jamtugether.utils.NavigationUtils;
 
 public class SettingsFragment extends BaseFragment {
 
@@ -27,6 +28,13 @@ public class SettingsFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentSettingsBinding binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
+
+        viewModel.getNavigateToOnBoarding().observe(getViewLifecycleOwner(), navigateToOnBoarding -> {
+            if (navigateToOnBoarding) {
+                NavigationUtils.navigateToOnBoarding(getNavController());
+                viewModel.onNavigatedToOnBoarding();
+            }
+        });
         return binding.getRoot();
     }
 }

@@ -11,7 +11,7 @@ public abstract class BaseJamTimer implements Runnable {
     private final long startMillis;
     private final long stopMillis;
     private final long interval;
-    
+
     @NonNull
     private final Handler handler = new Handler();
 
@@ -20,9 +20,8 @@ public abstract class BaseJamTimer implements Runnable {
 
     private long currentMillis;
 
-    private boolean running;
     private boolean stopped;
-    
+
     public BaseJamTimer(long startMillis, long stopMillis, long interval, @NonNull OnTickCallback callback) {
         this.startMillis = startMillis;
         this.stopMillis = stopMillis;
@@ -32,11 +31,11 @@ public abstract class BaseJamTimer implements Runnable {
 
     @Override
     public void run() {
-        if(stopped) {
+        if (stopped) {
             return;
         }
         callback.onTicked(currentMillis);
-        if(currentMillis == stopMillis) {
+        if (currentMillis == stopMillis) {
             stop();
             callback.onFinished();
         }
@@ -46,14 +45,12 @@ public abstract class BaseJamTimer implements Runnable {
     }
 
     public void start() {
-        running = true;
         stopped = false;
         currentMillis = startMillis;
         run();
     }
 
     public void stop() {
-        running = false;
         stopped = true;
     }
 
@@ -63,10 +60,6 @@ public abstract class BaseJamTimer implements Runnable {
 
     public boolean isStopped() {
         return stopped;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
     public interface OnTickCallback {

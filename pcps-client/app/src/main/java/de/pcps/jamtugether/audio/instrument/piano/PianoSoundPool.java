@@ -12,6 +12,5 @@ public class PianoSoundPool extends BaseSoundPool {
 
     public PianoSoundPool(@NonNull Context context) {
         super(context, SOUND_POOL_MAX_STREAMS, PianoSound.values(), 0);
-        // todo change loop to -1
     }
 }

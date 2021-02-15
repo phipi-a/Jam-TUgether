@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.pcps.jamtugether.api.JamCallback;
-import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -35,7 +33,7 @@ public class RoomViewModel extends ViewModel {
     SoundtrackNumbersDatabase soundtrackNumbersDatabase;
 
     @NonNull
-    private final MutableLiveData<Error> networkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @NonNull
     private final MutableLiveData<Boolean> showLeaveRoomConfirmationDialog = new MutableLiveData<>(false);
@@ -48,8 +46,6 @@ public class RoomViewModel extends ViewModel {
 
     @NonNull
     private final MutableLiveData<Boolean> navigateBack = new MutableLiveData<>(false);
-
-    private boolean roomDeletedSnackbarShown;
 
     private boolean initialAdminStatusReceived;
 
@@ -69,14 +65,29 @@ public class RoomViewModel extends ViewModel {
                 return;
             }
             Boolean userInRoom = roomRepository.getUserInRoom().getValue();
-            Boolean roomDeleted = roomRepository.getRoomDeleted();
-            if ((roomDeleted != null && roomDeleted) || (userInRoom != null && !userInRoom)) {
+            if ((userInRoom != null && !userInRoom)) {
                 return;
             }
             if (userIsAdmin) {
                 showUserBecameAdminSnackbar.setValue(true);
             } else {
                 showUserBecameRegularSnackbar.setValue(true);
+            }
+        });
+    }
+
+    public void observeRoom(@NonNull LifecycleOwner lifecycleOwner) {
+        soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
+            if(roomDeleted) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
+            }
+        });
+
+        soundtrackRepository.getTokenExpired().observe(lifecycleOwner, tokenExpired -> {
+            if(tokenExpired) {
+                navigateBack.setValue(true);
+                onUserLeftRoom();
             }
         });
     }
@@ -107,7 +118,7 @@ public class RoomViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Error error) {
-                networkError.setValue(error);
+                showNetworkError.setValue(error);
             }
         });
     }
@@ -120,16 +131,12 @@ public class RoomViewModel extends ViewModel {
         showUserBecameRegularSnackbar.setValue(false);
     }
 
-    public void onRoomDeletedSnackbarShown() {
-        roomDeletedSnackbarShown = true;
-    }
-
     public void onBackPressed() {
         showLeaveRoomConfirmationDialog.setValue(true);
     }
 
     public void onNetworkErrorShown() {
-        networkError.setValue(null);
+        showNetworkError.setValue(null);
     }
 
     public void onNavigatedBack() {
@@ -159,8 +166,8 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Error> getNetworkError() {
-        return networkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 
     @NonNull
@@ -174,8 +181,13 @@ public class RoomViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getShowRoomDeletedSnackbar() {
-        return Transformations.map(soundtrackRepository.getCompositionNetworkError(), networkError -> (networkError instanceof RoomDeletedError) && !roomDeletedSnackbarShown);
+    public LiveData<Boolean> getShowRoomDeletedDialog() {
+        return soundtrackRepository.getRoomDeleted();
+    }
+
+    @NonNull
+    public LiveData<Boolean> getShowTokenExpiredDialog() {
+        return soundtrackRepository.getTokenExpired();
     }
 
     @NonNull

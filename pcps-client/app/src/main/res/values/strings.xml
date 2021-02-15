@@ -45,6 +45,8 @@
 
     <string name="go_to_room">Go to room</string>
 
+    <string name="watch_on_boarding">Watch App-Tutorial</string>
+
     <string name="soundtrack_over_view">Overview</string>
     <string name="musician_view">Musician View</string>
 
@@ -79,7 +81,7 @@
     <string name="delete_room_confirmation">Are you sure that you want to delete this room?</string>
 
     <string name="no_permission_microphone_error_title">Missing permission</string>
-    <string name="no_permission_microphone_error_message">The app does not have permission to access your microphone!</string>
+    <string name="no_permission_microphone_error_message">The app does not have permission to access your microphone! You can change this in the settings</string>
 
     <string name="unauthorized_access_error_title">Authentication failed</string>
     <string name="unauthorized_access_error_message">The authentication failed.</string>
@@ -105,6 +107,8 @@
     <string name="old_admin_error_message">You are not an admin anymore. You don\'t have permission to execute this action.</string>
     <string name="room_deleted_error_title">Room deleted</string>
     <string name="room_deleted_error_message">This room has been deleted!</string>
+    <string name="token_expired_error_title">Long inactivity</string>
+    <string name="token_expired_error_message">You were kicked out of the room due to long inactivity.</string>
 
     <string name="not_admin_dialog_title">No permission</string>
     <string name="not_admin_dialog_message">You don\'t have access to the admin settings</string>
@@ -132,8 +136,8 @@
     <string name="join_room_text">Got an ID of a friend? Then join the room</string>
     <string name="ready_to_upload_warning_title">Attention</string>
     <string name="ready_to_upload_warning_text">You have to upload your old soundtrack to add it to the composite track. Then you can record a new soundtrack</string>
-    <string name="musician_overview_title">In the overview screen you can listen to all tracks and delete your own too. As an admin you can delete all tracks or the whole room</string>
-    <string name="musician_overview_text">Overview</string>
+    <string name="musician_overview_text">In the overview screen you can listen to all tracks and delete your own too. As an admin you can delete all tracks or the whole room</string>
+    <string name="musician_overview_title">Overview</string>
     <string name="update_title">Update</string>
     <string name="update_text">The entire composite track is always updated automatically when the red circle is full</string>
     <string name="record_with_soundtrack_title">With soundtrack</string>
@@ -156,4 +160,10 @@
     <string name="drums_functionality_text">Tap on the icons to play the drums</string>
     <string name="piano_functionality_title">Functionality</string>
     <string name="piano_functionality_text">Tap on the keys to play the notes</string>
+    <string name="record_loop_title">Loop</string>
+    <string name="record_loop_text">Activates loop recording and auto uploading</string>
+    <string name="metronome_title">Metronome</string>
+    <string name="metronome_text">Tab on the metronome to hear a click at a regular interval</string>
+    <string name="admin_title">Admin</string>
+    <string name="admin_text">If you can see the yellow star, you are administrator and can change the rhythm or delete the room by clicking on it</string>
 </resources>

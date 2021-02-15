@@ -40,14 +40,14 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
     }
 
     @Override
-    protected void startRecordingSoundtrack() {
-        super.startRecordingSoundtrack();
+    protected void startRecordingSoundtrack(boolean loop) {
+        super.startRecordingSoundtrack(loop);
         lockOrientation.setValue(true);
     }
 
     @Override
-    protected void finishRecordingSoundtrack() {
-        super.finishRecordingSoundtrack();
+    protected void finishRecordingSoundtrack(boolean loop) {
+        super.finishRecordingSoundtrack(loop);
         lockOrientation.setValue(false);
     }
 
@@ -88,7 +88,7 @@ public class ShakerViewModel extends InstrumentViewModel implements SensorEventL
 
     private void playSound() {
         shaker.play();
-        if (!timer.isRunning()) {
+        if (!recordingSoundtrack) {
             return;
         }
 

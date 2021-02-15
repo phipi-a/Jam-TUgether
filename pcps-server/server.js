@@ -6,8 +6,8 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 require('dotenv').config()
 const fs = require('fs')
-//const https = require('https')
-//const http = require('http')
+const https = require('https')
+const http = require('http')
 const express = require('express')
 // Set port
 const PORT = process.env.PORT || 3000
@@ -67,17 +67,17 @@ deleteUnusedRooms()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Read Certificate and Run Server
-/*const options = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}*/
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/vm4.sese.tu-berlin.de/fullchain.pem')
 
-/*https.createServer(options, app).listen(PORT, () => {
+}
+https.createServer(options, app).listen(PORT, () => {
   console.log('Server running on port: ' + PORT)
 })
 http.createServer(app).listen(3001, () => {
   console.log('Server running on port: ' + 3001)
-})*/
+})
 
 // Handle 404s (has to be at the bottom of the code)
 app.use((req, res, next) => {

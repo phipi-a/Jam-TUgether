@@ -18,15 +18,13 @@ public class SoundtrackUtils {
     @NonNull
     public static CompositeSoundtrack createCompositeSoundtrack(@Nullable CompositeSoundtrack previousCompositeSoundtrack, @NonNull List<SingleSoundtrack> soundtracks, @NonNull Context context) {
         CompositeSoundtrack newCompositeSoundtrack = CompositeSoundtrack.from(soundtracks, context);
-        if (!newCompositeSoundtrack.equals(previousCompositeSoundtrack)) {
-            if (previousCompositeSoundtrack != null) {
-                Soundtrack.State previousState = previousCompositeSoundtrack.getState().getValue();
-                int previousProgressInMillis = previousCompositeSoundtrack.getProgressInMillis();
-                if (previousState != null) {
-                    newCompositeSoundtrack.setState(previousState);
-                }
-                newCompositeSoundtrack.setProgressInMillis(previousProgressInMillis);
+        if (previousCompositeSoundtrack != null) {
+            Soundtrack.State previousState = previousCompositeSoundtrack.getState().getValue();
+            int previousProgressInMillis = previousCompositeSoundtrack.getProgressInMillis();
+            if (previousState != null) {
+                newCompositeSoundtrack.setState(previousState);
             }
+            newCompositeSoundtrack.setProgressInMillis(previousProgressInMillis);
         }
         return newCompositeSoundtrack;
     }

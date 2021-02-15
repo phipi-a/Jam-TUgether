@@ -47,9 +47,6 @@ public class RoomRepository {
     @Nullable
     private User user;
 
-    @Nullable
-    private Boolean roomDeleted;
-
     @NonNull
     private final MutableLiveData<String> token = new MutableLiveData<>(null);
 
@@ -124,7 +121,6 @@ public class RoomRepository {
         this.user = user;
         this.token.setValue(token);
         this.userIsAdmin.setValue(userIsAdmin);
-        this.roomDeleted = false;
     }
 
     public void onUserLeftRoom() {
@@ -138,7 +134,6 @@ public class RoomRepository {
         user = null;
         token.setValue(null);
         userIsAdmin.setValue(false);
-        roomDeleted = null;
     }
 
     public void startFetchingAdminStatus() {
@@ -198,15 +193,6 @@ public class RoomRepository {
     @Nullable
     public User getUser() {
         return user;
-    }
-
-    public void setRoomDeleted(boolean roomDeleted) {
-        this.roomDeleted = roomDeleted;
-    }
-
-    @Nullable
-    public Boolean getRoomDeleted() {
-        return roomDeleted;
     }
 
     @NonNull

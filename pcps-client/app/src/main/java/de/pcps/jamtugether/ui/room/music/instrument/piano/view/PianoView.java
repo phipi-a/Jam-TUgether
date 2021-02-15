@@ -141,10 +141,12 @@ public class PianoView extends ConstraintLayout {
                 tile.setOnTouchListener((v, event) -> {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
+                            tile.setPressed(true); // to show click animation
                             onKeyListener.onKeyPressed(pianoSound.getPitch());
                             return true;
                         case MotionEvent.ACTION_UP:
                         case MotionEvent.ACTION_CANCEL:
+                            tile.setPressed(false); // to remove click animation
                             onKeyListener.onKeyReleased(pianoSound.getPitch());
                             return true;
                     }

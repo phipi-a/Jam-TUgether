@@ -1,6 +1,7 @@
 package de.pcps.jamtugether.audio.metronome;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.model.Beat;
@@ -17,16 +18,49 @@ public class MetronomePlayingThread extends Thread {
     @NonNull
     private static final Metronome metronome = Metronome.getInstance();
 
+    @Nullable
+    private OnTickCallback onTickCallback;
+
+    private boolean active;
+
+    private int counter;
+
+    public MetronomePlayingThread(boolean active) {
+        this.active = active;
+    }
+
+    public void setOnTickCallback(@Nullable OnTickCallback onTickCallback) {
+        this.onTickCallback = onTickCallback;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public void run() {
         Beat beat = metronome.getBeat();
-
         while (!stopped) {
             if (progressInMillis != lastProgressInMillis) {
-                if (progressInMillis % beat.getMillisPerTact() == 0) {
-                    metronome.playSound(R.raw.metronome_up);
-                } else if (progressInMillis % (beat.getMillisPerTact() / beat.getTicksPerTact()) == 0) {
-                    metronome.playSound(R.raw.metronome);
+                if (progressInMillis % Math.round(beat.getMillisPerTact() / (double) beat.getTicksPerTact()) == 0) {
+                    if (counter % beat.getTicksPerTact() == 0) {
+                        if (active) {
+                            metronome.playSound(R.raw.metronome_up);
+                        }
+                        if (onTickCallback != null) {
+                            onTickCallback.onNewTactTick(progressInMillis);
+                            onTickCallback.onTick(progressInMillis);
+                        }
+                    } else {
+                        if (active) {
+                            metronome.playSound(R.raw.metronome);
+                        }
+                        if (onTickCallback != null) {
+                            onTickCallback.onTick(progressInMillis);
+                        }
+                    }
+                    counter++;
+
                 }
                 lastProgressInMillis = progressInMillis;
             }
@@ -48,5 +82,12 @@ public class MetronomePlayingThread extends Thread {
     public void stopMetronome() {
         stopped = true;
         metronome.stop();
+    }
+
+    public interface OnTickCallback {
+
+        void onNewTactTick(long millis);
+
+        void onTick(long millis);
     }
 }

@@ -14,6 +14,7 @@ public class DataBindingUtils {
     public static void setTouchListener(@NonNull ImageButton drumsElementButton, @NonNull DrumsViewModel viewModel, int element) {
         drumsElementButton.setOnTouchListener((view, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                drumsElementButton.setPressed(true); // to show click animation
                 switch (element) {
                     case 0:
                         viewModel.onSnareClicked();
@@ -28,6 +29,10 @@ public class DataBindingUtils {
                         viewModel.onCymbalClicked();
                         break;
                 }
+                return true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                drumsElementButton.setPressed(false); // to remove click animation
                 return true;
             }
             return false;

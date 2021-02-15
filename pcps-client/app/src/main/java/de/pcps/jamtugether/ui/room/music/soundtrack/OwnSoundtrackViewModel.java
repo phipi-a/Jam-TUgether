@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.repositories.RoomRepository;
 import de.pcps.jamtugether.api.repositories.SoundtrackRepository;
@@ -29,7 +29,6 @@ import de.pcps.jamtugether.audio.player.SoundtrackController;
 import de.pcps.jamtugether.model.soundtrack.CompositeSoundtrack;
 import de.pcps.jamtugether.storage.Preferences;
 import de.pcps.jamtugether.ui.room.music.MusicianViewViewModel;
-import de.pcps.jamtugether.utils.TimeUtils;
 
 public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSelectionListener {
 
@@ -69,10 +68,22 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     @NonNull
     private final MutableLiveData<Boolean> showPianoHelpDialog = new MutableLiveData<>(false);
 
+    @NonNull
+    private final MediatorLiveData<Error> showNetworkErrorMediator = new MediatorLiveData<>();
+
+    private boolean soundtrackRepositoryErrorShown;
+
     public OwnSoundtrackViewModel(@NonNull Instrument.OnChangeCallback instrumentOnChangeCallback, @NonNull MusicianViewViewModel musicianViewViewModel) {
         AppInjector.inject(this);
         this.instrumentOnChangeCallback = instrumentOnChangeCallback;
         this.musicianViewViewModel = musicianViewViewModel;
+
+        showNetworkErrorMediator.addSource(soundtrackRepository.getShowNetworkError(), networkError -> {
+            if (networkError != null && !soundtrackRepositoryErrorShown) {
+                showNetworkErrorMediator.setValue(networkError);
+                soundtrackRepositoryErrorShown = true;
+            }
+        });
 
         Instrument mainInstrument = preferences.getMainInstrument();
         instrumentOnChangeCallback.onInstrumentChanged(mainInstrument);
@@ -92,7 +103,7 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
             showFluteHelpDialog.setValue(true);
         } else if (currentInstrument == Drums.getInstance()) {
             showDrumsHelpDialog.setValue(true);
-        } else if(currentInstrument == Shaker.getInstance()){
+        } else if (currentInstrument == Shaker.getInstance()) {
             showShakerHelpDialog.setValue(true);
         } else {
             showPianoHelpDialog.setValue(true);
@@ -123,8 +134,13 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
         showPianoHelpDialog.setValue(false);
     }
 
-    public void onSoundtrackRepositoryNetworkErrorShown() {
-        soundtrackRepository.onCompositionNetworkErrorShown();
+    public void onNetworkErrorShown() {
+        soundtrackRepository.onNetworkErrorShown();
+    }
+
+    @Override
+    protected void onCleared() {
+        showNetworkErrorMediator.removeSource(soundtrackRepository.getShowNetworkError());
     }
 
     @NonNull
@@ -173,17 +189,8 @@ public class OwnSoundtrackViewModel extends ViewModel implements Instrument.OnSe
     }
 
     @NonNull
-    public LiveData<Error> getSoundtrackRepositoryNetworkError() {
-        return soundtrackRepository.getCompositionNetworkError();
-    }
-
-    @NonNull
-    public LiveData<Integer> getCountDownProgress() {
-        return Transformations.map(soundtrackRepository.getCountDownTimerMillis(), this::calculateProgress);
-    }
-
-    private int calculateProgress(long millis) {
-        return (int) ((Constants.SOUNDTRACK_FETCHING_INTERVAL - millis + TimeUtils.ONE_SECOND) / (double) Constants.SOUNDTRACK_FETCHING_INTERVAL * 100);
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkErrorMediator;
     }
 
     static class Factory implements ViewModelProvider.Factory {

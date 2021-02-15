@@ -3,21 +3,24 @@ package de.pcps.jamtugether.ui.room.music.soundtrack;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 
-import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.ui.room.music.instrument.InstrumentViewModel;
 
 public class DataBindingUtils {
 
-    @BindingAdapter("startedCreatingSoundtrack")
-    public static void setStartedCreatingSoundtrack(@NonNull ImageView playPauseButton, boolean startedCreatingSoundtrack) {
-        int imageRes = startedCreatingSoundtrack ? R.drawable.ic_stop : R.drawable.ic_record;
-        int color = ContextCompat.getColor(playPauseButton.getContext(), startedCreatingSoundtrack ? R.color.iconColor : R.color.recordButtonColor);
-        playPauseButton.setImageResource(imageRes);
-        playPauseButton.setColorFilter(color);
+    @BindingAdapter("recordButtonImage")
+    public static void setRecordButtonImage(@NonNull ImageView recordButton, @DrawableRes int recordButtonImage) {
+        recordButton.setImageResource(recordButtonImage);
+    }
+
+    @BindingAdapter("recordButtonColor")
+    public static void setRecordButtonColor(@NonNull ImageView recordButton, @ColorRes int recordButtonColor) {
+        recordButton.setColorFilter(ContextCompat.getColor(recordButton.getContext(), recordButtonColor));
     }
 
     @BindingAdapter(value = {"uncheckLoop", "viewModel"})

@@ -65,7 +65,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
                 flute.play(pitch.getValue(), streamID -> {
                     soundIsPlaying = streamID != 0;
 
-                    if (recordingSoundtrack() && soundIsPlaying) {
+                    if (recordingSoundtrack && soundIsPlaying) {
                         startTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                     }
                 });
@@ -77,11 +77,7 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
         flute.stop();
         if (startTimeMillis != -1) {
             if (ownSoundtrack != null && pitch.getValue() != null) {
-                int stoppedEndTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
-                int completeSoundEndTimeMillis = startTimeMillis + FluteSound.from(pitch.getValue()).getDuration();
-                int endTimeMillis = Math.min(stoppedEndTimeMillis, completeSoundEndTimeMillis);
-                // todo remove above after loop issue is fixed
-                // int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
+                int endTimeMillis = (int) (System.currentTimeMillis() - startedMillis);
                 ownSoundtrack.addSound(new Sound(startTimeMillis, endTimeMillis, pitch.getValue()));
             }
             startTimeMillis = -1;
@@ -90,9 +86,9 @@ public class FluteViewModel extends InstrumentViewModel implements LifecycleObse
     }
 
     @Override
-    protected void finishRecordingSoundtrack() {
+    protected void finishRecordingSoundtrack(boolean loop) {
         finishSound();
-        super.finishRecordingSoundtrack();
+        super.finishRecordingSoundtrack(loop);
     }
 
     public void onPitchPercentageChanged(float pitchPercentage) {

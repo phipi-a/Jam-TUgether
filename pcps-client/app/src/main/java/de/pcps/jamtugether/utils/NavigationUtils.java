@@ -1,5 +1,10 @@
 package de.pcps.jamtugether.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,6 +16,7 @@ import de.pcps.jamtugether.ui.menu.MenuFragmentDirections;
 import de.pcps.jamtugether.ui.menu.create.CreateRoomFragmentDirections;
 import de.pcps.jamtugether.ui.menu.join.JoinRoomFragmentDirections;
 import de.pcps.jamtugether.ui.onboarding.OnBoardingFragmentDirections;
+import de.pcps.jamtugether.ui.settings.SettingsFragmentDirections;
 
 public class NavigationUtils {
 
@@ -24,6 +30,10 @@ public class NavigationUtils {
 
     public static void navigateToSettings(@NonNull NavController nc) {
         nc.navigate(MenuFragmentDirections.actionMenuFragmentToSettingsFragment());
+    }
+
+    public static void navigateToOnBoarding(@NonNull NavController nc) {
+        nc.navigate(SettingsFragmentDirections.actionSettingsFragmentToOnBoardingFragment());
     }
 
     public static void navigateToCreateRoom(@NonNull NavController nc) {
@@ -44,5 +54,12 @@ public class NavigationUtils {
 
     public static void replaceFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, @IdRes int layout) {
         fragmentManager.beginTransaction().replace(layout, fragment).commit();
+    }
+
+    public static void navigateToAppDetailsSettings(@NonNull Activity activity) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivity(intent);
     }
 }

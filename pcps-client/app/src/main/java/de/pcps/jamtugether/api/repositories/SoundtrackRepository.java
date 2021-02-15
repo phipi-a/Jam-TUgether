@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 
 import de.pcps.jamtugether.api.Constants;
 import de.pcps.jamtugether.api.JamCallback;
+import de.pcps.jamtugether.api.errors.ForbiddenAccessError;
 import de.pcps.jamtugether.api.errors.RoomDeletedError;
 import de.pcps.jamtugether.api.errors.base.Error;
 import de.pcps.jamtugether.api.requests.soundtrack.UploadSoundtracksResponse;
@@ -66,28 +67,13 @@ public class SoundtrackRepository {
     private final LiveData<CompositeSoundtrack> compositeSoundtrack;
 
     @NonNull
-    private final MutableLiveData<Error> compositionNetworkError = new MutableLiveData<>(null);
+    private final MutableLiveData<Error> showNetworkError = new MutableLiveData<>(null);
 
     @NonNull
     private final Handler handler = new Handler();
 
     @Nullable
     private Runnable soundtracksRunnable;
-
-    @NonNull
-    private final BaseJamTimer countDownTimer = new JamCountDownTimer(Constants.SOUNDTRACK_FETCHING_INTERVAL, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            countDownTimerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-        }
-    });
-
-    @NonNull
-    private final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
 
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull SoundtrackVolumesDatabase soundtrackVolumesDatabase, @NonNull Context context) {
@@ -149,14 +135,11 @@ public class SoundtrackRepository {
 
     public void startFetchingComposition() {
         fetchComposition();
-        countDownTimer.start();
-
         if (soundtracksRunnable == null) {
             soundtracksRunnable = new Runnable() {
 
                 @Override
                 public void run() {
-                    countDownTimer.reset();
                     fetchComposition();
                     handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
                 }
@@ -173,14 +156,16 @@ public class SoundtrackRepository {
                     soundtrack.loadSounds(context);
                 }
                 beat.setValue(response.getBeat());
-                setSoundtracks(response.getSoundtracks());
+                List<SingleSoundtrack> previousSoundtracks = allSoundtracks.getValue();
+                if (!previousSoundtracks.equals(response.getSoundtracks())) {
+                    setSoundtracks(response.getSoundtracks());
+                }
             }
 
             @Override
             public void onError(@NonNull Error error) {
-                compositionNetworkError.setValue(error);
-                if (error instanceof RoomDeletedError) {
-                    roomRepository.setRoomDeleted(true);
+                if (!(error instanceof RoomDeletedError) && !(error instanceof ForbiddenAccessError)) {
+                    showNetworkError.setValue(error);
                 }
             }
         });
@@ -203,17 +188,13 @@ public class SoundtrackRepository {
             handler.removeCallbacks(soundtracksRunnable);
             soundtracksRunnable = null;
         }
-        if (!countDownTimer.isStopped()) {
-            countDownTimer.stop();
-        }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
-        compositionNetworkError.setValue(null);
-        countDownTimerMillis.setValue(-1L);
+        showNetworkError.setValue(null);
     }
 
-    public void onCompositionNetworkErrorShown() {
-        compositionNetworkError.setValue(null);
+    public void onNetworkErrorShown() {
+        showNetworkError.setValue(null);
     }
 
     @NonNull
@@ -232,12 +213,17 @@ public class SoundtrackRepository {
     }
 
     @NonNull
-    public LiveData<Error> getCompositionNetworkError() {
-        return compositionNetworkError;
+    public LiveData<Error> getShowNetworkError() {
+        return showNetworkError;
     }
 
     @NonNull
-    public LiveData<Long> getCountDownTimerMillis() {
-        return countDownTimerMillis;
+    public LiveData<Boolean> getRoomDeleted() {
+        return Transformations.map(getShowNetworkError(), networkError -> (networkError instanceof RoomDeletedError));
+    }
+
+    @NonNull
+    public LiveData<Boolean> getTokenExpired() {
+        return Transformations.map(getShowNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
     }
 }

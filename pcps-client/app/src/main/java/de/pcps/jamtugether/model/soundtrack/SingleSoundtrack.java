@@ -107,7 +107,7 @@ public class SingleSoundtrack extends Soundtrack {
                 ", userName='" + userName + '\'' +
                 ", instrument=" + instrument +
                 ", number=" + number +
-                ", volume=" + getVolume() +
+                ", soundSequence=" + soundSequence +
                 '}';
     }
 
@@ -156,20 +156,6 @@ public class SingleSoundtrack extends Soundtrack {
     @NonNull
     public String getID() {
         return String.valueOf(userID).concat(instrument.getServerString()).concat(String.valueOf(number));
-    }
-
-    public void removeEnd(int ms) {
-        List<Sound> deleteSoundSequence = new ArrayList<>();
-        for (Sound sound : soundSequence) {
-            if (sound.getStartTime() > ms) {
-                deleteSoundSequence.add(sound);
-            } else if (sound.getEndTime() > ms) {
-                sound.setEndTime(ms);
-            }
-        }
-        for (Sound sound : deleteSoundSequence) {
-            soundSequence.remove(sound);
-        }
     }
 
     public int getUserID() {
