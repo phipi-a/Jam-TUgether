@@ -75,21 +75,6 @@ public class SoundtrackRepository {
     @Nullable
     private Runnable soundtracksRunnable;
 
-    @NonNull
-    private final BaseJamTimer countDownTimer = new JamCountDownTimer(Constants.SOUNDTRACK_FETCHING_INTERVAL, TimeUtils.ONE_SECOND, new BaseJamTimer.OnTickCallback() {
-        @Override
-        public void onTicked(long millis) {
-            countDownTimerMillis.setValue(millis);
-        }
-
-        @Override
-        public void onFinished() {
-        }
-    });
-
-    @NonNull
-    private final MutableLiveData<Long> countDownTimerMillis = new MutableLiveData<>(-1L);
-
     @Inject
     public SoundtrackRepository(@NonNull SoundtrackService soundtrackService, @NonNull RoomRepository roomRepository, @NonNull SoundtrackVolumesDatabase soundtrackVolumesDatabase, @NonNull Context context) {
         this.soundtrackService = soundtrackService;
@@ -150,14 +135,11 @@ public class SoundtrackRepository {
 
     public void startFetchingComposition() {
         fetchComposition();
-        countDownTimer.start();
-
         if (soundtracksRunnable == null) {
             soundtracksRunnable = new Runnable() {
 
                 @Override
                 public void run() {
-                    countDownTimer.reset();
                     fetchComposition();
                     handler.postDelayed(this, Constants.SOUNDTRACK_FETCHING_INTERVAL);
                 }
@@ -206,13 +188,9 @@ public class SoundtrackRepository {
             handler.removeCallbacks(soundtracksRunnable);
             soundtracksRunnable = null;
         }
-        if (!countDownTimer.isStopped()) {
-            countDownTimer.stop();
-        }
         allSoundtracks.setValue(EMPTY_SOUNDTRACK_LIST);
         previousCompositeSoundtrack = null;
         showNetworkError.setValue(null);
-        countDownTimerMillis.setValue(-1L);
     }
 
     public void onNetworkErrorShown() {
@@ -247,10 +225,5 @@ public class SoundtrackRepository {
     @NonNull
     public LiveData<Boolean> getTokenExpired() {
         return Transformations.map(getShowNetworkError(), networkError -> (networkError instanceof ForbiddenAccessError));
-    }
-
-    @NonNull
-    public LiveData<Long> getCountDownTimerMillis() {
-        return countDownTimerMillis;
     }
 }

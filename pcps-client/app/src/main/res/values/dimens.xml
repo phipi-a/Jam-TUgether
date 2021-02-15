@@ -9,7 +9,7 @@
     <dimen name="soundtrack_view_height">60dp</dimen>
     <dimen name="volume_slider_max_width">200dp</dimen>
 
-    <dimen name="room_id_text_view_margin_top">10dp</dimen>
+    <dimen name="room_id_text_view_margin_top">20dp</dimen>
     <dimen name="room_id_text_view_margin_start">20dp</dimen>
 
     <dimen name="count_down_progress_bar_width">35dp</dimen>
