@@ -44,7 +44,7 @@ public class MusicianViewViewModel extends ViewModel implements Instrument.OnCha
             showDrumsFragment.setValue(true);
         } else if (instrument == Shaker.getInstance()) {
             showShakerFragment.setValue(true);
-        } else if(instrument == Piano.getInstance()) {
+        } else if (instrument == Piano.getInstance()) {
             showPianoFragment.setValue(true);
         }
     }

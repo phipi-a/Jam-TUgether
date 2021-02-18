@@ -86,7 +86,7 @@ public class OnBoardingViewModel extends ViewModel implements PageIndicator.OnCl
     }
 
     public void onFinishButtonClicked() {
-        if(preferences.userCompletedOnBoarding()) { // user watched on boarding again from settings
+        if (preferences.userCompletedOnBoarding()) { // user watched on boarding again from settings
             navigateToSettings.setValue(true);
         } else { // user watched on boarding for the first time
             preferences.setUserCompletedOnBoarding(true);

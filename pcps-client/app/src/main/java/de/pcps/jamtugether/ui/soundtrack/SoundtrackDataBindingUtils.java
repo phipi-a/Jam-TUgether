@@ -23,7 +23,7 @@ public class SoundtrackDataBindingUtils {
 
     public static void bindOwnSoundtrack(@NonNull ViewSoundtrackBinding binding, @NonNull LiveData<SingleSoundtrack> ownSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
         ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
-        SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
+        SoundtrackContainer soundtrackContainer = binding.soundtrackContainer;
 
         ownSoundtrack.observe(lifecycleOwner, soundtrack -> {
             binding.setSoundtrack(soundtrack);
@@ -36,7 +36,7 @@ public class SoundtrackDataBindingUtils {
 
     public static void bindCompositeSoundtrack(@NonNull ViewSoundtrackBinding binding, @NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull Soundtrack.OnChangeCallback onChangeCallback, @NonNull LifecycleOwner lifecycleOwner) {
         ViewSoundtrackControlsBinding controlsBinding = binding.soundtrackControlsLayout;
-        SoundtrackContainer soundtrackContainer = (SoundtrackContainer) binding.soundtrackContainer;
+        SoundtrackContainer soundtrackContainer = binding.soundtrackContainer;
         compositeSoundtrack.observe(lifecycleOwner, soundtrack -> {
             binding.setSoundtrack(soundtrack);
             controlsBinding.setSoundtrack(soundtrack);

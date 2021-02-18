@@ -323,7 +323,7 @@ public abstract class InstrumentViewModel extends ViewModel {
             }
             uploadButtonVisibility.setValue(View.VISIBLE);
         } else {
-            if(!loop) {
+            if (!loop) {
                 ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
                 uploadButtonIsEnabled.setValue(!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument));
             }

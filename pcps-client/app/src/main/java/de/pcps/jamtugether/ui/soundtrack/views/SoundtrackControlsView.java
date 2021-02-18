@@ -43,7 +43,7 @@ public class SoundtrackControlsView extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(drawn) {
+        if (drawn) {
             return;
         }
 

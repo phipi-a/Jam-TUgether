@@ -33,7 +33,7 @@ public class SoundtrackContainer extends ConstraintLayout {
     }
 
     public void onSingleSoundtrackChanged(@NonNull SingleSoundtrack soundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        if(soundtrackView == null || line == null) {
+        if (soundtrackView == null || line == null) {
             return;
         }
         soundtrackView.onSoundtrackChanged(soundtrack);
@@ -41,7 +41,7 @@ public class SoundtrackContainer extends ConstraintLayout {
     }
 
     public void observeSingleSoundtrack(@NonNull LiveData<SingleSoundtrack> singleSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        if(soundtrackView == null || line == null) {
+        if (soundtrackView == null || line == null) {
             return;
         }
         soundtrackView.observeSingleSoundtrack(singleSoundtrack, lifecycleOwner);
@@ -49,7 +49,7 @@ public class SoundtrackContainer extends ConstraintLayout {
     }
 
     public void observeCompositeSoundtrack(@NonNull LiveData<CompositeSoundtrack> compositeSoundtrack, @NonNull LifecycleOwner lifecycleOwner) {
-        if(soundtrackView == null || line == null) {
+        if (soundtrackView == null || line == null) {
             return;
         }
         soundtrackView.observeCompositeSoundtrack(compositeSoundtrack, lifecycleOwner);

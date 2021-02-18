@@ -30,19 +30,19 @@ public class JamTabView extends ConstraintLayout {
     }
 
     public void setTitle(@StringRes int title) {
-        if(tabTitleTextView != null) {
+        if (tabTitleTextView != null) {
             this.tabTitleTextView.setText(title);
         }
     }
 
     public void activate() {
-        if(tabTitleTextView != null) {
+        if (tabTitleTextView != null) {
             tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.primaryTextColor));
         }
     }
 
     public void deactivate() {
-        if(tabTitleTextView != null) {
+        if (tabTitleTextView != null) {
             tabTitleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
         }
     }

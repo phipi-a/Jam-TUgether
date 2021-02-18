@@ -33,7 +33,7 @@ public class DeleteViewHolder extends BaseViewHolder {
         binding.soundtrackControlsLayout.setLifecycleOwner(lifecycleOwner);
         binding.soundtrackControlsLayout.executePendingBindings();
 
-        ((SoundtrackContainer) binding.soundtrackContainer).onSingleSoundtrackChanged(singleSoundtrack, lifecycleOwner);
+        binding.soundtrackContainer.onSingleSoundtrackChanged(singleSoundtrack, lifecycleOwner);
     }
 
     @NonNull

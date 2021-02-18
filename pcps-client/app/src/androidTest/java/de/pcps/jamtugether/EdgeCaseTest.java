@@ -33,7 +33,7 @@ public class EdgeCaseTest extends TestHelpers {
         onView(withId(R.id.create_room_button))
                 .perform(click());
         onView(withId(R.id.room_password_edit_text))
-                .perform(replaceText ("foo\\x22console.log('XSS😈');//"));
+                .perform(replaceText("foo\\x22console.log('XSS😈');//"));
         onView(withId(R.id.create_room_button))
                 .perform(click());
         // wait 10s to ensure client is connected
@@ -45,7 +45,7 @@ public class EdgeCaseTest extends TestHelpers {
         onView(withId(R.id.create_room_button))
                 .perform(click());
         onView(withId(R.id.room_password_edit_text))
-                .perform(typeText( new String(new char[99]).replace("\0", "a")));
+                .perform(typeText(new String(new char[99]).replace("\0", "a")));
         onView(withId(R.id.create_room_button))
                 .perform(click());
         onView(withText(R.string.password_too_large_error_message)).check(matches(isDisplayed()));

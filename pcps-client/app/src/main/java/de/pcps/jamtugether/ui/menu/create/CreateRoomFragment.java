@@ -34,7 +34,7 @@ public class CreateRoomFragment extends BaseFragment {
         binding.setViewModel(viewModel);
 
         viewModel.getShowNameInfoDialog().observe(getViewLifecycleOwner(), showNameInfoDialog -> {
-            if(showNameInfoDialog) {
+            if (showNameInfoDialog) {
                 UiUtils.showInfoDialog(context, R.string.user_name, R.string.user_name_info);
                 viewModel.onNameInfoDialogShown();
             }
@@ -52,7 +52,7 @@ public class CreateRoomFragment extends BaseFragment {
                 User user = viewModel.getUser();
                 String password = viewModel.getPassword();
                 String token = viewModel.getToken();
-                if(user == null || password == null || token == null) {
+                if (user == null || password == null || token == null) {
                     return;
                 }
                 NavigationUtils.navigateToRoomAsAdmin(getNavController(), viewModel.getRoomID(), user, password, token);

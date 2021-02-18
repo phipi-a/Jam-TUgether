@@ -24,7 +24,8 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
     private final HashMap<String, SingleSoundtrackPlayingThread> threadMap = new HashMap<>();
 
     @Inject
-    public SingleSoundtrackPlayer() { }
+    public SingleSoundtrackPlayer() {
+    }
 
     @Nullable
     @Override
@@ -51,8 +52,8 @@ public class SingleSoundtrackPlayer extends SoundtrackPlayer {
 
     @Override
     public boolean isPlaying() {
-        for(SingleSoundtrackPlayingThread thread : threadMap.values()) {
-            if(thread.isPlaying()) {
+        for (SingleSoundtrackPlayingThread thread : threadMap.values()) {
+            if (thread.isPlaying()) {
                 return true;
             }
         }

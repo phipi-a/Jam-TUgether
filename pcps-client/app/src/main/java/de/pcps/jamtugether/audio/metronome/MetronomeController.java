@@ -23,7 +23,7 @@ public class MetronomeController {
         Observer<Beat> beatObserver = Metronome.getInstance()::updateBeat;
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(userInRoom) {
+            if (userInRoom) {
                 soundtrackRepository.getBeat().observeForever(beatObserver);
             } else {
                 soundtrackRepository.getBeat().removeObserver(beatObserver);

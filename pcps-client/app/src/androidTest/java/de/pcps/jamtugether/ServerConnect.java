@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class ServerConnect extends TestHelpers {
-    static private String PASSWORD = "foo";
+    static private final String PASSWORD = "foo";
 
     @Rule
     public ActivityScenarioRule rule = new ActivityScenarioRule<>(MainActivity.class);

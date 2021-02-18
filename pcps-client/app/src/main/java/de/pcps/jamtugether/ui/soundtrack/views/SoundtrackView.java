@@ -109,15 +109,13 @@ public class SoundtrackView extends View {
     private static int getFluteSoundHeightPercentage(@NonNull FluteSound fluteSound) {
         if (heightPercentages.containsKey(fluteSound)) {
             return heightPercentages.get(fluteSound);
-        }
-        else return 8;
+        } else return 8;
     }
 
     private static int getPianoSoundHeightPercentage(@NonNull PianoSound pianoSound) {
         if (heightPercentages.containsKey(pianoSound)) {
             return heightPercentages.get(pianoSound);
-        }
-        else return 8;
+        } else return 8;
     }
 
     private static int getDrumsSoundHeightPercentage(@NonNull DrumsSound drumsSound) {

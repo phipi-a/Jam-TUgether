@@ -15,7 +15,8 @@ import okhttp3.Response;
 public class NetworkConnectionInterceptor implements Interceptor {
 
     @Inject
-    public NetworkConnectionInterceptor() { }
+    public NetworkConnectionInterceptor() {
+    }
 
     @NonNull
     @Override

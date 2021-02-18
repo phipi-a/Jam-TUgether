@@ -28,8 +28,12 @@ public class AdminStatusResponse extends SimpleResponse {
     }
 
     @Nullable
-    public Boolean isAdmin() { return isAdmin; }
+    public Boolean isAdmin() {
+        return isAdmin;
+    }
 
     @Nullable
-    public String getToken() { return token; }
+    public String getToken() {
+        return token;
+    }
 }

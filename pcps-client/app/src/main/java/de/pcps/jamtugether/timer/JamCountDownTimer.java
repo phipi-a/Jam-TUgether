@@ -6,7 +6,7 @@ import de.pcps.jamtugether.timer.base.BaseJamTimer;
 import timber.log.Timber;
 
 public class JamCountDownTimer extends BaseJamTimer {
-    
+
     public JamCountDownTimer(long startMillis, long interval, @NonNull OnTickCallback callback) {
         super(startMillis, 0, -interval, callback);
         Timber.d("JamCountDownTimer()");

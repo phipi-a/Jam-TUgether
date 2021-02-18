@@ -53,7 +53,7 @@ public class SoundtrackNumbersDatabase {
         };
 
         roomRepository.getUserInRoom().observeForever(userInRoom -> {
-            if(userInRoom) {
+            if (userInRoom) {
                 soundtrackRepository.getAllSoundtracks().observeForever(soundtracksObserver);
             } else {
                 onUserLeftRoom();
@@ -75,7 +75,7 @@ public class SoundtrackNumbersDatabase {
             return usedNumbersForFlute;
         } else if (instrument == Drums.getInstance()) {
             return usedNumbersForDrums;
-        } else if(instrument == Shaker.getInstance()) {
+        } else if (instrument == Shaker.getInstance()) {
             return usedNumbersForShaker;
         }
         return usedNumbersForPiano;

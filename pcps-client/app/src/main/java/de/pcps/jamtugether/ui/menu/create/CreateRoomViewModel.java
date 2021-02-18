@@ -74,7 +74,7 @@ public class CreateRoomViewModel extends ViewModel {
         boolean emptyUserName = false;
         boolean emptyPassword = false;
 
-        if(StringUtils.isEmpty(userName)) {
+        if (StringUtils.isEmpty(userName)) {
             nameInputError.setValue(context.getString(R.string.name_input_empty));
             emptyUserName = true;
         }
@@ -84,11 +84,11 @@ public class CreateRoomViewModel extends ViewModel {
             emptyPassword = true;
         }
 
-        if(emptyUserName || emptyPassword) {
-            if(!emptyUserName) {
+        if (emptyUserName || emptyPassword) {
+            if (!emptyUserName) {
                 nameInputError.setValue(null);
             }
-            if(!emptyPassword) {
+            if (!emptyPassword) {
                 passwordInputError.setValue(null);
             }
             return;

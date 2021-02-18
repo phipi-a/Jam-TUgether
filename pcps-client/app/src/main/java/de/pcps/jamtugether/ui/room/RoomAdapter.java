@@ -53,4 +53,4 @@ public class RoomAdapter extends TabLayoutAdapter {
     public int getItemCount() {
         return 2;
     }
-};
+}

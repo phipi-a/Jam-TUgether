@@ -78,14 +78,14 @@ public class RoomViewModel extends ViewModel {
 
     public void observeRoom(@NonNull LifecycleOwner lifecycleOwner) {
         soundtrackRepository.getRoomDeleted().observe(lifecycleOwner, roomDeleted -> {
-            if(roomDeleted) {
+            if (roomDeleted) {
                 navigateBack.setValue(true);
                 onUserLeftRoom();
             }
         });
 
         soundtrackRepository.getTokenExpired().observe(lifecycleOwner, tokenExpired -> {
-            if(tokenExpired) {
+            if (tokenExpired) {
                 navigateBack.setValue(true);
                 onUserLeftRoom();
             }

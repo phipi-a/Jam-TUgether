@@ -14,10 +14,11 @@ public class MetronomePlayer {
     private boolean active = true;
 
     @Inject
-    public MetronomePlayer() { }
+    public MetronomePlayer() {
+    }
 
     public void play() {
-        if(thread != null) {
+        if (thread != null) {
             thread.stopMetronome();
             thread = null;
         }
@@ -26,20 +27,20 @@ public class MetronomePlayer {
     }
 
     public void setOnTickCallback(@Nullable MetronomePlayingThread.OnTickCallback onTickCallback) {
-        if(thread != null) {
+        if (thread != null) {
             thread.setOnTickCallback(onTickCallback);
         }
     }
 
     public void setActive(boolean active) {
         this.active = active;
-        if(thread != null) {
+        if (thread != null) {
             thread.setActive(active);
         }
     }
 
     public void stop() {
-        if(thread != null) {
+        if (thread != null) {
             thread.stopMetronome();
             thread = null;
         }
