@@ -34,20 +34,15 @@ public class ConnectionTests extends TestHelpers {
     public void testCreateRoomOffline() {
         // this test only works on devices running Android P or lower
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        onView(withId(R.id.create_room_button)).perform(click());
         // disable wifi to make sure we're not connected to the server
         rule.getScenario().onActivity(activity -> setWifiEnabled(false, activity));
         WifiManager wifiManager = (WifiManager) appContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         // check if disabling wifi was successful
         if (!wifiManager.isWifiEnabled()) {
-            onView(withId(R.id.room_password_edit_text))
-                    .perform(typeText("abc"));
-            onView(withId(R.id.create_room_button))
-                    .perform(click());
-            // wait 5s to ensure client is not connected
-            onView(isRoot()).perform(waitFor(5000));
+            createRoomAndWait("Test", "abc", 5000);
             // we're offline so we should not connect
             onView(withText(R.string.no_internet_connection_message)).check(matches(isDisplayed()));
         }
+        rule.getScenario().onActivity(activity -> setWifiEnabled(true, activity));
     }
 }
