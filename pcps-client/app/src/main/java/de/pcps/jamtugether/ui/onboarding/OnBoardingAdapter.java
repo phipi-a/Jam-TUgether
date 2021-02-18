@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.pcps.jamtugether.ui.onboarding.items.OnBoardingDrumsFragment;
 import de.pcps.jamtugether.ui.onboarding.items.OnBoardingOverviewViewFragment;
 import de.pcps.jamtugether.ui.onboarding.items.OnBoardingPianoFragment;
@@ -19,6 +22,19 @@ public class OnBoardingAdapter extends FragmentStateAdapter {
 
     public static final int ON_BOARDING_ITEM_COUNT = 10;
 
+    static final List<Fragment> fragmentPositions = new ArrayList<Fragment>() {{
+        add(OnBoardingWelcomeFragment.newInstance());
+        add(OnBoardingRoomFragment.newInstance());
+        add(OnBoardingMusicianViewFragment.newInstance());
+        add(OnBoardingFluteFragment.newInstance());
+        add(OnBoardingDrumsFragment.newInstance());
+        add(OnBoardingShakerFragment.newInstance());
+        add(OnBoardingPianoFragment.newInstance());
+        add(OnBoardingReadyToUploadFragment.newInstance());
+        add(OnBoardingOverviewViewFragment.newInstance());
+        add(ChooseMainInstrumentFragment.newInstance());
+    }};
+
     public OnBoardingAdapter(@NonNull OnBoardingFragment fragment) {
         super(fragment);
     }
@@ -26,27 +42,8 @@ public class OnBoardingAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return OnBoardingWelcomeFragment.newInstance();
-            case 1:
-                return OnBoardingRoomFragment.newInstance();
-            case 2:
-                return OnBoardingMusicianViewFragment.newInstance();
-            case 3:
-                return OnBoardingFluteFragment.newInstance();
-            case 4:
-                return OnBoardingDrumsFragment.newInstance();
-            case 5:
-                return OnBoardingShakerFragment.newInstance();
-            case 6:
-                return OnBoardingPianoFragment.newInstance();
-            case 7:
-                return OnBoardingReadyToUploadFragment.newInstance();
-            case 8:
-                return OnBoardingOverviewViewFragment.newInstance();
-            case 9:
-                return ChooseMainInstrumentFragment.newInstance();
+        if (position < fragmentPositions.size()) {
+            return fragmentPositions.get(position);
         }
         return OnBoardingWelcomeFragment.newInstance();
     }

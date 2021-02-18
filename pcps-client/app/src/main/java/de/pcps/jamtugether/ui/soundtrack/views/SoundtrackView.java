@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.pcps.jamtugether.R;
 import de.pcps.jamtugether.audio.instrument.drums.Drums;
 import de.pcps.jamtugether.audio.instrument.flute.Flute;
@@ -37,6 +40,23 @@ public class SoundtrackView extends View {
 
     @NonNull
     private final Paint paint = new Paint();
+
+    private static final Map<FluteSound, Integer> heightPercentages = new HashMap<>();
+
+    static {
+        heightPercentages.put(FluteSound.C_SHARP, 15);
+        heightPercentages.put(FluteSound.D, 22);
+        heightPercentages.put(FluteSound.D_SHARP, 29);
+        heightPercentages.put(FluteSound.E, 36);
+        heightPercentages.put(FluteSound.F, 43);
+        heightPercentages.put(FluteSound.F_SHARP, 50);
+        heightPercentages.put(FluteSound.G, 57);
+        heightPercentages.put(FluteSound.G_SHARP, 64);
+        heightPercentages.put(FluteSound.A, 71);
+        heightPercentages.put(FluteSound.A_SHARP, 78);
+        heightPercentages.put(FluteSound.B, 85);
+        heightPercentages.put(FluteSound.C_HIGH, 92);
+    }
 
     public SoundtrackView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -87,65 +107,17 @@ public class SoundtrackView extends View {
     }
 
     private static int getFluteSoundHeightPercentage(@NonNull FluteSound fluteSound) {
-        switch (fluteSound) {
-            case C_SHARP:
-                return 15;
-            case D:
-                return 22;
-            case D_SHARP:
-                return 29;
-            case E:
-                return 36;
-            case F:
-                return 43;
-            case F_SHARP:
-                return 50;
-            case G:
-                return 57;
-            case G_SHARP:
-                return 64;
-            case A:
-                return 71;
-            case A_SHARP:
-                return 78;
-            case B:
-                return 85;
-            case C_HIGH:
-                return 92;
-            default:
-                return 8;
+        if (heightPercentages.containsKey(fluteSound)) {
+            return heightPercentages.get(fluteSound);
         }
+        else return 8;
     }
 
     private static int getPianoSoundHeightPercentage(@NonNull PianoSound pianoSound) {
-        switch (pianoSound) {
-            case C_SHARP:
-                return 15;
-            case D:
-                return 22;
-            case D_SHARP:
-                return 29;
-            case E:
-                return 36;
-            case F:
-                return 43;
-            case F_SHARP:
-                return 50;
-            case G:
-                return 57;
-            case G_SHARP:
-                return 64;
-            case A:
-                return 71;
-            case A_SHARP:
-                return 78;
-            case B:
-                return 85;
-            case C_HIGH:
-                return 92;
-            default:
-                return 8;
+        if (heightPercentages.containsKey(pianoSound)) {
+            return heightPercentages.get(pianoSound);
         }
+        else return 8;
     }
 
     private static int getDrumsSoundHeightPercentage(@NonNull DrumsSound drumsSound) {

@@ -299,10 +299,6 @@ public abstract class InstrumentViewModel extends ViewModel {
     }
 
     protected void finishRecordingSoundtrack(boolean loop) {
-        if (!loop) {
-            recordingSoundtrack = false;
-        }
-
         if (timer != null) {
             timer.stop();
         }
@@ -312,21 +308,12 @@ public abstract class InstrumentViewModel extends ViewModel {
             compositeSoundtrackPlayer.stop(compositeSoundtrack);
         }
 
-        if (!loop) {
-            if (lastLoopCheckBoxIsEnabled) {
-                loopCheckBoxIsEnabled.setValue(true);
-            }
-            if (lastCompositeSoundtrackCheckBoxIsEnabled) {
-                compositeSoundtrackCheckBoxIsEnabled.setValue(true);
-            }
+        handleLooping(loop);
 
-            metronomeController.onFinishedRecordingSoundtrack();
+        finalizeSoundtrack(loop);
+    }
 
-            if (!preferences.userSawUploadReminderDialog()) {
-                showUploadReminderDialog.setValue(true);
-            }
-        }
-
+    private void finalizeSoundtrack(boolean loop) {
         if (ownSoundtrack != null && !ownSoundtrack.isEmpty()) {
             singleSoundtrackPlayer.stop(ownSoundtrack);
             callback.onOwnSoundtrackChanged(ownSoundtrack);
@@ -339,6 +326,24 @@ public abstract class InstrumentViewModel extends ViewModel {
             if(!loop) {
                 ownSoundtrack = latestSoundtracksDatabase.getLatestSoundtrack(instrument);
                 uploadButtonIsEnabled.setValue(!latestSoundtracksDatabase.latestSoundtrackWasUploaded(instrument));
+            }
+        }
+    }
+
+    private void handleLooping(boolean loop) {
+        if (!loop) {
+            recordingSoundtrack = false;
+            if (lastLoopCheckBoxIsEnabled) {
+                loopCheckBoxIsEnabled.setValue(true);
+            }
+            if (lastCompositeSoundtrackCheckBoxIsEnabled) {
+                compositeSoundtrackCheckBoxIsEnabled.setValue(true);
+            }
+
+            metronomeController.onFinishedRecordingSoundtrack();
+
+            if (!preferences.userSawUploadReminderDialog()) {
+                showUploadReminderDialog.setValue(true);
             }
         }
     }

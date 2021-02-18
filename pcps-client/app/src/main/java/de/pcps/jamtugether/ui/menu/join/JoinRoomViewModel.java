@@ -81,6 +81,20 @@ public class JoinRoomViewModel extends ViewModel {
     public void onJoinRoomButtonClicked(@NonNull String userName, @NonNull String roomIDString, @NonNull String password) {
         Context context = application.getApplicationContext();
 
+        if (handleEmptyValues(userName, roomIDString, password, context)) return;
+
+        try {
+            roomID = Integer.parseInt(roomIDString);
+        } catch (Exception e) {
+            roomInputError.setValue(context.getString(R.string.room_invalid));
+            return;
+        }
+
+        this.password = password;
+        joinRoom(roomID, userName, password);
+    }
+
+    private boolean handleEmptyValues(@NonNull String userName, @NonNull String roomIDString, @NonNull String password, Context context) {
         boolean emptyUserName = false;
         boolean emptyRoom = false;
         boolean emptyPassword = false;
@@ -110,18 +124,9 @@ public class JoinRoomViewModel extends ViewModel {
             if (!emptyPassword) {
                 passwordInputError.setValue(null);
             }
-            return;
+            return true;
         }
-
-        try {
-            roomID = Integer.parseInt(roomIDString);
-        } catch (Exception e) {
-            roomInputError.setValue(context.getString(R.string.room_invalid));
-            return;
-        }
-
-        this.password = password;
-        joinRoom(roomID, userName, password);
+        return false;
     }
 
     private void joinRoom(int roomID, @NonNull String userName, @NonNull String password) {
