@@ -57,7 +57,7 @@ public class ServerConnect extends TestHelpers {
 
     @Test
     public void testIsAdmin() {
-        onView(withId(R.id.delete_room_text_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.delete_room_button)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ServerConnect extends TestHelpers {
 
     @After
     public void testCloseRoom() {
-        onView(withId(R.id.delete_room_text_view))
+        onView(withId(R.id.delete_room_button))
                 .perform(click());
 //        rule.getScenario().close();
     }
